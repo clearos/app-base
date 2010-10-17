@@ -17,20 +17,20 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Shell execution class.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,9 +43,9 @@ clearos_load_library('base/Engine');
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Shell execution class.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
@@ -58,6 +58,10 @@ class ShellExec extends Engine
 	///////////////////////////////////////////////////////////////////////////////
 	// M E M B E R S
 	///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @var array command line output
+     */
 
 	protected $output = array();
 
@@ -73,12 +77,9 @@ class ShellExec extends Engine
 
 	public function __construct()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct();
-
-//		require_once(GlobalGetLanguageTemplate(__FILE__));
 	}
 
 	/**
@@ -90,7 +91,7 @@ class ShellExec extends Engine
 	 * - env: environment variables (default null)
 	 * - background: run command in background (default false)
 	 * - stdin: write arguments to stdin (default false)
-	 * 
+	 *
 	 * @param string $command command to excecute
 	 * @param string $arguments command arguments
 	 * @param boolean $superuser super user flag
@@ -101,11 +102,8 @@ class ShellExec extends Engine
 
 	public function Execute($command, $arguments, $superuser = false, $options = null)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
-
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "command is: $command $arguments", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__, "command is $command $arguments");
 
 		$this->output = array();
 
@@ -141,7 +139,7 @@ class ShellExec extends Engine
 		if (isset($options['env']))
 			$exe = $options['env'] . " $exe";
 
-		// If set to background, output *must* be redirected to 
+		// If set to background, output *must* be redirected to
 		// either a log or /dev/null
 
 		if (isset($options['log']))
@@ -178,6 +176,8 @@ class ShellExec extends Engine
 
 	public function GetOutput()
 	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
 		return $this->output;
 	}
 
@@ -191,6 +191,8 @@ class ShellExec extends Engine
 
 	public function GetFirstOutputLine()
 	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
 		if (isset($this->output[0]))
 			return $this->output[0];
 		else
@@ -207,6 +209,8 @@ class ShellExec extends Engine
 
 	public function GetLastOutputLine()
 	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
 		if (isset($this->output[sizeof($this->output) - 1]))
 			return $this->output[sizeof($this->output) - 1];
 		else
@@ -219,8 +223,7 @@ class ShellExec extends Engine
 
 	public function __destruct()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__destruct();
 	}
