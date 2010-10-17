@@ -53,8 +53,7 @@ clearos_load_library('base/File');
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class ConfigurationFileException extends EngineException
-{
+class ConfigurationFileException extends EngineException {
 	/**
 	 * ConfigurationFileException constructor.
 	 *
@@ -83,8 +82,7 @@ class ConfigurationFileException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class ConfigurationFile extends File
-{
+class ConfigurationFile extends File {
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
