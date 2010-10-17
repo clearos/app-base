@@ -57,8 +57,8 @@ clearos_load_library('base/Engine');
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class Network extends Engine
-{
+class Network extends Engine {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -82,40 +82,40 @@ class Network extends Engine
 		parent::__construct();
 
 		$this->prefixlist = array(
-			0 => "0.0.0.0",
-			1 => "128.0.0.0",
-			2 => "192.0.0.0",
-			3 => "224.0.0.0",
-			4 => "240.0.0.0",
-			5 => "248.0.0.0",
-			6 => "252.0.0.0",
-			7 => "254.0.0.0",
-			8 => "255.0.0.0",
-			9 => "255.128.0.0",
-			10 => "255.192.0.0",
-			11 => "255.224.0.0",
-			12 => "255.240.0.0",
-			13 => "255.248.0.0",
-			14 => "255.252.0.0",
-			15 => "255.254.0.0",
-			16 => "255.255.0.0",
-			17 => "255.255.128.0",
-			18 => "255.255.192.0",
-			19 => "255.255.224.0",
-			20 => "255.255.240.0",
-			21 => "255.255.248.0",
-			22 => "255.255.252.0",
-			23 => "255.255.254.0",
-			24 => "255.255.255.0",
-			25 => "255.255.255.128",
-			26 => "255.255.255.192",
-			27 => "255.255.255.224",
-			28 => "255.255.255.240",
-			29 => "255.255.255.248",
-			30 => "255.255.255.252",
-			31 => "255.255.255.254",
-			32 => "255.255.255.255"
-		);
+		                        0 => "0.0.0.0",
+		                        1 => "128.0.0.0",
+		                        2 => "192.0.0.0",
+		                        3 => "224.0.0.0",
+		                        4 => "240.0.0.0",
+		                        5 => "248.0.0.0",
+		                        6 => "252.0.0.0",
+		                        7 => "254.0.0.0",
+		                        8 => "255.0.0.0",
+		                        9 => "255.128.0.0",
+		                        10 => "255.192.0.0",
+		                        11 => "255.224.0.0",
+		                        12 => "255.240.0.0",
+		                        13 => "255.248.0.0",
+		                        14 => "255.252.0.0",
+		                        15 => "255.254.0.0",
+		                        16 => "255.255.0.0",
+		                        17 => "255.255.128.0",
+		                        18 => "255.255.192.0",
+		                        19 => "255.255.224.0",
+		                        20 => "255.255.240.0",
+		                        21 => "255.255.248.0",
+		                        22 => "255.255.252.0",
+		                        23 => "255.255.254.0",
+		                        24 => "255.255.255.0",
+		                        25 => "255.255.255.128",
+		                        26 => "255.255.255.192",
+		                        27 => "255.255.255.224",
+		                        28 => "255.255.255.240",
+		                        29 => "255.255.255.248",
+		                        30 => "255.255.255.252",
+		                        31 => "255.255.255.254",
+		                        32 => "255.255.255.255"
+		                    );
 
 //		require_once(GlobalGetLanguageTemplate(__FILE__));
 	}
@@ -235,9 +235,9 @@ class Network extends Engine
 			$ip_long = ip2long($ip);
 
 			if (
-				( ($ip_long >= ip2long("10.0.0.0")) && ($ip_long <= ip2long("10.255.255.255")) ) ||
-				( ($ip_long >= ip2long("172.16.0.0")) && ($ip_long <= ip2long("172.31.255.255")) ) ||
-				( ($ip_long >= ip2long("192.168.0.0")) && ($ip_long <= ip2long("192.168.255.255")) )
+			    ( ($ip_long >= ip2long("10.0.0.0")) && ($ip_long <= ip2long("10.255.255.255")) ) ||
+			    ( ($ip_long >= ip2long("172.16.0.0")) && ($ip_long <= ip2long("172.31.255.255")) ) ||
+			    ( ($ip_long >= ip2long("192.168.0.0")) && ($ip_long <= ip2long("192.168.255.255")) )
 			)
 				return true;
 			else
@@ -403,7 +403,7 @@ class Network extends Engine
 
 		$mac = strtoupper($mac);
 
-		if(eregi("^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$", $mac)) {
+		if (eregi("^[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}$", $mac)) {
 			return true;
 		} else {
 			$errmsg = NETWORK_LANG_MAC_ADDRESS . ": ($mac) - " . strtolower(LOCALE_LANG_INVALID);
@@ -424,10 +424,10 @@ class Network extends Engine
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-		if(!$this->IsValidIp($from))
+		if (!$this->IsValidIp($from))
 			return false;
 
-		if(!$this->IsValidIp($to))
+		if (!$this->IsValidIp($to))
 			return false;
 
 		try {
@@ -440,7 +440,7 @@ class Network extends Engine
 
 			$todec = ($parts[0] << 24) + ($parts[1] << 16) + ($parts[2] << 8) + $parts[3];
 
-			if($fromdec >= $todec) {
+			if ($fromdec >= $todec) {
 				$errmsg = NETWORK_LANG_IP_RANGE . " - " . strtolower(LOCALE_LANG_INVALID);
 				$this->AddValidationError($errmsg, __METHOD__, __LINE__);
 				return false;
@@ -619,14 +619,14 @@ class Network extends Engine
 		try {
 			$ip = gethostbyname($addr);
 
-			if(ip2long($ip) == -1)
+			if (ip2long($ip) == -1)
 				return false;
 
 			$ph = popen("/sbin/ip -o addr list | egrep 'inet [0-9]{1,3}' | " .
-						"sed -e 's/^.*inet \\([0-9]*\\.[0-9]*\\.[0-9]*\\.[0-9]*\\).*/\\1/g'", "r");
+			            "sed -e 's/^.*inet \\([0-9]*\\.[0-9]*\\.[0-9]*\\.[0-9]*\\).*/\\1/g'", "r");
 
-			while($ph && !feof($ph)) {
-				if($ip == chop(fgets($ph, 4096)))
+			while ($ph && !feof($ph)) {
+				if ($ip == chop(fgets($ph, 4096)))
 					return true;
 			}
 
