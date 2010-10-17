@@ -53,15 +53,15 @@ clearos_load_library('base/Engine');
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class ShellExec extends Engine
-{
+class ShellExec extends Engine {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// M E M B E R S
 	///////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @var array command line output
-     */
+	/**
+	 * @var array command line output
+	 */
 
 	protected $output = array();
 
