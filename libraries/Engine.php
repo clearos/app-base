@@ -58,8 +58,8 @@ require_once(ClearOsConfig::$framework_path . '/' . $version . '/shared/ClearOsC
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class EngineException extends Exception
-{
+class EngineException extends Exception {
+
 	/**
 	 * EngineException constructor.
 	 *
@@ -97,8 +97,8 @@ class EngineException extends Exception
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class ValidationException extends EngineException
-{
+class ValidationException extends EngineException {
+
 	/**
 	 * ValidationException constructor.
 	 *
@@ -128,8 +128,8 @@ class ValidationException extends EngineException
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class CustomConfigurationException extends EngineException
-{
+class CustomConfigurationException extends EngineException {
+
 	/**
 	 * Custom configuration constructor.
 	 *
@@ -153,8 +153,8 @@ class CustomConfigurationException extends EngineException
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class DuplicateException extends EngineException
-{
+class DuplicateException extends EngineException {
+
 	/**
 	 * DuplicateException constructor.
 	 *
@@ -178,8 +178,8 @@ class DuplicateException extends EngineException
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class SqlException extends EngineException
-{
+class SqlException extends EngineException {
+
 	/**
 	 * SqlException constructor.
 	 *
@@ -207,8 +207,8 @@ class SqlException extends EngineException
  * @copyright Copyright 2002-2010 ClearFoundation
  */
 
-class Engine
-{
+class Engine {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -233,7 +233,7 @@ class Engine
 
 	function __construct()
 	{
-	//	require_once(GlobalGetLanguageTemplate(preg_replace("/Engine/", "Locale",__FILE__)));
+		//	require_once(GlobalGetLanguageTemplate(preg_replace("/Engine/", "Locale",__FILE__)));
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -256,7 +256,7 @@ class Engine
 		$error = new ClearOsError(COMMON_VALIDATION, $message, $tag, $line, null, ClearOsError::TYPE_ERROR, true);
 		$this->errors[] = $error;
 
-			ClearOsLogger::Log($error);
+		ClearOsLogger::Log($error);
 	}
 
 	/**
