@@ -54,8 +54,7 @@ clearos_load_library('base/ShellExec');
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FileException extends EngineException
-{
+class FileException extends EngineException {
 	/**
 	 * FileException constructor.
 	 *
@@ -79,8 +78,7 @@ class FileException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FilePermissionsException extends EngineException
-{
+class FilePermissionsException extends EngineException {
 	/**
 	 * FilePermissionsException constructor.
 	 *
@@ -104,8 +102,7 @@ class FilePermissionsException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FileAlreadyExistsException extends EngineException
-{
+class FileAlreadyExistsException extends EngineException {
 	/**
 	 * FileAlreadyExistsException constructor.
 	 *
@@ -129,8 +126,7 @@ class FileAlreadyExistsException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FileNotFoundException extends EngineException
-{
+class FileNotFoundException extends EngineException {
 	/**
 	 * FileNotFoundException constructor.
 	 *
@@ -154,8 +150,7 @@ class FileNotFoundException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FileIoException extends EngineException
-{
+class FileIoException extends EngineException {
 	/**
 	 * FileIoException constructor.
 	 *
@@ -179,8 +174,7 @@ class FileIoException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class FileNoMatchException extends EngineException
-{
+class FileNoMatchException extends EngineException {
 	/**
 	 * FileNoMatchException constructor.
 	 *
@@ -215,8 +209,7 @@ class FileNoMatchException extends EngineException
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class File extends Engine
-{
+class File extends Engine {
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -284,7 +277,7 @@ class File extends Engine
 
 		parent::__construct();
 
-	//	require_once(GlobalGetLanguageTemplate(__FILE__));
+		//	require_once(GlobalGetLanguageTemplate(__FILE__));
 	}
 
 	/**
@@ -292,7 +285,7 @@ class File extends Engine
 	 *
 	 * @return string name of file
 	 */
-	function GetFilename()
+	public function GetFilename()
 	{
 		return $this->filename;
 	}
@@ -307,7 +300,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function GetContents($maxbytes = -1)
+	public function GetContents($maxbytes = -1)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -329,7 +322,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function GetContentsAsArray($maxbytes = -1)
+	public function GetContentsAsArray($maxbytes = -1)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -384,7 +377,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function GetSearchResults($regex, $maxbytes = -1)
+	public function GetSearchResults($regex, $maxbytes = -1)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -421,7 +414,7 @@ class File extends Engine
 	 * @throws ValidationException, FileNoMatchException, FileNotFoundException, FileException
 	 */
 
-	function LookupValue($key)
+	public function LookupValue($key)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -446,7 +439,7 @@ class File extends Engine
 	 * @throws FileException
 	 */
 
-	function Exists()
+	public function Exists()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -478,7 +471,7 @@ class File extends Engine
 	 * @throws FileException
 	 */
 
-	function GetSize()
+	public function GetSize()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -509,7 +502,7 @@ class File extends Engine
 	 * @throws FileException
 	 */
 
-	function GetMd5()
+	public function GetMd5()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -546,7 +539,7 @@ class File extends Engine
 	 * @throws ValidationException, FileNotFoundException, FilePermissionsException, FileException
 	 */
 
-	function Chmod($mode)
+	public function Chmod($mode)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -578,7 +571,7 @@ class File extends Engine
 	 * @throws ValidationException, FileNotFoundException, FilePermissionsException, FileException
 	 */
 
-	function Chown($owner, $group)
+	public function Chown($owner, $group)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -622,7 +615,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function GetPermissions()
+	public function GetPermissions()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -644,7 +637,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function LastModified()
+	public function LastModified()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -685,7 +678,7 @@ class File extends Engine
 	 * @throws FileAlreadyExistsException, FilePermissionsException, FileException
 	 */
 
-	function Create($owner, $group, $mode)
+	public function Create($owner, $group, $mode)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -723,7 +716,7 @@ class File extends Engine
 	 * @throws FileNotFoundException, FileException
 	 */
 
-	function Delete()
+	public function Delete()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -749,7 +742,7 @@ class File extends Engine
 	 * @throws FileException
 	 */
 
-	function IsDirectory()
+	public function IsDirectory()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -783,7 +776,7 @@ class File extends Engine
 	 * @throws FileException
 	 */
 
-	function IsSymLink()
+	public function IsSymLink()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -835,7 +828,7 @@ class File extends Engine
 	 * @throws FileNotFoundException FileException
 	 */
 
-	function Replace($tempfile)
+	public function Replace($tempfile)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -874,7 +867,7 @@ class File extends Engine
 	 * @return void
 	 */
 
-	function DumpContentsFromArray($contents)
+	public function DumpContentsFromArray($contents)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -903,7 +896,7 @@ class File extends Engine
 	 * @throws FileNotFoundException FileException
 	 */
 
-	function AddLines($data)
+	public function AddLines($data)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -942,7 +935,7 @@ class File extends Engine
 	 * @throws FileNoMatchException, FileNotFoundException, FileException
 	 */
 
-	function AddLinesAfter($data, $after)
+	public function AddLinesAfter($data, $after)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -985,7 +978,7 @@ class File extends Engine
 	 * @throws FileNoMatchException, FileNotFoundException, FileException
 	 */
 
-	function AddLinesBefore($data, $before)
+	public function AddLinesBefore($data, $before)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1027,7 +1020,7 @@ class File extends Engine
 	 * @throws FileNotFoundException Exception (inherited from GetContents)
 	 */
 
-	function DeleteLines($search)
+	public function DeleteLines($search)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1049,7 +1042,7 @@ class File extends Engine
 	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
 	 */
 
-	function PrependLines($search, $prepend)
+	public function PrependLines($search, $prepend)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1095,7 +1088,7 @@ class File extends Engine
 	 * @throws ValidationException, FileNoMatchException, FileNotFoundException, FileException
 	 */
 
-	function LookupLine($search)
+	public function LookupLine($search)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1126,7 +1119,7 @@ class File extends Engine
 	 * @throws  FileNoMatchException
 	 */
 
-	function LookupValueBetween($key, $start, $end)
+	public function LookupValueBetween($key, $start, $end)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1171,7 +1164,7 @@ class File extends Engine
 	 * @throws FileException, ValidationException
 	 */
 
-	function CopyTo($destination)
+	public function CopyTo($destination)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1199,7 +1192,7 @@ class File extends Engine
 	 * @throws FileException, ValidationException
 	 */
 
-	function MoveTo($destination)
+	public function MoveTo($destination)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1233,7 +1226,7 @@ class File extends Engine
 	 * @throws FileNotFoundException Exception (inherited from GetContentsAsArray)
 	 */
 
-	function ReplaceLinesBetween($search, $replacement, $start, $end)
+	public function ReplaceLinesBetween($search, $replacement, $start, $end)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1304,7 +1297,7 @@ class File extends Engine
 	 * @throws FileException, ValidationException
 	 */
 
-	function ReplaceLines($search, $replacement, $maxreplaced = -1)
+	public function ReplaceLines($search, $replacement, $maxreplaced = -1)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1353,7 +1346,7 @@ class File extends Engine
 	 */
 
 	// TODO: deprecate
-	function ReplaceOneLine($search, $replacement)
+	public function ReplaceOneLine($search, $replacement)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1373,7 +1366,7 @@ class File extends Engine
 	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
 	 */
 
-	function ReplaceOneLineByPattern($search, $replacement)
+	public function ReplaceOneLineByPattern($search, $replacement)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1421,7 +1414,7 @@ class File extends Engine
 	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
 	 */
 
-	function ReplaceLinesByPattern($search, $replacement)
+	public function ReplaceLinesByPattern($search, $replacement)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -1464,7 +1457,7 @@ class File extends Engine
 	 * @access private
 	 */
 
-	function __destruct()
+	public function __destruct()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
