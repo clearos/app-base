@@ -54,8 +54,7 @@ clearos_load_library('base/ShellExec');
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class SoftwareNotInstalledException extends EngineException
-{
+class SoftwareNotInstalledException extends EngineException {
 	/**
 	 * SoftwareNotInstalledException constructor.
 	 *
@@ -92,8 +91,7 @@ class SoftwareNotInstalledException extends EngineException
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class Software extends Engine
-{
+class Software extends Engine {
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -122,7 +120,7 @@ class Software extends Engine
 	 * @param string $version version number (optional)
 	 */
 
-	function __construct($pkgname, $version = "", $release = "")
+	public function __construct($pkgname, $version = "", $release = "")
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -144,7 +142,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetCopyright()
+	public function GetCopyright()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -164,7 +162,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetDescription()
+	public function GetDescription()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -182,7 +180,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetInstallSize()
+	public function GetInstallSize()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -200,7 +198,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetInstallTime()
+	public function GetInstallTime()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -218,7 +216,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetPackageName()
+	public function GetPackageName()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -233,7 +231,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetPackager()
+	public function GetPackager()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -253,7 +251,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetRelease()
+	public function GetRelease()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -273,7 +271,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetVersion()
+	public function GetVersion()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -291,7 +289,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetSummary()
+	public function GetSummary()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -309,7 +307,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function IsInstalled()
+	public function IsInstalled()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -344,7 +342,7 @@ class Software extends Engine
 	}
 
 	/**
-	 * Generic function to grab information from the RPM database.
+	 * Generic method to grab information from the RPM database.
 	 *
 	 * There are dozens of bits of information in an RPM file accessible via the
 	 * "rpm -q --queryformat" command.  See list of tags at
@@ -355,7 +353,7 @@ class Software extends Engine
 	 * @throws EngineException, SoftwareNotInstalledException
 	 */
 
-	function GetRpmInfo($tag)
+	public function GetRpmInfo($tag)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -424,12 +422,12 @@ class Software extends Engine
 	 * @access private
 	 */
 
-	function LoadInfo()
+	public function LoadInfo()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$rawoutput = explode("|", $this->GetRpmInfo(
-			"%{COPYRIGHT}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}"));
+		                         "%{COPYRIGHT}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}"));
 
 		$this->copyright = $rawoutput[0];
 		$this->description = $rawoutput[1];
@@ -441,16 +439,16 @@ class Software extends Engine
 		$this->version = $rawoutput[7];
 	}
 
-    /**
-     * @access private
-     */
+	/**
+	 * @access private
+	 */
 
-    public function __destruct()
-    {
+	public function __destruct()
+	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-        parent::__destruct();
-    }
+		parent::__destruct();
+	}
 }
 
 // vim: syntax=php ts=4
