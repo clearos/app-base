@@ -17,20 +17,20 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Software package management tools.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -73,14 +73,14 @@ class SoftwareNotInstalledException extends EngineException
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Software package management tools.
  *
  * The software classes contains information about a given RPM package.
  * The software constructor requires the pkgname - release and version are
- * optional.  Why do you need the release and version?  Some packages 
+ * optional.  Why do you need the release and version?  Some packages
  * can have multiple version installed, notably the kernel.
- * 
+ *
  * If you do not specify the release and version name (which is the typical
  * way to call this constructor), then this class will assume that you mean
  * the most recent version.
@@ -116,7 +116,7 @@ class Software extends Engine
 
 	/**
 	 * Software constructor.
-	 * 
+	 *
 	 * @param string $pkgname software package name
 	 * @param string $release release number (optional)
 	 * @param string $version version number (optional)
@@ -124,8 +124,7 @@ class Software extends Engine
 
 	function __construct($pkgname, $version = "", $release = "")
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct();
 //		require_once(GlobalGetLanguageTemplate(__FILE__));
@@ -147,8 +146,7 @@ class Software extends Engine
 
 	function GetCopyright()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->copyright))
 			$this->LoadInfo();
@@ -168,8 +166,7 @@ class Software extends Engine
 
 	function GetDescription()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->description))
 			$this->LoadInfo();
@@ -187,8 +184,7 @@ class Software extends Engine
 
 	function GetInstallSize()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->installsize))
 			$this->LoadInfo();
@@ -206,8 +202,7 @@ class Software extends Engine
 
 	function GetInstallTime()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->installtime))
 			$this->LoadInfo();
@@ -225,8 +220,7 @@ class Software extends Engine
 
 	function GetPackageName()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		return $this->pkgname;
 	}
@@ -241,8 +235,7 @@ class Software extends Engine
 
 	function GetPackager()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->packager))
 			$this->LoadInfo();
@@ -252,7 +245,7 @@ class Software extends Engine
 
 
 	/**
-	 * Returns the release.  
+	 * Returns the release.
 	 *
 	 * The release is not necessarily numeric!
 	 *
@@ -262,8 +255,7 @@ class Software extends Engine
 
 	function GetRelease()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->release))
 			$this->LoadInfo();
@@ -283,8 +275,7 @@ class Software extends Engine
 
 	function GetVersion()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->version))
 			$this->LoadInfo();
@@ -302,8 +293,7 @@ class Software extends Engine
 
 	function GetSummary()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->summary))
 			$this->LoadInfo();
@@ -321,8 +311,7 @@ class Software extends Engine
 
 	function IsInstalled()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$rpm = escapeshellarg($this->pkgname);
 		$exitcode = 1;
@@ -355,7 +344,7 @@ class Software extends Engine
 	}
 
 	/**
-	 * Generic function to grab information from the RPM database.  
+	 * Generic function to grab information from the RPM database.
 	 *
 	 * There are dozens of bits of information in an RPM file accessible via the
 	 * "rpm -q --queryformat" command.  See list of tags at
@@ -368,8 +357,7 @@ class Software extends Engine
 
 	function GetRpmInfo($tag)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->IsInstalled())
 			throw new SoftwareNotInstalledException($this->pkgname, COMMON_NOTICE);
@@ -438,8 +426,7 @@ class Software extends Engine
 
 	function LoadInfo()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$rawoutput = explode("|", $this->GetRpmInfo(
 			"%{COPYRIGHT}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}"));
@@ -460,8 +447,7 @@ class Software extends Engine
 
     public function __destruct()
     {
-        if (COMMON_DEBUG_MODE)
-            $this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
         parent::__destruct();
     }
