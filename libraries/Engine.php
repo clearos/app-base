@@ -17,32 +17,32 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Core engine class for the API.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
 require_once('/usr/clearos/framework/config.php');
 
-if (!empty(ClearOsFramework::$clearos_devel_versions['framework']))
-	$version = ClearOsFramework::$clearos_devel_versions['framework'];
+if (!empty(ClearOsConfig::$clearos_devel_versions['framework']))
+	$version = ClearOsConfig::$clearos_devel_versions['framework'];
 else
 	$version = '';
 
-require_once(ClearOsFramework::$framework_path . '/' . $version . '/shared/ClearOsCore.php');
+require_once(ClearOsConfig::$framework_path . '/' . $version . '/shared/ClearOsCore.php');
 
 ///////////////////////////////////////////////////////////////////////////////
 // E X C E P T I O N  C L A S S E S
@@ -197,9 +197,9 @@ class SqlException extends EngineException
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Core engine class for the API.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
@@ -236,33 +236,6 @@ class Engine
 	//	require_once(GlobalGetLanguageTemplate(preg_replace("/Engine/", "Locale",__FILE__)));
 	}
 
-	/**
-	 * Prints a message to the log.
-	 *
-	 * The following log levels are used:
-	 *
-	 * - COMMON_DEBUG - debug messages
-	 * - COMMON_VALIDATION - validation error message
-	 * - COMMON_INFO - informational messages (e.g. dynamic DNS updated with IP w.x.y.z)
-	 * - COMMON_NOTICE - pedantic warnings (e.g. dynamic DNS updated with IP w.x.y.z)
-	 * - COMMON_WARNING - normal but significant errors (e.g. dynamic DNS could not detect WAN IP)
-	 * - COMMON_ERROR - errors that should not happen under normal circumstances
-	 * - COMMON_FATAL - really nasty errors
-	 *
-	 * @param  int  $code  error code
-	 * @param  string  $message  short and informative message
-	 * @param  string  $tag  identifier (usually the method)
-	 * @param  int  $line  line number
-	 * @return  void
-	 * @static
-	 */
-
-	static function Log($code, $message, $tag, $line)
-	{
-		$error = new ClearOsError($code, $message, $tag, $line, null, true);
-		ClearOsLogger::Log($error);
-	}
-
 	///////////////////////////////////////////////////////////////////////////////
 	// E R R O R  H A N D L I N G
 	///////////////////////////////////////////////////////////////////////////////
@@ -278,13 +251,11 @@ class Engine
 
 	protected function AddValidationError($message, $tag, $line)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$error = new ClearOsError(COMMON_VALIDATION, $message, $tag, $line, null, ClearOsError::TYPE_ERROR, true);
 		$this->errors[] = $error;
 
-		if (COMMON_DEBUG_MODE)
 			ClearOsLogger::Log($error);
 	}
 
@@ -297,8 +268,7 @@ class Engine
 
 	public function GetValidationErrors($purge = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$error_messages = array();
 
@@ -320,8 +290,7 @@ class Engine
 
 	public function CopyValidationErrors($purge = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$errors_copy = $this->errors;
 
@@ -339,8 +308,7 @@ class Engine
 
 	public function CheckValidationErrors()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (empty($this->errors))
 			return false;
@@ -355,8 +323,7 @@ class Engine
 	public function __destruct()
 	{
 		// A bit noisy
-		// if (COMMON_DEBUG_MODE)
-		//	$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		// ClearOsLogger::Profile(__METHOD__, __LINE__);
 	}
 }
 
