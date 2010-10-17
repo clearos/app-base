@@ -75,7 +75,7 @@ class Network extends Engine {
 	 * @return void
 	 */
 
-	function __construct()
+	public function __construct()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -127,7 +127,7 @@ class Network extends Engine {
 	 * @return string netmask
 	 */
 
-	function GetNetmask($prefix)
+	public function GetNetmask($prefix)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -144,7 +144,7 @@ class Network extends Engine {
 	 * @return int bitmask
 	 */
 
-	function GetPrefix($netmask)
+	public function GetPrefix($netmask)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -164,7 +164,7 @@ class Network extends Engine {
 	 * @return  string  network  address
 	 */
 
-	function GetNetworkAddress($ip, $netmask)
+	public function GetNetworkAddress($ip, $netmask)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -193,7 +193,7 @@ class Network extends Engine {
 	 * @return  string  broadcast address
 	 */
 
-	function GetBroadcastAddress($ip, $netmask)
+	public function GetBroadcastAddress($ip, $netmask)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -222,7 +222,7 @@ class Network extends Engine {
 	 * @return  boolean  true if IP is private
 	 */
 
-	function IsPrivateIp($ip)
+	public function IsPrivateIp($ip)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -254,7 +254,7 @@ class Network extends Engine {
 	 * @return boolean true if alias is valid
 	 */
 
-	function IsValidHostnameAlias($alias)
+	public function IsValidHostnameAlias($alias)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -276,7 +276,7 @@ class Network extends Engine {
 	 * @return  boolean  true if hostname is valid
 	 */
 
-	function IsValidHostname($hostname)
+	public function IsValidHostname($hostname)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -304,7 +304,7 @@ class Network extends Engine {
 	 * @return  boolean  true if domain is valid
 	 */
 
-	function IsValidDomain($domain)
+	public function IsValidDomain($domain)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -332,7 +332,7 @@ class Network extends Engine {
 	 * @return  boolean  true if IP is valid
 	 */
 
-	function IsValidIp($ip)
+	public function IsValidIp($ip)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -355,7 +355,7 @@ class Network extends Engine {
 	 * @return boolean true if gateway IP is valid
 	 */
 
-	function IsValidIpOnNetwork($ip, $netmask, $testip)
+	public function IsValidIpOnNetwork($ip, $netmask, $testip)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -397,7 +397,7 @@ class Network extends Engine {
 	 * @return  boolean  true if MAC address is valid
 	 */
 
-	function IsValidMac($mac)
+	public function IsValidMac($mac)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -420,7 +420,7 @@ class Network extends Engine {
 	 * @return  boolean  true if IP address range is valid
 	 */
 
-	function IsValidIpRange($from, $to)
+	public function IsValidIpRange($from, $to)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -459,7 +459,7 @@ class Network extends Engine {
 	 * @return boolean true if netmask is valid
 	 */
 
-	function IsValidNetmask($ip)
+	public function IsValidNetmask($ip)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -478,7 +478,7 @@ class Network extends Engine {
 	 * @return  boolean  true if network address is valid
 	 */
 
-	function IsValidNetwork($network)
+	public function IsValidNetwork($network)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -518,7 +518,7 @@ class Network extends Engine {
 	 * @return  boolean  true if port number is valid
 	 */
 
-	function IsValidPort($port)
+	public function IsValidPort($port)
 	{
 		if (! preg_match("/^\d+$/", $port)) {
 			$errmsg = NETWORK_LANG_ERRMSG_PORT_INVALID;
@@ -543,7 +543,7 @@ class Network extends Engine {
 	 * @return  boolean  true if port number range is valid
 	 */
 
-	function IsValidPortRange($from, $to)
+	public function IsValidPortRange($from, $to)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -575,7 +575,7 @@ class Network extends Engine {
 	 * @return boolean true if prefix is valid
 	 */
 
-	function IsValidPrefix($prefix)
+	public function IsValidPrefix($prefix)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -592,7 +592,7 @@ class Network extends Engine {
 	 * @return  boolean  true if protocol is valid
 	 */
 
-	function IsValidProtocol($protocol)
+	public function IsValidProtocol($protocol)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -612,7 +612,7 @@ class Network extends Engine {
 	 * @return  boolean  true if addr is valid
 	 */
 
-	function IsLocalIp($addr)
+	public function IsLocalIp($addr)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
