@@ -54,8 +54,8 @@ clearos_load_library('base/ShellExec');
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class FolderException extends EngineException
-{
+class FolderException extends EngineException {
+
 	/**
 	 * FolderException constructor.
 	 *
@@ -63,7 +63,7 @@ class FolderException extends EngineException
 	 * @param int $code error code
 	 */
 
-	function __construct($errmsg, $code)
+	public function __construct($errmsg, $code)
 	{
 		parent::__construct($errmsg, $code);
 	}
@@ -79,8 +79,8 @@ class FolderException extends EngineException
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class FolderPermissionsException extends EngineException
-{
+class FolderPermissionsException extends EngineException {
+
 	/**
 	 * FolderPermissionsException constructor.
 	 *
@@ -88,7 +88,7 @@ class FolderPermissionsException extends EngineException
 	 * @param int $code error code
 	 */
 
-	function __construct($errmsg, $code)
+	public function __construct($errmsg, $code)
 	{
 		parent::__construct($errmsg, $code);
 	}
@@ -104,8 +104,8 @@ class FolderPermissionsException extends EngineException
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class FolderAlreadyExistsException extends EngineException
-{
+class FolderAlreadyExistsException extends EngineException {
+
 	/**
 	 * FolderAlreadyExistsException constructor.
 	 *
@@ -113,7 +113,7 @@ class FolderAlreadyExistsException extends EngineException
 	 * @param int $code error code
 	 */
 
-	function __construct($folder, $code)
+	public function __construct($folder, $code)
 	{
 		parent::__construct(FOLDER_LANG_ERRMSG_EXISTS . " - " . $folder, $code);
 	}
@@ -129,15 +129,15 @@ class FolderAlreadyExistsException extends EngineException
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class FolderNotFoundException extends EngineException
-{
+class FolderNotFoundException extends EngineException {
+
 	/**
 	 * FolderNotFoundException constructor.
 	 *
 	 * @param string $folder folder name
 	 */
 
-	function __construct($folder)
+	public function __construct($folder)
 	{
 		parent::__construct(FOLDER_LANG_ERRMSG_NOTEXIST . " - " . $folder, COMMON_INFO);
 	}
@@ -160,8 +160,8 @@ class FolderNotFoundException extends EngineException
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class Folder extends Engine
-{
+class Folder extends Engine {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// C O N S T A N T S
 	///////////////////////////////////////////////////////////////////////////////
@@ -204,7 +204,7 @@ class Folder extends Engine
 	 * @param string folder target folder
 	 */
 
-	function __construct($folder, $superuser = false)
+	public function __construct($folder, $superuser = false)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -223,7 +223,7 @@ class Folder extends Engine
 	 * @return  void
 	 */
 
-	function Chmod($mode)
+	public function Chmod($mode)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -241,7 +241,6 @@ class Folder extends Engine
 		}
 	}
 
-
 	/**
 	 * Changes the owner and/or group.
 	 *
@@ -253,7 +252,7 @@ class Folder extends Engine
 	 * @return  void
 	 */
 
-	function Chown($owner, $group, $recursive = false)
+	public function Chown($owner, $group, $recursive = false)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -293,7 +292,6 @@ class Folder extends Engine
 		}
 	}
 
-
 	/**
 	 * Creates a folder on the system.
 	 *
@@ -305,7 +303,7 @@ class Folder extends Engine
 	 * @return  void
 	 */
 
-	function Create($owner, $group, $mode)
+	public function Create($owner, $group, $mode)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -339,7 +337,6 @@ class Folder extends Engine
 		}
 	}
 
-
 	/**
 	 * Deletes the folder.
 	 *
@@ -347,7 +344,7 @@ class Folder extends Engine
 	 * @return  void
 	 */
 
-	function Delete($ignore_nonempty = false)
+	public function Delete($ignore_nonempty = false)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -373,14 +370,13 @@ class Folder extends Engine
 		}
 	}
 
-
 	/**
 	 * Checks to see if given folder is really a folder.
 	 *
 	 * @return  boolean  true if directory
 	 */
 
-	function IsDirectory()
+	public function IsDirectory()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -398,14 +394,13 @@ class Folder extends Engine
 			return false;
 	}
 
-
 	/**
 	 * Checks the existence of the folder.
 	 *
 	 * @return  boolean  true if folder exists
 	 */
 
-	function Exists()
+	public function Exists()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -436,7 +431,7 @@ class Folder extends Engine
 	 * @return  array  file listing
 	 */
 
-	function GetListing($detailed = false)
+	public function GetListing($detailed = false)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -465,18 +460,18 @@ class Folder extends Engine
 				// We want to list all directories first, the files
 				if (substr($parts[0], 0, 1) == 'd') {
 					$directories[] = Array(
-						'name' => $parts[8],
-						'properties' => $parts[0],
-						'size' => $parts[4],
-						'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-					);
+					                     'name' => $parts[8],
+					                     'properties' => $parts[0],
+					                     'size' => $parts[4],
+					                     'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
+					                 );
 				} else {
 					$files[] = Array(
-						'name' => $parts[8],
-						'properties' => $parts[0],
-						'size' => $parts[4],
-						'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-					);
+					               'name' => $parts[8],
+					               'properties' => $parts[0],
+					               'size' => $parts[4],
+					               'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
+					           );
 				}
 			}
 			$listing = array_merge($directories, $files);
@@ -514,7 +509,7 @@ class Folder extends Engine
 	 * @throws FolderNotFoundException, EngineException
 	 */
 
-	function GetPermissions()
+	public function GetPermissions()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -537,7 +532,7 @@ class Folder extends Engine
 	 * @return  array  file listing
 	 */
 
-	function GetRecursiveListing()
+	public function GetRecursiveListing()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -571,7 +566,7 @@ class Folder extends Engine
 	 * @throws FileException
 	 */
 
-	function GetSize()
+	public function GetSize()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -589,7 +584,7 @@ class Folder extends Engine
 		if ($exitcode == 0) {
 			$parts = explode(" ", $shell->GetLastOutputLine());
 			$size = (int)$parts[0];
-			# Account for directory iteself
+			// Account for directory iteself
 			if ($size <= 4096)
 				return 0;
 			else
@@ -604,7 +599,7 @@ class Folder extends Engine
 	 *
 	 * @return  string  name of present working directory
 	 */
-	function GetFoldername()
+	public function GetFoldername()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -615,9 +610,11 @@ class Folder extends Engine
 			} catch (Exception $e) {
 				throw new FileException($e->GetMessage(), COMMON_WARNING);
 			}
+
 			if ($exitcode == 0)
 				return $shell->GetLastOutputLine();
-			else throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
+			else
+				throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
 		}
 
 		return realpath($this->folder);
@@ -631,7 +628,7 @@ class Folder extends Engine
 	 * @access private
 	 */
 
-	function __destruct()
+	public function __destruct()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
