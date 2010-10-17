@@ -59,8 +59,8 @@ clearos_load_library('base/Daemon');
  * @copyright Copyright 2003-2010 ClearFoundation
  */
 
-class Webconfig extends Daemon
-{
+class Webconfig extends Daemon {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// M E M B E R S
 	///////////////////////////////////////////////////////////////////////////////
@@ -86,7 +86,7 @@ class Webconfig extends Daemon
 	 * Webconfig constructor.
 	 */
 
-	function __construct()
+	public function __construct()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -100,7 +100,7 @@ class Webconfig extends Daemon
 	 * @return void
 	 */
 
-	function ClearCache()
+	public function ClearCache()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -123,7 +123,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetAdminAccessState()
+	public function GetAdminAccessState()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -139,7 +139,7 @@ class Webconfig extends Daemon
 	 * @return array list of valid usernames
 	 */
 
-	function GetAdminList()
+	public function GetAdminList()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -172,7 +172,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetRedirectUrl()
+	public function GetRedirectUrl()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -197,7 +197,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetShellAccessState()
+	public function GetShellAccessState()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -214,7 +214,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetTemplate()
+	public function GetTemplate()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -235,7 +235,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetTemplateList()
+	public function GetTemplateList()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -274,7 +274,7 @@ class Webconfig extends Daemon
 		ksort($templatelist);
 
 		foreach ($templatelist as $name => $folder)
-			$list[$folder] = $name;
+		$list[$folder] = $name;
 
 		return $list;
 	}
@@ -286,7 +286,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetUserAccessState()
+	public function GetUserAccessState()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -304,7 +304,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function GetValidPages($username)
+	public function GetValidPages($username)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -342,7 +342,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function SetAdminAccessState($state)
+	public function SetAdminAccessState($state)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -359,7 +359,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function SetTemplate($template)
+	public function SetTemplate($template)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -374,7 +374,7 @@ class Webconfig extends Daemon
 	 * @returns  void
 	 */
 
-	function SetValidPages($username, $pages)
+	public function SetValidPages($username, $pages)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -407,7 +407,7 @@ class Webconfig extends Daemon
 	 * @returns void
 	 */
 
-	function SetSetupState($state)
+	public function SetSetupState($state)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
@@ -477,7 +477,7 @@ class Webconfig extends Daemon
 	 * @throws EngineException
 	 */
 
-	function _SetParameter($key, $value)
+	protected function _SetParameter($key, $value)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
