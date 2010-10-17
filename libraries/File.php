@@ -17,20 +17,20 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * File manipulation class.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ class FileNoMatchException extends EngineException
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * File manipulation class.
  *
  * The File class can be use for creating, reading and manipulating the
@@ -272,13 +272,12 @@ class File extends Engine
 
 	public function __construct($filename, $superuser = false, $temporary = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if ($temporary) {
 			$this->temporary = $temporary;
 			$this->filename = tempnam(COMMON_TEMP_DIR, basename($filename));
-		} else 
+		} else
 			$this->filename = $filename;
 
 		$this->superuser = $superuser;
@@ -310,8 +309,7 @@ class File extends Engine
 
 	function GetContents($maxbytes = -1)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (!is_int($maxbytes) || $maxbytes < -1)
 			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
@@ -333,8 +331,7 @@ class File extends Engine
 
 	function GetContentsAsArray($maxbytes = -1)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (!is_int($maxbytes) || $maxbytes < -1)
 			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
@@ -389,8 +386,7 @@ class File extends Engine
 
 	function GetSearchResults($regex, $maxbytes = -1)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (!is_int($maxbytes) || $maxbytes < -1)
 			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
@@ -427,8 +423,7 @@ class File extends Engine
 
 	function LookupValue($key)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: input validation (if any?)
 
@@ -453,8 +448,7 @@ class File extends Engine
 
 	function Exists()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if ($this->superuser) {
 			try {
@@ -486,15 +480,14 @@ class File extends Engine
 
 	function GetSize()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FileNotFoundException($this->filename, COMMON_INFO);
 
 		try {
 			$shell = new ShellExec();
-			$args = "-loL " . escapeshellarg($this->filename); 
+			$args = "-loL " . escapeshellarg($this->filename);
 			$exitcode = $shell->Execute(self::CMD_LS, $args, true);
 		} catch (Exception $e) {
 			throw new FileException($e->GetMessage(), COMMON_WARNING);
@@ -518,8 +511,7 @@ class File extends Engine
 
 	function GetMd5()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FileNotFoundException($this->filename, COMMON_INFO);
@@ -556,8 +548,7 @@ class File extends Engine
 
 	function Chmod($mode)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: validate $mode
 
@@ -589,8 +580,7 @@ class File extends Engine
 
 	function Chown($owner, $group)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (empty($owner) && empty($group))
 			throw new ValidationException(LOCALE_LANG_ERRMSG_NO_ENTRIES, __METHOD__, __LINE__);
@@ -634,8 +624,7 @@ class File extends Engine
 
 	function GetPermissions()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		clearstatcache();
 
@@ -657,8 +646,7 @@ class File extends Engine
 
 	function LastModified()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FileNotFoundException($this->filename, COMMON_INFO);
@@ -666,7 +654,7 @@ class File extends Engine
 		if ($this->superuser) {
 			try {
 				$shell = new ShellExec();
-				$args = "-l --time-style=full-iso " . escapeshellarg($this->filename); 
+				$args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
 				$exitcode = $shell->Execute(self::CMD_LS, $args, true);
 			} catch (Exception $e) {
 				throw new FileException($e->GetMessage(), COMMON_WARNING);
@@ -699,8 +687,7 @@ class File extends Engine
 
 	function Create($owner, $group, $mode)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		clearstatcache();
 
@@ -738,8 +725,7 @@ class File extends Engine
 
 	function Delete()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		clearstatcache();
 
@@ -765,8 +751,7 @@ class File extends Engine
 
 	function IsDirectory()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$isdir = false;
 
@@ -800,8 +785,7 @@ class File extends Engine
 
 	function IsSymLink()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$issym = 0;
 
@@ -853,8 +837,7 @@ class File extends Engine
 
 	function Replace($tempfile)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! file_exists($tempfile))
 			throw FileNotFoundException($tempfile, COMMON_NOTICE);
@@ -893,8 +876,7 @@ class File extends Engine
 
 	function DumpContentsFromArray($contents)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
 
@@ -923,8 +905,7 @@ class File extends Engine
 
 	function AddLines($data)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
 
@@ -963,8 +944,7 @@ class File extends Engine
 
 	function AddLinesAfter($data, $after)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
 
@@ -1007,8 +987,7 @@ class File extends Engine
 
 	function AddLinesBefore($data, $before)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
 
@@ -1050,8 +1029,7 @@ class File extends Engine
 
 	function DeleteLines($search)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$deleted = $this->ReplaceLines($search, '');
 
@@ -1073,8 +1051,7 @@ class File extends Engine
 
 	function PrependLines($search, $prepend)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$prependlines = false;
 
@@ -1120,8 +1097,7 @@ class File extends Engine
 
 	function LookupLine($search)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: validation (e.g. search must have two slashes)
 
@@ -1152,8 +1128,7 @@ class File extends Engine
 
 	function LookupValueBetween($key, $start, $end)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$lines = $this->GetContentsAsArray();
@@ -1198,8 +1173,7 @@ class File extends Engine
 
 	function CopyTo($destination)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: validate destination
 
@@ -1227,8 +1201,7 @@ class File extends Engine
 
 	function MoveTo($destination)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: validate destination
 
@@ -1262,8 +1235,7 @@ class File extends Engine
 
 	function ReplaceLinesBetween($search, $replacement, $start, $end)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$replaced = false;
 
@@ -1334,8 +1306,7 @@ class File extends Engine
 
 	function ReplaceLines($search, $replacement, $maxreplaced = -1)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// TODO: add validation
 
@@ -1384,8 +1355,7 @@ class File extends Engine
 	// TODO: deprecate
 	function ReplaceOneLine($search, $replacement)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		return $this->ReplaceLines($search, $replacement, 1);
 	}
@@ -1405,8 +1375,7 @@ class File extends Engine
 
 	function ReplaceOneLineByPattern($search, $replacement)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$replaced = false;
 
@@ -1454,8 +1423,7 @@ class File extends Engine
 
 	function ReplaceLinesByPattern($search, $replacement)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$replaced = false;
 
@@ -1498,8 +1466,7 @@ class File extends Engine
 
 	function __destruct()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__destruct();
 	}
