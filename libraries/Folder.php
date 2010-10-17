@@ -206,19 +206,16 @@ class Folder extends Engine
 
 	function __construct($folder, $superuser = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$this->folder = $folder;
 		$this->superuser = $superuser;
 
 		parent::__construct();
-
-//		require_once(GlobalGetLanguageTemplate(__FILE__));
 	}
 
 	/**
-	 * Changes the folder mode. 
+	 * Changes the folder mode.
 	 *
 	 * Use the standard command-line chmod values.
 	 *
@@ -228,8 +225,7 @@ class Folder extends Engine
 
 	function Chmod($mode)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FolderNotFoundException($this->folder);
@@ -259,8 +255,7 @@ class Folder extends Engine
 
 	function Chown($owner, $group, $recursive = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FolderNotFoundException($this->folder);
@@ -303,7 +298,7 @@ class Folder extends Engine
 	 * Creates a folder on the system.
 	 *
 	 * The method will return an error if the file already exists.
-	 * 
+	 *
 	 * @param  string  $owner  folder owner
 	 * @param  string  $group  folder group
 	 * @param  string  $mode  the mode of the folder
@@ -312,8 +307,7 @@ class Folder extends Engine
 
 	function Create($owner, $group, $mode)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		clearstatcache(); // PHP caches file stat information... don't let it
 
@@ -355,8 +349,7 @@ class Folder extends Engine
 
 	function Delete($ignore_nonempty = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FolderNotFoundException($this->folder);
@@ -383,14 +376,13 @@ class Folder extends Engine
 
 	/**
 	 * Checks to see if given folder is really a folder.
-	 * 
+	 *
 	 * @return  boolean  true if directory
 	 */
 
 	function IsDirectory()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$shell = new ShellExec();
@@ -415,8 +407,7 @@ class Folder extends Engine
 
 	function Exists()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if ($this->superuser) {
 			try {
@@ -447,8 +438,7 @@ class Folder extends Engine
 
 	function GetListing($detailed = false)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$listing = array();
 
@@ -479,16 +469,16 @@ class Folder extends Engine
 						'properties' => $parts[0],
 						'size' => $parts[4],
 						'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-					); 
+					);
 				} else {
 					$files[] = Array(
 						'name' => $parts[8],
 						'properties' => $parts[0],
 						'size' => $parts[4],
 						'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-					); 
+					);
 				}
-			} 
+			}
 			$listing = array_merge($directories, $files);
 
 			return $listing;
@@ -526,8 +516,7 @@ class Folder extends Engine
 
 	function GetPermissions()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		clearstatcache();
 
@@ -550,13 +539,12 @@ class Folder extends Engine
 
 	function GetRecursiveListing()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FolderNotFoundException($this->folder);
 
-		$listing = array();	
+		$listing = array();
 		$fulllist = array();
 
 		try {
@@ -585,15 +573,14 @@ class Folder extends Engine
 
 	function GetSize()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->Exists())
 			throw new FolderNotFoundException($this->filename);
 
 		try {
 			$shell = new ShellExec();
-			$options = "-bc $this->folder"; 
+			$options = "-bc $this->folder";
 			$exitcode = $shell->Execute(self::CMD_DU, $options, true);
 		} catch (Exception $e) {
 			throw new FileException($e->GetMessage(), COMMON_WARNING);
@@ -619,6 +606,8 @@ class Folder extends Engine
 	 */
 	function GetFoldername()
 	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
 		if ($this->superuser) {
 			try {
 				$shell = new ShellExec();
@@ -630,6 +619,7 @@ class Folder extends Engine
 				return $shell->GetLastOutputLine();
 			else throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
 		}
+
 		return realpath($this->folder);
 	}
 
@@ -643,8 +633,7 @@ class Folder extends Engine
 
 	function __destruct()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__destruct();
 	}
