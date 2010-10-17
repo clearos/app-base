@@ -413,7 +413,7 @@ class Software extends Engine {
 	 * @access private
 	 */
 
-	private function _LoadInfo()
+	protected function _LoadInfo()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
