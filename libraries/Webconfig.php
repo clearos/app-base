@@ -17,13 +17,13 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Webconfig class.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
@@ -46,7 +46,7 @@ clearos_load_library('base/Daemon');
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Webconfig class.
  *
  * Only application-level methods are in this class.  In other words, no
@@ -88,11 +88,9 @@ class Webconfig extends Daemon
 
 	function __construct()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct("webconfig-httpd");
-
 //		require_once(GlobalGetLanguageTemplate(__FILE__));
 	}
 
@@ -104,8 +102,7 @@ class Webconfig extends Daemon
 
 	function ClearCache()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$folder = new Folder(COMMON_CORE_DIR . self::PATH_CACHE, true);
 
@@ -128,8 +125,7 @@ class Webconfig extends Daemon
 
 	function GetAdminAccessState()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->is_loaded)
 			$this->_LoadConfig();
@@ -145,8 +141,7 @@ class Webconfig extends Daemon
 
 	function GetAdminList()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$admins = array();
 
@@ -179,8 +174,7 @@ class Webconfig extends Daemon
 
 	function GetRedirectUrl()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// This should probably move to a "vendor" class one day
 
@@ -205,8 +199,7 @@ class Webconfig extends Daemon
 
 	function GetShellAccessState()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->is_loaded)
 			$this->_LoadConfig();
@@ -223,13 +216,12 @@ class Webconfig extends Daemon
 
 	function GetTemplate()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// For developers -- allow environment variable to override configuration
 		if (isset($_ENV['WEBCONFIG_TEMPLATE']))
 			return $_ENV['WEBCONFIG_TEMPLATE'];
-		
+
 		if (! $this->is_loaded)
 			$this->_LoadConfig();
 
@@ -245,8 +237,7 @@ class Webconfig extends Daemon
 
 	function GetTemplateList()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$folder = new Folder(COMMON_CORE_DIR  . "/htdocs/templates");
 
@@ -297,8 +288,7 @@ class Webconfig extends Daemon
 
 	function GetUserAccessState()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->is_loaded)
 			$this->_LoadConfig();
@@ -316,8 +306,7 @@ class Webconfig extends Daemon
 
 	function GetValidPages($username)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$validpages[Webconfig::TYPE_USER_REGULAR] = array();
 		$validpages[Webconfig::TYPE_USER_ADMIN] = array();
@@ -355,8 +344,7 @@ class Webconfig extends Daemon
 
 	function SetAdminAccessState($state)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$stateval = $state ? 1 : 0;
 
@@ -373,8 +361,7 @@ class Webconfig extends Daemon
 
 	function SetTemplate($template)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$this->_SetParameter("template", $template);
 	}
@@ -389,8 +376,7 @@ class Webconfig extends Daemon
 
 	function SetValidPages($username, $pages)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$file = new File(self::FILE_ACCESS_DATA);
 
@@ -423,8 +409,7 @@ class Webconfig extends Daemon
 
 	function SetSetupState($state)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$file = new File(self::FILE_SETUP_FLAG);
@@ -439,7 +424,7 @@ class Webconfig extends Daemon
 	}
 
 	///////////////////////////////////////////////////////////////////////////////
-	// P R I V A T E  M E T H O D S 
+	// P R I V A T E  M E T H O D S
 	///////////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -451,8 +436,7 @@ class Webconfig extends Daemon
 
 	protected function _LoadConfig()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$configfile = new ConfigurationFile(self::FILE_CONFIG);
 
@@ -495,8 +479,7 @@ class Webconfig extends Daemon
 
 	function _SetParameter($key, $value)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$file = new File(self::FILE_CONFIG);
@@ -516,8 +499,7 @@ class Webconfig extends Daemon
 
 	public function __destruct()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__destruct();
 	}
