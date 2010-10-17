@@ -17,20 +17,20 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Daemon class.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,7 +47,7 @@ clearos_load_library('base/ShellExec');
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Daemon manager class.
  *
  * A meta file is used to organize and manage the daemons on the system.
@@ -130,8 +130,7 @@ class Daemon extends Software
 
 	public function __construct($initscript)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// require_once(GlobalGetLanguageTemplate(__FILE__));
 
@@ -172,8 +171,7 @@ class Daemon extends Software
 
 	public function GetBootState()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->IsInstalled())
 			throw new EngineException(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $this->package", COMMON_WARNING);
@@ -202,8 +200,7 @@ class Daemon extends Software
 
 	public function GetRunningState()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$file = new File("/var/run/" . $this->processname . ".pid");
 
@@ -232,8 +229,7 @@ class Daemon extends Software
 
 	public function GetProcessName()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		return $this->processname;
 	}
@@ -247,8 +243,7 @@ class Daemon extends Software
 
 	public function GetTitle()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		return $this->title;
 	}
@@ -262,8 +257,7 @@ class Daemon extends Software
 
 	public function Reset()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$isrunning = $this->GetRunningState();
@@ -278,7 +272,7 @@ class Daemon extends Software
 			$args = "reload";
 		else
 			$args = "restart";
-			
+
 		try {
 			$options['stdin'] = "use_popen";
 
@@ -299,8 +293,7 @@ class Daemon extends Software
 
 	public function Restart()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$options['stdin'] = "use_popen";
@@ -322,8 +315,7 @@ class Daemon extends Software
 
 	public function SetBootState($state)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! is_bool($state))
 			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (state)");
@@ -354,8 +346,7 @@ class Daemon extends Software
 
 	public function SetRunningState($state)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! is_bool($state))
 			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (state)");
@@ -366,10 +357,10 @@ class Daemon extends Software
 		$isrunning = $this->GetRunningState();
 
 		if ($isrunning && $state) {
-			// self::Log(COMMON_DEBUG, "issued start on already running daemon", __METHOD__, __LINE__);
+			// issued start on already running daemon
 			return;
 		} else if (!$isrunning && !$state) {
-			// self::Log(COMMON_DEBUG, "issued stop on already stopped daemon", __METHOD__, __LINE__);
+			// issued stop on already stopped daemon
 			return;
 		}
 
@@ -384,7 +375,7 @@ class Daemon extends Software
 			$shell = new ShellExec();
 
 			// TODO: there is some strange behavior with the Cups daemon that causes
-			// PHP to hang.  A temporary workaround 
+			// PHP to hang.  A temporary workaround
 			if (($this->package == "cups") && $state) {
 				$file = new File("/etc/system/initialized/cups");
 				if (! $file->Exists()) {
@@ -411,8 +402,7 @@ class Daemon extends Software
 
 	public function __destruct()
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, "called", __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__destruct();
 	}
