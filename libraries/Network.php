@@ -17,22 +17,22 @@
 // GNU Lesser General Public License for more details.
 //
 // You should have received a copy of the GNU Lesser General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
 ///////////////////////////////////////////////////////////////////////////////
-    
-/** 
+
+/**
  * Network tools.
  *
  * General tools used in dealing with the network.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
-    
+
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -45,11 +45,11 @@ clearos_load_library('base/Engine');
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Network tools.
  *
  * General tools used in dealing with the network.
- *  
+ *
  * @package ClearOS
  * @subpackage API
  * @author {@link http://www.foundation.com/ ClearFoundation}
@@ -64,7 +64,7 @@ class Network extends Engine
 	///////////////////////////////////////////////////////////////////////////////
 
 	protected $prefixlist = array();
-	
+
 	///////////////////////////////////////////////////////////////////////////////
 	// M E T H O D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -77,8 +77,7 @@ class Network extends Engine
 
 	function __construct()
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct();
 
@@ -130,12 +129,11 @@ class Network extends Engine
 
 	function GetNetmask($prefix)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (isset($this->prefixlist[$prefix]))
 			return $this->prefixlist[$prefix];
-		else 
+		else
 			throw new ValidationException(NETWORK_LANG_NETMASK . " - " . LOCALE_LANG_INVALID);
 	}
 
@@ -148,14 +146,13 @@ class Network extends Engine
 
 	function GetPrefix($netmask)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$netmasklist = array_flip($this->prefixlist);
 
 		if (isset($netmasklist[$netmask]))
 			return $netmasklist[$netmask];
-		else 
+		else
 			throw new ValidationException(NETWORK_LANG_NETMASK . " - " . LOCALE_LANG_INVALID);
 	}
 
@@ -169,8 +166,7 @@ class Network extends Engine
 
 	function GetNetworkAddress($ip, $netmask)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$ip_long = ip2long($ip);
 		$nm = ip2long($netmask);
@@ -199,8 +195,7 @@ class Network extends Engine
 
 	function GetBroadcastAddress($ip, $netmask)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$ip_long = ip2long($ip);
 		$nm = ip2long($netmask);
@@ -229,8 +224,7 @@ class Network extends Engine
 
 	function IsPrivateIp($ip)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->IsValidIp($ip)) {
 			$errmsg = NETWORK_LANG_IP . ': (' . $ip . ') - ' . strtolower(LOCALE_LANG_INVALID);
@@ -262,8 +256,7 @@ class Network extends Engine
 
 	function IsValidHostnameAlias($alias)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$state = preg_match('/^([0-9a-zA-Z\.\-_]+)$/', $alias);
 
@@ -285,8 +278,7 @@ class Network extends Engine
 
 	function IsValidHostname($hostname)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$state = preg_match('/^([0-9a-zA-Z\.\-_]+)$/', $hostname);
 
@@ -296,7 +288,7 @@ class Network extends Engine
 			return false;
 		}
 
-		if (substr_count($hostname, ".") == 0 && !preg_match("/^localhost$/i", $hostname)) {  
+		if (substr_count($hostname, ".") == 0 && !preg_match("/^localhost$/i", $hostname)) {
 			$errmsg = NETWORK_LANG_ERRMSG_HOSTNAME_MUST_HAVE_A_PERIOD;
 			$this->AddValidationError($errmsg, __METHOD__, __LINE__);
 			return false;
@@ -314,8 +306,7 @@ class Network extends Engine
 
 	function IsValidDomain($domain)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		// Allow underscores
 
@@ -343,8 +334,7 @@ class Network extends Engine
 
 	function IsValidIp($ip)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$ip_long = ip2long($ip);
 		if ($ip_long == -1 || $ip_long === FALSE || $ip == $ip_long) {
@@ -367,8 +357,7 @@ class Network extends Engine
 
 	function IsValidIpOnNetwork($ip, $netmask, $testip)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$bin_ip = ip2long($ip);
 
@@ -410,8 +399,7 @@ class Network extends Engine
 
 	function IsValidMac($mac)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$mac = strtoupper($mac);
 
@@ -434,8 +422,7 @@ class Network extends Engine
 
 	function IsValidIpRange($from, $to)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if(!$this->IsValidIp($from))
 			return false;
@@ -474,14 +461,13 @@ class Network extends Engine
 
 	function IsValidNetmask($ip)
 	{
-		if (COMMON_DEBUG_MODE)
-			$this->Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$netmasklist = array_flip($this->prefixlist);
 
 		if (isset($netmasklist[$ip]))
 			return true;
-		else 
+		else
 			return false;
 	}
 
@@ -494,8 +480,7 @@ class Network extends Engine
 
 	function IsValidNetwork($network)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$matches = array();
 
@@ -520,7 +505,7 @@ class Network extends Engine
 				return false;
 			else
 				return true;
-			
+
 		} else {
 			return false;
 		}
@@ -560,8 +545,7 @@ class Network extends Engine
 
 	function IsValidPortRange($from, $to)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if ((! preg_match("/^\d+$/", $from)) || (! preg_match("/^\d+$/", $from))) {
 			$errmsg = NETWORK_LANG_ERRMSG_PORT_RANGE_INVALID;
@@ -593,12 +577,11 @@ class Network extends Engine
 
 	function IsValidPrefix($prefix)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (isset($this->prefixlist[$prefix]))
 			return true;
-		else 
+		else
 			return false;
 	}
 
@@ -611,8 +594,7 @@ class Network extends Engine
 
 	function IsValidProtocol($protocol)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (preg_match("/^(TCP|UDP)$/", $protocol)) {
 			return true;
@@ -632,8 +614,7 @@ class Network extends Engine
 
 	function IsLocalIp($addr)
 	{
-		if (COMMON_DEBUG_MODE)
-			self::Log(COMMON_DEBUG, 'called', __METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		try {
 			$ip = gethostbyname($addr);
