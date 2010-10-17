@@ -92,6 +92,7 @@ class SoftwareNotInstalledException extends EngineException {
  */
 
 class Software extends Engine {
+
 	///////////////////////////////////////////////////////////////////////////////
 	// F I E L D S
 	///////////////////////////////////////////////////////////////////////////////
@@ -134,7 +135,6 @@ class Software extends Engine {
 		}
 	}
 
-
 	/**
 	 * Returns the copyright of the software - eg GPL.
 	 *
@@ -147,11 +147,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->copyright))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->copyright;
 	}
-
 
 	/**
 	 * Returns a long description in text format.
@@ -167,11 +166,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->description))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->description;
 	}
-
 
 	/**
 	 * Returns the installed size (not the download size).
@@ -185,11 +183,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->installsize))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->installsize;
 	}
-
 
 	/**
 	 * Returns install time in seconds since Jan 1, 1970.
@@ -203,11 +200,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->installtime))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->installtime;
 	}
-
 
 	/**
 	 * Returns the package name.
@@ -223,7 +219,6 @@ class Software extends Engine {
 		return $this->pkgname;
 	}
 
-
 	/**
 	 * Returns the packager.
 	 *
@@ -236,11 +231,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->packager))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->packager;
 	}
-
 
 	/**
 	 * Returns the release.
@@ -256,11 +250,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->release))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->release;
 	}
-
 
 	/**
 	 * Returns the version.
@@ -276,11 +269,10 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->version))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->version;
 	}
-
 
 	/**
 	 * Returns a one-line description.
@@ -294,51 +286,9 @@ class Software extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (is_null($this->summary))
-			$this->LoadInfo();
+			$this->_LoadInfo();
 
 		return $this->summary;
-	}
-
-
-	/**
-	 * Returns true if the package is installed.
-	 *
-	 * @return boolean true if package is installed
-	 * @throws EngineException, SoftwareNotInstalledException
-	 */
-
-	public function IsInstalled()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$rpm = escapeshellarg($this->pkgname);
-		$exitcode = 1;
-
-		try {
-			// KLUDGE: rpm does not seem to have a nice way to get around
-			// running multiple rpm commands simultaneously.  You can get a
-			// temporary "cannot get shared lock" error in this case.
-
-			$shell = new ShellExec();
-			$options['env'] = "LANG=en_US";
-
-			for ($i = 0; $i < 5; $i++) {
-				$exitcode = $shell->Execute(self::COMMAND_RPM, "-q $rpm 2>&1", false, $options);
-				$lines = implode($shell->GetOutput());
-
-				if (($exitcode === 1) && (preg_match("/shared lock/", $lines)))
-					sleep(1);
-				else
-					break;
-			}
-		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode == 0)
-			return true;
-		else
-			return false;
 	}
 
 	/**
@@ -417,12 +367,53 @@ class Software extends Engine {
 	}
 
 	/**
+	 * Returns true if the package is installed.
+	 *
+	 * @return boolean true if package is installed
+	 * @throws EngineException, SoftwareNotInstalledException
+	 */
+
+	public function IsInstalled()
+	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
+		$rpm = escapeshellarg($this->pkgname);
+		$exitcode = 1;
+
+		try {
+			// KLUDGE: rpm does not seem to have a nice way to get around
+			// running multiple rpm commands simultaneously.  You can get a
+			// temporary "cannot get shared lock" error in this case.
+
+			$shell = new ShellExec();
+			$options['env'] = "LANG=en_US";
+
+			for ($i = 0; $i < 5; $i++) {
+				$exitcode = $shell->Execute(self::COMMAND_RPM, "-q $rpm 2>&1", false, $options);
+				$lines = implode($shell->GetOutput());
+
+				if (($exitcode === 1) && (preg_match("/shared lock/", $lines)))
+					sleep(1);
+				else
+					break;
+			}
+		} catch (Exception $e) {
+			throw new EngineException($e->GetMessage(), COMMON_WARNING);
+		}
+
+		if ($exitcode == 0)
+			return true;
+		else
+			return false;
+	}
+
+	/**
 	 * Loads all the fields in this class.
 	 *
 	 * @access private
 	 */
 
-	public function LoadInfo()
+	private function _LoadInfo()
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
