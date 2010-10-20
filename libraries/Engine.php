@@ -231,7 +231,7 @@ class Engine {
 	 * @return void
 	 */
 
-	function __construct()
+	public function __construct()
 	{
 		//	require_once(GlobalGetLanguageTemplate(preg_replace("/Engine/", "Locale",__FILE__)));
 	}
