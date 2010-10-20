@@ -13,7 +13,6 @@ Vendor: %package_vendor%
 Source: app-base-%{version}.tar.gz
 Requires: %{name}-core = %{version}-%{release}
 Requires: clearos-theme
-Requires: clearos-framework
 Provides: app-webconfig-default
 Obsoletes: app-webconfig-default
 Buildarch: noarch
@@ -25,8 +24,8 @@ Buildroot: %_tmppath/%name-%version-buildroot
 %package core
 Summary: Core API and install for %{name}
 Group: System Environment/API
-Requires: app-setup = %package_version%
-Requires: clearos-framework
+Requires: clearos-base = %package_version%
+Requires: clearos-framework = %package_version%
 # Most of these are derived from the required sudo entries defined below
 Requires: chkconfig
 Requires: coreutils 
