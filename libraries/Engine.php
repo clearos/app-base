@@ -32,17 +32,11 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-// D E P E N D E N C I E S
+// B O O T S T R A P
 ///////////////////////////////////////////////////////////////////////////////
 
-require_once('/usr/clearos/framework/config.php');
-
-if (!empty(ClearOsConfig::$clearos_devel_versions['framework']))
-	$version = ClearOsConfig::$clearos_devel_versions['framework'];
-else
-	$version = '';
-
-require_once(ClearOsConfig::$framework_path . '/' . $version . '/shared/ClearOsCore.php');
+$bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/usr/clearos/framework/shared';
+require_once($bootstrap . '/bootstrap.php');
 
 ///////////////////////////////////////////////////////////////////////////////
 // E X C E P T I O N  C L A S S E S
