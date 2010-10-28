@@ -42,6 +42,9 @@ require_once($bootstrap . '/bootstrap.php');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+clearos_load_language('base/daemon');
+clearos_load_language('base/base');
+
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
@@ -179,13 +182,13 @@ class Daemon extends Software
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! $this->IsInstalled())
-			throw new EngineException(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $this->package", COMMON_WARNING);
+			throw new EngineException(lang('daemon_not_installed'), ClearOsError::CODE_ERROR);
 
 		try {
-			$folder = new Folder(self::PATH_INITD);
+			$folder = new Folder(self::PATH_INITD.'d');
 			$listing = $folder->GetListing();
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_ERROR);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 
 		foreach ($listing as $file) {
@@ -216,7 +219,7 @@ class Daemon extends Software
 			$shell = new ShellExec();
 			$exitcode = $shell->Execute(self::CMD_PIDOF, "-x -s $this->processname");
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_ERROR);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 
 		if ($exitcode == 0)
@@ -267,7 +270,7 @@ class Daemon extends Software
 		try {
 			$isrunning = $this->GetRunningState();
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 
 		if (! $isrunning)
@@ -284,7 +287,7 @@ class Daemon extends Software
 			$shell = new ShellExec();
 			$shell->Execute(self::CMD_SERVICE, "$this->initscript $args", true, $options);
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 	}
 
@@ -306,7 +309,7 @@ class Daemon extends Software
 			$shell = new ShellExec();
 			$shell->Execute(self::CMD_SERVICE, "$this->initscript restart", true, $options);
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 	}
 
@@ -323,10 +326,10 @@ class Daemon extends Software
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! is_bool($state))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (state)");
+			throw new ValidationException(lang('base_errmsg_invalid') . lang('daemon_boot'));
 
 		if (! $this->IsInstalled())
-			throw new EngineException(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $this->package", COMMON_WARNING);
+			throw new EngineException(lang('daemon_not_installed'), ClearOsError::CODE_ERROR);
 
 		if ($state)
 			$args = "on";
@@ -354,10 +357,10 @@ class Daemon extends Software
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		if (! is_bool($state))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (state)");
+			throw new ValidationException(lang('base_errmsg_invalid') . lang('daemon_running'));
 
 		if (! $this->IsInstalled())
-			throw new EngineException(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $this->package", COMMON_WARNING);
+			throw new EngineException(lang('daemon_not_installed'), ClearOsError::CODE_ERROR);
 
 		$isrunning = $this->GetRunningState();
 
@@ -397,7 +400,7 @@ class Daemon extends Software
 				$exitcode = $shell->Execute(self::CMD_SERVICE, "$this->initscript $args", true, $options);
 			}
 		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
 		}
 	}
 
