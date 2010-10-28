@@ -58,14 +58,7 @@ class EngineException extends Exception {
 	 * EngineException constructor.
 	 *
 	 * Unlike a core PHP exception, the message and code parameters are required.
-	 *
-	 * - COMMON_DEBUG - debug message
-	 * - COMMON_VALIDATION - validation error message
-	 * - COMMON_INFO - informational message (e.g. dynamic DNS updated with IP w.x.y.z)
-	 * - COMMON_NOTICE - pedantic warnings (e.g. dynamic DNS updated with IP w.x.y.z)
-	 * - COMMON_WARNING - normal but significant errors (e.g. dynamic DNS could not detect WAN IP)
-	 * - COMMON_ERROR - errors that should not happen under normal circumstances
-	 * - COMMON_FATAL - really nasty errors
+	 * See ClearOsError class for details on the error codes.
 	 *
 	 * @param string $message error message
 	 * @param integer $code error code
@@ -76,7 +69,7 @@ class EngineException extends Exception {
 	{
 		parent::__construct((string)$message, (int)$code);
 
-		if ($code >= COMMON_WARNING)
+		if ($code >= ClearOsError::CODE_WARNING)
 			ClearOsLogger::LogException($this, true);
 	}
 }
@@ -102,88 +95,7 @@ class ValidationException extends EngineException {
 
 	public function __construct($message)
 	{
-		parent::__construct($message, COMMON_VALIDATION);
-	}
-}
-
-/**
- * Custom configuration discovered exception.
- *
- * In some instances, it may be impossible to manage a configuration file if
- * it has been customized.  For instance, the Amavis configuration file uses
- * regular expressions in the banned_filename_re parameter.  These regular
- * expressions are flexible, but are impossible to decipher without showing
- * the end user some not-so-user-friendly details.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2002-2010 ClearFoundation
- */
-
-class CustomConfigurationException extends EngineException {
-
-	/**
-	 * Custom configuration constructor.
-	 *
-	 * @param string $file file name
-	 * @return void
-	 */
-
-	public function __construct($file)
-	{
-		parent::__construct("Custom configuration discovered" . " - " . $file, COMMON_NOTICE);
-	}
-}
-
-/**
- * Duplicate entry exception for API.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2002-2010 ClearFoundation
- */
-
-class DuplicateException extends EngineException {
-
-	/**
-	 * DuplicateException constructor.
-	 *
-	 * @param string $message error message
-	 * @return void
-	 */
-
-	public function __construct($message)
-	{
-		parent::__construct($message, COMMON_WARNING);
-	}
-}
-
-/**
- * SQL exception for API.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2002-2010 ClearFoundation
- */
-
-class SqlException extends EngineException {
-
-	/**
-	 * SqlException constructor.
-	 *
-	 * @param string $message error message
-	 * @return void
-	 */
-
-	public function __construct($message)
-	{
-		parent::__construct($message, COMMON_WARNING);
+		parent::__construct($message, ClearOsError::CODE_INFO);
 	}
 }
 
@@ -226,9 +138,7 @@ class Engine {
 	 */
 
 	public function __construct()
-	{
-		//	require_once(GlobalGetLanguageTemplate(preg_replace("/Engine/", "Locale",__FILE__)));
-	}
+	{}
 
 	///////////////////////////////////////////////////////////////////////////////
 	// E R R O R  H A N D L I N G
@@ -247,7 +157,7 @@ class Engine {
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-		$error = new ClearOsError(COMMON_VALIDATION, $message, $tag, $line, null, ClearOsError::TYPE_ERROR, true);
+		$error = new ClearOsError(ClearOsError::CODE_INFO, $message, $tag, $line, null, ClearOsError::TYPE_ERROR, true);
 		$this->errors[] = $error;
 
 		ClearOsLogger::Log($error);
