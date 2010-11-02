@@ -71,6 +71,7 @@ $lang['localeuage'] = 'Language';
 $lang['base_ldap_not_configured'] = 'The required user database system (LDAP) needs to configured.';
 $lang['base_loading'] = 'Loading';
 $lang['base_login'] = 'Login';
+$lang['base_logout'] = 'Logout';
 $lang['base_low'] = 'Low';
 $lang['base_medium'] = 'Medium';
 $lang['base_megabits'] = 'Mb';
