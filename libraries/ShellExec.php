@@ -47,6 +47,7 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+clearos_load_library('base/Engine');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -84,7 +85,6 @@ class ShellExec extends Engine
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct();
-
 	}
 
 	/**
@@ -108,8 +108,7 @@ class ShellExec extends Engine
 	public function Execute($command, $arguments, $superuser = false, $options = null)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+		ClearOsLogger::Profile(__METHOD__, __LINE__, $command . " " . $arguments);
 
 		$this->output = array();
 
