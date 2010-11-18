@@ -25,8 +25,7 @@
  * Shell execution class.
  *
  * @package ClearOS
- * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
@@ -39,34 +38,34 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once($bootstrap . '/bootstrap.php');
 
 ///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-clearos_load_library('base/Engine');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Shell execution class.
+ * Wrapper for running shell commands.
  *
  * @package ClearOS
- * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class ShellExec extends Engine {
-
+class ShellExec extends Engine
+{
 	///////////////////////////////////////////////////////////////////////////////
 	// M E M B E R S
 	///////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @var array command line output
-	 */
 
 	protected $output = array();
 
@@ -85,6 +84,7 @@ class ShellExec extends Engine {
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		parent::__construct();
+
 	}
 
 	/**
@@ -96,7 +96,7 @@ class ShellExec extends Engine {
 	 * - env: environment variables (default null)
 	 * - background: run command in background (default false)
 	 * - stdin: write arguments to stdin (default false)
-	 *
+	 * 
 	 * @param string $command command to excecute
 	 * @param string $arguments command arguments
 	 * @param boolean $superuser super user flag
@@ -108,7 +108,8 @@ class ShellExec extends Engine {
 	public function Execute($command, $arguments, $superuser = false, $options = null)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
-		ClearOsLogger::Profile(__METHOD__, __LINE__, "command is $command $arguments");
+
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
 		$this->output = array();
 
@@ -144,7 +145,7 @@ class ShellExec extends Engine {
 		if (isset($options['env']))
 			$exe = $options['env'] . " $exe";
 
-		// If set to background, output *must* be redirected to
+		// If set to background, output *must* be redirected to 
 		// either a log or /dev/null
 
 		if (isset($options['log']))
@@ -181,8 +182,6 @@ class ShellExec extends Engine {
 
 	public function GetOutput()
 	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
 		return $this->output;
 	}
 
@@ -196,8 +195,6 @@ class ShellExec extends Engine {
 
 	public function GetFirstOutputLine()
 	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
 		if (isset($this->output[0]))
 			return $this->output[0];
 		else
@@ -214,8 +211,6 @@ class ShellExec extends Engine {
 
 	public function GetLastOutputLine()
 	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
 		if (isset($this->output[sizeof($this->output) - 1]))
 			return $this->output[sizeof($this->output) - 1];
 		else

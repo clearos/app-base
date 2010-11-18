@@ -26,7 +26,7 @@
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
@@ -39,13 +39,16 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once($bootstrap . '/bootstrap.php');
 
 ///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+clearos_load_language('base/daemon');
+
+///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-clearos_load_language('base/daemon');
-clearos_load_language('base/base');
-
-clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
 clearos_load_library('base/Software');
@@ -78,7 +81,7 @@ clearos_load_library('base/ShellExec');
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
@@ -139,8 +142,6 @@ class Daemon extends Software
 	public function __construct($initscript)
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// require_once(GlobalGetLanguageTemplate(__FILE__));
 
 		global $DAEMONS;
 		require_once("Daemon.inc.php");

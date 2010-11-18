@@ -26,7 +26,7 @@
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -39,10 +39,15 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once($bootstrap . '/bootstrap.php');
 
 ///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-clearos_load_library('base/Engine');
 clearos_load_library('base/ShellExec');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,7 +59,7 @@ clearos_load_library('base/ShellExec');
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -79,7 +84,7 @@ class FolderException extends EngineException {
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -104,7 +109,7 @@ class FolderPermissionsException extends EngineException {
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -129,7 +134,7 @@ class FolderAlreadyExistsException extends EngineException {
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -160,7 +165,7 @@ class FolderNotFoundException extends EngineException {
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2003-2010 ClearFoundation
  */
@@ -183,7 +188,7 @@ class Folder extends Engine {
 	const CMD_REALPATH = '/usr/sbin/app-realpath';
 
 	///////////////////////////////////////////////////////////////////////////////
-	// F I E L D S
+	// V A R I A B L E S
 	///////////////////////////////////////////////////////////////////////////////
 
 	/**

@@ -26,7 +26,7 @@
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
@@ -47,7 +47,7 @@ require_once($bootstrap . '/bootstrap.php');
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
@@ -79,7 +79,7 @@ class EngineException extends Exception {
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */
@@ -108,7 +108,7 @@ class ValidationException extends EngineException {
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2002-2010 ClearFoundation
  */

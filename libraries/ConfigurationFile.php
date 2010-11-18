@@ -26,7 +26,7 @@
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
@@ -53,7 +53,7 @@ clearos_load_library('base/File');
  *
  * @package ClearOS
  * @subpackage Exception
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
@@ -82,14 +82,15 @@ class ConfigurationFileException extends EngineException {
  *
  * @package ClearOS
  * @subpackage API
- * @author {@link http://www.foundation.com/ ClearFoundation}
+ * @author {@link http://www.clearfoundation.com/ ClearFoundation}
  * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @copyright Copyright 2006-2010 ClearFoundation
  */
 
-class ConfigurationFile extends File {
+class ConfigurationFile extends File
+{
 	///////////////////////////////////////////////////////////////////////////////
-	// F I E L D S
+	// V A R I A B L E S
 	///////////////////////////////////////////////////////////////////////////////
 
 	protected $method = 'explode';
