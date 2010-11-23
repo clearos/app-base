@@ -52,6 +52,7 @@ $lang['base_filter'] = 'Filter';
 $lang['base_firewall'] = 'Firewall';
 $lang['base_friday'] = 'Friday';
 $lang['base_from'] = 'From';
+$lang['base_full_view'] = 'Full View';
 $lang['base_generate'] = 'Generate';
 $lang['base_gigabits'] = 'Gb';
 $lang['base_gigabytes'] = 'GB';
@@ -59,6 +60,7 @@ $lang['base_global_settings'] = 'Global Settings';
 $lang['base_go'] = 'Go';
 $lang['base_help'] = 'Help';
 $lang['base_high'] = 'High';
+$lang['base_home'] = 'Home';
 $lang['base_hourly'] = 'Hourly';
 $lang['base_hours'] = 'Hours';
 $lang['base_initializing'] = 'Initializing';
@@ -76,8 +78,10 @@ $lang['base_low'] = 'Low';
 $lang['base_medium'] = 'Medium';
 $lang['base_megabits'] = 'Mb';
 $lang['base_megabytes'] = 'MB';
+$lang['base_menu'] = 'Menu';
 $lang['base_minutes'] = 'Minutes';
 $lang['base_missing'] = 'Missing';
+$lang['base_mobile_view'] = 'Mobile View';
 $lang['base_monday'] = 'Monday';
 $lang['base_monthly'] = 'Monthly';
 $lang['base_months'] = 'Months';
@@ -157,7 +161,9 @@ $lang['base_year'] = 'Year';
 $lang['base_yearly'] = 'Yearly';
 $lang['base_years'] = 'Years';
 $lang['base_yes'] = 'Yes';
+
 // NEW
 $lang['base_errmsg_invalid'] = 'The following parameter is invalid: ';
+$lang['base_general_settings'] = 'General Settings'; 
 // vi: syntax=php ts=4
 ?>
