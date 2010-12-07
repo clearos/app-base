@@ -440,17 +440,6 @@ class Software extends Engine {
 		$this->summary = $rawoutput[6];
 		$this->version = $rawoutput[7];
 	}
-
-	/**
-	 * @access private
-	 */
-
-	public function __destruct()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		parent::__destruct();
-	}
 }
 
 // vim: syntax=php ts=4

@@ -215,17 +215,6 @@ class ShellExec extends Engine
 		else
 			return "";
 	}
-
-	/**
-	 * @access private
-	 */
-
-	public function __destruct()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		parent::__destruct();
-	}
 }
 
 // vim: syntax=php ts=4

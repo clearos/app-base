@@ -297,17 +297,6 @@ class ConfigurationFile extends File
 
 		return $this->cfg;
 	}
-
-	/**
-	 * @access private
-	 */
-
-	public function __destruct()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		parent::__destruct();
-	}
 }
 
 // vim: syntax=php ts=4

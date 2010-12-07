@@ -219,16 +219,6 @@ class Engine {
 		else
 			return true;
 	}
-
-	/**
-	 * @access private
-	 */
-
-	public function __destruct()
-	{
-		// A bit noisy
-		// ClearOsLogger::Profile(__METHOD__, __LINE__);
-	}
 }
 
 // vim: syntax=php ts=4

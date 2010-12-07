@@ -630,21 +630,6 @@ class Folder extends Engine {
 
 		return realpath($this->folder);
 	}
-
-	///////////////////////////////////////////////////////////////////////////////
-	// P R I V A T E   M E T H O D S
-	///////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @access private
-	 */
-
-	public function __destruct()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		parent::__destruct();
-	}
 }
 
 // vim: syntax=php ts=4
