@@ -219,6 +219,14 @@ class Engine {
 		else
 			return true;
 	}
+
+	/**
+	 * @access private
+	 */
+
+	public function __destruct()
+	{
+	}
 }
 
 // vim: syntax=php ts=4
