@@ -166,6 +166,8 @@ $lang['base_yes'] = 'Yes';
 $lang['base_errmsg_invalid'] = 'The following parameter is invalid: ';
 $lang['base_general_settings'] = 'General Settings'; 
 $lang['base_system_updated'] = 'System updated';
+$lang['base_ok'] = 'OK';
+$lang['base_deleted'] = 'Item was deleted';
 
 // vi: syntax=php ts=4
 ?>
