@@ -169,5 +169,16 @@ $lang['base_system_updated'] = 'System updated';
 $lang['base_ok'] = 'OK';
 $lang['base_deleted'] = 'Item was deleted';
 
+$lang['base_directory'] = 'Directory';
+$lang['base_network'] = 'Network';
+$lang['base_gateway'] = 'Gateway';
+$lang['base_server'] = 'Server';
+$lang['base_system'] = 'System';
+$lang['base_reports'] = 'Reports';
+$lang['base_voice'] = 'Voice';
+
+$lang['base_settings'] = 'Settings';
+$lang['base_errmsg_username_invalid'] = 'Username is invalid.';
+
 // vi: syntax=php ts=4
 ?>
