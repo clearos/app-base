@@ -42,8 +42,6 @@ require_once($bootstrap . '/bootstrap.php');
 // T R A N S L A T I O N S
 ///////////////////////////////////////////////////////////////////////////////
 
-clearos_load_language('base');
-
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,6 +50,7 @@ clearos_load_library('base/ConfigurationFile');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
 clearos_load_library('base/Daemon');
+clearos_load_library('base/ShellExec');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -76,17 +75,16 @@ class Webconfig extends Daemon {
 	// M E M B E R S
 	///////////////////////////////////////////////////////////////////////////////
 
-	const FILE_CONFIG = "/etc/system/webconfig";
-	const FILE_ACCESS_DATA = "/etc/system/webconfig-access";
-	const FILE_SETUP_FLAG = "/etc/system/initialized/setup";
+	const FILE_CONFIG = '/etc/system/webconfig';
+	const FILE_ACCESS_DATA = '/etc/system/webconfig-access';
+	const FILE_SETUP_FLAG = '/etc/system/initialized/setup';
 	const FILE_INSTALL_SETTINGS = '/usr/share/system/settings/install';
-	const PATH_CACHE = "/htdocs/tmp";
-	const TYPE_USER_DENIED = "denied";
-	const TYPE_USER_REGULAR = "regular";
-	const TYPE_USER_ADMIN = "admin";
-	const CMD_KILLALL = "/usr/bin/killall";
+	const PATH_CACHE = '/htdocs/tmp';
+	const ACCESS_TYPE_PUBLIC = 'public';
+	const ACCESS_TYPE_USER = 'regular';
+	const ACCESS_TYPE_SUBADMIN = 'subadmin';
 
-	protected $is_loaded = false;
+	protected $is_loaded = FALSE;
 	protected $config = array();
 
 	///////////////////////////////////////////////////////////////////////////////
@@ -105,6 +103,49 @@ class Webconfig extends Daemon {
 	}
 
 	/**
+	 * Authenticates user.
+	 *
+	 * @param string $username username
+	 * @param string $password password
+	 * @return TRUE if authentication is successful
+	 * @throws EngineException
+	 */
+
+	public function Authenticate($username, $password)
+	{
+		ClearOsLogger::Profile(__METHOD__, __LINE__);
+
+		$is_valid = FALSE;
+
+		if ($username == "root") {
+			clearos_load_library('base/PosixUser');
+
+			try {
+				$user = new PosixUser($username);
+				$is_valid = $user->CheckPassword($password);
+			} catch (Exception $e) {
+				throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			}
+		} else {
+/*
+			if (! file_exists(COMMON_CORE_DIR . '/api/User.class.php'))
+				exit();
+
+				require_once(COMMON_CORE_DIR . '/api/User.class.php');
+
+				try {
+					$user = new User($username);
+					$passwordok = $user->CheckPassword($password, 'pcnWebconfigPassword');
+			} catch (Exception $e) {
+				throw new EngineException($e->GetMessage(), COMMON_WARNING);
+			}
+*/
+		}
+
+		return $is_valid;
+	}
+
+	/**
 	 * Clears cache files.
 	 *
 	 * @return void
@@ -114,11 +155,11 @@ class Webconfig extends Daemon {
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-		$folder = new Folder(COMMON_CORE_DIR . self::PATH_CACHE, true);
+		$folder = new Folder(COMMON_CORE_DIR . self::PATH_CACHE, TRUE);
 
 		try {
 			if ($folder->Exists())
-				$folder->Delete(true);
+				$folder->Delete(TRUE);
 
 			$folder->Create("webconfig", "webconfig", "0755");
 		} catch (Exception $e) {
@@ -318,20 +359,25 @@ class Webconfig extends Daemon {
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-		$validpages[Webconfig::TYPE_USER_REGULAR] = array();
-		$validpages[Webconfig::TYPE_USER_ADMIN] = array();
+		$valid_pages[Webconfig::ACCESS_TYPE_PUBLIC] = array();
+		$valid_pages[Webconfig::ACCESS_TYPE_USER] = array();
+		$valid_pages[Webconfig::ACCESS_TYPE_SUBADMIN] = array();
 
 		// TODO:
-		// - move this list to a configuration file
+		// - move these lists to a configuration file
 		// - handle the servicestatus page a better way
+
+		// FIXME: remove theme set from this list
+		$valid_pages[Webconfig::ACCESS_TYPE_PUBLIC] = array('/app/base/session/login', '/app/base/theme/set');
+
 		if ($this->GetUserAccessState())
-			$validpages[Webconfig::TYPE_USER_REGULAR] = array('/admin/user.php', '/admin/security.php', '/admin/clearcenter-status.php');
+			$valid_pages[Webconfig::ACCESS_TYPE_USER] = array('/app/base/session/logout', '/app/base/session/access_denied', '/app/user/profile', '/admin/security.php', '/admin/clearcenter-status.php');
 
 		if ($this->GetAdminAccessState()) {
 			try {
 				$file = new File(self::FILE_ACCESS_DATA);
 				$rawlist = $file->LookupValue("/^$username\s*=\s*/");
-				$validpages[Webconfig::TYPE_USER_ADMIN] = explode("|",$rawlist);
+				$valid_pages[Webconfig::ACCESS_TYPE_SUBADMIN] = explode("|",$rawlist);
 			} catch (FileNotFoundException $e) {
 				// Not fatal
 			} catch (FileNoMatchException $e) {
@@ -341,7 +387,7 @@ class Webconfig extends Daemon {
 			}
 		}
 
-		return $validpages;
+		return $valid_pages;
 	}
 
 	/**
@@ -454,19 +500,19 @@ class Webconfig extends Daemon {
 			$rawdata = $configfile->Load();
 
 			if (isset($rawdata['allow_user']) && preg_match("/(true|1)/i", $rawdata['allow_user']))
-				$this->config['allow_user'] = true;
+				$this->config['allow_user'] = TRUE;
 			else
-				$this->config['allow_user'] = false;
+				$this->config['allow_user'] = FALSE;
 
 			if (isset($rawdata['allow_subadmins']) && preg_match("/(true|1)/i", $rawdata['allow_subadmins']))
-				$this->config['allow_subadmins'] = true;
+				$this->config['allow_subadmins'] = TRUE;
 			else
-				$this->config['allow_subadmins'] = false;
+				$this->config['allow_subadmins'] = FALSE;
 
 			if (isset($rawdata['allow_shell']) && preg_match("/(true|1)/i", $rawdata['allow_shell']))
-				$this->config['allow_shell'] = true;
+				$this->config['allow_shell'] = TRUE;
 			else
-				$this->config['allow_shell'] = false;
+				$this->config['allow_shell'] = FALSE;
 
 			$this->config['template'] = $rawdata['template'];
 
@@ -474,7 +520,7 @@ class Webconfig extends Daemon {
 			throw new EngineException($e->GetMessage(), COMMON_WARNING);
 		}
 
-		$this->is_loaded = true;
+		$this->is_loaded = TRUE;
 	}
 
 	/**
@@ -500,7 +546,7 @@ class Webconfig extends Daemon {
 			throw new EngineException($e->GetMessage(), COMMON_WARNING);
 		}
 
-		$this->is_loaded = false;
+		$this->is_loaded = FALSE;
 	}
 }
 
