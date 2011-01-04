@@ -190,13 +190,13 @@ class FileNoMatchException extends EngineException {
 	 * FileNoMatchException constructor.
 	 *
 	 * @param string $filename filename
-	 * @param int $code error code
 	 * @param string $key key used to match a string
 	 */
 
-	public function __construct($filename, $code, $key)
+	public function __construct($filename, $key)
 	{
-		parent::__construct(FILE_LANG_ERRMSG_NO_MATCH . " - $filename for key $key", $code);
+		// FIXME: translate
+		parent::__construct("No match in file $filename for key $key", ClearOsError::CODE_INFO);
 	}
 }
 
@@ -428,8 +428,6 @@ class File extends Engine {
 	{
 		ClearOsLogger::Profile(__METHOD__, __LINE__);
 
-		// TODO: input validation (if any?)
-
 		$contents = $this->GetContentsAsArray();
 
 		foreach ($contents as $line) {
@@ -439,7 +437,7 @@ class File extends Engine {
 			}
 		}
 
-		throw new FileNoMatchException($this->filename, COMMON_INFO, $key);
+		throw new FileNoMatchException($this->filename, $key);
 	}
 
 	/**
@@ -970,7 +968,7 @@ class File extends Engine {
 		fclose($fh_t);
 
 		if (! $match) {
-			throw new FileNoMatchException($tempfile, COMMON_NOTICE, $after);
+			throw new FileNoMatchException($tempfile, $after);
 			unlink($tempfile);
 		}
 
@@ -1013,7 +1011,7 @@ class File extends Engine {
 		fclose($fh_t);
 
 		if (! $match) {
-			throw new FileNoMatchException($tempfile, COMMON_NOTICE, $before);
+			throw new FileNoMatchException($tempfile, $before);
 			unlink($tempfile);
 		}
 
@@ -1112,7 +1110,7 @@ class File extends Engine {
 			}
 		}
 
-		throw new FileNoMatchException($this->filename, COMMON_INFO, $search);
+		throw new FileNoMatchException($this->filename, $search);
 	}
 
 	/**
@@ -1163,7 +1161,7 @@ class File extends Engine {
 			}
 		}
 
-		throw new FileNoMatchException($this->filename, COMMON_INFO, $key);
+		throw new FileNoMatchException($this->filename, $key);
 	}
 
 	/**
