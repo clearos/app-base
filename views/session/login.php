@@ -46,14 +46,11 @@ echo form_fieldset_close();
 // Buttons
 ///////////////////////////////////////////////////////////////////////////////
 
-$buttons = array();
-$buttons[] = form_submit_custom('submit', lang('base_login'), 'high');
+echo form_submit_custom('submit', lang('base_login'), 'high');
 
 // FIXME: translate
 // FIXME: if (console)
-	$buttons[] = anchor_custom('/app/base/console/shutdown', 'Exit Console', 'low');
-
-echo button_set($buttons);
+	echo anchor_custom('/app/base/console/shutdown', 'Exit Console', 'low');
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form close
