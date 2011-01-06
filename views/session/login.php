@@ -35,7 +35,7 @@ echo form_open('base/session/login');
 echo form_fieldset(lang('base_login'));
 
 echo field_input('username', '', lang('base_username'));
-echo field_input('password', '', lang('base_password'));
+echo field_password('password', '', lang('base_password'));
 
 if ($login_failed)
 	echo "<div>$login_failed</div>";
