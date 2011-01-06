@@ -179,6 +179,8 @@ $lang['base_voice'] = 'Voice';
 
 $lang['base_settings'] = 'Settings';
 $lang['base_errmsg_username_invalid'] = 'Username is invalid.';
+$lang['base_state'] = 'State';
+$lang['base_stop'] = 'Stop';
 
 // vi: syntax=php ts=4
 ?>
