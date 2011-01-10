@@ -181,6 +181,9 @@ $lang['base_settings'] = 'Settings';
 $lang['base_errmsg_username_invalid'] = 'Username is invalid.';
 $lang['base_state'] = 'State';
 $lang['base_stop'] = 'Stop';
+$lang['base_other'] = 'Other';
+$lang['base_processes'] = 'Processes';
+$lang['base_overview'] = 'Overview';
 
 // vi: syntax=php ts=4
 ?>
