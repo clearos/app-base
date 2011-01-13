@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Core engine class for the API.
+ * Core engine exception class for the API.
  *
  * @category  ClearOS
  * @package   Base
@@ -42,11 +42,17 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+use \Exception as Exception;
+
+///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Core engine class for the API.
+ * Base exception for all exceptions in the API.
  *
  * @category  ClearOS
  * @package   Base
@@ -56,15 +62,45 @@ require_once $bootstrap . '/bootstrap.php';
  * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Engine
+class Engine_Exception extends Exception
 {
     ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
+    // M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
 
     /**
-     * @var constant API command path
+     * Engine_Exception constructor.
+     *
+     * Unlike a core PHP exception, the message and code parameters are required.
+     * The error codes are global constants:
+     *
+     * - CLEAROS_ERROR
+     * - CLEAROS_WARNING
+     * - CLEAROS_INFO
+     * - CLEAROS_DEBUG
+     *
+     * @param string  $message error message
+     * @param integer $code    error code
+     *
+     * @return object Engine_Exception object
      */
 
-    const COMMAND_API = "/usr/bin/api";
+    public function __construct($message, $code)
+    {
+        parent::__construct((string)$message, (int)$code);
+
+        if ($code >= CLEAROS_WARNING)
+            Logger::log_exception($this, TRUE);
+    }
+
+    /**
+     * Returns exception message.
+     *
+     * @return string exception message
+     */
+
+    public function get_message()
+    {
+        return $this->getMessage();
+    }
 }

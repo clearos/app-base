@@ -1,9 +1,16 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2006-2010 ClearFoundation
-//
+/**
+ * File manipulation class.
+ *
+ * @category  ClearOS
+ * @package   Base
+ * @author    ClearFoundation <developer@clearfoundation.com>
+ * @copyright 2006-2011 ClearFoundation
+ * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,22 +28,18 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * File manipulation class.
- *
- * @package ClearOS
- * @subpackage API
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
+///////////////////////////////////////////////////////////////////////////////
+// N A M E S P A C E
+///////////////////////////////////////////////////////////////////////////////
+
+namespace clearos\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
 ///////////////////////////////////////////////////////////////////////////////
 
 $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/usr/clearos/framework/shared';
-require_once($bootstrap . '/bootstrap.php');
+require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
 // T R A N S L A T I O N S
@@ -48,157 +51,25 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+use \clearos\base\Engine as Engine;
+use \clearos\base\Engine_Exception as Engine_Exception;
+use \clearos\base\File_Exception as File_Exception;
+use \clearos\base\File_No_Match_Exception as File_No_Match_Exception;
+use \clearos\base\File_Not_Found_Exception as File_Not_Found_Exception;
+use \clearos\base\File_Permissions_Exception as File_Permissions_Exception;
+use \clearos\base\File_Already_Exists_Exception as File_Already_Exists_Exception;
+use \clearos\base\Validation_Exception as Validation_Exception;
+use \clearos\base\ShellExec as ShellExec;
+
 clearos_load_library('base/Engine');
+clearos_load_library('base/Engine_Exception');
+clearos_load_library('base/File_Exception');
+clearos_load_library('base/File_No_Match_Exception');
+clearos_load_library('base/File_Not_Found_Exception');
+clearos_load_library('base/File_Permissions_Exception');
+clearos_load_library('base/File_Already_Exists_Exception');
+clearos_load_library('base/Validation_Exception');
 clearos_load_library('base/ShellExec');
-
-///////////////////////////////////////////////////////////////////////////////
-// E X C E P T I O N  C L A S S E S
-///////////////////////////////////////////////////////////////////////////////
-
-/**
- * File exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FileException extends EngineException {
-	/**
-	 * FileException constructor.
-	 *
-	 * @param string $errmsg error message
-	 * @param int $code error code
-	 */
-
-	public function __construct($errmsg, $code)
-	{
-		parent::__construct($errmsg, $code);
-	}
-}
-
-/**
- * File permissions exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FilePermissionsException extends EngineException {
-	/**
-	 * FilePermissionsException constructor.
-	 *
-	 * @param string $errmsg error message
-	 * @param int $code error code
-	 */
-
-	public function __construct($errmsg, $code)
-	{
-		parent::__construct($errmsg, $code);
-	}
-}
-
-/**
- * File already exists exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FileAlreadyExistsException extends EngineException {
-	/**
-	 * FileAlreadyExistsException constructor.
-	 *
-	 * @param string $filename filename
-	 * @param int $code error code
-	 */
-
-	public function __construct($filename, $code)
-	{
-		parent::__construct(FILE_LANG_ERRMSG_EXISTS . " - " . $filename, $code);
-	}
-}
-
-/**
- * File not found exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FileNotFoundException extends EngineException {
-	/**
-	 * FileNotFoundException constructor.
-	 *
-	 * @param string $filename filename
-	 * @param int $code error code
-	 */
-
-	public function __construct($filename, $code)
-	{
-		parent::__construct(FILE_LANG_ERRMSG_NOTEXIST . " - " . $filename, $code);
-	}
-}
-
-/**
- * File I/O exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FileIoException extends EngineException {
-	/**
-	 * FileIoException constructor.
-	 *
-	 * @param string $filename filename
-	 * @param int $code error code
-	 */
-
-	public function __construct($filename, $code)
-	{
-		parent::__construct(FILE_LANG_ERRMSG_READ . " - " . $filename, $code);
-	}
-}
-
-/**
- * Value not found in file exception.
- *
- * @package ClearOS
- * @subpackage Exception
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
-
-class FileNoMatchException extends EngineException {
-	/**
-	 * FileNoMatchException constructor.
-	 *
-	 * @param string $filename filename
-	 * @param string $key key used to match a string
-	 */
-
-	public function __construct($filename, $key)
-	{
-		// FIXME: translate
-		parent::__construct("No match in file $filename for key $key", ClearOsError::CODE_INFO);
-	}
-}
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -213,1253 +84,1281 @@ class FileNoMatchException extends EngineException {
  * forms, so this might not have what you need.  Feel free to do your own file
  * parsing.
  *
- * @package ClearOS
- * @subpackage API
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
+ * @category  ClearOS
+ * @package   Base
+ * @author    ClearFoundation <developer@clearfoundation.com>
+ * @copyright 2006-2011 ClearFoundation
+ * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class File extends Engine {
-
-	///////////////////////////////////////////////////////////////////////////////
-	// V A R I A B L E S
-	///////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * @var string filename
-	 */
-
-	protected $filename = null;
-
-	/**
-	 * @var superuser superuser
-	 */
-
-	protected $superuser = false;
-
-	/**
-	 * @var boolean temporary Temporary file
-	 */
-
-	protected $temporary = false;
-
-	/**
-	 * @var boolean contents loaded flag
-	 */
-
-	protected $contents = null;
-
-	const CMD_RM = '/bin/rm';
-	const CMD_CAT = '/bin/cat';
-	const CMD_MOVE = '/bin/mv';
-	const CMD_COPY = '/bin/cp';
-	const CMD_TOUCH = '/bin/touch';
-	const CMD_CHOWN = '/bin/chown';
-	const CMD_CHMOD = '/bin/chmod';
-	const CMD_LS = '/bin/ls';
-	const CMD_MD5 = '/usr/bin/md5sum';
-	const CMD_FILE = '/usr/bin/file';
-	const CMD_HEAD = '/usr/bin/head';
-	const CMD_REPLACE = '/usr/sbin/app-rename';
-
-	///////////////////////////////////////////////////////////////////////////////
-	// M E T H O D S
-	///////////////////////////////////////////////////////////////////////////////
-
-	/**
-	 * File constructor.
-	 *
-	 * @param string filename target file
-	 * @param boolean $superuser superuser access required to read the file
-	 * @param boolean $temporary create a temporary file
-	 */
-
-	public function __construct($filename, $superuser = false, $temporary = false)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if ($temporary) {
-			$this->temporary = $temporary;
-			$this->filename = tempnam(COMMON_TEMP_DIR, basename($filename));
-		} else
-			$this->filename = $filename;
-
-		$this->superuser = $superuser;
-
-		parent::__construct();
-	}
-
-	/**
-	 * Returns the filename.
-	 *
-	 * @return string name of file
-	 */
-	public function GetFilename()
-	{
-		return $this->filename;
-	}
-
-	/**
-	 * Returns the contents of a file.
-	 *
-	 * Set maxbytes to -1 to disable file size limit.
-	 *
-	 * @param int $maxbytes maximum number of bytes
-	 * @return string contents of file
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function GetContents($maxbytes = -1)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (!is_int($maxbytes) || $maxbytes < -1)
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
-
-		$contents = $this->GetContentsAsArray($maxbytes);
-
-		return implode("\n", $contents);
-	}
-
-	/**
-	 * Returns the contents of a file in an array.
-	 *
-	 * Set maxbytes to -1 to disable file size limit.
-	 *
-	 * @param int $maxbytes maximum number of bytes
-	 * @return array contents of file
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function GetContentsAsArray($maxbytes = -1)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (!is_int($maxbytes) || $maxbytes < -1)
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
-
-		if (! $this->Exists() )
-			throw new FileNotFoundException($this->filename, COMMON_INFO);
-
-		// TODO: use some other semaphore -- this breaks with maxbytes set
-		//if (is_null($this->contents)) {
-
-		// If readable by webconfig, then use file_get_contents
-		// If file_get_contents fails, try shellexec
-
-		if (is_readable("$this->filename")) {
-			$maxlen = ($maxbytes >= 0) ? $maxbytes : null;
-			$contents = file_get_contents("$this->filename", false, NULL, 0, $maxlen);
-
-			if ($contents) {
-				$this->contents = explode("\n", rtrim($contents));
-				return $this->contents;
-			}
-		}
-
-		try {
-			$shell = new ShellExec();
-			if ($maxbytes >= 0)
-				$exitcode = $shell->Execute(File::CMD_HEAD, "-c $maxbytes $this->filename", true);
-			else
-				$exitcode = $shell->Execute(File::CMD_CAT, escapeshellarg($this->filename), true);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode != 0)
-			throw new FileException($shell->GetFirstOutputLine(), COMMON_WARNING);
-
-		$this->contents = $shell->GetOutput();
-
-		return $this->contents;
-	}
-
-	/**
-	 * Returns the contents of a file that match the given regular expression.
-	 *
-	 * Set maxbytes to -1 to disable file size limit.
-	 *
-	 * @param string $regex search string
-	 * @param int $maxbytes maximum number of bytes
-	 * @return array contents of file
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function GetSearchResults($regex, $maxbytes = -1)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (!is_int($maxbytes) || $maxbytes < -1)
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
-
-		$contents = $this->GetContentsAsArray();
-
-		$result = array();
-		$count = 0;
-
-		foreach ($contents as $line) {
-			if (preg_match("/$regex/", $line)) {
-				$result[] = $line;
-				if ($maxbytes != -1) {
-					$count += strlen($line);
-					if ($count > $maxbytes)
-						break;
-				}
-			}
-		}
-
-		return $result;
-	}
-
-	/**
-	 * Returns a value for a given unique regular expression.
-	 *
-	 * This method is handy for simple configuration files with key/value pairs.  The
-	 * method will return a FileNoMatchException error if no match was made.
-	 *
-	 * @param string $key search string
-	 * @return string value for the give key
-	 * @throws ValidationException, FileNoMatchException, FileNotFoundException, FileException
-	 */
-
-	public function LookupValue($key)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$contents = $this->GetContentsAsArray();
-
-		foreach ($contents as $line) {
-			if (preg_match($key, $line)) {
-				$result = preg_replace($key, "", $line);
-				return trim($result);
-			}
-		}
-
-		throw new FileNoMatchException($this->filename, $key);
-	}
-
-	/**
-	 * Checks the existence of the file.
-	 *
-	 * @return boolean true if file exists
-	 * @throws FileException
-	 */
-
-	public function Exists()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if ($this->superuser) {
-			try {
-				$shell = new ShellExec();
-				$exitcode = $shell->Execute(File::CMD_LS, escapeshellarg($this->filename), true);
-			} catch (Exception $e) {
-				throw new FileException($e->GetMessage(), COMMON_WARNING);
-			}
-
-			if ($exitcode == 0)
-				return true;
-			else
-				return false;
-		} else {
-			clearstatcache();
-			if (file_exists("$this->filename"))
-				return true;
-			else
-				return false;
-		}
-	}
-
-	/**
-	 * Returns the file size.
-	 *
-	 * @return int the file size
-	 * @throws FileException
-	 */
-
-	public function GetSize()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_INFO);
-
-		try {
-			$shell = new ShellExec();
-			$args = "-loL " . escapeshellarg($this->filename);
-			$exitcode = $shell->Execute(self::CMD_LS, $args, true);
-		} catch (Exception $e) {
-			throw new FileException($e->GetMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode == 0) {
-			$shell->GetLastOutputLine();
-			$parts = preg_split("/\s+/", $shell->GetLastOutputLine());
-			return (int)$parts[3];
-		} else {
-			throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
-		}
-	}
-
-	/**
-	 * Returns the MD5 hash of the file.
-	 *
-	 * @return string the MD5 hash
-	 * @throws FileException
-	 */
-
-	public function GetMd5()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_INFO);
-
-		if ($this->superuser) {
-			$md5 = md5_file("$this->filename");
-			if ($md5)
-				return $md5;
-			try {
-				$shell = new ShellExec();
-				$exitcode = $shell->Execute(self::CMD_MD5, escapeshellarg($this->filename), true);
-			} catch (Exception $e) {
-				throw new FileException($e->GetMessage(), COMMON_WARNING);
-			}
-
-			if ($exitcode == 0) {
-				$md5 = trim(ereg_replace("$this->filename", "", $shell->GetLastOutputLine()));
-				return $md5;
-			} else {
-				throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
-			}
-		} else {
-			return md5_file($this->GetFilename());
-		}
-	}
-
-	/**
-	 * Changes file mode.
-	 *
-	 * @param string $mode mode of the file
-	 * @return void
-	 * @throws ValidationException, FileNotFoundException, FilePermissionsException, FileException
-	 */
-
-	public function Chmod($mode)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// TODO: validate $mode
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_NOTICE);
-
-		try {
-			$shell = new ShellExec();
-			$exitcode = $shell->Execute(File::CMD_CHMOD, " $mode " . escapeshellarg($this->filename), true);
-		} catch (Exception $e) {
-			throw new FileException($e->GetMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode != 0)
-			throw new FilePermissionsException(FILE_LANG_ERRMSG_CHMOD . " - " . $this->filename, COMMON_WARNING);
-	}
-
-
-	/**
-	 * Changes file owner and/or group.
-	 *
-	 * Leave the owner or group blank if you do not want change one or the other.
-	 *
-	 * @param string $owner file owner
-	 * @param string $group file group
-	 * @return void
-	 * @throws ValidationException, FileNotFoundException, FilePermissionsException, FileException
-	 */
-
-	public function Chown($owner, $group)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (empty($owner) && empty($group))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_NO_ENTRIES, __METHOD__, __LINE__);
-
-		// TODO: more input validation
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_NOTICE);
-
-		$shell = new ShellExec();
-
-		if (! empty($owner)) {
-			try {
-				$exitcode = $shell->Execute(File::CMD_CHOWN, "$owner " . escapeshellarg($this->filename), true);
-			} catch (Exception $e) {
-				throw new FileException($e->getMessage(), COMMON_WARNING);
-			}
-
-			if ($exitcode != 0)
-				throw new FilePermissionsException(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, COMMON_WARNING);
-		}
-
-		if (! empty($group)) {
-			try {
-				$exitcode = $shell->Execute(File::CMD_CHOWN, " :$group " . escapeshellarg($this->filename), true);
-			} catch (Exception $e) {
-				throw new FileException($e->getMessage(), COMMON_WARNING);
-			}
-
-			if ($exitcode != 0)
-				throw new FilePermissionsException(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, COMMON_WARNING);
-		}
-	}
-
-	/**
-	 * Returns the octal permissions of the current file.
-	 *
-	 * @return string file permissions
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function GetPermissions()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		clearstatcache();
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_INFO);
-
-		// TODO: this will fail on files that user webconfig cannot read (protected directories).
-		// Added FileException to docs to futureproof API.
-
-		return substr(sprintf('%o', fileperms("$this->filename")), -4);
-	}
-
-	/**
-	 * Returns the last modified date of the file.
-	 *
-	 * @return long representing time file was last modified
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function LastModified()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_INFO);
-
-		if ($this->superuser) {
-			try {
-				$shell = new ShellExec();
-				$args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
-				$exitcode = $shell->Execute(self::CMD_LS, $args, true);
-			} catch (Exception $e) {
-				throw new FileException($e->GetMessage(), COMMON_WARNING);
-			}
-
-			if ($exitcode == 0) {
-				$shell->GetLastOutputLine();
-				$parts = preg_split("/\s+/", $shell->GetLastOutputLine());
-				return strtotime($parts[5] . " " . substr($parts[6], 0, 8) . " " . $parts[7]);
-
-			} else {
-				throw new EngineException(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
-			}
-		} else {
-			clearstatcache();
-			return filemtime("$this->filename");
-		}
-	}
-
-
-	/**
-	 * Creates a file on the system.
-	 *
-	 * @param string $owner file owner
-	 * @param string $group file group
-	 * @param string $mode mode of the file
-	 * @return void
-	 * @throws FileAlreadyExistsException, FilePermissionsException, FileException
-	 */
-
-	public function Create($owner, $group, $mode)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		clearstatcache();
-
-		if ($this->Exists())
-			throw new FileAlreadyExistsException($this->filename, COMMON_NOTICE);
-
-		try {
-			$shell = new ShellExec();
-			$shell->Execute(File::CMD_TOUCH, escapeshellarg($this->filename), true);
-
-			if ($owner || $group)
-				$this->Chown($owner, $group);
-
-			if ($mode)
-				$this->Chmod($mode);
-
-		} catch (FilePermissionsException $e) {
-			// Delete file if permissions barf, rethrow
-			$this->Delete();
-			throw new FilePermissionsException($e->GetMessage(), COMMON_WARNING);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(), COMMON_WARNING);
-		}
-
-		$this->contents = null;
-	}
-
-
-	/**
-	 * Deletes the file.
-	 *
-	 * @return void
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	public function Delete()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		clearstatcache();
-
-		if (! $this->Exists())
-			throw new FileNotFoundException($this->filename, COMMON_NOTICE);
-
-		try {
-			$shell = new ShellExec();
-			$shell->Execute(File::CMD_RM, escapeshellarg($this->filename), true);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(), COMMON_WARNING);
-		}
-
-		$this->contents = null;
-	}
-
-	/**
-	 * Checks to see if specified file is a directory.
-	 *
-	 * @return boolean true if file is a directory
-	 * @throws FileException
-	 */
-
-	public function IsDirectory()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$isdir = false;
-
-		if ($this->superuser) {
-
-			try {
-				$shell = new ShellExec();
-				$shell->Execute(File::CMD_FILE, escapeshellarg($this->filename), true);
-
-				// TODO -- a hack
-				if (preg_match("/directory/", $shell->GetOutput(0))) {
-					$isdir = true;
-				}
-
-			} catch (Exception $e) {
-				throw new FileException($e->getMessage(),COMMON_WARNING);
-			}
-		} else {
-			$isdir = is_dir("$this->filename");
-		}
-
-		return $isdir;
-	}
-
-	/**
-	 * Checks to see if specified file is a symbolic link.
-	 *
-	 * @return integer  0 if not, 1 if active sym link, -1 if broken sym link
-	 * @throws FileException
-	 */
-
-	public function IsSymLink()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$issym = 0;
-
-		if ($this->superuser) {
-
-			try {
-				$shell = new ShellExec();
-				$shell->Execute(File::CMD_FILE, escapeshellarg($this->filename), true);
-
-				// TODO -- a hack
-				if (preg_match("/symbolic link/", $shell->GetFirstOutputLine())) {
-					if (preg_match("/broken/", $shell->GetFirstOutputLine()))
-						$issym = -1;
-					else
-						$issym = 1;
-				} else {
-					$issym = 0;
-				}
-
-			} catch (Exception $e) {
-				throw new FileException($e->getMessage(),COMMON_WARNING);
-			}
-		} else {
-			if (is_link("$this->filename")) {
-				if (! file_exists(readlink("$this->filename")))
-					$issym = -1;
-				else
-					$issym = 1;
-			} else {
-				$issym = 0;
-			}
-		}
-
-		return $issym;
-	}
-
-	/**
-	 * Replaces the contents of the given tempfile to this file.
-	 *
-	 * This is basically a "mv" with the following behavior:
-	 *  - This file (the one passed to the constructor) must exist.
-	 *  - The tempfile is deleted if successful.
-	 *  - The tempfile will take on the same file permissions and ownership as the target file.
-	 *
-	 * @param string $tempfile temp file
-	 * @return void
-	 * @throws FileNotFoundException FileException
-	 */
-
-	public function Replace($tempfile)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		if (! file_exists($tempfile))
-			throw FileNotFoundException($tempfile, COMMON_NOTICE);
-
-		if (! $this->Exists())
-			throw FileNotFoundException($this->filename, COMMON_NOTICE);
-
-		$tempfile = escapeshellarg($tempfile);
-		$thisfile = escapeshellarg($this->filename);
-
-		try {
-			$shell = new ShellExec();
-			$exitcode = $shell->Execute(self::CMD_REPLACE, "$tempfile $thisfile", true);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode != 0) {
-			$errmsg = $shell->GetFirstOutputLine();
-			throw new FileException($errmsg, COMMON_WARNING);
-		}
-
-		$this->contents = null;
-	}
-
-
-	/**
-	 * Writes array data to a file.
-	 *
-	 * The method does not automatically add a newline - that is up to you!
-	 * This method will return an error if the file does not exist.
-	 *
-	 * @param  array  $contents  an array containing output lines
-	 * @return void
-	 */
-
-	public function DumpContentsFromArray($contents)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		if (!($fh_t = @fopen($tempfile, "w"))) {
-			// TODO: AddValidationError replacement
-			$this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile,__METHOD__,__LINE__);
-		} else {
-			if ($contents)
-				fputs($fh_t, implode("\n", $contents) . "\n");
-
-			fclose($fh_t);
-
-			$this->Replace($tempfile);
-		}
-	}
-
-	/**
-	 * Appends data to a file.
-	 *
-	 * The method does not automatically add a newline - that is up to you!
-	 *
-	 * @param  string $data line (or lines) to append to the file
-	 * @return void
-	 * @throws FileNotFoundException FileException
-	 */
-
-	public function AddLines($data)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		try {
-			$contents = $this->GetContents();
-		} catch (Exception $e) {
-			throw $e;
-		}
-
-		if (!($fh_t = @fopen($tempfile, "w")))
-			throw new FileException(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, COMMON_NOTICE);
-
-		// Remove and then re-insert newline on files...
-		// this catches invalid files with no newline at the end
-		trim($contents);
-
-		if ($contents)
-			fputs($fh_t, $contents . "\n");
-
-		fputs($fh_t, $data);
-		fclose($fh_t);
-
-		$this->Replace($tempfile);
-
-		$this->contents = null;
-	}
-
-	/**
-	 * Appends a line (or lines) to a file at a particular location in the file.
-	 *
-	 * @param string $data line(s) to insert into file
-	 * @param string $after regular expression defining the file location
-	 * @return void
-	 * @throws FileNoMatchException, FileNotFoundException, FileException
-	 */
-
-	public function AddLinesAfter($data, $after)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w")))
-			throw new FileException(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, COMMON_NOTICE);
-
-		$match = false;
-
-		foreach ($lines as $line) {
-			fputs($fh_t, $line . "\n");
-
-			if (preg_match($after, $line) && (!$match)) {
-				$match = true;
-				fputs($fh_t, $data);
-			}
-		}
-
-		fclose($fh_t);
-
-		if (! $match) {
-			throw new FileNoMatchException($tempfile, $after);
-			unlink($tempfile);
-		}
-
-		$this->Replace($tempfile);
-
-		$this->contents = null;
-	}
-
-	/**
-	 * Prepends a line (or lines) to a file at a particular location in the file.
-	 *
-	 * @param string $data line(s) to insert into file
-	 * @param string $before regular expression defining the file location
-	 * @return void
-	 * @throws FileNoMatchException, FileNotFoundException, FileException
-	 */
-
-	public function AddLinesBefore($data, $before)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w")))
-			throw new FileException(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, COMMON_NOTICE);
-
-		$match = false;
-
-		foreach ($lines as $line) {
-			if (preg_match($before, $line) && (!$match)) {
-				$match = true;
-				fputs($fh_t, $data);
-			}
-
-			fputs($fh_t, $line . "\n");
-		}
-
-		fclose($fh_t);
-
-		if (! $match) {
-			throw new FileNoMatchException($tempfile, $before);
-			unlink($tempfile);
-		}
-
-		$this->Replace($tempfile);
-
-		$this->contents = null;
-	}
-
-	/**
-	 * Removes lines from a file that match the regular expression.
-	 *
-	 * @param string $search regular expression used to match removed lines
-	 * @return integer number of lines deleted
-	 * @throws FileNotFoundException Exception (inherited from GetContents)
-	 */
-
-	public function DeleteLines($search)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$deleted = $this->ReplaceLines($search, '');
-
-		$this->contents = null;
-
-		return $deleted;
-	}
-
-	/**
-	 * Prepends lines with a string (usually a comment character).
-	 *
-	 * Any line matching the search string will be changed.
-	 *
-	 * @param  string  $prepend  prepend string
-	 * @param  string  $search  regular expression used to match removed lines
-	 * @return  boolean  true if any matches were made
-	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
-	 */
-
-	public function PrependLines($search, $prepend)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$prependlines = false;
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w"))) {
-			// TODO: AddValidationError replacement
-			$this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile,__METHOD__,__LINE__);
-		} else {
-			$match = false;
-			foreach ($lines as $line) {
-				if (preg_match($search, $line)) {
-					fputs($fh_t, $prepend . $line . "\n");
-					$match = true;
-				} else {
-					fputs($fh_t, $line . "\n");
-				}
-			}
-
-			fclose($fh_t);
-
-			if (! $match) {
-				// TODO: AddValidationError replacement
-				$this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH,__METHOD__,__LINE__);
-				unlink($tempfile);
-			} else {
-				$prependlines = $this->Replace($tempfile);
-			}
-		}
-
-		return $prependlines;
-	}
-
-	/**
-	 * Searches the file with the given regular expression and returns the first match.
-	 *
-	 * @param string $search regular expression
-	 * @return string matching line
-	 * @throws ValidationException, FileNoMatchException, FileNotFoundException, FileException
-	 */
-
-	public function LookupLine($search)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// TODO: validation (e.g. search must have two slashes)
-
-		$lines = $this->GetContentsAsArray();
-
-		foreach ($lines as $line) {
-			if (preg_match($search, $line)) {
-				return $line;
-			}
-		}
-
-		throw new FileNoMatchException($this->filename, $search);
-	}
-
-	/**
-	 * Similar to LookupValue, except you can specify a subsection of the target file.
-	 *
-	 * The start and end are regular expressions.  This can be handy in Apache-style configuration
-	 * files (e.g. configuring a particular Virtual Host).
-	 *
-	 * @param  string  $key  search string
-	 * @param  string  $start  regular expression specifying the start line
-	 * @param  string  $end  regular expression specifying the end line
-	 * @return  string  value for the give key
-	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
-	 * @throws  FileNoMatchException
-	 */
-
-	public function LookupValueBetween($key, $start, $end)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		try {
-			$lines = $this->GetContentsAsArray();
-		} catch (Exception $e) {
-			throw $e;
-		}
-
-		// Find start tag
-		foreach ($lines as $line) {
-			if (preg_match($start, $line))
-				break;
-
-			array_shift($lines);
-		}
-
-		foreach ($lines as $line) {
-			// Bail if see the end tag
-
-			if (preg_match($end, $line))
-				break;
-
-			if (preg_match($key, $line)) {
-				$result = trim(preg_replace($key, "", $line));
-
-				if (!strlen($result))
-					return true;
-
-				return $result;
-			}
-		}
-
-		throw new FileNoMatchException($this->filename, $key);
-	}
-
-	/**
-	 * Copies the file to new location.
-	 *
-	 * @param string $destination destination location
-	 * @return void
-	 * @throws FileException, ValidationException
-	 */
-
-	public function CopyTo($destination)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// TODO: validate destination
-
-		try {
-			$shell = new ShellExec();
-			$exitcode = $shell->Execute(File::CMD_COPY, "-a " . escapeshellarg($this->filename) . " " . escapeshellarg($destination), true);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(), COMMON_WARNING);
-		}
-
-		if ($exitcode != 0) {
-			$errmsg = $shell->GetOutput();
-			throw new FileException($errmsg[0], COMMON_WARNING);
-		}
-	}
-
-	/**
-	 * Moves the file to new location.
-	 *
-	 * @see Replace
-	 * @param string $destination destination location
-	 * @return void
-	 * @throws FileException, ValidationException
-	 */
-
-	public function MoveTo($destination)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// TODO: validate destination
-
-		try {
-			$shell = new ShellExec();
-			$exitcode = $shell->Execute(File::CMD_MOVE, escapeshellarg($this->filename) . " " . escapeshellarg($destination), true);
-		} catch (Exception $e) {
-			throw new FileException($e->getMessage(),COMMON_WARNING);
-		}
-
-		if ($exitcode != 0) {
-			$errmsg = $shell->GetOutput();
-			throw new FileException($errmsg[0], COMMON_WARNING);
-		}
-
-		$this->filename = $destination;
-	}
-
-	/**
-	 * Replaces lines in a section of a file for Apache-style configuration files.
-	 *
-	 * Specify the (non-unique) start and end tags along with a search value that uniquely defines the section.
-	 *
-	 * @param string $start regular expression specifying the start line
-	 * @param string $end regular expression specifying the end line
-	 * @param string $search regular expression for the search string
-	 * @param string $replacement replacement line
-	 * @return void
-	 * @throws FileNotFoundException Exception (inherited from GetContentsAsArray)
-	 */
-
-	public function ReplaceLinesBetween($search, $replacement, $start, $end)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$replaced = false;
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w"))) {
-			// TODO: AddValidationError replacement
-			$this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile,__METHOD__,__LINE__);
-		} else {
-
-			// Find start tag
-			$match = false;
-			foreach ($lines as $line) {
-				if (preg_match($start, $line))
-					break;
-
-				fputs($fh_t, $line . "\n");
-
-				array_shift($lines);
-			}
-
-			foreach ($lines as $line) {
-				// Bail if see the end tag
-
-				if (preg_match($end, $line))
-					break;
-
-				if (preg_match($search, $line)) {
-					$match = true;
-
-					if (strlen($replacement))
-						fputs($fh_t, $replacement);
-				} else {
-					fputs($fh_t, $line . "\n");
-				}
-
-				array_shift($lines);
-			}
-
-			foreach ($lines as $line)
-			fputs($fh_t, $line . "\n");
-
-			fclose($fh_t);
-
-			if (! $match) {
-				// TODO: AddValidationError replacement
-				$this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH,__METHOD__,__LINE__);
-				unlink($tempfile);
-			} else {
-				$replaced = $this->Replace($tempfile);
-			}
-		}
-
-		return $match;
-	}
-
-	/**
-	 * Replaces a line (defined by a regular expression) with a replacement.
-	 *
-	 * @param string $search search string
-	 * @param string $replacement replacement line (or lines)
-	 * @param integer $maxreplaced maximum number of matches to make
-	 * @return integer number of replacements made
-	 * @throws FileException, ValidationException
-	 */
-
-	public function ReplaceLines($search, $replacement, $maxreplaced = -1)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		// TODO: add validation
-
-		$replaced = 0;
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w")))
-			throw new FileException(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, COMMON_NOTICE);
-
-		// Find start tag
-		foreach ($lines as $line) {
-			if (preg_match($search, $line) && (($replaced < $maxreplaced) || $maxreplaced == -1)) {
-				fputs($fh_t, $replacement);
-				$replaced++;
-			} else {
-				fputs($fh_t, $line . "\n");
-			}
-		}
-
-		fclose($fh_t);
-
-		if ($replaced == 0) {
-			unlink($tempfile);
-			return 0;
-		} else {
-			$this->Replace($tempfile);
-		}
-
-		$this->contents = null;
-
-		return $replaced;
-	}
-
-	/**
-	 * Replaces a line defined by a regular expression.
-	 *
-	 * @param string $search search string
-	 * @param string $replacement replacement line (or lines)
-	 * @return integer number of replacements made
-	 * @throws FileNotFoundException, FileException
-	 */
-
-	// TODO: deprecate
-	public function ReplaceOneLine($search, $replacement)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		return $this->ReplaceLines($search, $replacement, 1);
-	}
-
-	/**
-	 * Replaces a line defined by a regular expression.
-	 *
-	 * This version differs from ReplaceOneLine
-	 * in that it uses preg_replace to do the substitution.  Thus you can
-	 * use parts of a pattern match in the replacement (ie: $1, $2, etc).
-	 *
-	 * @param  string  $search  search expression
-	 * @param  string  $replacement  replacement expression
-	 * @return  boolean  true if any replacements were made
-	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
-	 */
-
-	public function ReplaceOneLineByPattern($search, $replacement)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$replaced = false;
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w"))) {
-			// TODO: AddValidationError replacement
-			$this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile,__METHOD__,__LINE__);
-		} else {
-			$match = false;
-			foreach ($lines as $line) {
-				if ((preg_match($search, $line)) && !$match) {
-					$match = preg_replace($search, $replacement, $line);
-
-					if ($match)
-						fputs($fh_t, $match . "\n");
-				} else
-					fputs($fh_t, $line . "\n");
-			}
-
-			fclose($fh_t);
-
-			if (! $match) {
-				// TODO: AddValidationError replacement
-				$this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH,__METHOD__,__LINE__);
-				unlink($tempfile);
-			} else {
-				$replaced = $this->Replace($tempfile);
-			}
-		}
-
-		return $replaced;
-	}
-
-	/**
-	 * Replaces all matching lines defined by a regular expression.
-	 *
-	 * @param  string  $search  search expression
-	 * @param  string  $replacement  replacement expression
-	 * @return  boolean  true if any replacements were made
-	 * @throws  FileNotFoundException Exception (inherited from GetContentsAsArray)
-	 */
-
-	public function ReplaceLinesByPattern($search, $replacement)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-
-		$replaced = false;
-
-		$tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
-
-		$lines = $this->GetContentsAsArray();
-
-		if (!($fh_t = @fopen($tempfile, "w"))) {
-			// TODO: AddValidationError replacement
-			$this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile,__METHOD__,__LINE__);
-		} else {
-			$match = false;
-			foreach ($lines as $line) {
-				if ((preg_match($search, $line))) {
-					$match = preg_replace($search, $replacement, $line);
-
-					if ($match)
-						fputs($fh_t, $match . "\n");
-				} else
-					fputs($fh_t, $line . "\n");
-			}
-
-			fclose($fh_t);
-
-			if (! $match) {
-				// TODO: AddValidationError replacement
-				$this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH,__METHOD__,__LINE__);
-				unlink($tempfile);
-			} else {
-				$replaced = $this->Replace($tempfile);
-			}
-		}
-
-		return $replaced;
-	}
+class File extends Engine
+{
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A R I A B L E S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * @var string filename
+     */
+
+    protected $filename = NULL;
+
+    /**
+     * @var superuser superuser
+     */
+
+    protected $superuser = FALSE;
+
+    /**
+     * @var boolean temporary Temporary file
+     */
+
+    protected $temporary = FALSE;
+
+    /**
+     * @var boolean contents loaded flag
+     */
+
+    protected $contents = NULL;
+
+    const COMMAND_RM = '/bin/rm';
+    const COMMAND_CAT = '/bin/cat';
+    const COMMAND_MOVE = '/bin/mv';
+    const COMMAND_COPY = '/bin/cp';
+    const COMMAND_TOUCH = '/bin/touch';
+    const COMMAND_CHOWN = '/bin/chown';
+    const COMMAND_CHMOD = '/bin/chmod';
+    const COMMAND_LS = '/bin/ls';
+    const COMMAND_MD5 = '/usr/bin/md5sum';
+    const COMMAND_FILE = '/usr/bin/file';
+    const COMMAND_HEAD = '/usr/bin/head';
+    const COMMAND_REPLACE = '/usr/sbin/app-rename';
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * File constructor.
+     *
+     * @param string  $filename  target file
+     * @param boolean $superuser superuser access required to read the file
+     * @param boolean $temporary create a temporary file
+     *
+     * @return object
+     */
+
+    public function __construct($filename, $superuser = FALSE, $temporary = FALSE)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if ($temporary) {
+            $this->temporary = $temporary;
+            $this->filename = tempnam(COMMON_TEMP_DIR, basename($filename));
+        } else
+            $this->filename = $filename;
+
+        $this->superuser = $superuser;
+    }
+
+    /**
+     * Returns the filename.
+     *
+     * @return string name of file
+     */
+
+    public function get_filename()
+    {
+        return $this->filename;
+    }
+
+    /**
+     * Returns the contents of a file.
+     *
+     * Set maxbytes to -1 to disable file size limit.
+     *
+     * @param int $maxbytes maximum number of bytes
+     *
+     * @return string contents of file
+     * @throws File_Not_Found_Exception
+     */
+
+    public function get_contents($maxbytes = -1)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!is_int($maxbytes) || $maxbytes < -1)
+            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+
+        $contents = $this->get_contents_as_array($maxbytes);
+
+        return implode("\n", $contents);
+    }
+
+    /**
+     * Returns the contents of a file in an array.
+     *
+     * Set maxbytes to -1 to disable file size limit.
+     *
+     * @param int $maxbytes maximum number of bytes
+     *
+     * @return array contents of file
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function get_contents_as_array($maxbytes = -1)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!is_int($maxbytes) || $maxbytes < -1)
+            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+
+        if (! $this->exists() )
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        // TODO: use some other semaphore -- this breaks with maxbytes set
+        //if (is_null($this->contents)) {
+
+        // If readable by webconfig, then use file_get_contents
+        // If file_get_contents fails, try shellexec
+
+        if (is_readable("$this->filename")) {
+            $maxlen = ($maxbytes >= 0) ? $maxbytes : NULL;
+            $contents = file_get_contents("$this->filename", FALSE, NULL, 0, $maxlen);
+
+            if ($contents) {
+                $this->contents = explode("\n", rtrim($contents));
+                return $this->contents;
+            }
+        }
+
+        try {
+            $shell = new ShellExec();
+            if ($maxbytes >= 0)
+                $exitcode = $shell->execute(File::COMMAND_HEAD, "-c $maxbytes $this->filename", TRUE);
+            else
+                $exitcode = $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode != 0)
+            throw new File_Exception($shell->get_first_output_line(), CLEAROS_WARNING);
+
+        $this->contents = $shell->get_output();
+
+        return $this->contents;
+    }
+
+    /**
+     * Returns the contents of a file that match the given regular expression.
+     *
+     * Set maxbytes to -1 to disable file size limit.
+     *
+     * @param string $regex    search string
+     * @param int    $maxbytes maximum number of bytes
+     *
+     * @return array contents of file
+     * @throws File_Not_Found_Exception, EngineException
+     */
+
+    public function get_search_results($regex, $maxbytes = -1)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!is_int($maxbytes) || $maxbytes < -1)
+            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+
+        $contents = $this->get_contents_as_array();
+
+        $result = array();
+        $count = 0;
+
+        foreach ($contents as $line) {
+            if (preg_match("/$regex/", $line)) {
+                $result[] = $line;
+                if ($maxbytes != -1) {
+                    $count += strlen($line);
+                    if ($count > $maxbytes)
+                        break;
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Returns a value for a given unique regular expression.
+     *
+     * This method is handy for simple configuration files with key/value pairs.  The
+     * method will return a File_No_Match_Exception error if no match was made.
+     *
+     * @param string $key search string
+     *
+     * @return string value for the give key
+     * @throws Validation_Exception, File_No_Match_Exception, File_Not_Found_Exception
+     */
+
+    public function lookup_value($key)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $contents = $this->get_contents_as_array();
+
+        foreach ($contents as $line) {
+            if (preg_match($key, $line)) {
+                $result = preg_replace($key, "", $line);
+                return trim($result);
+            }
+        }
+
+        throw new File_No_Match_Exception($this->filename, $key);
+    }
+
+    /**
+     * Checks the existence of the file.
+     *
+     * @return boolean TRUE if file exists
+     * @throws File_Exception
+     */
+
+    public function exists()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if ($this->superuser) {
+            try {
+                $shell = new ShellExec();
+                $exitcode = $shell->execute(File::COMMAND_LS, escapeshellarg($this->filename), TRUE);
+            } catch (Exception $e) {
+                throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
+            }
+
+            if ($exitcode == 0)
+                return TRUE;
+            else
+                return FALSE;
+        } else {
+            clearstatcache();
+            if (file_exists("$this->filename"))
+                return TRUE;
+            else
+                return FALSE;
+        }
+    }
+
+    /**
+     * Returns the file size.
+     *
+     * @return int the file size
+     * @throws File_Exception
+     */
+
+    public function get_size()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        try {
+            $shell = new ShellExec();
+            $args = "-loL " . escapeshellarg($this->filename);
+            $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode == 0) {
+            $shell->get_last_output_line();
+            $parts = preg_split("/\s+/", $shell->get_last_output_line());
+            return (int)$parts[3];
+        } else {
+            throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+        }
+    }
+
+    /**
+     * Returns the MD5 hash of the file.
+     *
+     * @return string the MD5 hash
+     * @throws File_Exception
+     */
+
+    public function get_md5()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        if ($this->superuser) {
+            $md5 = md5_file("$this->filename");
+
+            if ($md5)
+                return $md5;
+
+            try {
+                $shell = new ShellExec();
+                $exitcode = $shell->execute(self::COMMAND_MD5, escapeshellarg($this->filename), TRUE);
+            } catch (Exception $e) {
+                throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
+            }
+
+            if ($exitcode == 0) {
+                $md5 = trim(ereg_replace("$this->filename", "", $shell->get_last_output_line()));
+                return $md5;
+            } else {
+                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+            }
+        } else {
+            return md5_file($this->get_filename());
+        }
+    }
+
+    /**
+     * Changes file mode.
+     *
+     * @param string $mode mode of the file
+     *
+     * @return void
+     * @throws Validation_Exception, File_Not_Found_Exception, File_Permissions_Exception, File_Exception
+     */
+
+    public function chmod($mode)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // TODO: validate $mode
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        try {
+            $shell = new ShellExec();
+            $exitcode = $shell->execute(File::COMMAND_CHMOD, " $mode " . escapeshellarg($this->filename), TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode != 0)
+            throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHMOD . " - " . $this->filename, CLEAROS_WARNING);
+    }
+
+
+    /**
+     * Changes file owner and/or group.
+     *
+     * Leave the owner or group blank if you do not want change one or the other.
+     *
+     * @param string $owner file owner
+     * @param string $group file group
+     *
+     * @return void
+     * @throws Validation_Exception, File_Not_Found_Exception, File_Permissions_Exception, File_Exception
+     */
+
+    public function chown($owner, $group)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (empty($owner) && empty($group))
+            throw new Validation_Exception(LOCALE_LANG_ERRMSG_NO_ENTRIES, __METHOD__, __LINE__);
+
+        // TODO: more input validation
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        $shell = new ShellExec();
+
+        if (! empty($owner)) {
+            try {
+                $exitcode = $shell->execute(File::COMMAND_CHOWN, "$owner " . escapeshellarg($this->filename), TRUE);
+            } catch (Exception $e) {
+                throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+            }
+
+            if ($exitcode != 0)
+                throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, CLEAROS_WARNING);
+        }
+
+        if (! empty($group)) {
+            try {
+                $exitcode = $shell->execute(File::COMMAND_CHOWN, " :$group " . escapeshellarg($this->filename), TRUE);
+            } catch (Exception $e) {
+                throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+            }
+
+            if ($exitcode != 0)
+                throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, CLEAROS_WARNING);
+        }
+    }
+
+    /**
+     * Returns the octal permissions of the current file.
+     *
+     * @return string file permissions
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function get_permissions()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        clearstatcache();
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        // TODO: this will fail on files that user webconfig cannot read (protected directories).
+        // Added File_Exception to docs to futureproof API.
+
+        return substr(sprintf('%o', fileperms("$this->filename")), -4);
+    }
+
+    /**
+     * Returns the last modified date of the file.
+     *
+     * @return long representing time file was last modified
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function last_modified()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        if ($this->superuser) {
+            try {
+                $shell = new ShellExec();
+                $args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
+                $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
+            } catch (Exception $e) {
+                throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
+            }
+
+            if ($exitcode == 0) {
+                $shell->get_last_output_line();
+                $parts = preg_split("/\s+/", $shell->get_last_output_line());
+                return strtotime($parts[5] . " " . substr($parts[6], 0, 8) . " " . $parts[7]);
+
+            } else {
+                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+            }
+        } else {
+            clearstatcache();
+            return filemtime("$this->filename");
+        }
+    }
+
+
+    /**
+     * Creates a file on the system.
+     *
+     * @param string $owner file owner
+     * @param string $group file group
+     * @param string $mode  mode of the file
+     *
+     * @return void
+     * @throws File_Already_Exists_Exception, File_Permissions_Exception, File_Exception
+     */
+
+    public function create($owner, $group, $mode)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        clearstatcache();
+
+        if ($this->exists())
+            throw new File_Already_Exists_Exception($this->filename, CLEAROS_INFO);
+
+        try {
+            $shell = new ShellExec();
+            $shell->execute(File::COMMAND_TOUCH, escapeshellarg($this->filename), TRUE);
+
+            if ($owner || $group)
+                $this->chown($owner, $group);
+
+            if ($mode)
+                $this->chmod($mode);
+
+        } catch (File_Permissions_Exception $e) {
+            // Delete file if permissions barf, rethrow
+            $this->delete();
+            throw new File_Permissions_Exception($e->GetMessage(), CLEAROS_WARNING);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        $this->contents = NULL;
+    }
+
+
+    /**
+     * Deletes the file.
+     *
+     * @return void
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function delete()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        clearstatcache();
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        try {
+            $shell = new ShellExec();
+            $shell->execute(File::COMMAND_RM, escapeshellarg($this->filename), TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        $this->contents = NULL;
+    }
+
+    /**
+     * Checks to see if specified file is a directory.
+     *
+     * @return boolean TRUE if file is a directory
+     * @throws File_Exception
+     */
+
+    public function is_directory()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $isdir = FALSE;
+
+        if ($this->superuser) {
+
+            try {
+                $shell = new ShellExec();
+                $shell->execute(File::COMMAND_FILE, escapeshellarg($this->filename), TRUE);
+
+                // TODO -- a hack
+                if (preg_match("/directory/", $shell->get_output(0))) {
+                    $isdir = TRUE;
+                }
+
+            } catch (Exception $e) {
+                throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+            }
+        } else {
+            $isdir = is_dir("$this->filename");
+        }
+
+        return $isdir;
+    }
+
+    /**
+     * Checks to see if specified file is a symbolic link.
+     *
+     * @return integer  0 if not, 1 if active sym link, -1 if broken sym link
+     * @throws File_Exception
+     */
+
+    public function is_sym_link()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $issym = 0;
+
+        if ($this->superuser) {
+
+            try {
+                $shell = new ShellExec();
+                $shell->execute(File::COMMAND_FILE, escapeshellarg($this->filename), TRUE);
+
+                // TODO -- a hack
+                if (preg_match("/symbolic link/", $shell->get_first_output_line())) {
+                    if (preg_match("/broken/", $shell->get_first_output_line()))
+                        $issym = -1;
+                    else
+                        $issym = 1;
+                } else {
+                    $issym = 0;
+                }
+
+            } catch (Exception $e) {
+                throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+            }
+        } else {
+            if (is_link("$this->filename")) {
+                if (! file_exists(readlink("$this->filename")))
+                    $issym = -1;
+                else
+                    $issym = 1;
+            } else {
+                $issym = 0;
+            }
+        }
+
+        return $issym;
+    }
+
+    /**
+     * Replaces the contents of the given tempfile to this file.
+     *
+     * This is basically a "mv" with the following behavior:
+     *  - This file (the one passed to the constructor) must exist.
+     *  - The tempfile is deleted if successful.
+     *  - The tempfile will take on the same file permissions and ownership as the target file.
+     *
+     * @param string $tempfile temp file
+     *
+     * @return void
+     * @throws File_Not_Found_Exception File_Exception
+     */
+
+    public function replace($tempfile)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! file_exists($tempfile))
+            throw new File_Not_Found_Exception($tempfile, CLEAROS_INFO);
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+
+        $tempfile = escapeshellarg($tempfile);
+        $thisfile = escapeshellarg($this->filename);
+
+        try {
+            $shell = new ShellExec();
+            $exitcode = $shell->execute(self::COMMAND_REPLACE, "$tempfile $thisfile", TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode != 0) {
+            $errmsg = $shell->get_first_output_line();
+            throw new File_Exception($errmsg, CLEAROS_WARNING);
+        }
+
+        $this->contents = NULL;
+    }
+
+
+    /**
+     * Writes array data to a file.
+     *
+     * The method does not automatically add a newline - that is up to you!
+     * This method will return an error if the file does not exist.
+     *
+     * @param array $contents an array containing output lines
+     *
+     * @return void
+     */
+
+    public function dump_contents_from_array($contents)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        if (!($fh_t = @fopen($tempfile, "w"))) {
+            // TODO: AddValidationError replacement
+            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+        } else {
+            if ($contents)
+                fputs($fh_t, implode("\n", $contents) . "\n");
+
+            fclose($fh_t);
+
+            $this->replace($tempfile);
+        }
+    }
+
+    /**
+     * Appends data to a file.
+     *
+     * The method does not automatically add a newline - that is up to you!
+     *
+     * @param string $data line (or lines) to append to the file
+     *
+     * @return void
+     * @throws File_Not_Found_Exception File_Exception
+     */
+
+    public function add_lines($data)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        try {
+            $contents = $this->get_contents();
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+
+        // Remove and then re-insert newline on files...
+        // this catches invalid files with no newline at the end
+        trim($contents);
+
+        if ($contents)
+            fputs($fh_t, $contents . "\n");
+
+        fputs($fh_t, $data);
+        fclose($fh_t);
+
+        $this->replace($tempfile);
+
+        $this->contents = NULL;
+    }
+
+    /**
+     * Appends a line (or lines) to a file at a particular location in the file.
+     *
+     * @param string $data  line(s) to insert into file
+     * @param string $after regular expression defining the file location
+     *
+     * @return void
+     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception
+     */
+
+    public function add_lines_after($data, $after)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+
+        $match = FALSE;
+
+        foreach ($lines as $line) {
+            fputs($fh_t, $line . "\n");
+
+            if (preg_match($after, $line) && (!$match)) {
+                $match = TRUE;
+                fputs($fh_t, $data);
+            }
+        }
+
+        fclose($fh_t);
+
+        if (! $match) {
+            throw new File_No_Match_Exception($tempfile, $after);
+            unlink($tempfile);
+        }
+
+        $this->replace($tempfile);
+
+        $this->contents = NULL;
+    }
+
+    /**
+     * Prepends a line (or lines) to a file at a particular location in the file.
+     *
+     * @param string $data   line(s) to insert into file
+     * @param string $before regular expression defining the file location
+     *
+     * @return void
+     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception
+     */
+
+    public function add_lines_before($data, $before)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+
+        $match = FALSE;
+
+        foreach ($lines as $line) {
+            if (preg_match($before, $line) && (!$match)) {
+                $match = TRUE;
+                fputs($fh_t, $data);
+            }
+
+            fputs($fh_t, $line . "\n");
+        }
+
+        fclose($fh_t);
+
+        if (! $match) {
+            throw new File_No_Match_Exception($tempfile, $before);
+            unlink($tempfile);
+        }
+
+        $this->replace($tempfile);
+
+        $this->contents = NULL;
+    }
+
+    /**
+     * Removes lines from a file that match the regular expression.
+     *
+     * @param string $search regular expression used to match removed lines
+     *
+     * @return integer number of lines deleted
+     * @throws File_Not_Found_Exception
+     */
+
+    public function delete_lines($search)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $deleted = $this->replace_lines($search, '');
+
+        $this->contents = NULL;
+
+        return $deleted;
+    }
+
+    /**
+     * Prepends lines with a string (usually a comment character).
+     *
+     * Any line matching the search string will be changed.
+     *
+     * @param string $search  regular expression used to match removed lines
+     * @param string $prepend prepend string
+     *
+     * @return boolean TRUE if any matches were made
+     * @throws File_Not_Found_Exception
+     */
+
+    public function prepend_lines($search, $prepend)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $prependlines = FALSE;
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w"))) {
+            // TODO: AddValidationError replacement
+            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+        } else {
+            $match = FALSE;
+            foreach ($lines as $line) {
+                if (preg_match($search, $line)) {
+                    fputs($fh_t, $prepend . $line . "\n");
+                    $match = TRUE;
+                } else {
+                    fputs($fh_t, $line . "\n");
+                }
+            }
+
+            fclose($fh_t);
+
+            if (! $match) {
+                // TODO: AddValidationError replacement
+                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__,  __LINE__);
+                unlink($tempfile);
+            } else {
+                $prependlines = $this->replace($tempfile);
+            }
+        }
+
+        return $prependlines;
+    }
+
+    /**
+     * Searches the file with the given regular expression and returns the first match.
+     *
+     * @param string $search regular expression
+     *
+     * @return string matching line
+     * @throws Validation_Exception, File_No_Match_Exception, File_Not_Found_Exception, File_Exception
+     */
+
+    public function lookup_line($search)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // TODO: validation (e.g. search must have two slashes)
+
+        $lines = $this->get_contents_as_array();
+
+        foreach ($lines as $line) {
+            if (preg_match($search, $line)) {
+                return $line;
+            }
+        }
+
+        throw new File_No_Match_Exception($this->filename, $search);
+    }
+
+    /**
+     * Similar to lookup_value, except you can specify a subsection of the target file.
+     *
+     * The start and end are regular expressions.  This can be handy in Apache-style configuration
+     * files (e.g. configuring a particular Virtual Host).
+     *
+     * @param string $key   search string
+     * @param string $start regular expression specifying the start line
+     * @param string $end   regular expression specifying the end line
+     *
+     * @return string value for the given key
+     * @throws File_Not_Found_Exception
+     * @throws File_No_Match_Exception
+     */
+
+    public function lookup_value_between($key, $start, $end)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $lines = $this->get_contents_as_array();
+        } catch (Exception $e) {
+            throw $e;
+        }
+
+        // Find start tag
+        foreach ($lines as $line) {
+            if (preg_match($start, $line))
+                break;
+
+            array_shift($lines);
+        }
+
+        foreach ($lines as $line) {
+            // Bail if see the end tag
+
+            if (preg_match($end, $line))
+                break;
+
+            if (preg_match($key, $line)) {
+                $result = trim(preg_replace($key, "", $line));
+
+                if (!strlen($result))
+                    return TRUE;
+
+                return $result;
+            }
+        }
+
+        throw new File_No_Match_Exception($this->filename, $key);
+    }
+
+    /**
+     * Copies the file to new location.
+     *
+     * @param string $destination destination location
+     *
+     * @return void
+     * @throws File_Exception, Validation_Exception
+     */
+
+    public function copy_to($destination)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // TODO: validate destination
+
+        try {
+            $shell = new ShellExec();
+            $arguments = "-a " . escapeshellarg($this->filename) . " " . escapeshellarg($destination);
+            $exitcode = $shell->execute(File::COMMAND_COPY, $arguments, TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode != 0) {
+            $errmsg = $shell->get_output();
+            throw new File_Exception($errmsg[0], CLEAROS_WARNING);
+        }
+    }
+
+    /**
+     * Moves the file to new location.
+     *
+     * @param string $destination destination location
+     *
+     * @see replace
+     * @return void
+     * @throws File_Exception, Validation_Exception
+     */
+
+    public function move_to($destination)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // TODO: validate destination
+
+        try {
+            $shell = new ShellExec();
+            $arguments =  escapeshellarg($this->filename) . " " . escapeshellarg($destination);
+            $exitcode = $shell->execute(File::COMMAND_MOVE, $arguments, TRUE);
+        } catch (Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+
+        if ($exitcode != 0) {
+            $errmsg = $shell->get_output();
+            throw new File_Exception($errmsg[0], CLEAROS_WARNING);
+        }
+
+        $this->filename = $destination;
+    }
+
+    /**
+     * Replaces lines in a section of a file for Apache-style configuration files.
+     *
+     * Specify the (non-unique) start and end tags along with a search value that uniquely defines the section.
+     *
+     * @param string $search      regular expression for the search string
+     * @param string $replacement replacement line
+     * @param string $start       regular expression specifying the start line
+     * @param string $end         regular expression specifying the end line
+     * 
+     * @return void
+     * @throws File_Not_Found_Exception Exception (inherited from get_contents_as_array)
+     */
+
+    public function replace_lines_between($search, $replacement, $start, $end)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $replaced = FALSE;
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w"))) {
+            // TODO: AddValidationError replacement
+            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+        } else {
+
+            // Find start tag
+            $match = FALSE;
+            foreach ($lines as $line) {
+                if (preg_match($start, $line))
+                    break;
+
+                fputs($fh_t, $line . "\n");
+
+                array_shift($lines);
+            }
+
+            foreach ($lines as $line) {
+                // Bail if see the end tag
+
+                if (preg_match($end, $line))
+                    break;
+
+                if (preg_match($search, $line)) {
+                    $match = TRUE;
+
+                    if (strlen($replacement))
+                        fputs($fh_t, $replacement);
+                } else {
+                    fputs($fh_t, $line . "\n");
+                }
+
+                array_shift($lines);
+            }
+
+            foreach ($lines as $line)
+            fputs($fh_t, $line . "\n");
+
+            fclose($fh_t);
+
+            if (! $match) {
+                // TODO: AddValidationError replacement
+                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
+                unlink($tempfile);
+            } else {
+                $replaced = $this->replace($tempfile);
+            }
+        }
+
+        return $match;
+    }
+
+    /**
+     * Replaces a line (defined by a regular expression) with a replacement.
+     *
+     * @param string  $search       search string
+     * @param string  $replacement  replacement line (or lines)
+     * @param integer $max_replaced maximum number of matches to make
+     *
+     * @return integer number of replacements made
+     * @throws File_Exception, Validation_Exception
+     */
+
+    public function replace_lines($search, $replacement, $max_replaced = -1)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // TODO: add validation
+
+        $replaced = 0;
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+
+        // Find start tag
+        foreach ($lines as $line) {
+            if (preg_match($search, $line) && (($replaced < $max_replaced) || $max_replaced == -1)) {
+                fputs($fh_t, $replacement);
+                $replaced++;
+            } else {
+                fputs($fh_t, $line . "\n");
+            }
+        }
+
+        fclose($fh_t);
+
+        if ($replaced == 0) {
+            unlink($tempfile);
+            return 0;
+        } else {
+            $this->replace($tempfile);
+        }
+
+        $this->contents = NULL;
+
+        return $replaced;
+    }
+
+    /**
+     * Replaces a line defined by a regular expression.
+     *
+     * @param string $search      search string
+     * @param string $replacement replacement line (or lines)
+     *
+     * @return integer number of replacements made
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function replace_one_line($search, $replacement)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        return $this->replace_lines($search, $replacement, 1);
+    }
+
+    /**
+     * Replaces a line defined by a regular expression.
+     *
+     * This version differs from replace_one_line
+     * in that it uses preg_replace to do the substitution.  Thus you can
+     * use parts of a pattern match in the replacement (ie: $1, $2, etc).
+     *
+     * @param string $search      search expression
+     * @param string $replacement replacement expression
+     *
+     * @return boolean TRUE if any replacements were made
+     * @throws File_Not_Found_Exception Exception (inherited from get_contents_as_array)
+     */
+
+    public function replace_one_line_by_pattern($search, $replacement)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $replaced = FALSE;
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w"))) {
+            // TODO: AddValidationError replacement
+            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+        } else {
+            $match = FALSE;
+            foreach ($lines as $line) {
+                if ((preg_match($search, $line)) && !$match) {
+                    $match = preg_replace($search, $replacement, $line);
+
+                    if ($match)
+                        fputs($fh_t, $match . "\n");
+                } else
+                    fputs($fh_t, $line . "\n");
+            }
+
+            fclose($fh_t);
+
+            if (! $match) {
+                // TODO: AddValidationError replacement
+                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
+                unlink($tempfile);
+            } else {
+                $replaced = $this->replace($tempfile);
+            }
+        }
+
+        return $replaced;
+    }
+
+    /**
+     * Replaces all matching lines defined by a regular expression.
+     *
+     * @param string $search      search expression
+     * @param string $replacement replacement expression
+     *
+     * @return boolean TRUE if any replacements were made
+     * @throws File_Not_Found_Exception, Engine_Exception
+     */
+
+    public function replace_lines_by_pattern($search, $replacement)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $replaced = FALSE;
+
+        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+
+        $lines = $this->get_contents_as_array();
+
+        if (!($fh_t = @fopen($tempfile, "w"))) {
+            // TODO: AddValidationError replacement
+            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+        } else {
+            $match = FALSE;
+            foreach ($lines as $line) {
+                if ((preg_match($search, $line))) {
+                    $match = preg_replace($search, $replacement, $line);
+
+                    if ($match)
+                        fputs($fh_t, $match . "\n");
+                } else
+                    fputs($fh_t, $line . "\n");
+            }
+
+            fclose($fh_t);
+
+            if (! $match) {
+                // TODO: AddValidationError replacement
+                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
+                unlink($tempfile);
+            } else {
+                $replaced = $this->replace($tempfile);
+            }
+        }
+
+        return $replaced;
+    }
 }
 
 // vim: syntax=php ts=4

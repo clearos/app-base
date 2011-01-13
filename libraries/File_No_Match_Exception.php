@@ -1,12 +1,12 @@
 <?php
 
 /**
- * Core engine class for the API.
+ * Value not found in file exception.
  *
  * @category  ClearOS
  * @package   Base
  * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
+ * @copyright 2006-2011 ClearFoundation
  * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -42,29 +42,48 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+use \clearos\base\Engine_Exception as Engine_Exception;
+
+clearos_load_library('base/Engine_Exception');
+
+///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Core engine class for the API.
+ * Value not found in file exception.
  *
  * @category  ClearOS
  * @package   Base
  * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
+ * @copyright 2006-2011 ClearFoundation
  * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Engine
+class File_No_Match_Exception extends Engine_Exception
 {
-    ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
-    ///////////////////////////////////////////////////////////////////////////////
-
     /**
-     * @var constant API command path
+     * File_No_Match_Exception constructor.
+     *
+     * @param string $filename filename
+     * @param string $key      key used to match a string
+     *
+     * @return object File_No_Match_Exception object
      */
 
-    const COMMAND_API = "/usr/bin/api";
+    public function __construct($filename, $key)
+    {
+        // FIXME: translate
+        parent::__construct("No match in file $filename for key $key", self::CODE_INFO);
+    }
 }

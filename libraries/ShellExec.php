@@ -1,9 +1,16 @@
 <?php
 
-/////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2006-2010 ClearFoundation
-//
+/**
+ * Shell execution class.
+ *
+ * @category  ClearOS
+ * @package   Base
+ * @author    ClearFoundation <developer@clearfoundation.com>
+ * @copyright 2006-2011 ClearFoundation
+ * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,21 +28,18 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Shell execution class.
- *
- * @package ClearOS
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
+///////////////////////////////////////////////////////////////////////////////
+// N A M E S P A C E
+///////////////////////////////////////////////////////////////////////////////
+
+namespace clearos\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
 ///////////////////////////////////////////////////////////////////////////////
 
 $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/usr/clearos/framework/shared';
-require_once($bootstrap . '/bootstrap.php');
+require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
 // T R A N S L A T I O N S
@@ -47,7 +51,11 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+use \clearos\base\Engine as Engine;
+use \clearos\base\Validation_Exception as Validation_Exception;
+
 clearos_load_library('base/Engine');
+clearos_load_library('base/Validation_Exception');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -56,166 +64,166 @@ clearos_load_library('base/Engine');
 /**
  * Wrapper for running shell commands.
  *
- * @package ClearOS
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
+ * @category  ClearOS
+ * @package   Base
+ * @author    ClearFoundation <developer@clearfoundation.com>
+ * @copyright 2006-2011 ClearFoundation
+ * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class ShellExec extends Engine
 {
-	///////////////////////////////////////////////////////////////////////////////
-	// M E M B E R S
-	///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A R I A B L E S
+    ///////////////////////////////////////////////////////////////////////////////
 
-	protected $output = array();
+    protected $output = array();
 
-	const CMD_SUEXEC = "/usr/bin/sudo";
+    const COMMAND_SUDO = "/usr/bin/sudo";
 
-	///////////////////////////////////////////////////////////////////////////////
-	// M E T H O D S
-	///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * ShellExec constructor.
-	 */
+    /**
+     * ShellExec constructor.
+     */
 
-	public function __construct()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function __construct()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+    }
 
-		parent::__construct();
-	}
+    /**
+     * Executes the command.
+     *
+     * Excecute options are:
+     * - escape: scrub command line arguments for naught characters (default TRUE)
+     * - log: specify a log file (default /dev/null)
+     * - env: environment variables (default NULL)
+     * - background: run command in background (default FALSE)
+     * - stdin: write arguments to stdin (default FALSE)
+     * 
+     * @param string  $command   command to excecute
+     * @param string  $arguments command arguments
+     * @param boolean $superuser super user flag
+     * @param array   $options   extra execute options specified above
+     *
+     * @return int $retval command return code
+     * @throws Validation_Exception
+     */
 
-	/**
-	 * Executes the command.
-	 *
-	 * Excecute options are:
-	 * - escape: scrub command line arguments for naught characters (default true)
-	 * - log: specify a log file (default /dev/null)
-	 * - env: environment variables (default null)
-	 * - background: run command in background (default false)
-	 * - stdin: write arguments to stdin (default false)
-	 * 
-	 * @param string $command command to excecute
-	 * @param string $arguments command arguments
-	 * @param boolean $superuser super user flag
-	 * @param array $options extra execute options specified above
-	 * @return int $retval command return code
-	 * @throws ValidationException, EngineException
-	 */
+    public function execute($command, $arguments, $superuser = FALSE, $options = NULL)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+        clearos_profile(__METHOD__, __LINE__, $command . " " . $arguments);
 
-	public function Execute($command, $arguments, $superuser = false, $options = null)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
-		ClearOsLogger::Profile(__METHOD__, __LINE__, $command . " " . $arguments);
+        $this->output = array();
 
-		$this->output = array();
+        if (! is_bool($superuser))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'superuser'));
 
-		if (! is_bool($superuser))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (superuser)");
+        if (isset($options['escape']) && (!is_bool($options['escape'])))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[escape]'));
 
-		if (isset($options['escape']) && (!is_bool($options['escape'])))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_INVALID_TYPE . " (escape)");
+        if (isset($options['log']) && (preg_match("/\//", $options['log']) || preg_match("/\.\./", $options['log'])))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[log]'));
 
-		if (isset($options['log']) && ( preg_match("/\//", $options['log']) || preg_match("/\.\./", $options['log'])))
-			throw new ValidationException(LOCALE_LANG_ERRMSG_PARAMETER_IS_INVALID . " (log: " . $options['log'] . ")");
+        // Validate executable for non-superuser access.
+        // If the file does not exist in superuser mode, it will get caught below
+        // but with a less "pretty" error message.
 
-		// Validate executable for non-superuser access.
-		// If the file does not exist in superuser mode, it will get caught below... but
-		// with a less "pretty" error message.
+        if (!$superuser && (!file_exists($command)))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_command_execution_failed'), $command));
 
-		if ((! $superuser) && (!file_exists($command)))
-			throw new ValidationException(SHELLEXEC_LANG_ERRMSG_EXECUTE_FAILED, COMMON_ERROR);
+        if (isset($options['escape']) && $options['escape']) {
+            $command = escapeshellcmd($command);
+            $arguments = escapeshellcmd($arguments);
+        }
 
-		if (isset($options['escape']) && $options['escape']) {
-			$command = escapeshellcmd($command);
-			$arguments = escapeshellcmd($arguments);
-		}
+        if (strlen($arguments))
+            $exe = $command . " " . $arguments;
+        else
+            $exe = $command;
 
-		if (strlen($arguments))
-			$exe = $command . " " . $arguments;
-		else
-			$exe = $command;
+        if ($superuser)
+            $exe = self::COMMAND_SUDO . " " . $exe;
 
-		if ($superuser)
-			$exe = self::CMD_SUEXEC . " " . $exe;
+        if (isset($options['env']))
+            $exe = $options['env'] . " $exe";
 
-		if (isset($options['env']))
-			$exe = $options['env'] . " $exe";
+        // If set to background, output *must* be redirected to 
+        // either a log or /dev/null
 
-		// If set to background, output *must* be redirected to 
-		// either a log or /dev/null
+        // FIXME: COMMON_TEMP_DIR is no longer defined
 
-		if (isset($options['log']))
-			$exe .= " >>" . COMMON_TEMP_DIR . "/" . $options['log'];
-		else if (isset($options['background']) && $options['background'])
-			$exe .= " >/dev/null";
+        if (isset($options['log']))
+            $exe .= " >>" . COMMON_TEMP_DIR . "/" . $options['log'];
+        else if (isset($options['background']) && $options['background'])
+            $exe .= " >/dev/null";
 
-		$exe .= " 2>&1";
+        $exe .= " 2>&1";
 
-		if (isset($options['background']) && $options['background'])
-			$exe .= " &";
+        if (isset($options['background']) && $options['background'])
+            $exe .= " &";
 
-		$retval = null;
+        $retval = NULL;
 
-		if (isset($options['stdin'])) {
-			$ph = popen($exe, "w");
+        if (isset($options['stdin'])) {
+            $ph = popen($exe, "w");
 
-			if (strlen($options['stdin']))
-				fwrite($ph, $options['stdin']);
+            if (strlen($options['stdin']))
+                fwrite($ph, $options['stdin']);
 
-			$retval = pclose($ph);
-		} else {
-			exec($exe, $this->output, $retval);
-		}
+            $retval = pclose($ph);
+        } else {
+            exec($exe, $this->output, $retval);
+        }
 
-		return $retval;
-	}
+        return $retval;
+    }
 
-	/**
-	 * Returns output from executed command.
-	 *
-	 * @return array command output as an array of strings
-	 */
+    /**
+     * Returns output from executed command.
+     *
+     * @return array command output as an array of strings
+     */
 
-	public function GetOutput()
-	{
-		return $this->output;
-	}
+    public function get_output()
+    {
+        return $this->output;
+    }
 
-	/**
-	 * Returns first output line.
-	 *
-	 * This method is useful for capturing simple command output (including errors).
-	 *
-	 * @return string first output line
-	 */
+    /**
+     * Returns first output line.
+     *
+     * This method is useful for capturing simple command output (including errors).
+     *
+     * @return string first output line
+     */
 
-	public function GetFirstOutputLine()
-	{
-		if (isset($this->output[0]))
-			return $this->output[0];
-		else
-			return "";
-	}
+    public function get_first_output_line()
+    {
+        if (isset($this->output[0]))
+            return $this->output[0];
+        else
+            return "";
+    }
 
-	/**
-	 * Returns last output line.
-	 *
-	 * This method is useful for capturing the last line of output (including errors).
-	 *
-	 * @return string last output line
-	 */
+    /**
+     * Returns last output line.
+     *
+     * This method is useful for capturing the last line of output (including errors).
+     *
+     * @return string last output line
+     */
 
-	public function GetLastOutputLine()
-	{
-		if (isset($this->output[sizeof($this->output) - 1]))
-			return $this->output[sizeof($this->output) - 1];
-		else
-			return "";
-	}
+    public function get_last_output_line()
+    {
+        if (isset($this->output[sizeof($this->output) - 1]))
+            return $this->output[sizeof($this->output) - 1];
+        else
+            return "";
+    }
 }
-
-// vim: syntax=php ts=4
-?>

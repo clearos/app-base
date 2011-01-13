@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Core engine class for the API.
+ * Base validation exception class for the API.
  *
  * @category  ClearOS
  * @package   Base
@@ -42,11 +42,19 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+use \clearos\base\Engine_Exception as Engine_Exception;
+
+clearos_load_library('base/Engine_Exception');
+
+///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Core engine class for the API.
+ * Base validation exception class for the API.
  *
  * @category  ClearOS
  * @package   Base
@@ -56,15 +64,18 @@ require_once $bootstrap . '/bootstrap.php';
  * @link      http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Engine
+class Validation_Exception extends Engine_Exception
 {
-    ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
-    ///////////////////////////////////////////////////////////////////////////////
-
     /**
-     * @var constant API command path
+     * Validation_Exception constructor.
+     *
+     * @param string $message error message
+     *
+     * @return object Validation_Exception object
      */
 
-    const COMMAND_API = "/usr/bin/api";
+    public function __construct($message)
+    {
+        parent::__construct($message, CLEAROS_INFO);
+    }
 }
