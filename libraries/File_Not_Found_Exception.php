@@ -1,14 +1,15 @@
 <?php
 
 /**
- * File not found exception.
+ * File not found exception class.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@
 // N A M E S P A C E
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace clearos\base;
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
@@ -42,10 +43,16 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-use \clearos\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\Engine_Exception as Engine_Exception;
 
 clearos_load_library('base/Engine_Exception');
 
@@ -54,14 +61,15 @@ clearos_load_library('base/Engine_Exception');
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * File not found exception.
+ * File not found exception class.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class File_Not_Found_Exception extends Engine_Exception
@@ -71,12 +79,10 @@ class File_Not_Found_Exception extends Engine_Exception
      *
      * @param string $filename filename
      * @param int    $code     error code
-     *
-     * @return object FileNotFoundException object
      */
 
     public function __construct($filename, $code)
     {
-        parent::__construct(FILE_LANG_ERRMSG_NOTEXIST . " - " . $filename, $code);
+        parent::__construct(sprintf(lang('base_errmsg_file_not_found'), $filename), $code);
     }
 }

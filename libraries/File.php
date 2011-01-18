@@ -3,12 +3,13 @@
 /**
  * File manipulation class.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@
 // N A M E S P A C E
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace clearos\base;
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
@@ -51,25 +52,33 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-use \clearos\base\Engine as Engine;
-use \clearos\base\Engine_Exception as Engine_Exception;
-use \clearos\base\File_Exception as File_Exception;
-use \clearos\base\File_No_Match_Exception as File_No_Match_Exception;
-use \clearos\base\File_Not_Found_Exception as File_Not_Found_Exception;
-use \clearos\base\File_Permissions_Exception as File_Permissions_Exception;
-use \clearos\base\File_Already_Exists_Exception as File_Already_Exists_Exception;
-use \clearos\base\Validation_Exception as Validation_Exception;
-use \clearos\base\ShellExec as ShellExec;
+// Classes
+//--------
+
+use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\ShellExec as ShellExec;
 
 clearos_load_library('base/Engine');
+clearos_load_library('base/ShellExec');
+
+// Exceptions
+//-----------
+
+use \clearos\apps\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\File_Already_Exists_Exception as File_Already_Exists_Exception;
+use \clearos\apps\base\File_Exception as File_Exception;
+use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
+use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
+use \clearos\apps\base\File_Permissions_Exception as File_Permissions_Exception;
+use \clearos\apps\base\Validation_Exception as Validation_Exception;
+
 clearos_load_library('base/Engine_Exception');
+clearos_load_library('base/File_Already_Exists_Exception');
 clearos_load_library('base/File_Exception');
 clearos_load_library('base/File_No_Match_Exception');
 clearos_load_library('base/File_Not_Found_Exception');
 clearos_load_library('base/File_Permissions_Exception');
-clearos_load_library('base/File_Already_Exists_Exception');
 clearos_load_library('base/Validation_Exception');
-clearos_load_library('base/ShellExec');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -84,12 +93,13 @@ clearos_load_library('base/ShellExec');
  * forms, so this might not have what you need.  Feel free to do your own file
  * parsing.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class File extends Engine
@@ -145,8 +155,6 @@ class File extends Engine
      * @param string  $filename  target file
      * @param boolean $superuser superuser access required to read the file
      * @param boolean $temporary create a temporary file
-     *
-     * @return object
      */
 
     public function __construct($filename, $superuser = FALSE, $temporary = FALSE)
@@ -239,7 +247,7 @@ class File extends Engine
                 $exitcode = $shell->execute(File::COMMAND_HEAD, "-c $maxbytes $this->filename", TRUE);
             else
                 $exitcode = $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -332,7 +340,7 @@ class File extends Engine
             try {
                 $shell = new ShellExec();
                 $exitcode = $shell->execute(File::COMMAND_LS, escapeshellarg($this->filename), TRUE);
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
             }
 
@@ -367,7 +375,7 @@ class File extends Engine
             $shell = new ShellExec();
             $args = "-loL " . escapeshellarg($this->filename);
             $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
         }
 
@@ -403,7 +411,7 @@ class File extends Engine
             try {
                 $shell = new ShellExec();
                 $exitcode = $shell->execute(self::COMMAND_MD5, escapeshellarg($this->filename), TRUE);
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
             }
 
@@ -439,7 +447,7 @@ class File extends Engine
         try {
             $shell = new ShellExec();
             $exitcode = $shell->execute(File::COMMAND_CHMOD, " $mode " . escapeshellarg($this->filename), TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
         }
 
@@ -477,7 +485,7 @@ class File extends Engine
         if (! empty($owner)) {
             try {
                 $exitcode = $shell->execute(File::COMMAND_CHOWN, "$owner " . escapeshellarg($this->filename), TRUE);
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
 
@@ -488,7 +496,7 @@ class File extends Engine
         if (! empty($group)) {
             try {
                 $exitcode = $shell->execute(File::COMMAND_CHOWN, " :$group " . escapeshellarg($this->filename), TRUE);
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
 
@@ -538,7 +546,7 @@ class File extends Engine
                 $shell = new ShellExec();
                 $args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
                 $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
             }
 
@@ -591,7 +599,7 @@ class File extends Engine
             // Delete file if permissions barf, rethrow
             $this->delete();
             throw new File_Permissions_Exception($e->GetMessage(), CLEAROS_WARNING);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -618,7 +626,7 @@ class File extends Engine
         try {
             $shell = new ShellExec();
             $shell->execute(File::COMMAND_RM, escapeshellarg($this->filename), TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -649,7 +657,7 @@ class File extends Engine
                     $isdir = TRUE;
                 }
 
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
         } else {
@@ -688,7 +696,7 @@ class File extends Engine
                     $issym = 0;
                 }
 
-            } catch (Exception $e) {
+            } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
         } else {
@@ -735,7 +743,7 @@ class File extends Engine
         try {
             $shell = new ShellExec();
             $exitcode = $shell->execute(self::COMMAND_REPLACE, "$tempfile $thisfile", TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -797,7 +805,7 @@ class File extends Engine
 
         try {
             $contents = $this->get_contents();
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw $e;
         }
 
@@ -1024,7 +1032,7 @@ class File extends Engine
 
         try {
             $lines = $this->get_contents_as_array();
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw $e;
         }
 
@@ -1074,7 +1082,7 @@ class File extends Engine
             $shell = new ShellExec();
             $arguments = "-a " . escapeshellarg($this->filename) . " " . escapeshellarg($destination);
             $exitcode = $shell->execute(File::COMMAND_COPY, $arguments, TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -1104,7 +1112,7 @@ class File extends Engine
             $shell = new ShellExec();
             $arguments =  escapeshellarg($this->filename) . " " . escapeshellarg($destination);
             $exitcode = $shell->execute(File::COMMAND_MOVE, $arguments, TRUE);
-        } catch (Exception $e) {
+        } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
@@ -1360,6 +1368,3 @@ class File extends Engine
         return $replaced;
     }
 }
-
-// vim: syntax=php ts=4
-?>

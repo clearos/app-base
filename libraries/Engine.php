@@ -3,12 +3,13 @@
 /**
  * Core engine class for the API.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2002-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@
 // N A M E S P A C E
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace clearos\base;
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
@@ -48,12 +49,13 @@ require_once $bootstrap . '/bootstrap.php';
 /**
  * Core engine class for the API.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2002-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class Engine

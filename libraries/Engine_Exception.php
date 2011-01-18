@@ -3,12 +3,13 @@
 /**
  * Core engine exception class for the API.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   Apps
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2002-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@
 // N A M E S P A C E
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace clearos\base;
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
@@ -54,12 +55,13 @@ use \Exception as Exception;
 /**
  * Base exception for all exceptions in the API.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2002-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2002-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class Engine_Exception extends Exception
@@ -81,16 +83,17 @@ class Engine_Exception extends Exception
      *
      * @param string  $message error message
      * @param integer $code    error code
-     *
-     * @return object Engine_Exception object
      */
 
     public function __construct($message, $code)
     {
         parent::__construct((string)$message, (int)$code);
 
+        /*
+        FIXME
         if ($code >= CLEAROS_WARNING)
             Logger::log_exception($this, TRUE);
+        */
     }
 
     /**

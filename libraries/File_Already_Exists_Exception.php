@@ -1,14 +1,15 @@
 <?php
 
 /**
- * File already exists exception.
+ * File already exists exception class.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -32,7 +33,7 @@
 // N A M E S P A C E
 ///////////////////////////////////////////////////////////////////////////////
 
-namespace clearos\base;
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
@@ -51,7 +52,7 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-use \clearos\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\Engine_Exception as Engine_Exception;
 
 clearos_load_library('base/Engine_Exception');
 
@@ -62,12 +63,13 @@ clearos_load_library('base/Engine_Exception');
 /**
  * File already exists exception.
  *
- * @category  ClearOS
- * @package   Base
- * @author    ClearFoundation <developer@clearfoundation.com>
- * @copyright 2006-2011 ClearFoundation
- * @license   http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @link      http://www.clearfoundation.com/docs/developer/apps/base/
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Exception
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 class File_Already_Exists_Exception extends Engine_Exception
@@ -77,8 +79,6 @@ class File_Already_Exists_Exception extends Engine_Exception
      *
      * @param string $filename filename
      * @param int    $code     error code
-     *
-     * @return object File_Already_Exists_Exception object
      */
 
     public function __construct($filename, $code)

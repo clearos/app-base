@@ -1,9 +1,17 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2006-2010 ClearFoundation
-//
+/**
+ * Posix user manager class.
+ *
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,227 +29,252 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Posix user administration.
- *
- * @package ClearOS
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
- */
+///////////////////////////////////////////////////////////////////////////////
+// N A M E S P A C E
+///////////////////////////////////////////////////////////////////////////////
+
+namespace clearos\apps\base;
 
 ///////////////////////////////////////////////////////////////////////////////
 // B O O T S T R A P
 ///////////////////////////////////////////////////////////////////////////////
 
 $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/usr/clearos/framework/shared';
-require_once($bootstrap . '/bootstrap.php');
+require_once $bootstrap . '/bootstrap.php';
+
+///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
 
 ///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+// Classes
+//--------
+
+use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\ShellExec as ShellExec;
+
+clearos_load_library('base/Engine');
 clearos_load_library('base/ShellExec');
+
+// Exceptions
+//-----------
+
+use \clearos\apps\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\Validation_Exception as Validation_Exception;
+
+clearos_load_library('base/Engine_Exception');
+clearos_load_library('base/Validation_Exception');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Posix user administration.
+ * Posix user manager class.
  *
- * @package ClearOS
- * @author {@link http://www.clearfoundation.com/ ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
- * @copyright Copyright 2006-2010 ClearFoundation
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class PosixUser extends Engine
+class Posix_User extends Engine
 {
-	///////////////////////////////////////////////////////////////////////////////
-	// C O N S T A N T S
-	///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // C O N S T A N T S
+    ///////////////////////////////////////////////////////////////////////////////
 
-	const COMMAND_CHKPWD = "/usr/sbin/app-passwd";
-	const COMMAND_PASSWD = "/usr/bin/passwd";
-	const COMMAND_USERDEL = "/usr/sbin/userdel";
+    const COMMAND_CHKPWD = "/usr/sbin/app-passwd";
+    const COMMAND_PASSWD = "/usr/bin/passwd";
+    const COMMAND_USERDEL = "/usr/sbin/userdel";
 
-	///////////////////////////////////////////////////////////////////////////////
-	// V A R I A B L E S
-	///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A R I A B L E S
+    ///////////////////////////////////////////////////////////////////////////////
 
-	protected $username;
+    protected $username;
 
-	///////////////////////////////////////////////////////////////////////////////
-	// M E T H O D S
-	///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * PosixUser constructor.
-	 */
+    /**
+     * Posix_User constructor.
+     *
+     * @param string $username username
+     */
 
-	public function __construct($username)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function __construct($username)
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
-		$this->username = $username;
-	}
+        $this->username = $username;
+    }
 
-	/**
-	 * Checks the password for the user.
-	 *
-	 * @param string password password for the user
-	 * @return boolean TRUE if password is correct
-	 * @throws EngineException, ValidationException
-	 */
+    /**
+     * Checks the password for the user.
+     *
+     * @param string $password password for the user
+     *
+     * @return boolean TRUE if password is correct
+     * @throws Engine_Exception, Validation_Exception
+     */
 
-	public function CheckPassword($password)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function check_password($password)
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
-		// Validate
-		//---------
+        // Validate
+        //---------
 
-		$error = $this->ValidatePassword($password);
+        $error = $this->validate_password($password);
 
-		if ($error)
-			throw new ValidationException($error, ClearOsError::CODE_ERROR);
+        if ($error)
+            throw new Validation_Exception($error, CLEAROS_ERROR);
 
-		$error = $this->ValidateUsername($this->username);
+        $error = $this->validate_username($this->username);
 
-		if ($error)
-			throw new ValidationException($error, ClearOsError::CODE_ERROR);
+        if ($error)
+            throw new Validation_Exception($error, CLEAROS_ERROR);
 
-		// Check password
-		//---------------
-		
-		try {
-			$options['stdin'] = "$this->username $password";
+        // Check password
+        //---------------
+        
+        try {
+            $options['stdin'] = "$this->username $password";
 
-			$shell = new ShellExec();
-			$retval = $shell->Execute(self::COMMAND_CHKPWD, "", TRUE, $options);
+            $shell = new ShellExec();
+            $retval = $shell->execute(self::COMMAND_CHKPWD, "", TRUE, $options);
 
-		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
-		}
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->GetMessage(), CLEAROS_ERROR);
+        }
 
-		if ($retval === 0)
-			return TRUE;
-		else
-			return FALSE;
-	}
+        if ($retval === 0)
+            return TRUE;
+        else
+            return FALSE;
+    }
 
-	/**
-	 * Deletes a user from the Posix system.
-	 *
-	 * @returns void
-	 * @throws EngineException, ValidationException 
-	 */
+    /**
+     * Deletes a user from the Posix system.
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
 
-	public function Delete()
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function delete()
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
-		// Validate
-		//---------
+        // Validate
+        //---------
 
-		$error = $this->ValidateUsername($this->username);
+        $error = $this->validate_username($this->username);
 
-		if ($error)
-			throw new ValidationException($error, ClearOsError::CODE_ERROR);
+        if ($error)
+            throw new Validation_Exception($error, CLEAROS_ERROR);
 
-		// Delete
-		//-------
+        // Delete
+        //-------
 
-		try {
-			$shell = new ShellExec();
+        try {
+            $shell = new ShellExec();
 
-			$username = escapeshellarg($this->username);
-			$retval = $shell->Execute(self::COMMAND_USERDEL, "$username", TRUE);
+            $username = escapeshellarg($this->username);
+            $retval = $shell->execute(self::COMMAND_USERDEL, "$username", TRUE);
 
-			if ($retval != 0)
-				throw new EngineException($shell->GetLastOutputLine(), ClearOsError::CODE_ERROR);
-		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
-		}
-	}
+            if ($retval != 0)
+                throw new Engine_Exception($shell->get_last_output_line(), CLEAROS_ERROR);
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->GetMessage(), CLEAROS_ERROR);
+        }
+    }
 
-	/**
-	 * Sets the user's system password.
-	 *
-	 * @param string $password password
-	 * @returns void
-	 * @throws EngineException, ValidationException 
-	 */
+    /**
+     * Sets the user's system password.
+     *
+     * @param string $password password
+     *
+     * @return void
+     * @throws Engine_Exception, Validation_Exception 
+     */
 
-	public function SetPassword($password)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function set_password($password)
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
-		// Validate
-		//---------
+        // Validate
+        //---------
 
-		$error = $this->ValidatePassword($password);
+        $error = $this->validate_password($password);
 
-		if ($error)
-			throw new ValidationException($error, ClearOsError::CODE_ERROR);
-		
-		// Update
-		//-------
+        if ($error)
+            throw new Validation_Exception($error, CLEAROS_ERROR);
+        
+        // Update
+        //-------
 
-		try {
-			$shell = new ShellExec();
+        try {
+            $shell = new ShellExec();
 
-			$user = escapeshellarg($this->username);
-			$options['stdin'] = $password;
+            $user = escapeshellarg($this->username);
+            $options['stdin'] = $password;
 
-			$retval = $shell->Execute(self::COMMAND_PASSWD, "--stdin $user", TRUE, $options);
+            $retval = $shell->execute(self::COMMAND_PASSWD, "--stdin $user", TRUE, $options);
 
-			if ($retval != 0)
-				throw new EngineException($shell->GetLastOutputLine(), ClearOsError::CODE_ERROR);
-		} catch (Exception $e) {
-			throw new EngineException($e->GetMessage(), ClearOsError::CODE_ERROR);
-		}
-	}
+            if ($retval != 0)
+                throw new Engine_Exception($shell->get_last_output_line(), CLEAROS_ERROR);
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->GetMessage(), CLEAROS_ERROR);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A L I D A T I O N   M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
 
-	/**
-	 * Password validation routine.
-	 *
-	 * @param string $password password
-	 * @return boolean TRUE if password is valid
-	 */
+    /**
+     * Password validation routine.
+     *
+     * @param string $password password
+     *
+     * @return boolean TRUE if password is valid
+     */
 
-	public function ValidatePassword($password)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function validate_password($password)
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
         if (preg_match("/[\|;\*]/", $password))
-			return lang('base_errmsg_password_invalid');
-		else
-			return '';
-	}
+            return lang('base_errmsg_password_invalid');
+        else
+            return '';
+    }
 
-	/**
-	 * Username validation routine.
-	 *
-	 * @param string $username username
-	 * @return boolean TRUE if username is valid
-	 */
+    /**
+     * Username validation routine.
+     *
+     * @param string $username username
+     *
+     * @return boolean TRUE if username is valid
+     */
 
-	public function ValidateUsername($username)
-	{
-		ClearOsLogger::Profile(__METHOD__, __LINE__);
+    public function validate_username($username)
+    {
+        clearos_profile(__METHOD__, __LINE__);
 
         if (preg_match("/^([a-z0-9_\-\.\$]+)$/", $username))
-			return '';
-		else
-			return lang('base_errmsg_username_invalid');
-	}
+            return '';
+        else
+            return lang('base_errmsg_username_invalid');
+    }
 }
-
-// vim: syntax=php ts=4
-?>
