@@ -1,9 +1,17 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2010 ClearFoundation
-//
+/**
+ * Session logout view.
+ *
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Views
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -18,16 +26,14 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
-//////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////
 
 // FIXME: translate
 
 $login_button = anchor_custom('/app/base/session/login', 'Login', 'high');
 
-echo infobox_highlight("
-	<h2>Logout</h2> 
-	<p>You have been logged out.  $login_button</p>
-");
-
-// vim: ts=4 syntax=php
+echo infobox_highlight(
+    "<h2>Logout</h2> 
+    <p>You have been logged out.  $login_button</p>"
+);

@@ -20,6 +20,14 @@
  * A few daemons are not really 'running' per se, but are part of the kernel,
  * e.g. the firewall and bandwidth limiter.  Specify 'kernel' for the 
  * process name -- the daemon class will handle these differently.
+ *
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2006-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 $DAEMONS = array(

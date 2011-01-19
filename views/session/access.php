@@ -1,9 +1,17 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2010 ClearFoundation
-//
+/**
+ * Session access denied view.
+ *
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Views
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -18,15 +26,13 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
-//////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight("
-	<h2>Access Denied</h2> 
-	<p>This page will be shown when a user attempts to access an unauthorized page.  This typically
-happens when sub-administrator access has been disabled.  A list of permitted pages can be shown
-to guide the user to authorized pages (e.g. the user profile page). It can also happen on an
-uprade where the administrator has not yet gone through the setup/upgrade wizard.</p>
-");
-
-// vim: ts=4 syntax=php
+echo infobox_highlight(
+    "<h2>Access Denied</h2> 
+    <p>This page will be shown when a user attempts to access an unauthorized page.  This typically
+    happens when sub-administrator access has been disabled.  A list of permitted pages can be shown
+    to guide the user to authorized pages (e.g. the user profile page). It can also happen on an
+    uprade where the administrator has not yet gone through the setup/upgrade wizard.</p>"
+);

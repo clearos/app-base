@@ -1,9 +1,17 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2010 ClearFoundation
-//
+/**
+ * Dashboard view.
+ *
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Views
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -18,13 +26,11 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
-//////////////////////////////////////////////////////////////////////////////
+//
+///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight("
-	<h2>Dashboard</h2> 
+echo infobox_highlight(
+    "<h2>Dashboard</h2> 
 	<p>Nothing to see here yet!  This is the future home of the ClearOS Dashboard.
-	Click on the menu links to view developer pages.</p>
-");
-
-// vim: ts=4 syntax=php
+	Click on the menu links to view developer pages.</p>"
+);

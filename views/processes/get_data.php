@@ -1,9 +1,17 @@
 <?php
 
-///////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2003-2010 ClearFoundation
-//
+/**
+ * Process manager raw data view.
+ *
+ * @category   ClearOS
+ * @package    Base
+ * @subpackage Views
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -27,13 +35,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 $headers = array(
-	'Process ID',
-	'Owner',
-	'Running',
-	'CPU',
-	'Memory',
-	'Size',
-	'Commmand'
+    'Process ID',
+    'Owner',
+    'Running',
+    'CPU',
+    'Memory',
+    'Size',
+    'Commmand'
 );
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,25 +58,25 @@ array_shift($processes);
 
 foreach ($processes as $raw_data) {
 
-	$data = preg_split('/\s+/', trim($raw_data));
+    $data = preg_split('/\s+/', trim($raw_data));
 
-	$buttons = array(anchor_delete('/app/dhcp/subnets/delete/' . $interface));
+    $buttons = array(anchor_delete('/app/dhcp/subnets/delete/' . $interface));
 
-	$item['title'] = "$interface / " .  $subnetinfo['network'];
-	$item['action'] = $action;
-	$item['anchors'] = button_set($buttons);
-	$item['details'] = array(
-		$data[0],
-		$data[1],
-		$data[2],
-		$data[3],
-		$data[4],
-		$data[5],
-		$data[6],
-		$data[7],
-	);
+    $item['title'] = "$interface / " .  $subnetinfo['network'];
+    $item['action'] = $action;
+    $item['anchors'] = button_set($buttons);
+    $item['details'] = array(
+        $data[0],
+        $data[1],
+        $data[2],
+        $data[3],
+        $data[4],
+        $data[5],
+        $data[6],
+        $data[7],
+    );
 
-	$items[] = $item;
+    $items[] = $item;
 }
 
 sort($items);
@@ -78,10 +86,8 @@ sort($items);
 ///////////////////////////////////////////////////////////////////////////////
 
 echo summary_table(
-	lang('dhcp_subnets'),
-	$anchors,
-	$headers,
-	$items
+    lang('dhcp_subnets'),
+    $anchors,
+    $headers,
+    $items
 );
-
-// vim: ts=4 syntax=php

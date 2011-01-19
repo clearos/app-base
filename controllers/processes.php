@@ -1,9 +1,17 @@
 <?php
 
-//////////////////////////////////////////////////////////////////////////////
-//
-// Copyright 2010 ClearFoundation
-//
+/**
+ * Process manager controller.
+ *
+ * @category   Apps
+ * @package    Base
+ * @subpackage Controllers
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
 ///////////////////////////////////////////////////////////////////////////////
 //
 // This program is free software: you can redistribute it and/or modify
@@ -21,65 +29,61 @@
 //  
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Processes controller.
- *
- * @package Frontend
- * @author {@link http://www.clearfoundation.com ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU General Public License version 3 or later
- * @copyright Copyright 2010, ClearFoundation
- * @link http://www.clearfoundation.com	
- */
-
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Processes controller.
+ * Process manager controller.
  *
- * @package Frontend
- * @author {@link http://www.clearfoundation.com ClearFoundation}
- * @license http://www.gnu.org/copyleft/lgpl.html GNU General Public License version 3 or later
- * @copyright Copyright 2010, ClearFoundation
- * @link http://www.clearfoundation.com	
+ * @category   Apps
+ * @package    Base
+ * @subpackage Controllers
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Processes extends ClearOS_Controller 
+class Processes extends ClearOS_Controller
 {
-	/**
-	 * Default controller.
-	 */
+    /**
+     * Default controller.
+     *
+     * @return view
+     */
 
-	function index()
-	{
-		// Load libraries
-		//---------------
+    function index()
+    {
+        // Load libraries
+        //---------------
 
-		$this->load->library('base/ProcessManager');
+        $this->load->library('base/Process_Manager');
 
-		// Load view data
-		//---------------
+        // Load view data
+        //---------------
 
-		try {
-			$data['processes'] = $this->processmanager->getrawdata();
-		} catch (Exception $e) {
-			$this->page->view_exception($e->GetMessage());
-			return;
-		}
+        try {
+            $data['processes'] = $this->process_manager->get_raw_data();
+        } catch (Engine_Exception $e) {
+            $this->page->view_exception($e->get_message());
+            return;
+        }
 
-		// Load views
-		//-----------
+        // Load views
+        //-----------
 
-		$this->page->set_title("Process Manager");  // FIXME: translate
+        $this->page->set_title("Process Manager");  // FIXME: translate
 
-		$this->load->view('theme/header');
-		$this->load->view('processes/summary', $data);
-		$this->load->view('theme/footer');
-	}
+        $this->load->view('theme/header');
+        $this->load->view('processes/summary', $data);
+        $this->load->view('theme/footer');
+    }
 
     /**
      * Kills the given process.
+     *
+     * @param integer $pid process ID
      *
      * @return view
      */
@@ -89,16 +93,16 @@ class Processes extends ClearOS_Controller
         // Load libraries
         //---------------
 
-		$this->load->library('base/ProcessManager');
+        $this->load->library('base/Process_Manager');
 
         // Handle form submit
         //-------------------
 
         try {
-			// $this->processmanager->kill($pid);
+            // $this->process_manager->kill($pid);
             $this->page->set_success('Process killed'); // FIXME: translate
-        } catch (Exception $e) {
-            $this->page->view_exception($e->GetMessage());
+        } catch (Engine_Exception $e) {
+            $this->page->view_exception($e->get_message());
             return;
         }
 
@@ -112,6 +116,7 @@ class Processes extends ClearOS_Controller
      * Kill a process view.
      *
      * @param int $pid process ID
+     *
      * @return view
      */
 
@@ -120,7 +125,7 @@ class Processes extends ClearOS_Controller
         // Load views
         //-----------
 
-// FIXME: translate
+        // FIXME: translate
         $this->page->set_title('Processes');
 
         $data['message'] = sprintf(lang('dhcp_confirm_delete'), $pid);
@@ -133,33 +138,32 @@ class Processes extends ClearOS_Controller
 
     }
 
-	/**
-	 * Raw process data used in Ajax.
-	 */
+    /**
+     * Raw process data used in Ajax.
+     *
+     * @return view
+     */
 
-	function get_data()
-	{
-		// Load libraries
-		//---------------
+    function get_data()
+    {
+        // Load libraries
+        //---------------
 
-		$this->load->library('base/ProcessManager');
+        $this->load->library('base/Process_Manager');
 
-		// Load view data
-		//---------------
+        // Load view data
+        //---------------
 
-		try {
-			$data['processes'] = $this->processmanager->getrawdata();
-		} catch (Exception $e) {
-			$this->page->view_exception($e->GetMessage());
-			return;
-		}
+        try {
+            $data['processes'] = $this->process_manager->get_raw_data();
+        } catch (Engine_Exception $e) {
+            $this->page->view_exception($e->get_message());
+            return;
+        }
 
-		// Load views
-		//-----------
+        // Load views
+        //-----------
 
-		$this->load->view('processes/get_data', $data);
-	}
+        $this->load->view('processes/get_data', $data);
+    }
 }
-
-// vim: syntax=php ts=4
-?>
