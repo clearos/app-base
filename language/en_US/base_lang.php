@@ -185,5 +185,12 @@ $lang['base_other'] = 'Other';
 $lang['base_processes'] = 'Processes';
 $lang['base_overview'] = 'Overview';
 
+$lang['base_errmsg_invalid_parameter'] = 'Invalid parameter: %s';
+$lang['base_errmsg_command_execution_failed'] = 'Command execution failed using %s';
+$lang['base_errmsg_folder_not_found'] = 'Folder not found: %s';
+$lang['base_errmsg_file_not_found'] = 'File not found: %s';
+$lang['base_errmsg_folder_already_exists'] = 'Folder already exists: %s';
+$lang['base_errmsg_file_already_exists'] = 'File already exists: %s';
+
 // vi: syntax=php ts=4
 ?>
