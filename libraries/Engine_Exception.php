@@ -55,7 +55,7 @@ use \Exception as Exception;
 /**
  * Base exception for all exceptions in the API.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>

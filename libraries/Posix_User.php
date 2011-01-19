@@ -56,10 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
@@ -151,7 +151,7 @@ class Posix_User extends Engine
         try {
             $options['stdin'] = "$this->username $password";
 
-            $shell = new ShellExec();
+            $shell = new Shell();
             $retval = $shell->execute(self::COMMAND_CHKPWD, "", TRUE, $options);
 
         } catch (Engine_Exception $e) {
@@ -187,7 +187,7 @@ class Posix_User extends Engine
         //-------
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
 
             $username = escapeshellarg($this->username);
             $retval = $shell->execute(self::COMMAND_USERDEL, "$username", TRUE);
@@ -224,7 +224,7 @@ class Posix_User extends Engine
         //-------
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
 
             $user = escapeshellarg($this->username);
             $options['stdin'] = $password;

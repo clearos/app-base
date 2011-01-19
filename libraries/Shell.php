@@ -82,7 +82,7 @@ clearos_load_library('base/Validation_Exception');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class ShellExec extends Engine
+class Shell extends Engine
 {
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -97,7 +97,7 @@ class ShellExec extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     /**
-     * ShellExec constructor.
+     * Shell constructor.
      */
 
     public function __construct()

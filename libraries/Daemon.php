@@ -57,13 +57,13 @@ clearos_load_language('base');
 
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 use \clearos\apps\base\Software as Software;
 // FIXME use \clearos\ as Syswatch;
 
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 clearos_load_library('base/Software');
 // FIXME clearos_load_library('syswatch/Syswatch');
 
@@ -241,7 +241,7 @@ class Daemon extends Software
             return TRUE;
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $exitcode = $shell->execute(self::CMD_PIDOF, "-x -s $this->processname");
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
@@ -309,7 +309,7 @@ class Daemon extends Software
         try {
             $options['stdin'] = "use_popen";
 
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(self::CMD_SERVICE, "$this->initscript $args", TRUE, $options);
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
@@ -331,7 +331,7 @@ class Daemon extends Software
         try {
             $options['stdin'] = "use_popen";
 
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(self::CMD_SERVICE, "$this->initscript restart", TRUE, $options);
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
@@ -363,7 +363,7 @@ class Daemon extends Software
             $args = "off";
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(self::CMD_CHKCONFIG, "--level 345 $this->initscript $args", TRUE);
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), COMMON_FATAL);
@@ -407,7 +407,7 @@ class Daemon extends Software
         try {
             $options['stdin'] = "use_popen";
 
-            $shell = new ShellExec();
+            $shell = new Shell();
 
             // TODO: there is some strange behavior with the Cups daemon that causes
             // PHP to hang.  A temporary workaround

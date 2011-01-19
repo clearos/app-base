@@ -56,10 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
@@ -318,7 +318,7 @@ class Software extends Engine
         // We have to implement it here instead.
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $exitcode = $shell->execute(self::COMMAND_RPM, "-q --queryformat \"%{VERSION}\\n\" $rpm", FALSE);
             if ($exitcode != 0)
                 throw new Engine_Exception(SOFTWARE_LANG_ERRMSG_LOOKUP_ERROR, CLEAROS_WARNING);
@@ -390,7 +390,7 @@ class Software extends Engine
             // running multiple rpm commands simultaneously.  You can get a
             // temporary "cannot get shared lock" error in this case.
 
-            $shell = new ShellExec();
+            $shell = new Shell();
             $options['env'] = "LANG=en_US";
 
             for ($i = 0; $i < 5; $i++) {

@@ -56,10 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
@@ -165,7 +165,7 @@ class Folder extends Engine
             throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             if ($shell->execute(self::COMMAND_CHMOD, $mode . ' ' . $this->folder, TRUE) != 0)
                 throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
         } catch (Engine_Exception $e) {
@@ -198,7 +198,7 @@ class Folder extends Engine
             try {
                 $flags = ($recursive) ? '-R' : '';
 
-                $shell = new ShellExec();
+                $shell = new Shell();
 
                 if ($shell->execute(self::COMMAND_CHOWN, $owner . " $flags " . $this->folder, TRUE) != 0)
                     throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
@@ -211,7 +211,7 @@ class Folder extends Engine
             try {
                 $flags = ($recursive) ? '-R' : '';
 
-                $shell = new ShellExec();
+                $shell = new Shell();
 
                 if ($shell->execute(self::COMMAND_CHOWN, ':' . $group . " $flags " . $this->folder, TRUE) != 0)
                     throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
@@ -243,7 +243,7 @@ class Folder extends Engine
             throw new Folder_Already_Exists_Exception($this->folder, COMMON_ERROR);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             if ($shell->execute(self::COMMAND_MKDIR, "-p $this->folder", TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
         } catch(Engine_Exception $e) {
@@ -282,7 +282,7 @@ class Folder extends Engine
         if (! $this->exists())
             throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
 
-        $shell = new ShellExec();
+        $shell = new Shell();
         if ($ignore_nonempty) {
             try {
                 //TODO TODO TODO - validate the hell out of an "rm -rf"
@@ -312,7 +312,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             if ($shell->execute(self::COMMAND_FILE, $this->folder, TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
         } catch(Engine_Exception $e) {
@@ -337,7 +337,7 @@ class Folder extends Engine
 
         if ($this->superuser) {
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 if ($shell->execute(self::COMMAND_LS, escapeshellarg($this->folder), TRUE) != 0)
                     return FALSE;
                 else
@@ -374,7 +374,7 @@ class Folder extends Engine
 
         if ($detailed) {
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $options = ' -lA --time-style=full-iso ' . escapeshellarg($this->folder);
                 if ($shell->execute(self::COMMAND_LS, $options, TRUE) != 0)
                     throw new Folder_Exception($shell->get_first_output_line());
@@ -412,7 +412,7 @@ class Folder extends Engine
         } else {
             if ($this->superuser) {
                 try {
-                    $shell = new ShellExec();
+                    $shell = new Shell();
                     if ($shell->execute(self::COMMAND_LS, $this->folder, TRUE) != 0)
                         throw new Folder_Exception($shell->get_first_output_line());
                 } catch(Engine_Exception $e) {
@@ -475,7 +475,7 @@ class Folder extends Engine
         $fulllist = array();
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             if ($shell->execute(self::COMMAND_FIND, "$this->folder -type f", TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
             $fulllist = $shell->get_output();
@@ -506,7 +506,7 @@ class Folder extends Engine
             throw new Folder_Not_Found_Exception($this->filename, CLEAROS_WARNING);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $options = "-bc $this->folder";
             $exitcode = $shell->execute(self::COMMAND_DU, $options, TRUE);
         } catch(Engine_Exception $e) {
@@ -537,7 +537,7 @@ class Folder extends Engine
 
         if ($this->superuser) {
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $exitcode = $shell->execute(self::COMMAND_REALPATH, escapeshellarg($this->folder), TRUE);
             } catch(Engine_Exception $e) {
                 throw new Engine_Exception($e->get_message(), COMMON_WARNING);

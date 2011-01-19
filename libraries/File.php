@@ -56,10 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
@@ -242,7 +242,7 @@ class File extends Engine
         }
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             if ($maxbytes >= 0)
                 $exitcode = $shell->execute(File::COMMAND_HEAD, "-c $maxbytes $this->filename", TRUE);
             else
@@ -338,7 +338,7 @@ class File extends Engine
 
         if ($this->superuser) {
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $exitcode = $shell->execute(File::COMMAND_LS, escapeshellarg($this->filename), TRUE);
             } catch (Engine_Exception $e) {
                 throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
@@ -372,7 +372,7 @@ class File extends Engine
             throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $args = "-loL " . escapeshellarg($this->filename);
             $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
         } catch (Engine_Exception $e) {
@@ -409,7 +409,7 @@ class File extends Engine
                 return $md5;
 
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $exitcode = $shell->execute(self::COMMAND_MD5, escapeshellarg($this->filename), TRUE);
             } catch (Engine_Exception $e) {
                 throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
@@ -445,7 +445,7 @@ class File extends Engine
             throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $exitcode = $shell->execute(File::COMMAND_CHMOD, " $mode " . escapeshellarg($this->filename), TRUE);
         } catch (Engine_Exception $e) {
             throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
@@ -480,7 +480,7 @@ class File extends Engine
         if (! $this->exists())
             throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
 
-        $shell = new ShellExec();
+        $shell = new Shell();
 
         if (! empty($owner)) {
             try {
@@ -543,7 +543,7 @@ class File extends Engine
 
         if ($this->superuser) {
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
                 $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
             } catch (Engine_Exception $e) {
@@ -586,7 +586,7 @@ class File extends Engine
             throw new File_Already_Exists_Exception($this->filename, CLEAROS_INFO);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(File::COMMAND_TOUCH, escapeshellarg($this->filename), TRUE);
 
             if ($owner || $group)
@@ -624,7 +624,7 @@ class File extends Engine
             throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(File::COMMAND_RM, escapeshellarg($this->filename), TRUE);
         } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
@@ -649,7 +649,7 @@ class File extends Engine
         if ($this->superuser) {
 
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $shell->execute(File::COMMAND_FILE, escapeshellarg($this->filename), TRUE);
 
                 // TODO -- a hack
@@ -683,7 +683,7 @@ class File extends Engine
         if ($this->superuser) {
 
             try {
-                $shell = new ShellExec();
+                $shell = new Shell();
                 $shell->execute(File::COMMAND_FILE, escapeshellarg($this->filename), TRUE);
 
                 // TODO -- a hack
@@ -741,7 +741,7 @@ class File extends Engine
         $thisfile = escapeshellarg($this->filename);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $exitcode = $shell->execute(self::COMMAND_REPLACE, "$tempfile $thisfile", TRUE);
         } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
@@ -1079,7 +1079,7 @@ class File extends Engine
         // TODO: validate destination
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $arguments = "-a " . escapeshellarg($this->filename) . " " . escapeshellarg($destination);
             $exitcode = $shell->execute(File::COMMAND_COPY, $arguments, TRUE);
         } catch (Engine_Exception $e) {
@@ -1109,7 +1109,7 @@ class File extends Engine
         // TODO: validate destination
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $arguments =  escapeshellarg($this->filename) . " " . escapeshellarg($destination);
             $exitcode = $shell->execute(File::COMMAND_MOVE, $arguments, TRUE);
         } catch (Engine_Exception $e) {

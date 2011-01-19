@@ -3,7 +3,7 @@
 /**
  * Software not installed exception.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
@@ -63,7 +63,7 @@ clearos_load_library('base/Engine_Exception');
 /**
  * Software not installed exception.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>

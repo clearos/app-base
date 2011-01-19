@@ -56,10 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\ShellExec as ShellExec;
+use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/ShellExec');
+clearos_load_library('base/Shell');
 
 // Exceptions
 //-----------
@@ -118,7 +118,7 @@ class Process_Manager extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
             $shell->execute(self::COMMAND_PS, "-eo pid,user,time,%cpu,%mem,sz,tty,ucomm,command");
             $output = $shell->get_output();
         } catch (Engine_Exception $e) {
@@ -142,7 +142,7 @@ class Process_Manager extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $shell = new ShellExec();
+            $shell = new Shell();
 
             foreach ($pids as $pid)
                 $shell->execute(self::COMMAND_KILL, $pid, TRUE);
