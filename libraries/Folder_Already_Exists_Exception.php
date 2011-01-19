@@ -1,9 +1,9 @@
 <?php
 
 /**
- * File already exists exception class.
+ * Folder already exists exception class.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
@@ -61,9 +61,9 @@ clearos_load_library('base/Engine_Exception');
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * File already exists exception.
+ * Folder already exists exception class.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
@@ -72,17 +72,17 @@ clearos_load_library('base/Engine_Exception');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class File_Already_Exists_Exception extends Engine_Exception
+class Folder_Already_Exists_Exception extends Engine_Exception
 {
     /**
-     * File_Already_Exists_Exception constructor.
+     * Folder_Already_Exists_Exception constructor.
      *
-     * @param string $filename filename
-     * @param int    $code     error code
+     * @param string $folder folder name
+     * @param int    $code   error code
      */
 
-    public function __construct($filename, $code)
+    public function __construct($folder, $code)
     {
-        parent::__construct(FILE_LANG_ERRMSG_EXISTS . " - " . $filename, $code);
+        parent::__construct(FOLDER_LANG_ERRMSG_EXISTS . " - " . $folder, $code);
     }
 }

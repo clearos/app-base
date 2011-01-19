@@ -1,13 +1,13 @@
 <?php
 
 /**
- * File already exists exception class.
+ * Software not installed exception.
  *
  * @category   ClearOS
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2003-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -61,28 +61,28 @@ clearos_load_library('base/Engine_Exception');
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * File already exists exception.
+ * Software not installed exception.
  *
  * @category   ClearOS
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2003-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class File_Already_Exists_Exception extends Engine_Exception
+class Software_Not_Installed_Exception extends Engine_Exception
 {
     /**
-     * File_Already_Exists_Exception constructor.
+     * Software_Not_Installed_Exception constructor.
      *
-     * @param string $filename filename
-     * @param int    $code     error code
+     * @param string  $package_name software package name
+     * @param integer $code         error code
      */
 
-    public function __construct($filename, $code)
+    public function __construct($package_name, $code)
     {
-        parent::__construct(FILE_LANG_ERRMSG_EXISTS . " - " . $filename, $code);
+        parent::__construct(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $package_name", $code);
     }
 }

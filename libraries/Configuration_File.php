@@ -56,8 +56,10 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
 
 clearos_load_library('base/Engine');
+clearos_load_library('base/File');
 
 // Exceptions
 //-----------
@@ -93,7 +95,8 @@ class Configuration_File extends Engine
     protected $limit = 2;
     protected $flags = NULL;
     protected $loaded = FALSE;
-    protected $cfg = array();
+    protected $filename = NULL;
+    protected $config = array();
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -119,10 +122,7 @@ class Configuration_File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        parent::__construct($filename, TRUE);
-
         switch ($method) {
-
             case 'ini':
                 $token = array('/^\s*\[(.*?)\]\s*$/', '=');
                 break;
@@ -141,6 +141,7 @@ class Configuration_File extends Engine
                     $token .= "/";
         }
 
+        $this->filename = $filename;
         $this->method = $method;
         $this->token = $token;
         $this->limit = $limit;
@@ -166,7 +167,8 @@ class Configuration_File extends Engine
 
         if (! $this->loaded) {
             try {
-                $lines = $this->get_contents_as_array();
+                $file = new File($this->filename, TRUE);
+                $lines = $file->get_contents_as_array();
             } catch (Engine_Exception $e) {
                 throw $e;
             }
@@ -281,10 +283,10 @@ class Configuration_File extends Engine
                     }
             }
 
-            $this->cfg = $configfile;
+            $this->config = $configfile;
             $this->loaded = TRUE;
         }
 
-        return $this->cfg;
+        return $this->config;
     }
 }

@@ -1,9 +1,9 @@
 <?php
 
 /**
- * File already exists exception class.
+ * Folder exception class.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
@@ -43,12 +43,6 @@ $bootstrap = isset($_ENV['CLEAROS_BOOTSTRAP']) ? $_ENV['CLEAROS_BOOTSTRAP'] : '/
 require_once $bootstrap . '/bootstrap.php';
 
 ///////////////////////////////////////////////////////////////////////////////
-// T R A N S L A T I O N S
-///////////////////////////////////////////////////////////////////////////////
-
-clearos_load_language('base');
-
-///////////////////////////////////////////////////////////////////////////////
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -61,9 +55,9 @@ clearos_load_library('base/Engine_Exception');
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * File already exists exception.
+ * Folder exception class.
  *
- * @category   ClearOS
+ * @category   Apps
  * @package    Base
  * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
@@ -72,17 +66,17 @@ clearos_load_library('base/Engine_Exception');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class File_Already_Exists_Exception extends Engine_Exception
+class Folder_Exception extends Engine_Exception
 {
     /**
-     * File_Already_Exists_Exception constructor.
+     * Folder_Exception constructor.
      *
-     * @param string $filename filename
-     * @param int    $code     error code
+     * @param string  $errmsg error message
+     * @param integer $code   error code
      */
 
-    public function __construct($filename, $code)
+    public function __construct($errmsg, $code)
     {
-        parent::__construct(FILE_LANG_ERRMSG_EXISTS . " - " . $filename, $code);
+        parent::__construct($errmsg, $code);
     }
 }
