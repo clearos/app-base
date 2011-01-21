@@ -86,7 +86,7 @@ class Theme extends ClearOS_Controller
 			$baseapp = preg_replace('/.*\/app\//', '', $this->agent->referrer());
 			redirect('/' . $baseapp);
 		} else {
-			redirect('/dhcp');
+			redirect('/base/dashboard');
 		}
 	}
 }
