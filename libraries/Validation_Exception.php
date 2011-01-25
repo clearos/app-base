@@ -78,4 +78,17 @@ class Validation_Exception extends Engine_Exception
     {
         parent::__construct($message, CLEAROS_INFO);
     }
+
+    /**
+     * Test if message is empty and if not, throw a validation exception.
+     *
+     * @param   string $message error message
+     * @throws  Validation_Exception
+     * @returns void
+     */
+    static function is_valid($message)
+    {
+        if (is_string($message) && !empty($message))
+            throw new Validation_Exception($message);
+    }
 }
