@@ -84,6 +84,6 @@ class File_No_Match_Exception extends Engine_Exception
     public function __construct($filename, $key)
     {
         // FIXME: translate
-        parent::__construct("No match in file $filename for key $key", self::CODE_INFO);
+        parent::__construct("No match in file $filename for key $key", CLEAROS_INFO);
     }
 }
