@@ -1,6 +1,6 @@
 <?PHp
 
-$COdes = array(
+$codes = array(
     'AD' => lang('base_country_andorra'),
     'AE' => lang('base_country_united_arab_emirates'),
     'AF' => lang('base_country_afghanistan'),
