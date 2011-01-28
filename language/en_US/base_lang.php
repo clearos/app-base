@@ -187,6 +187,7 @@ $lang['base_overview'] = 'Overview';
 
 $lang['base_errmsg_invalid_parameter'] = 'Invalid parameter: %s';
 $lang['base_errmsg_command_execution_failed'] = 'Command execution failed using %s';
+$lang['base_errmsg_command_null_output'] = 'Command returned NULL output: %s';
 $lang['base_errmsg_file_not_found'] = 'File not found: %s';
 $lang['base_errmsg_folder_already_exists'] = 'Folder already exists: %s';
 $lang['base_errmsg_file_already_exists'] = 'File already exists: %s';

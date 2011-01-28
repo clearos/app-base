@@ -114,6 +114,8 @@ class Shell extends Engine
      * - env: environment variables (default NULL)
      * - background: run command in background (default FALSE)
      * - stdin: write arguments to stdin (default FALSE)
+     * - validate_output: throw exception on empty output (default FALSE)
+     * - validate_exit_code: check exit code, throw exception if not 0 (default TRUE)
      * 
      * @param string  $command   command to excecute
      * @param string  $arguments command arguments
@@ -126,8 +128,7 @@ class Shell extends Engine
 
     public function execute($command, $arguments, $superuser = FALSE, $options = NULL)
     {
-        clearos_profile(__METHOD__, __LINE__);
-        clearos_profile(__METHOD__, __LINE__, $command . " " . $arguments);
+        clearos_profile(__METHOD__, __LINE__, "$command $arguments");
 
         $this->output = array();
 
@@ -137,8 +138,18 @@ class Shell extends Engine
         if (isset($options['escape']) && (!is_bool($options['escape'])))
             throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[escape]'));
 
-        if (isset($options['log']) && (preg_match("/\//", $options['log']) || preg_match("/\.\./", $options['log'])))
+        if (isset($options['log']) && (preg_match('/\//', $options['log']) || preg_match('/\.\./', $options['log'])))
             throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[log]'));
+
+        if (isset($options['validate_output']) && (!is_bool($options['validate_output'])))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[validate_output]'));
+        else if (!isset($options['validate_output']))
+            $options['validate_output'] = FALSE;
+
+        if (isset($options['validate_exit_code']) && (!is_bool($options['validate_exit_code'])))
+            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[validate_exit_code]'));
+        else if (!isset($options['validate_exit_code']))
+            $options['validate_exit_code'] = TRUE;
 
         // Validate executable for non-superuser access.
         // If the file does not exist in superuser mode, it will get caught below
@@ -153,12 +164,12 @@ class Shell extends Engine
         }
 
         if (strlen($arguments))
-            $exe = $command . " " . $arguments;
+            $exe = "$command $arguments";
         else
             $exe = $command;
 
         if ($superuser)
-            $exe = self::COMMAND_SUDO . " " . $exe;
+            $exe = self::COMMAND_SUDO . ' ' . $exe;
 
         if (isset($options['env']))
             $exe = $options['env'] . " $exe";
@@ -169,19 +180,19 @@ class Shell extends Engine
         // FIXME: COMMON_TEMP_DIR is no longer defined
 
         if (isset($options['log']))
-            $exe .= " >>" . COMMON_TEMP_DIR . "/" . $options['log'];
+            $exe .= ' >>' . COMMON_TEMP_DIR . '/' . $options['log'];
         else if (isset($options['background']) && $options['background'])
-            $exe .= " >/dev/null";
+            $exe .= ' >/dev/null';
 
-        $exe .= " 2>&1";
+        $exe .= ' 2>&1';
 
         if (isset($options['background']) && $options['background'])
-            $exe .= " &";
+            $exe .= ' &';
 
         $retval = NULL;
 
         if (isset($options['stdin'])) {
-            $ph = popen($exe, "w");
+            $ph = popen($exe, 'w');
 
             if (strlen($options['stdin']))
                 fwrite($ph, $options['stdin']);
@@ -189,6 +200,19 @@ class Shell extends Engine
             $retval = pclose($ph);
         } else {
             exec($exe, $this->output, $retval);
+        }
+
+        if (isset($options['validate_exit_code']) && $options['validate_exit_code']
+            && $retval != 0) {
+            $message = sprintf(lang('base_errmsg_command_execution_failed'), $command);
+            if (isset($this->output[0]))
+                $message = $this->output[0];
+            throw new Validation_Exception($message);
+        }
+
+        if (isset($options['validate_output']) && $options['validate_output']
+            && !isset($this->output[0])) {
+            throw new Validation_Exception(sprintf(lang('base_errmsg_command_null_output'), $command));
         }
 
         return $retval;
@@ -215,10 +239,9 @@ class Shell extends Engine
 
     public function get_first_output_line()
     {
-        if (isset($this->output[0]))
-            return $this->output[0];
-        else
-            return "";
+        reset($this->output);
+        $retval = current($this->output);
+        return $retval;
     }
 
     /**
@@ -231,9 +254,9 @@ class Shell extends Engine
 
     public function get_last_output_line()
     {
-        if (isset($this->output[sizeof($this->output) - 1]))
-            return $this->output[sizeof($this->output) - 1];
-        else
-            return "";
+        reset($this->output);
+        $retval = end($this->output);
+        reset($this->output);
+        return $retval;
     }
 }
