@@ -223,7 +223,7 @@ class File extends Engine
             throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
 
         if (! $this->exists() )
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         // TODO: use some other semaphore -- this breaks with maxbytes set
         //if (is_null($this->contents)) {
@@ -369,7 +369,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         try {
             $shell = new Shell();
@@ -400,7 +400,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         if ($this->superuser) {
             $md5 = md5_file("$this->filename");
@@ -442,7 +442,7 @@ class File extends Engine
         // TODO: validate $mode
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         try {
             $shell = new Shell();
@@ -478,7 +478,7 @@ class File extends Engine
         // TODO: more input validation
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         $shell = new Shell();
 
@@ -519,7 +519,7 @@ class File extends Engine
         clearstatcache();
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         // TODO: this will fail on files that user webconfig cannot read (protected directories).
         // Added File_Exception to docs to futureproof API.
@@ -539,7 +539,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         if ($this->superuser) {
             try {
@@ -621,7 +621,7 @@ class File extends Engine
         clearstatcache();
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         try {
             $shell = new Shell();
@@ -732,10 +732,10 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! file_exists($tempfile))
-            throw new File_Not_Found_Exception($tempfile, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         if (! $this->exists())
-            throw new File_Not_Found_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Not_Found_Exception();
 
         $tempfile = escapeshellarg($tempfile);
         $thisfile = escapeshellarg($this->filename);

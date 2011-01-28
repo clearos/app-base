@@ -77,12 +77,11 @@ class Folder_Not_Found_Exception extends Engine_Exception
     /**
      * Folder_Not_Found_Exception constructor.
      *
-     * @param string $folder folder name
-     * @param int    $code   error code
+     * @param integer $code error code
      */
 
-    public function __construct($folder, $code)
+    public function __construct($code = CLEAROS_INFO)
     {
-        parent::__construct(sprintf(lang('base_errmsg_folder_not_found'),  $folder), $code);
+        parent::__construct(lang('base_exception_folder_not_found'), $code);
     }
 }

@@ -162,7 +162,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
+            throw new Folder_Not_Found_Exception();
 
         try {
             $shell = new Shell();
@@ -190,7 +190,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
+            throw new Folder_Not_Found_Exception();
 
         // Let the chown command do the validation
 
@@ -280,7 +280,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
+            throw new Folder_Not_Found_Exception();
 
         $shell = new Shell();
         if ($ignore_nonempty) {
@@ -370,7 +370,7 @@ class Folder extends Engine
         $listing = array();
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->folder, CLEAROS_WARNING);
+            throw new Folder_Not_Found_Exception();
 
         if ($detailed) {
             try {
@@ -448,7 +448,7 @@ class Folder extends Engine
         clearstatcache();
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->filename, COMMON_INFO);
+            throw new Folder_Not_Found_Exception();
 
         // TODO: this will fail on folders that user webconfig cannot read (protected directories).
         // Added Engine_Exception to docs to futureproof API.
@@ -469,7 +469,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->folder);
+            throw new Folder_Not_Found_Exception();
 
         $listing = array();
         $fulllist = array();
@@ -503,7 +503,7 @@ class Folder extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->exists())
-            throw new Folder_Not_Found_Exception($this->filename, CLEAROS_WARNING);
+            throw new Folder_Not_Found_Exception();
 
         try {
             $shell = new Shell();
