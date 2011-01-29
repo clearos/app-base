@@ -215,46 +215,40 @@ class File extends Engine
      * @throws File_Not_Found_Exception, File_Exception
      */
 
-    public function get_contents_as_array($maxbytes = -1)
+    public function get_contents_as_array($max_bytes = -1)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!is_int($maxbytes) || $maxbytes < -1)
+        if (!is_int($max_bytes) || $max_bytes < -1)
             throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+
+        clearstatcache();
 
         if (! $this->exists() )
             throw new File_Not_Found_Exception();
 
-        // TODO: use some other semaphore -- this breaks with maxbytes set
-        //if (is_null($this->contents)) {
+        // If readable by webconfig, then use file_get_contents instead of shell
 
-        // If readable by webconfig, then use file_get_contents
-        // If file_get_contents fails, try shellexec
-
-        if (is_readable("$this->filename")) {
-            $maxlen = ($maxbytes >= 0) ? $maxbytes : NULL;
-            $contents = file_get_contents("$this->filename", FALSE, NULL, 0, $maxlen);
-
-            if ($contents) {
-                $this->contents = explode("\n", rtrim($contents));
-                return $this->contents;
-            }
-        }
-
-        try {
-            $shell = new Shell();
-            if ($maxbytes >= 0)
-                $exitcode = $shell->execute(File::COMMAND_HEAD, "-c $maxbytes $this->filename", TRUE);
+        if (is_readable($this->filename)) {
+            if ($max_bytes > 0)
+                $contents = file_get_contents($this->filename, FALSE, NULL, 0, $max_bytes);
             else
-                $exitcode = $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
-        } catch (Engine_Exception $e) {
-            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+                $contents = file_get_contents($this->filename, FALSE, NULL, 0);
+
+            if ($contents === FALSE)
+                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+
+            $this->contents = explode("\n", rtrim($contents));
+        } else {
+            $shell = new Shell();
+
+            if ($max_bytes >= 0)
+                $shell->execute(File::COMMAND_HEAD, "-c $max_bytes $this->filename", TRUE);
+            else
+                $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
+
+            $this->contents = $shell->get_output();
         }
-
-        if ($exitcode != 0)
-            throw new File_Exception($shell->get_first_output_line(), CLEAROS_WARNING);
-
-        $this->contents = $shell->get_output();
 
         return $this->contents;
     }
