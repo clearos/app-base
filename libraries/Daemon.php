@@ -146,10 +146,10 @@ class Daemon extends Software
 
     protected $reloadable;
 
-    const CMD_LS = '/bin/ls';
-    const CMD_CHKCONFIG = '/sbin/chkconfig';
-    const CMD_SERVICE = '/sbin/service';
-    const CMD_PIDOF = '/sbin/pidof';
+    const COMMAND_LS = '/bin/ls';
+    const COMMAND_CHKCONFIG = '/sbin/chkconfig';
+    const COMMAND_SERVICE = '/sbin/service';
+    const COMMAND_PIDOF = '/sbin/pidof';
     const PATH_INITD = '/etc/rc.d/rc3.d';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -194,7 +194,6 @@ class Daemon extends Software
         parent::__construct($this->package);
     }
 
-
     /**
      * Returns the boot state of the daemon.
      *
@@ -209,12 +208,8 @@ class Daemon extends Software
         if (! $this->is_installed())
             throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
 
-        try {
-            $folder = new Folder(self::PATH_INITD);
-            $listing = $folder->get_listing();
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
+        $folder = new Folder(self::PATH_INITD);
+        $listing = $folder->get_listing();
 
         foreach ($listing as $file) {
             if (preg_match("/^S\d+$this->initscript$/", $file))
@@ -240,14 +235,13 @@ class Daemon extends Software
         if ($file->exists())
             return TRUE;
 
-        try {
-            $shell = new Shell();
-            $exitcode = $shell->execute(self::CMD_PIDOF, "-x -s $this->processname");
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
+        // pidof will return non-zero if process not found, so avoid triggering exception
+        $options['validate_exit_code'] = FALSE;
 
-        if ($exitcode == 0)
+        $shell = new Shell();
+        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s $this->processname", FALSE, $options);
+
+        if ($exit_code == 0)
             return TRUE;
         else
             return FALSE;
@@ -270,7 +264,7 @@ class Daemon extends Software
     /**
      * Returns a short title for the daemon (eg Apache Web Server).
      *
-     * @return string short tile for daemon
+     * @return string short title for daemon
      * @throws Engine_Exception
      */
 
@@ -292,28 +286,14 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $isrunning = $this->get_running_state();
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
-
-        if (! $isrunning)
+        if (! $this->get_running_state())
             return;
 
-        if ($this->reloadable)
-            $args = "reload";
-        else
-            $args = "restart";
+        $args = ($this->reloadable) ? 'reload' : 'restart';
+        $options['stdin'] = 'use_popen';
 
-        try {
-            $options['stdin'] = "use_popen";
-
-            $shell = new Shell();
-            $shell->execute(self::CMD_SERVICE, "$this->initscript $args", TRUE, $options);
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args", TRUE, $options);
     }
 
     /**
@@ -328,14 +308,10 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $options['stdin'] = "use_popen";
+        $options['stdin'] = "use_popen";
 
-            $shell = new Shell();
-            $shell->execute(self::CMD_SERVICE, "$this->initscript restart", TRUE, $options);
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_SERVICE, "$this->initscript restart", TRUE, $options);
     }
 
     /**
@@ -351,23 +327,15 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (! is_bool($state))
-            throw new Validation_Exception(lang('base_errmsg_invalid') . lang('daemon_boot'));
+        Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
             throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
 
-        if ($state)
-            $args = "on";
-        else
-            $args = "off";
+        $args = ($state) ? 'on' : 'off';
 
-        try {
-            $shell = new Shell();
-            $shell->execute(self::CMD_CHKCONFIG, "--level 345 $this->initscript $args", TRUE);
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), COMMON_FATAL);
-        }
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_CHKCONFIG, "--level 345 $this->initscript $args", TRUE);
     }
 
     /**
@@ -383,51 +351,43 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (! is_bool($state))
-            throw new Validation_Exception(lang('base_errmsg_invalid') . lang('daemon_running'));
+        Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
             throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
 
-        $isrunning = $this->get_running_state();
+        $is_running = $this->get_running_state();
 
-        if ($isrunning && $state) {
+        if ($is_running && $state) {
             // issued start on already running daemon
             return;
-        } else if (!$isrunning && !$state) {
+        } else if (!$is_running && !$state) {
             // issued stop on already stopped daemon
             return;
         }
 
-        if ($state)
-            $args = "start";
-        else
-            $args = "stop";
+        $args = ($state) ? 'start' : 'stop';
+        $options['stdin'] = "use_popen";
 
-        try {
-            $options['stdin'] = "use_popen";
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args", TRUE, $options);
+    }
 
-            $shell = new Shell();
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A L I D A T I O N
+    ///////////////////////////////////////////////////////////////////////////////
 
-            // TODO: there is some strange behavior with the Cups daemon that causes
-            // PHP to hang.  A temporary workaround
-            if (($this->package == "cups") && $state) {
-                $file = new File("/etc/system/initialized/cups");
-                if (! $file->exists()) {
-                    include_once 'Syswatch.php';
-                    $syswatch = new Syswatch();
-                    $syswatch->SendSignal("61");
-
-                    $file->create("root", "root", "0644");
-                    sleep(10);
-                } else {
-                    $exitcode = $shell->execute(self::CMD_SERVICE, "$this->initscript $args", TRUE, $options);
-                }
-            } else {
-                $exitcode = $shell->execute(self::CMD_SERVICE, "$this->initscript $args", TRUE, $options);
-            }
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_ERROR);
-        }
+    /**
+     * Validate state variable.
+     *
+     * @param boolean $state state
+     *
+     * @return string error message if state is invalid.
+     */
+    
+    public function validate_state($state)
+    {
+        if (! is_bool($state))
+            return lang('base_validate_state_invalid');
     }
 }
