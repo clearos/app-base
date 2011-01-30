@@ -93,7 +93,6 @@ class Configuration_File extends Engine
     protected $method = 'explode';
     protected $token = '=';
     protected $limit = 2;
-    protected $flags = NULL;
     protected $loaded = FALSE;
     protected $filename = NULL;
     protected $config = array();
@@ -115,10 +114,9 @@ class Configuration_File extends Engine
      * @param string  $method   configuration file type (default = explode)
      * @param string  $token    a valid regex or delimiter
      * @param integer $limit    max number of parts, the first part is always used as the "key"
-     * @param integer $flags    preg_match/preg_split accept various flags (cf. @link http://www.php.net )
      */
 
-    public function __construct($filename, $method = 'explode', $token = '=', $limit = 2, $flags = NULL)
+    public function __construct($filename, $method = 'explode', $token = '=', $limit = 2)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -145,14 +143,13 @@ class Configuration_File extends Engine
         $this->method = $method;
         $this->token = $token;
         $this->limit = $limit;
-        $this->flags = $flags;
         $this->loaded = FALSE;
     }
 
     /**
-     * Loads a configuration file and returns its values as an array
+     * Loads a configuration file and returns its values as an array.
      *
-     * @param boolean $reload (optional) if TRUE, a "fresh" copy will be retrieved rather than a cached version
+     * @param boolean $reload loads a fresh copy instead of a potentially cached copy
      *
      * @return array parsed array of elements from configuration file
      * @throws Engine_Exception
@@ -166,12 +163,8 @@ class Configuration_File extends Engine
             $this->loaded = FALSE;
 
         if (! $this->loaded) {
-            try {
-                $file = new File($this->filename, TRUE);
-                $lines = $file->get_contents_as_array();
-            } catch (Engine_Exception $e) {
-                throw $e;
-            }
+            $file = new File($this->filename);
+            $lines = $file->get_contents_as_array();
 
             $configfile = array();
             $n = 0;
@@ -216,7 +209,7 @@ class Configuration_File extends Engine
                         } elseif (preg_match('/^\s*$/', $line)) {
                             // a blank line
                             continue;
-                        } elseif (preg_match($this->token, $line, $match, $this->flags)) {
+                        } elseif (preg_match($this->token, $line, $match)) {
                             $configfile[$match[1]] = $match[2];
                         } else {
                             throw new Engine_Exception($this->filename, $n, CLEAROS_ERROR);
@@ -238,7 +231,7 @@ class Configuration_File extends Engine
                             // a blank line
                             continue;
                         } else {
-                            $match = array_map('trim', preg_split($this->token, $line, $this->limit, $this->flags));
+                            $match = array_map('trim', preg_split($this->token, $line, $this->limit));
     
                             if (($match[0] == $line)||(empty($match[0]))) {
                                 throw new Engine_Exception($this->filename, $n, CLEAROS_ERROR);
