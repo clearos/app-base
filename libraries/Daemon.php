@@ -59,13 +59,11 @@ use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
 use \clearos\apps\base\Shell as Shell;
 use \clearos\apps\base\Software as Software;
-// FIXME use \clearos\ as Syswatch;
 
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
 clearos_load_library('base/Shell');
 clearos_load_library('base/Software');
-// FIXME clearos_load_library('syswatch/Syswatch');
 
 // Exceptions
 //-----------
