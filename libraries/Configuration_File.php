@@ -162,122 +162,118 @@ class Configuration_File extends Engine
         if ($reload)
             $this->loaded = FALSE;
 
-        if (! $this->loaded) {
-            $file = new File($this->filename);
-            $lines = $file->get_contents_as_array();
+        if ($this->loaded)
+            return $this->config;
 
-            $configfile = array();
-            $n = 0;
-            $match = "";
+        $file = new File($this->filename);
+        $lines = $file->get_contents_as_array();
 
-            switch ($this->method) {
+        $config_file = array();
+        $n = 0;
+        $match = "";
 
-                case 'ini':
-                    $key = NULL;
-                    foreach ($lines as $line) {
-                        $n++;
-    
-                        if (preg_match('/^\/\//', $line))
-                            continue;
-    
-                        if (preg_match('/^#.*$/', $line)) {
-                            continue;
-                        } elseif (preg_match('/^\s*$/', $line)) {
-                            // a blank line
-                            continue;
-                        } elseif (preg_match($this->token[0], $line, $match)) {
-                            $key = $match[1];
-                        } elseif ((strpos($line, $this->token[1]) !== FALSE) && (!(is_null($key)))) {
-                            $match = array_map('trim', explode($this->token[1], $line));
-                            $configfile[$key][$match[0]] = $match[1];
-                        } else {
-                            throw new Engine_Exception(lang('base_exception_configuration_file_parse_error'), CLEAROS_ERROR);
-                        }
-                    }
-    
-                    break;
-    
-                case 'match':
-                    foreach ($lines as $line) {
-                        $n++;
-    
-                        if (preg_match('/^\/\/.*$/', $line))
-                            continue;
-    
-                        if (preg_match('/^\#.*$/', $line)) {
-                            continue;
-                        } elseif (preg_match('/^\s*$/', $line)) {
-                            // a blank line
-                            continue;
-                        } elseif (preg_match($this->token, $line, $match)) {
-                            $configfile[$match[1]] = $match[2];
-                        } else {
-                            throw new Engine_Exception(lang('base_exception_configuration_file_parse_error'), CLEAROS_ERROR);
-                        }
-                    }
-    
-                    break;
-    
-                case 'split':
-                    foreach ($lines as $line) {
-                        $n++;
-    
-                        if (preg_match('/^\/\/.*$/', $line))
-                            continue;
-    
-                        if (preg_match('/^\#.*$/', $line)) {
-                            continue;
-                        } elseif (preg_match('/^\s*$/', $line)) {
-                            // a blank line
-                            continue;
-                        } else {
-                            $match = array_map('trim', preg_split($this->token, $line, $this->limit));
-    
-                            if (($match[0] == $line)||(empty($match[0]))) {
-                                throw new Engine_Exception(lang('base_exception_configuration_file_parse_error'), CLEAROS_ERROR);
-                            } else {
-                                if ($this->limit == 2) {
-                                    $configfile[$match[0]] = $match[1];
-                                } else {
-                                    $configfile[$match[0]] = array_slice($match, 1);
-                                }
-                            }
-                        }
-                    }
-    
-                    break;
-    
-                default:
-                    foreach ($lines as $line) {
-                        $n++;
-    
-                        if (preg_match('/^\/\/.*$/', $line))
-                            continue;
-    
-                        if (preg_match('/^\#.*$/', $line)) {
-                            continue;
-                        } elseif (preg_match('/^\s*$/', $line)) {
-                            // a blank line
-                            continue;
-                        } else {
-                            $match = array_map('trim', explode($this->token, $line, $this->limit));
-    
-                            if ($match[0] == $line) {
-                                throw new Engine_Exception(lang('base_exception_configuration_file_parse_error'), CLEAROS_ERROR);
-                            } else {
-                                if ($this->limit == 2) {
-                                    $configfile[$match[0]] = $match[1];
-                                } else {
-                                    $configfile[$match[0]] = array_slice($match, 1);
-                                }
-                            }
-                        }
-                    }
+        if ($this->method === 'ini') {
+
+            $key = NULL;
+
+            foreach ($lines as $line) {
+                $n++;
+
+                if (preg_match('/^\/\//', $line))
+                    continue;
+
+                if (preg_match('/^#.*$/', $line)) {
+                    continue;
+                } elseif (preg_match('/^\s*$/', $line)) {
+                    // a blank line
+                    continue;
+                } elseif (preg_match($this->token[0], $line, $match)) {
+                    $key = $match[1];
+                } elseif ((strpos($line, $this->token[1]) !== FALSE) && (!(is_null($key)))) {
+                    $match = array_map('trim', explode($this->token[1], $line));
+                    $config_file[$key][$match[0]] = $match[1];
+                } else {
+                    throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                }
             }
 
-            $this->config = $configfile;
-            $this->loaded = TRUE;
+        } else if ($this->method === 'match') {
+
+            foreach ($lines as $line) {
+                $n++;
+
+                if (preg_match('/^\/\/.*$/', $line))
+                    continue;
+
+                if (preg_match('/^\#.*$/', $line)) {
+                    continue;
+                } elseif (preg_match('/^\s*$/', $line)) {
+                    // a blank line
+                    continue;
+                } elseif (preg_match($this->token, $line, $match)) {
+                    $config_file[$match[1]] = $match[2];
+                } else {
+                    throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                }
+            }
+
+        } else if ($this->method === 'split') {
+            foreach ($lines as $line) {
+                $n++;
+
+                if (preg_match('/^\/\/.*$/', $line))
+                    continue;
+
+                if (preg_match('/^\#.*$/', $line)) {
+                    continue;
+                } elseif (preg_match('/^\s*$/', $line)) {
+                    // a blank line
+                    continue;
+                } else {
+                    $match = array_map('trim', preg_split($this->token, $line, $this->limit));
+
+                    if (($match[0] == $line)||(empty($match[0]))) {
+                        throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                    } else {
+                        if ($this->limit == 2) {
+                            $config_file[$match[0]] = $match[1];
+                        } else {
+                            $config_file[$match[0]] = array_slice($match, 1);
+                        }
+                    }
+                }
+            }
+
+        } else {
+            foreach ($lines as $line) {
+                $n++;
+
+                if (preg_match('/^\/\/.*$/', $line))
+                    continue;
+
+                if (preg_match('/^\#.*$/', $line)) {
+                    continue;
+                } elseif (preg_match('/^\s*$/', $line)) {
+                    // a blank line
+                    continue;
+                } else {
+                    $match = array_map('trim', explode($this->token, $line, $this->limit));
+
+                    if ($match[0] == $line) {
+                        throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                    } else {
+                        if ($this->limit == 2) {
+                            $config_file[$match[0]] = $match[1];
+                        } else {
+                            $config_file[$match[0]] = array_slice($match, 1);
+                        }
+                    }
+                }
+            }
         }
+
+        $this->config = $config_file;
+        $this->loaded = TRUE;
 
         return $this->config;
     }
