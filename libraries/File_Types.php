@@ -78,8 +78,8 @@ class File_Types extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     protected $categories = array();
-    protected $file_extensions = NULL;
-    protected $file_mime_types = NULL;
+    protected $file_extensions = array();
+    protected $file_mime_types = array();
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
