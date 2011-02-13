@@ -53,10 +53,7 @@ clearos_load_language('base');
 ///////////////////////////////////////////////////////////////////////////////
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\File as File;
-
 clearos_load_library('base/Engine');
-clearos_load_library('base/File');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -76,13 +73,6 @@ clearos_load_library('base/File');
 
 class File_Types extends Engine
 {
-    ///////////////////////////////////////////////////////////////////////////////
-    // C O N S T A N T S
-    ///////////////////////////////////////////////////////////////////////////////
-
-    const FILE_EXTENSIONS = '/etc/system/fileextensions';
-    const FILE_MIME_TYPES = '/etc/system/mimetypes';
-
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
@@ -105,7 +95,6 @@ class File_Types extends Engine
 
         $this->file_extensions = clearos_app_base('base') . '/config/file_extensions.php';
         $this->file_mime_types = clearos_app_base('base') . '/config/mime_types.php';
-
         $this->categories = array(
             'archive'       => lang('base_file_category_archive'),
             'document'      => lang('base_file_category_document'),
@@ -126,32 +115,9 @@ class File_Types extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $extensions = array();
+        $file_extensions = array();
 
-        include_once($this->file_extensions);
-
-/*
-        $file = new File($this->file_extensions);
-        $lines = $file->get_contents_as_array();
-
-        foreach ($lines as $line) {
-            if (preg_match('/^#/', $line))
-                continue;
-
-            if (preg_match('/^\s*$/', $line))
-                continue;
-
-            $items = explode(' ', $line, 3);
-
-            $extensions[$items[0]]['type'] = $items[1];
-            $extensions[$items[0]]['description'] = $items[2];
-
-            if (isset($this->categories[$items[1]]))
-                $extensions[$items[0]]['typetext'] = $this->categories[$items[1]];
-            else
-                $extensions[$items[0]]['typetext'] = $items[1];
-        }
-*/
+        include_once $this->file_extensions;
 
         return $file_extensions;
     }
@@ -169,17 +135,7 @@ class File_Types extends Engine
 
         $mime_types = array();
 
-        include_once($this->file_mime_types);
-
-/*
-        $file = new File($this->file_mime_types);
-        $lines = $file->get_contents_as_array();
-
-        foreach ($lines as $line) {
-            $items = explode(' ', $line, 2);
-            $types[$items[0]] = $items[1];
-        }
-*/
+        include_once $this->file_mime_types;
 
         return $mime_types;
     }
