@@ -96,17 +96,21 @@ class Locale extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    const FILE_CONFIG = '/usr/clearos/apps/base/config/locale';
     const FILE_I18N = '/etc/sysconfig/i18n';
     const FILE_KEYBOARD = '/etc/sysconfig/keyboard';
+    const DEFAULT_ENCODING = 'UTF-8';
     const DEFAULT_KEYBOARD = 'us';
-    const DEFAULT_LANGUAGE = 'en_US';
+    const DEFAULT_LANGUAGE_BASE_CODE = 'en';
+    const DEFAULT_LANGUAGE_CODE = 'en_US';
+    const DEFAULT_TEXT_DIRECTION = 'LTR';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
 
-    protected $code = NULL;
+    protected $code = self::DEFAULT_LANGUAGE_CODE;
+    protected $locales = array();
+    protected $is_loaded = FALSE;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -122,25 +126,27 @@ class Locale extends Engine
     }
 
     /**
-     * Returns the character set for the current locale.
+     * Returns the character encoding for the current locale.
      *
-     * The language code format is: en, fr, etc.
-     *
-     * @return string character set 
+     * @return string character encoding
      * @throws Engine_Exception
      */
 
-    public function get_character_set()
+    public function get_encoding()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        // TODO: this obviously needs to be improved
-        switch (self::get_language_code()) {
-            case 'zh_CN':
-                return 'GB2312';
-            default:
-                return 'UTF-8';
-        }
+        if (! $this->is_loaded)
+            $this->_load_locales();
+
+        $code = $this->get_language_code();
+
+        if (isset($this->locales[$code]) && isset($this->locales[$code]['encoding']))
+            $encoding = $this->locales[$code]['encoding'];
+        else
+            $encoding = self::DEFAULT_ENCODING;
+
+        return $encoding;
     }
 
     /**
@@ -177,20 +183,13 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $file = new File(self::FILE_CONFIG);
-            $long_list = $file->lookup_value('/^language_list\s*=\s/');
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
-        }
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
         $keyboards = array();
-        $language_items = explode('|', $long_list);
 
-        foreach ($language_items as $lang) {
-            $details = explode(',', $lang);
-            $keyboards[] = $details[2];
-        }
+        foreach ($this->locales as $locale => $details)
+            $keyboards[] = $details['default_keyboard'];
 
         sort($keyboards);
 
@@ -218,9 +217,9 @@ class Locale extends Engine
                 $code = preg_replace('/\..*/', '', $code);
                 $code = preg_replace('/\"/', '', $code);
             } catch (File_Not_Found_Exception $e) {
-                $code = Locale::DEFAULT_LANGUAGE;
+                $code = Locale::DEFAULT_LANGUAGE_CODE;
             } catch (File_No_Match_Exception $e) {
-                $code = Locale::DEFAULT_LANGUAGE;
+                $code = Locale::DEFAULT_LANGUAGE_CODE;
             } catch (Exception $e) {
                 throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
             }
@@ -238,55 +237,48 @@ class Locale extends Engine
      * @throws Engine_Exception
      */
 
-    public function get_language_code_simple()
+    public function get_language_base_code()
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
         $code = $this->get_language_code();
 
-        return preg_replace('/_.*/', '', $code);
+        if (isset($this->locales[$code]) && isset($this->locales[$code]['base_code']))
+            $base_code = $this->locales[$code]['base_code'];
+        else
+            $base_code = self::DEFAULT_LANGUAGE_BASE_CODE;
+
+        return $base_code;
     }
 
     /**
-     * Returns the list of installed languages used in the framework.
+     * Returns the list of installed locales used in the framework.
      *
-     * The method returns a hash array keyed on the language code.  Each
-     * entry in the array contains another hash array with the following fields:
+     * The information is an array keyed on the language code (e.g. en_US)
+     * - base_code, e.g. en
+     * - description
+     * - native_description e.g. Français instead of French
+     * - default_keyboard
+     * - default_time_zone
+     * - text_direction
+     * - encoding
+     * - enabled
      *
-     *  - language code - eg en_US
-     *  - language short code - eg en
-     *  - language - eg English
-     *  - keyboard - eg de-latin1-nodeadkeys
-     *
-     * @return array hash array of language information
+     * @return array hash array of locales
      * @throws Engine_Exception
      */
 
-    public function get_language_info()
+    public function get_locales()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $file = new File(self::FILE_CONFIG);
-            $long_list = $file->lookup_value('/^language_list\s*=\s/');
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
-        }
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
-        $language_info = array();
-        $language_list = array();
-        $language_items = explode('|', $long_list);
-
-        foreach ($language_items as $lang) {
-            $details = explode(',', $lang);
-            $language_list['code'] = $details[0];
-            $language_list['shortcode'] = preg_replace('/_.*/', '', $details[0]);
-            $language_list['description'] = $details[1];
-            $language_list['keyboard'] = $details[2];
-            $language_info[$details[0]] = $language_list;
-        }
-
-        return $language_info;
+        return $this->locales;
     }
 
     /**
@@ -300,8 +292,17 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        // TODO: this obviously needs to be improved
-        return 'LTR';
+        if (! $this->is_loaded)
+            $this->_load_locales();
+
+        $code = $this->get_language_code();
+
+        if (isset($this->locales[$code]) && isset($this->locales[$code]['text_direction']))
+            $text_direction = $this->locales[$code]['text_direction'];
+        else
+            $text_direction = self::DEFAULT_TEXT_DIRECTION;
+
+        return $text_direction;
     }
 
     /**
@@ -317,22 +318,15 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if ($error_message = $this->validate_keyboard($keyboard))
-            throw new Validation_Exception($error_message);
+        Validation_Exception::is_valid($this->validate_keyboard($keyboard));
 
-        // TODO: what about all the other parameters in /etc/sysconfig/keyboard.
+        $file = new File(self::FILE_KEYBOARD);
 
-        try {
-            $file = new File(self::FILE_KEYBOARD);
-
-            if ($file->exists()) {
-                $file->replace_lines('/^KEYTABLE=/', "KEYTABLE=\"$keyboard\"\n");
-            } else {
-                $file->create('root', 'root', '0644');
-                $file->add_lines("KEYTABLE=\"$keyboard\"\n");
-            }
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+        if ($file->exists()) {
+            $file->replace_lines('/^KEYTABLE=/', "KEYTABLE=\"$keyboard\"\n");
+        } else {
+            $file->create('root', 'root', '0644');
+            $file->add_lines("KEYTABLE=\"$keyboard\"\n");
         }
     }
 
@@ -349,23 +343,15 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if ($error_message = $this->validate_language_code($code))
-            throw new Validation_Exception($error_message);
+        Validation_Exception::is_valid($this->validate_language_code($code));
 
-        // TODO: what about the SYSFONT parameter?
-        // TODO: fix hard-coded UTF-8?
+        $file = new File(self::FILE_I18N);
 
-        try {
-            $file = new File(self::FILE_I18N);
-
-            if ($file->exists()) {
-                $file->replace_lines('/^LANG=/', "LANG=\"$code.UTF-8\"\n");
-            } else {
-                $file->create('root', 'root', '0644');
-                $file->add_lines("LANG=\"$code.UTF-8\"\n");
-            }
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+        if ($file->exists()) {
+            $file->replace_lines('/^LANG=/', "LANG=\"$code.UTF-8\"\n");
+        } else {
+            $file->create('root', 'root', '0644');
+            $file->add_lines("LANG=\"$code.UTF-8\"\n");
         }
     }
 
@@ -382,19 +368,15 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if ($error_message = $this->validate_language_code($code))
-            throw new Validation_Exception($error_message);
+        Validation_Exception::is_valid($this->validate_language_code($code));
 
-        $info = $this->get_language_info();
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
         $this->set_language_code($code);
 
-        foreach ($info as $item) {
-            if ($item['code'] === $code) {
-                $this->set_keyboard($item['keyboard']);
-                return;
-            }
-        }
+        if (isset($this->locales[$code]) && isset($this->locales[$code]['default_keyboard']))
+            $this->set_keyboard($this->locales[$code]['default_keyboard']);
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -414,10 +396,11 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $info = $this->get_language_info();
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
-        foreach ($info as $language) {
-            if ($language['keyboard'] === $keyboard)
+        foreach ($this->locales as $code => $details) {
+            if ($details['default_keyboard'] === $keyboard)
                 return;
         }
 
@@ -437,14 +420,34 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $info = $this->get_language_info();
+        if (! $this->is_loaded)
+            $this->_load_locales();
 
-        foreach ($info as $language) {
-            if ($language['code'] === $code)
+        foreach ($this->locales as $supported_code => $details) {
+            if ($supported_code === $code)
                 return;
         }
 
         return lang('base_validate_language_code_invalid');
     }
-}
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // P R I V A T E  M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Loads locale information.
+     *
+     * @return array locale information
+     */
+
+    protected function _load_locales()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        include_once clearos_app_base('base') . '/config/locales.php';
+
+        $this->locales = $locales;
+        $this->is_loaded = TRUE;
+    }
+}

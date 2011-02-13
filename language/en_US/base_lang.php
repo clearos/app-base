@@ -268,6 +268,30 @@ $lang['base_to_auto'] = 'To Auto';
 $lang['base_to_manual'] = 'To Manual';
 $lang['base_unknown'] = 'Unknown';
 
+// Languages
+$lang['base_language_cs_cz'] = 'Czech';
+$lang['base_language_da_dk'] = 'Danish';
+$lang['base_language_de_de'] = 'German';
+$lang['base_language_en_us'] = 'English (US)';
+$lang['base_language_es_es'] = 'Spanish';
+$lang['base_language_fi_fi'] = 'Finnish';
+$lang['base_language_fr_fr'] = 'French';
+$lang['base_language_gr_gr'] = 'Greek';
+$lang['base_language_hu_hu'] = 'Hungarian';
+$lang['base_language_id_id'] = 'Indonesian';
+$lang['base_language_it_it'] = 'Italian';
+$lang['base_language_nl_nl'] = 'Dutch';
+$lang['base_language_no_no'] = 'Norwegian';
+$lang['base_language_pl_pl'] = 'Polish';
+$lang['base_language_pt_br'] = 'Portuguese (Brazil)';
+$lang['base_language_pt_pt'] = 'Portuguese';
+$lang['base_language_sl_sl'] = 'Slovenian';
+$lang['base_language_sv_se'] = 'Swedish';
+$lang['base_language_tr_tr'] = 'Turkish';
+$lang['base_language_ro_ro'] = 'Romanian';
+$lang['base_language_ru_ru'] = 'Russian';
+$lang['base_language_zh_cn'] = 'Simplified Chinese';
+
 // Mime types
 $lang['base_mime_category_audio'] = 'Audio';
 $lang['base_mime_category_video'] = 'Video';
