@@ -85,7 +85,7 @@ class Engine_Exception extends Exception
      * @param integer $code    error code
      */
 
-    public function __construct($message, $code)
+    public function __construct($message, $code = CLEAROS_ERROR)
     {
         parent::__construct((string)$message, (int)$code);
 
