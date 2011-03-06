@@ -77,12 +77,11 @@ class File_Already_Exists_Exception extends Engine_Exception
     /**
      * File_Already_Exists_Exception constructor.
      *
-     * @param string $filename filename
-     * @param int    $code     error code
+     * @param integer $code error code
      */
 
-    public function __construct($filename, $code)
+    public function __construct($code)
     {
-        parent::__construct(FILE_LANG_ERRMSG_EXISTS . " - " . $filename, $code);
+        parent::__construct(lang('base_exception_file_already_exists'), $code);
     }
 }
