@@ -331,20 +331,19 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if ($this->superuser) {
-            try {
-                $shell = new Shell();
-                $exitcode = $shell->execute(File::COMMAND_LS, escapeshellarg($this->filename), TRUE);
-            } catch (Engine_Exception $e) {
-                throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
-            }
 
-            if ($exitcode == 0)
+            $options['validate_exit_code'] = FALSE;
+
+            $shell = new Shell();
+            $exit_code = $shell->execute(File::COMMAND_LS, escapeshellarg($this->filename), TRUE, $options);
+
+            if ($exit_code == 0)
                 return TRUE;
             else
                 return FALSE;
         } else {
             clearstatcache();
-            if (file_exists("$this->filename"))
+            if (file_exists($this->filename))
                 return TRUE;
             else
                 return FALSE;
