@@ -577,7 +577,7 @@ class File extends Engine
         clearstatcache();
 
         if ($this->exists())
-            throw new File_Already_Exists_Exception($this->filename, CLEAROS_INFO);
+            throw new File_Already_Exists_Exception();
 
         try {
             $shell = new Shell();

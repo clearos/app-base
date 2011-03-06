@@ -76,12 +76,10 @@ class File_Already_Exists_Exception extends Engine_Exception
 {
     /**
      * File_Already_Exists_Exception constructor.
-     *
-     * @param integer $code error code
      */
 
-    public function __construct($code)
+    public function __construct()
     {
-        parent::__construct(lang('base_exception_file_already_exists'), $code);
+        parent::__construct(lang('base_exception_file_already_exists'), CLEAROS_INFO);
     }
 }
