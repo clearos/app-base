@@ -15,7 +15,6 @@ $lang['base_cancel'] = 'Cancel';
 $lang['base_close'] = 'Close';
 $lang['base_configure'] = 'Configure';
 $lang['base_confirm'] = 'Confirm';
-$lang['base_confirm_delete'] = 'Are you sure you want to delete';
 $lang['base_continue'] = 'Continue';
 $lang['base_create'] = 'Create';
 $lang['base_daily'] = 'Daily';
@@ -162,6 +161,30 @@ $lang['base_yearly'] = 'Yearly';
 $lang['base_years'] = 'Years';
 $lang['base_yes'] = 'Yes';
 
+// Menus
+$lang['base_category_system'] = 'System';
+$lang['base_category_network'] = 'Network';
+$lang['base_category_gateway'] = 'Gateway';
+$lang['base_category_server'] = 'Server';
+$lang['base_category_applications'] = 'Applications';
+
+$lang['base_subcategory_infrastructure'] = 'Infrastructure';
+$lang['base_subcategory_settings'] = 'Settings';
+$lang['base_subcategory_resources'] = 'Resources';
+$lang['base_subcategory_dashboard'] = 'Dashboard';
+$lang['base_subcategory_file_and_print'] = 'File and Print';
+$lang['base_subcategory_intrusion_protection'] = 'Intrusion Protection';
+$lang['base_subcategory_antimalware'] = 'Antimalware';
+$lang['base_subcategory_mail'] = 'Mail';
+$lang['base_subcategory_mail_scanning'] = 'Mail Scanning';
+$lang['base_subcategory_database'] = 'Database';
+$lang['base_subcategory_accounts'] = 'Accounts';
+$lang['base_subcategory_directory'] = 'Directory';
+
+
+// Changed this one
+$lang['base_confirm_delete'] = 'Are you sure you want to delete the following?';
+
 // NEW
 $lang['base_errmsg_invalid'] = 'The following parameter is invalid: ';
 $lang['base_general_settings'] = 'General Settings'; 
@@ -169,13 +192,13 @@ $lang['base_system_updated'] = 'System updated';
 $lang['base_ok'] = 'OK';
 $lang['base_deleted'] = 'Item was deleted';
 
+$lang['base_marketplace'] = 'Marketplace';
 $lang['base_directory'] = 'Directory';
 $lang['base_network'] = 'Network';
 $lang['base_gateway'] = 'Gateway';
 $lang['base_server'] = 'Server';
 $lang['base_system'] = 'System';
 $lang['base_reports'] = 'Reports';
-$lang['base_voice'] = 'Voice';
 
 $lang['base_settings'] = 'Settings';
 $lang['base_errmsg_username_invalid'] = 'Username is invalid.';
