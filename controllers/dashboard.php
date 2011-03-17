@@ -63,10 +63,6 @@ class Dashboard extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->set_title("Dashboard");  // FIXME: translate
-
-        $this->load->view('theme/header');
-        $this->load->view('dashboard', $data);
-        $this->load->view('theme/footer');
+        $this->page->view_form('dashboard', $data);
     }
 }
