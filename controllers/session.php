@@ -138,12 +138,9 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->set_title(lang('base_login'));
-        $this->page->set_layout(MY_Page::TYPE_SPLASH);
+        $page['type'] = MY_Page::TYPE_SPLASH;
 
-        $this->load->view('theme/header');
-        $this->load->view('session/login', $data);
-        $this->load->view('theme/footer');
+        $this->page->view_form('session/login', $data, lang('base_login'), $page);
     }
 
     /**
@@ -166,11 +163,8 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->set_title(lang('base_logout'));
-        $this->page->set_layout(MY_Page::TYPE_SPLASH);
+        $page['type'] = MY_Page::TYPE_SPLASH;
 
-        $this->load->view('theme/header');
-        $this->load->view('session/logout');
-        $this->load->view('theme/footer');
+        $this->page->view_form('session/logout', $data, lang('base_logout'), $page);
     }
 }
