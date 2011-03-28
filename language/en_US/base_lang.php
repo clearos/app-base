@@ -186,6 +186,7 @@ $lang['base_subcategory_directory'] = 'Directory';
 $lang['base_confirm_delete'] = 'Are you sure you want to delete the following?';
 
 // NEW
+$lang['base_dashboard'] = 'Dashboard';
 $lang['base_errmsg_invalid'] = 'The following parameter is invalid: ';
 $lang['base_general_settings'] = 'General Settings'; 
 $lang['base_system_updated'] = 'System updated';

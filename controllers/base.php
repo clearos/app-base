@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Dashboard controller.
+ * Base controller.
  *
  * @category   Apps
  * @package    Base
@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Dashboard controller.
+ * Base controller.
  *
  * @category   Apps
  * @package    Base
@@ -45,7 +45,7 @@
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Dashboard extends ClearOS_Controller
+class Base extends ClearOS_Controller
 {
     /**
      * Date default controller
