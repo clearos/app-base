@@ -20,6 +20,7 @@ Group: ClearOS/Libraries
 License: LGPLv3
 Requires: clearos-base
 Requires: clearos-framework
+Requires: clearos-theme
 Requires: chkconfig
 Requires: coreutils
 Requires: file
