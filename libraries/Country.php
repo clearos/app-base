@@ -92,7 +92,7 @@ class Country extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        include_once 'Country.list.php';
+        include 'Country.list.php';
 
         $this->codes = $codes;
     }
