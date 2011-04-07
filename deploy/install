@@ -1,0 +1,27 @@
+#!/bin/sh
+
+
+/usr/sbin/addsudo /bin/cat app-base-core
+/usr/sbin/addsudo /bin/chmod app-base-core
+/usr/sbin/addsudo /bin/chown app-base-core
+/usr/sbin/addsudo /bin/cp app-base-core
+/usr/sbin/addsudo /bin/kill app-base-core
+/usr/sbin/addsudo /bin/ls app-base-core
+/usr/sbin/addsudo /bin/mkdir app-base-core
+/usr/sbin/addsudo /bin/mv app-base-core
+/usr/sbin/addsudo /bin/rm app-base-core
+/usr/sbin/addsudo /bin/touch app-base-core
+/usr/sbin/addsudo /sbin/chkconfig app-base-core
+/usr/sbin/addsudo /sbin/shutdown app-base-core
+/usr/sbin/addsudo /sbin/service app-base-core
+/usr/sbin/addsudo /usr/bin/api app-base-core
+/usr/sbin/addsudo /usr/bin/file app-base-core
+/usr/sbin/addsudo /usr/bin/find app-base-core
+/usr/sbin/addsudo /usr/bin/head app-base-core
+/usr/sbin/addsudo /usr/bin/chfn app-base-core
+/usr/sbin/addsudo /usr/bin/du app-base-core
+/usr/sbin/addsudo /usr/sbin/app-passwd app-base-core
+/usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
+/usr/sbin/addsudo /usr/sbin/app-rename app-base-core
+/usr/sbin/addsudo /usr/sbin/userdel app-base-core
+
