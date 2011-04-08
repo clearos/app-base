@@ -385,25 +385,22 @@ class Software extends Engine
         $rpm = escapeshellarg($this->pkgname);
         $exitcode = 1;
 
-        try {
-            // KLUDGE: rpm does not seem to have a nice way to get around
-            // running multiple rpm commands simultaneously.  You can get a
-            // temporary "cannot get shared lock" error in this case.
+        // KLUDGE: rpm does not seem to have a nice way to get around
+        // running multiple rpm commands simultaneously.  You can get a
+        // temporary "cannot get shared lock" error in this case.
 
-            $shell = new Shell();
-            $options['env'] = "LANG=en_US";
+        $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
+        $options['validate_exit_code'] = FALSE;
 
-            for ($i = 0; $i < 5; $i++) {
-                $exitcode = $shell->execute(self::COMMAND_RPM, "-q $rpm 2>&1", FALSE, $options);
-                $lines = implode($shell->get_output());
+        for ($i = 0; $i < 5; $i++) {
+            $exitcode = $shell->execute(self::COMMAND_RPM, "-q $rpm 2>&1", FALSE, $options);
+            $lines = implode($shell->get_output());
 
-                if (($exitcode === 1) && (preg_match("/shared lock/", $lines)))
-                    sleep(1);
-                else
-                    break;
-            }
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
+            if (($exitcode === 1) && (preg_match("/shared lock/", $lines)))
+                sleep(1);
+            else
+                break;
         }
 
         if ($exitcode == 0)
