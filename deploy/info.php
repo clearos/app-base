@@ -1,8 +1,8 @@
 <?php
 
 $app['basename'] = 'base';
-$app['version'] = '6.0';
-$app['release'] = '0.5';
+$app['version'] = '5.9.9.0';
+$app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
 $app['license'] = 'GPLv3';
