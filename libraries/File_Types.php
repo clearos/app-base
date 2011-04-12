@@ -93,8 +93,8 @@ class File_Types extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->file_extensions = clearos_app_base('base') . '/config/file_extensions.php';
-        $this->file_mime_types = clearos_app_base('base') . '/config/mime_types.php';
+        $this->file_extensions = clearos_app_base('base') . '/deploy/file_extensions.php';
+        $this->file_mime_types = clearos_app_base('base') . '/deploy/mime_types.php';
         $this->categories = array(
             'archive'       => lang('base_file_category_archive'),
             'document'      => lang('base_file_category_document'),

@@ -445,7 +445,7 @@ class Locale extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        include_once clearos_app_base('base') . '/config/locales.php';
+        include_once clearos_app_base('base') . '/deploy/locales.php';
 
         $this->locales = $locales;
         $this->is_loaded = TRUE;
