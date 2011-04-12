@@ -29,10 +29,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight(
-    "<h2>Access Denied</h2> 
-    <p>This page will be shown when a user attempts to access an unauthorized page.  This typically
-    happens when sub-administrator access has been disabled.  A list of permitted pages can be shown
-    to guide the user to authorized pages (e.g. the user profile page). It can also happen on an
-    uprade where the administrator has not yet gone through the setup/upgrade wizard.</p>"
+echo infobox_critical(
+    lang('base_access_denied'), 
+    lang('base_access_denied_help') . 
+    anchor_custom('/app/base/dashboard', lang('base_return_to_home_page'), 'high')
 );

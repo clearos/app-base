@@ -3,6 +3,9 @@
 /**
  * Session login view.
  *
+ * The login/logout pages are a bit special, so the HTML IDs here have
+ * been standardized for theme developers.
+ *
  * @category   ClearOS
  * @package    Base
  * @subpackage Views
@@ -34,35 +37,28 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 echo form_open('base/session/login');
+echo form_header(lang('base_login'), 'theme-login-form-header');
 
-///////////////////////////////////////////////////////////////////////////////
-// Form fields
+//////////////////////////////////////////////////////////////////////////////
+// Form
 ///////////////////////////////////////////////////////////////////////////////
 
 echo form_fieldset(lang('base_login'));
-
 echo field_input('username', '', lang('base_username'));
 echo field_password('password', '', lang('base_password'));
 
 if ($login_failed)
-    echo "<div>$login_failed</div>";
+    echo field_view('login_status', $login_failed, '&nbsp;');
 
 echo form_fieldset_close();
-
-//////////////////////////////////////////////////////////////////////////////
-// Buttons
-///////////////////////////////////////////////////////////////////////////////
-
 echo form_submit_custom('submit', lang('base_login'), 'high');
 
-// FIXME: translate
 // FIXME: if (console)
-    echo anchor_custom('/app/base/console/shutdown', 'Exit Console', 'low');
+    echo anchor_custom('/app/graphical_console/shutdown', lang('base_exit_console'), 'low');
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form close
 ///////////////////////////////////////////////////////////////////////////////
 
+echo form_footer('theme-login-form-footer');
 echo form_close();
-
-?>

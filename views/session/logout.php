@@ -31,9 +31,10 @@
 
 // FIXME: translate
 
-$login_button = anchor_custom('/app/base/session/login', 'Login', 'high');
+$login_button = anchor_custom('/app/base/session/login', lang('base_login'), 'high');
 
 echo infobox_highlight(
-    "<h2>Logout</h2> 
-    <p>You have been logged out.  $login_button</p>"
+    lang('base_logout'), 
+    lang('base_logout_complete') .
+    anchor_custom('/app/base/session/login', lang('base_login'), 'high')
 );

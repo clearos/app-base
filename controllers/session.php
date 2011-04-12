@@ -62,20 +62,9 @@ class Session extends ClearOS_Controller
 
     function access_denied()
     {
-        // Load libraries
-        //---------------
+        $page['type'] = MY_Page::TYPE_SPLASH;
 
-        $data = array();
-
-        // Load views
-        //-----------
-
-        $this->page->set_title("Access");  // FIXME: translate
-        $this->page->set_layout(MY_Page::TYPE_SPLASH);
-
-        $this->load->view('theme/header');
-        $this->load->view('session/access', $data);
-        $this->load->view('theme/footer');
+        $this->page->view_form('session/access', array(), lang('base_access_denied'), $page);
     }
 
     /**
@@ -88,8 +77,8 @@ class Session extends ClearOS_Controller
         //------------------------------
 
         if ($this->session->userdata('logged_in')) {
-            $this->page->set_success('You are already logged in.'); // FIXME: translate
-            redirect('/base/dashboard/');
+            $this->page->set_status_success(lang('base_you_are_already_logged_in'));
+            redirect('/base/');
         }
 
         // Load libraries
@@ -122,18 +111,15 @@ class Session extends ClearOS_Controller
                     $this->session->set_userdata('username', $this->input->post('username'));
 
                     // Redirect to dashboard page
-                    redirect('/base/dashboard/');
+                    redirect('/base/');
                 } else {
                     $data['login_failed'] = "Login failed"; // FIXME: translate
                 }
             } catch (Engine_Exception $e) {
-                $this->page->view_exception($e->get_message());
+                $this->page->view_exception($e);
                 return;
             }
         }
-
-        // Load view data
-        //---------------
 
         // Load views
         //-----------
