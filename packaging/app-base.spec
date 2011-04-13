@@ -8,14 +8,14 @@ License: GPLv3
 Packager: ClearFoundation
 Vendor: ClearFoundation
 Source: %{name}-%{version}.tar.gz
-Requires: %{name}-core = %{version}-%{release}
 Buildarch: noarch
+Requires: %{name}-core = %{version}-%{release}
 
 %description
 Base system and settings ... blah blah.
 
 %package core
-Summary: Core libraries and install for app-base
+Summary: Base system and settings - APIs and install
 Group: ClearOS/Libraries
 License: LGPLv3
 Requires: clearos-base
@@ -34,7 +34,9 @@ Requires: webconfig-php
 Requires: webconfig-utils
 
 %description core
-Core API and install for app-base
+Base system and settings ... blah blah.
+
+This package provides the core API and libraries.
 
 %prep
 %setup -q
