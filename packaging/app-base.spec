@@ -83,7 +83,6 @@ exit 0
 %exclude /usr/clearos/apps/base/packaging
 %exclude /usr/clearos/apps/base/tests
 %dir /usr/clearos/apps/base
-/usr/clearos/apps/base/config
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
