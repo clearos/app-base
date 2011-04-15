@@ -33,7 +33,7 @@ $app['subcategory'] = lang('base_subcategory_settings');
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
-$app['core_dependencies'] = array(
+$app['core_requires'] = array(
     'clearos-base',
     'clearos-framework',
     'clearos-theme',
@@ -46,6 +46,7 @@ $app['core_dependencies'] = array(
     'shadow-utils',
     'sudo',
     'sysvinit-tools',
+    'util-linux-ng',
     'webconfig-php',
     'webconfig-utils'
 );

@@ -2,7 +2,7 @@
 Name: app-base
 Group: ClearOS/Apps
 Version: 5.9.9.0
-Release: 1
+Release: 1%{dist}
 Summary: Base system and settings
 License: GPLv3
 Packager: ClearFoundation
@@ -30,6 +30,7 @@ Requires: rpm
 Requires: shadow-utils
 Requires: sudo
 Requires: sysvinit-tools
+Requires: util-linux-ng
 Requires: webconfig-php
 Requires: webconfig-utils
 
