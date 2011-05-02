@@ -160,7 +160,8 @@ $lang['base_subcategory_infrastructure'] = 'Infrastructure';
 $lang['base_subcategory_settings'] = 'Settings';
 $lang['base_subcategory_resources'] = 'Resources';
 $lang['base_subcategory_dashboard'] = 'Dashboard';
-$lang['base_subcategory_file_and_print'] = 'File and Print';
+$lang['base_subcategory_file'] = 'File';
+$lang['base_subcategory_print'] = 'Print';
 $lang['base_subcategory_intrusion_protection'] = 'Intrusion Protection';
 $lang['base_subcategory_antimalware'] = 'Antimalware';
 $lang['base_subcategory_mail'] = 'Mail';
@@ -172,6 +173,8 @@ $lang['base_subcategory_directory'] = 'Directory';
 
 // Changed this one
 $lang['base_confirm_delete'] = 'Are you sure you want to delete the following?';
+$lang['base_internet_domain'] = 'Internet domain';
+$lang['base_windows_domain'] = 'Windows domain';
 
 // NEW
 $lang['base_shutdown'] = 'Shutdown';
