@@ -343,7 +343,7 @@ class Folder extends Engine
                 else
                     return TRUE;
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
+                return FALSE;
             }
         } else {
             if (is_dir($this->folder))
