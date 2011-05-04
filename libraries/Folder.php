@@ -167,9 +167,9 @@ class Folder extends Engine
         try {
             $shell = new Shell();
             if ($shell->execute(self::COMMAND_CHMOD, $mode . ' ' . $this->folder, TRUE) != 0)
-                throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
+                throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
         } catch (Engine_Exception $e) {
-            throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+            throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
         }
     }
 
@@ -201,9 +201,9 @@ class Folder extends Engine
                 $shell = new Shell();
 
                 if ($shell->execute(self::COMMAND_CHOWN, $owner . " $flags " . $this->folder, TRUE) != 0)
-                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
+                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         }
 
@@ -214,9 +214,9 @@ class Folder extends Engine
                 $shell = new Shell();
 
                 if ($shell->execute(self::COMMAND_CHOWN, ':' . $group . " $flags " . $this->folder, TRUE) != 0)
-                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
+                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         }
     }
@@ -240,21 +240,21 @@ class Folder extends Engine
         clearstatcache(); // PHP caches file stat information... don't let it
 
         if ($this->exists())
-            throw new Folder_Already_Exists_Exception($this->folder, COMMON_ERROR);
+            throw new Folder_Already_Exists_Exception($this->folder, CLEAROS_ERROR);
 
         try {
             $shell = new Shell();
             if ($shell->execute(self::COMMAND_MKDIR, "-p $this->folder", TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
         } catch(Engine_Exception $e) {
-            throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+            throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
         }
 
         if ($owner || $group) {
             try {
                 $this->chown($owner, $group);
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         }
 
@@ -262,7 +262,7 @@ class Folder extends Engine
             try {
                 $this->chmod($mode);
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         }
     }
@@ -289,14 +289,14 @@ class Folder extends Engine
                 if ($shell->execute(self::COMMAND_RM, "-rf $this->folder", TRUE) != 0)
                     throw new Folder_Exception($shell->get_first_output_line());
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         } else {
             try {
                 if ($shell->execute(self::COMMAND_RMDIR, $this->folder, TRUE) != 0)
-                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), COMMON_ERROR);
+                    throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         }
     }
@@ -316,7 +316,7 @@ class Folder extends Engine
             if ($shell->execute(self::COMMAND_FILE, $this->folder, TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
         } catch(Engine_Exception $e) {
-            throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+            throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
         }
 
         if (preg_match("/directory/", $shell->get_first_output_line()))
@@ -343,7 +343,7 @@ class Folder extends Engine
                 else
                     return TRUE;
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
         } else {
             if (is_dir($this->folder))
@@ -379,7 +379,7 @@ class Folder extends Engine
                 if ($shell->execute(self::COMMAND_LS, $options, TRUE) != 0)
                     throw new Folder_Exception($shell->get_first_output_line());
             } catch(Engine_Exception $e) {
-                throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
             }
 
             $lines = $shell->get_output();
@@ -416,7 +416,7 @@ class Folder extends Engine
                     if ($shell->execute(self::COMMAND_LS, $this->folder, TRUE) != 0)
                         throw new Folder_Exception($shell->get_first_output_line());
                 } catch(Engine_Exception $e) {
-                    throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+                    throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
                 }
 
                 $fulllist = $shell->get_output();
@@ -480,7 +480,7 @@ class Folder extends Engine
                 throw new Folder_Exception($shell->get_first_output_line());
             $fulllist = $shell->get_output();
         } catch(Engine_Exception $e) {
-            throw new Folder_Exception($e->get_message(), COMMON_ERROR);
+            throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
         }
 
         foreach ($fulllist as $file)
