@@ -177,10 +177,8 @@ class Shell extends Engine
         // If set to background, output *must* be redirected to 
         // either a log or /dev/null
 
-        // FIXME: COMMON_TEMP_DIR is no longer defined
-
         if (isset($options['log']))
-            $exe .= ' >>' . COMMON_TEMP_DIR . '/' . $options['log'];
+            $exe .= ' >>' . CLEAROS_TEMP_DIR . '/' . $options['log'];
         else if (isset($options['background']) && $options['background'])
             $exe .= ' >/dev/null';
 

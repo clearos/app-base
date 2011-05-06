@@ -163,7 +163,7 @@ class File extends Engine
 
         if ($temporary) {
             $this->temporary = $temporary;
-            $this->filename = tempnam(COMMON_TEMP_DIR, basename($filename));
+            $this->filename = tempnam(CLEAROS_TEMP_DIR, basename($filename));
         } else
             $this->filename = $filename;
 
@@ -764,7 +764,7 @@ class File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         if (!($fh_t = @fopen($tempfile, "w"))) {
             // TODO: AddValidationError replacement
@@ -794,7 +794,7 @@ class File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         try {
             $contents = $this->get_contents();
@@ -834,7 +834,7 @@ class File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -878,7 +878,7 @@ class File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -946,7 +946,7 @@ class File extends Engine
 
         $prependlines = FALSE;
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -1137,7 +1137,7 @@ class File extends Engine
 
         $replaced = FALSE;
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -1211,7 +1211,7 @@ class File extends Engine
 
         $replaced = 0;
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -1279,7 +1279,7 @@ class File extends Engine
 
         $replaced = FALSE;
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
@@ -1328,7 +1328,7 @@ class File extends Engine
 
         $replaced = FALSE;
 
-        $tempfile = tempnam(COMMON_TEMP_DIR, basename("$this->filename"));
+        $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
         $lines = $this->get_contents_as_array();
 
