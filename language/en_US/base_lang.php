@@ -52,7 +52,6 @@ $lang['base_hours'] = 'Hours';
 $lang['base_initializing'] = 'Initializing';
 $lang['base_install'] = 'Install';
 $lang['base_invalid'] = 'Invalid';
-$lang['base_keyboard'] = 'Keyboard';
 $lang['base_kilobits'] = 'kb';
 $lang['base_kilobytes'] = 'kB';
 $lang['localeuage'] = 'Language';
@@ -218,8 +217,6 @@ $lang['base_exception_file_parse_error'] = 'Configuration file parse error occur
 $lang['base_exception_folder_already_exists'] = 'Folder already exists.';
 $lang['base_exception_folder_not_found'] = 'Folder not found.';
 $lang['base_exception_country_list_missing'] = 'Country list is missing.';
-$lang['base_validate_language_code_invalid'] = 'Language code is invalid.';
-$lang['base_validate_keyboard_invalid'] = 'Keyboard setting is invalid.';
 $lang['base_validate_state_invalid'] = 'State is invalid.';
 
 
