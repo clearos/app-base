@@ -152,7 +152,7 @@ $lang['base_category_system'] = 'System';
 $lang['base_category_network'] = 'Network';
 $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_server'] = 'Server';
-$lang['base_category_applications'] = 'Applications';
+$lang['base_category_marketplace'] = 'Marketplace';
 
 $lang['base_subcategory_firewall'] = 'Firewall';
 $lang['base_subcategory_vpn'] = 'VPN';
