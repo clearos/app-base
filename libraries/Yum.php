@@ -193,7 +193,7 @@ class Yum extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
 		try {
-			$log = new File(COMMON_TEMP_DIR . "/" . self::FILE_LOG);
+			$log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
 			$lines = $log->get_contents_as_array();
 		} catch (FileNotFoundException $e) {
 			$lines = array();
