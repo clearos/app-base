@@ -155,7 +155,9 @@ $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_server'] = 'Server';
 $lang['base_category_applications'] = 'Applications';
 
+$lang['base_subcategory_firewall'] = 'Firewall';
 $lang['base_subcategory_vpn'] = 'VPN';
+$lang['base_subcategory_storage'] = 'Storage';
 $lang['base_subcategory_infrastructure'] = 'Infrastructure';
 $lang['base_subcategory_settings'] = 'Settings';
 $lang['base_subcategory_resources'] = 'Resources';
