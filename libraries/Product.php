@@ -205,6 +205,65 @@ class Product extends Engine
     }
 
     /**
+     * Returns the vendor code.
+     *
+     * @return string vendor code
+     * @throws Engine_Exception
+     */
+
+    public function get_vendor()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['vendor'];
+    }
+
+    /**
+     * Returns the partner region ID.
+     *
+     * @return int partner region ID
+     * @throws Engine_Exception
+     */
+
+    public function get_partner_region_id()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        if (isset($this->config['partner_region_id']))
+            return $this->config['partner_region_id'];
+        else
+            return 0;
+    }
+
+    /**
+     * Sets the partner region ID.
+     *
+     * @param integer partner_region_id
+     * @throws Engine_Exception
+     */
+
+    public function set_partner_region_id()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $file = new Configuration_File(self::FILE_CONFIG);
+            $updated = $file->replace_lines("/^partner_region_id\s*=.*/", ($id < 0 ? "" : "partner_region_id = " . $id), 1);
+            if ($updated == 0 && $id > 0)
+                $file->add_lines("partner_region_id = " . $id . "\n");
+            $this->_load_config();
+        } catch (Exception $e) {
+            throw new EngineException(clearos_exception_message($e), COMMON_WARNING);
+        }
+    }
+    
+    /**
      * Loads configuration file.
      *
      * @access private
