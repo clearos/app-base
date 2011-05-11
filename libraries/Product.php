@@ -205,23 +205,6 @@ class Product extends Engine
     }
 
     /**
-     * Returns the vendor code.
-     *
-     * @return string vendor code
-     * @throws Engine_Exception
-     */
-
-    public function get_vendor()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        if (!$this->is_loaded)
-            $this->_load_config();
-
-        return $this->config['vendor'];
-    }
-
-    /**
      * Returns the partner region ID.
      *
      * @return int partner region ID
