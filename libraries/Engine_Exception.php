@@ -47,6 +47,7 @@ require_once $bootstrap . '/bootstrap.php';
 ///////////////////////////////////////////////////////////////////////////////
 
 use \Exception as Exception;
+use \clearos\framework\Logger as Logger;
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -89,11 +90,7 @@ class Engine_Exception extends Exception
     {
         parent::__construct((string)$message, (int)$code);
 
-        /*
-        FIXME
-        if ($code >= CLEAROS_WARNING)
-            Logger::log_exception($this, TRUE);
-        */
+        Logger::log_exception($this);
     }
 
     /**
