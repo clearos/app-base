@@ -205,6 +205,91 @@ class Product extends Engine
     }
 
     /**
+     * Returns Java Web Services node count.
+     *
+     * @return integer nodes
+     * @throws Engine_Exception
+     */
+
+    public function get_jws_nodes()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return (int)$this->config['jws_nodes'];
+    }
+
+    /**
+     * Returns Java Web Services domain.
+     *
+     * @return String domain
+     * @throws Engine_Exception
+     */
+
+    public function get_jws_domain()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['jws_domain'];
+    }
+
+    /**
+     * Returns Java Web Services realm.
+     *
+     * @return String realm
+     * @throws Engine_Exception
+     */
+
+    public function get_jws_realm()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['jws_realm'];
+    }
+
+    /**
+     * Returns Java Web Services version.
+     *
+     * @return String version
+     * @throws Engine_Exception
+     */
+
+    public function get_jws_version()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['jws_version'];
+    }
+
+    /**
+     * Returns Java Web Services prefix.
+     *
+     * @return String prefix
+     * @throws Engine_Exception
+     */
+
+    public function get_jws_prefix()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!$this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['jws_prefix'];
+    }
+
+    /**
      * Returns the partner region ID.
      *
      * @return int partner region ID
