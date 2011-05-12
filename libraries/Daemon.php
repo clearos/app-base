@@ -111,6 +111,21 @@ clearos_load_library('base/Validation_Exception');
 class Daemon extends Software
 {
     ///////////////////////////////////////////////////////////////////////////////
+    // C O N S T A N T S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    const COMMAND_LS = '/bin/ls';
+    const COMMAND_CHKCONFIG = '/sbin/chkconfig';
+    const COMMAND_SERVICE = '/sbin/service';
+    const COMMAND_PIDOF = '/sbin/pidof';
+    const PATH_INITD = '/etc/rc.d/rc3.d';
+
+    const STATUS_RUNNING = 'running';
+    const STATUS_STARTING = 'starting';
+    const STATUS_STOPPED = 'stopped';
+    const STATUS_STOPPING = 'stopping';
+
+    ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
 
@@ -143,12 +158,6 @@ class Daemon extends Software
      */
 
     protected $reloadable;
-
-    const COMMAND_LS = '/bin/ls';
-    const COMMAND_CHKCONFIG = '/sbin/chkconfig';
-    const COMMAND_SERVICE = '/sbin/service';
-    const COMMAND_PIDOF = '/sbin/pidof';
-    const PATH_INITD = '/etc/rc.d/rc3.d';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -257,6 +266,41 @@ class Daemon extends Software
         clearos_profile(__METHOD__, __LINE__);
 
         return $this->processname;
+    }
+
+    /**
+     * Returns the status of the daemon.
+     *
+     * Status codes:
+     * - stopped
+     * - running
+     * - stopping
+     * - starting
+     *
+     * @return string status code
+     * @throws Engine_Exception
+     */
+
+    public function get_status()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // KLUDGE: this is a bit dirty and distro-specific
+        $shell = new Shell();
+        $shell->execute('/bin/ps', 'ax', FALSE);
+
+        $ps_output = $shell->get_output();
+
+        foreach ($ps_output as $line) {
+            if (preg_match("/service $this->initscript stop/", $line))
+                return self::STATUS_STOPPING;
+            else if (preg_match("/service $this->initscript start/", $line))
+                return self::STATUS_STARTING;
+        }
+
+        $retval = ($this->get_running_state()) ? self::STATUS_RUNNING : self::STATUS_STOPPED;
+
+        return $retval;
     }
 
     /**
