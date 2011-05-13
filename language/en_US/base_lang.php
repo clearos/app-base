@@ -154,6 +154,7 @@ $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_server'] = 'Server';
 $lang['base_category_marketplace'] = 'Marketplace';
 
+$lang['base_subcategory_protocol_filter'] = 'Protocol Filter';
 $lang['base_subcategory_firewall'] = 'Firewall';
 $lang['base_subcategory_vpn'] = 'VPN';
 $lang['base_subcategory_storage'] = 'Storage';
@@ -178,6 +179,8 @@ $lang['base_internet_domain'] = 'Internet domain';
 $lang['base_windows_domain'] = 'Windows domain';
 
 // NEW
+$lang['base_starting'] = 'Starting';
+$lang['base_stopping'] = 'Stopping';
 $lang['base_shutdown'] = 'Shutdown';
 $lang['base_you_are_already_logged_in'] = 'You are already logged in!';
 $lang['base_logout_complete'] = 'Logout complete.';
