@@ -120,10 +120,12 @@ class Daemon extends Software
     const COMMAND_PIDOF = '/sbin/pidof';
     const PATH_INITD = '/etc/rc.d/rc3.d';
 
+    const STATUS_BUSY = 'busy';
     const STATUS_RUNNING = 'running';
     const STATUS_STARTING = 'starting';
     const STATUS_STOPPED = 'stopped';
     const STATUS_STOPPING = 'stopping';
+    const STATUS_RESTARTING = 'restarting';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -296,6 +298,10 @@ class Daemon extends Software
                 return self::STATUS_STOPPING;
             else if (preg_match("/service $this->initscript start/", $line))
                 return self::STATUS_STARTING;
+            else if (preg_match("/service $this->initscript restart/", $line))
+                return self::STATUS_RESTARTING;
+            else if (preg_match("/service $this->initscript /", $line))
+                return self::STATUS_BUSY;
         }
 
         $retval = ($this->get_running_state()) ? self::STATUS_RUNNING : self::STATUS_STOPPED;
@@ -324,7 +330,7 @@ class Daemon extends Software
      * @throws Engine_Exception
      */
 
-    public function reset()
+    public function reset($background = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -333,6 +339,7 @@ class Daemon extends Software
 
         $args = ($this->reloadable) ? 'reload' : 'restart';
         $options['stdin'] = 'use_popen';
+        $options['background'] = $background;
 
         $shell = new Shell();
         $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args", TRUE, $options);
@@ -346,11 +353,12 @@ class Daemon extends Software
      * @throws Engine_Exception
      */
 
-    public function restart()
+    public function restart($background = TRUE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $options['stdin'] = "use_popen";
+        $options['background'] = $background;
 
         $shell = new Shell();
         $shell->execute(self::COMMAND_SERVICE, "$this->initscript restart", TRUE, $options);
