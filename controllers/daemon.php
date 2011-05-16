@@ -25,7 +25,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -51,8 +51,19 @@ class Daemon extends ClearOS_Controller
      * Default controller.
      */
 
-    function index()
+    function index($daemon = NULL)
     {
+        // Load dependencies
+        //------------------
+
+        $this->lang->load('base');
+
+        $data['daemon'] = $daemon; 
+
+        // Load views
+        //-----------
+
+        $this->page->view_form('base/daemon', $data, lang('base_server_status'));
     }
 
     /**

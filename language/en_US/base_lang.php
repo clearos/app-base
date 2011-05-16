@@ -179,6 +179,8 @@ $lang['base_internet_domain'] = 'Internet domain';
 $lang['base_windows_domain'] = 'Windows domain';
 
 // NEW
+$lang['base_server_status'] = 'Server Status';
+$lang['base_information'] = 'Information';
 $lang['base_busy'] = 'Busy';
 $lang['base_restarting'] = 'Restarting';
 $lang['base_starting'] = 'Starting';
