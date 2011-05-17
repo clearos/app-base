@@ -179,6 +179,7 @@ $lang['base_internet_domain'] = 'Internet domain';
 $lang['base_windows_domain'] = 'Windows domain';
 
 // NEW
+$lang['base_command_execution_failed'] = 'Command execution failed.';
 $lang['base_server_status'] = 'Server Status';
 $lang['base_information'] = 'Information';
 $lang['base_busy'] = 'Busy';
@@ -217,7 +218,6 @@ $lang['base_exit_console'] = 'Exit Console';
 $lang['base_entry_already_exists'] = 'Item already exists.';
 
 $lang['base_exception_invalid_parameter'] = 'Invalid parameter specified.';
-$lang['base_exception_command_execution_failed'] = 'Command execution failed.';
 $lang['base_exception_command_null_output'] = 'Command returned NULL output.';
 $lang['base_exception_file_already_exists'] = 'File already exists.';
 $lang['base_exception_file_not_found'] = 'File not found.';
