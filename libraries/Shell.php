@@ -156,7 +156,7 @@ class Shell extends Engine
         // but with a less "pretty" error message.
 
         if (!$superuser && (!file_exists($command)))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_command_execution_failed'), $command));
+            throw new Validation_Exception(sprintf(lang('base_command_execution_failed'), $command));
 
         if (isset($options['escape']) && $options['escape']) {
             $command = escapeshellcmd($command);
@@ -202,7 +202,7 @@ class Shell extends Engine
 
         if (isset($options['validate_exit_code']) && $options['validate_exit_code']
             && $retval != 0) {
-            $message = sprintf(lang('base_errmsg_command_execution_failed'), $command);
+            $message = sprintf(lang('base_command_execution_failed'), $command);
             if (isset($this->output[0]))
                 $message = $this->output[0];
             throw new Validation_Exception($message);
