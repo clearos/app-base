@@ -36,7 +36,7 @@ $app['subcategory'] = lang('base_subcategory_settings');
 $app['core_requires'] = array(
     'clearos-base',
     'clearos-framework',
-    'clearos-theme',
+    'system-theme',
     'chkconfig',
     'coreutils',
     'file',
