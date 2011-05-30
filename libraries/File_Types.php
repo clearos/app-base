@@ -117,7 +117,7 @@ class File_Types extends Engine
 
         $file_extensions = array();
 
-        include_once $this->file_extensions;
+        include $this->file_extensions;
 
         return $file_extensions;
     }
@@ -135,7 +135,7 @@ class File_Types extends Engine
 
         $mime_types = array();
 
-        include_once $this->file_mime_types;
+        include $this->file_mime_types;
 
         return $mime_types;
     }
