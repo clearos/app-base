@@ -106,6 +106,7 @@ class Software extends Engine
     protected $license = NULL;
     protected $description = NULL;
     protected $install_size = NULL;
+    protected $build_time = NULL;
     protected $install_time = NULL;
     protected $packager = NULL;
     protected $release = NULL;
@@ -152,6 +153,25 @@ class Software extends Engine
 
         return $this->license;
     }
+
+    /**
+     * Returns build time in seconds since Jan 1, 1970.
+     *
+     * @return integer build time
+     * @throws Engine_Exception, Software_Not_Installed_Exception
+     */
+
+    public function get_build_time()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (is_null($this->build_time))
+            $this->_load_info();
+
+        return $this->build_time;
+    }
+
+    /**
 
     /**
      * Returns a long description in text format.
@@ -421,16 +441,17 @@ class Software extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $rawoutput = explode("|", 
-            $this->get_rpm_info("%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}")
+            $this->get_rpm_info("%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{BUILDTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}")
         );
 
         $this->license = $rawoutput[0];
         $this->description = $rawoutput[1];
         $this->install_size = $rawoutput[2];
         $this->install_time = $rawoutput[3];
-        $this->packager = $rawoutput[4];
-        $this->release = $rawoutput[5];
-        $this->summary = $rawoutput[6];
-        $this->version = $rawoutput[7];
+        $this->build_time = $rawoutput[4];
+        $this->packager = $rawoutput[5];
+        $this->release = $rawoutput[6];
+        $this->summary = $rawoutput[7];
+        $this->version = $rawoutput[8];
     }
 }
