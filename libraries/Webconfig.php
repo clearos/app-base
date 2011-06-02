@@ -60,14 +60,14 @@ use \clearos\apps\base\Daemon as Daemon;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
 use \clearos\apps\base\Posix_User as Posix_User;
-// use \clearos\ as User;
+use \clearos\apps\base\Webconfig as Webconfig;
 
 clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Daemon');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
 clearos_load_library('base/Posix_User');
-// clearos_load_library('user/User');
+clearos_load_library('base/Webconfig');
 
 // Exceptions
 //-----------
@@ -105,7 +105,7 @@ class Webconfig extends Daemon
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    const FILE_CONFIG = '/etc/system/webconfig';
+    const FILE_CONFIG = '/etc/webconfig';
     const FILE_ACCESS_DATA = '/etc/system/webconfig-access';
     const FILE_SETUP_FLAG = '/etc/system/initialized/setup';
     const FILE_INSTALL_SETTINGS = '/usr/share/system/settings/install';
@@ -152,30 +152,16 @@ class Webconfig extends Daemon
 
         $is_valid = FALSE;
 
-        if ($username == "root") {
-            clearos_load_library('base/Posix_User');
-
-            try {
+        if ($username == 'root') {
+            if (clearos_load_library('base/Posix_User')) {
                 $user = new Posix_User($username);
                 $is_valid = $user->check_password($password);
-            } catch (Engine_Exception $e) {
-                throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
             }
         } else {
-            /*
-            FIXME
-            if (! file_exists(CLEAROS_CORE_DIR . '/api/User.class.php'))
-                exit();
-
-                require_once(CLEAROS_CORE_DIR . '/api/User.class.php');
-
-                try {
-                    $user = new User($username);
-                    $passwordok = $user->check_password($password, 'pcnWebconfigPassword');
-            } catch (Engine_Exception $e) {
-                throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
+            if (clearos_load_library('users/User_Factory')) {
+                $user = \clearos\apps\users\User_Factory::create($username);
+                $is_valid = $user->check_password($password);
             }
-            */
         }
 
         return $is_valid;
@@ -266,8 +252,8 @@ class Webconfig extends Daemon
         // This should probably move to a "vendor" class one day
 
         try {
-            $configfile = new Configuration_File(self::FILE_INSTALL_SETTINGS);
-            $configdata = $configfile->load();
+            $config_file = new Configuration_File(self::FILE_INSTALL_SETTINGS);
+            $configdata = $config_file->load();
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
@@ -295,40 +281,36 @@ class Webconfig extends Daemon
     }
 
     /**
-     * Returns configured template.
+     * Returns configured theme.
      *
-     * @return string online help URL
+     * @return string theme
      * @throws Engine_Exception
      */
 
-    public function get_template()
+    public function get_theme()
     {
         clearos_profile(__METHOD__, __LINE__);
-
-        // For developers -- allow environment variable to override configuration
-        if (isset($_ENV['WEBCONFIG_TEMPLATE']))
-            return $_ENV['WEBCONFIG_TEMPLATE'];
 
         if (! $this->is_loaded)
             $this->_load_config();
 
-        return $this->config['template'];
+        return $this->config['theme'];
     }
 
     /**
-     * Returns the list of available templates for webconfig.
+     * Returns the list of available themes for webconfig.
      *
-     * @return array list of template names
+     * @return array list of theme names
      * @throws Engine_Exception
      */
 
-    public function get_template_list()
+    public function get_theme_list()
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $folder = new Folder(CLEAROS_CORE_DIR  . "/htdocs/templates");
 
-        $templatelist = array();
+        $theme_list = array();
 
         try {
             $folderlist = $folder->GetListing();
@@ -352,18 +334,35 @@ class Webconfig extends Daemon
 
             $templatename = isset($templateinfo['name']) ? $templateinfo['name'] : $template;
 
-            $templatelist[$templatename] = $template;
+            $theme_list[$templatename] = $template;
         }
 
         // Sort by name, but key by template directory
 
         $list = array();
-        ksort($templatelist);
+        ksort($theme_list);
 
-        foreach ($templatelist as $name => $folder)
-        $list[$folder] = $name;
+        foreach ($theme_list as $name => $folder)
+            $list[$folder] = $name;
 
         return $list;
+    }
+
+    /**
+     * Returns configured theme mode.
+     *
+     * @return string theme mode
+     * @throws Engine_Exception
+     */
+
+    public function get_theme_mode()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->is_loaded)
+            $this->_load_config();
+
+        return $this->config['theme_mode'];
     }
 
     /**
@@ -400,29 +399,30 @@ class Webconfig extends Daemon
         $valid_pages[Webconfig::ACCESS_TYPE_USER] = array();
         $valid_pages[Webconfig::ACCESS_TYPE_SUBADMIN] = array();
 
-        // TODO:
+        // FIXME
         // - move these lists to a configuration file
         // - handle the servicestatus page a better way
+        // - complete
 
-        // FIXME: remove theme set from this list
         $valid_pages[Webconfig::ACCESS_TYPE_PUBLIC] = array(
             '/app/base/session/login',
-            '/app/base/theme/set'
+            '/app/base/session/access_denied',
+            '/app/base/index',
         );
 
-        if ($this->get_user_access_state())
+        if ($this->get_user_access_state()) {
             $valid_pages[Webconfig::ACCESS_TYPE_USER] = array(
                 '/app/base/session/logout',
-                '/app/base/session/access_denied',
-                '/app/user/profile',
+                '/app/date',
                 '/admin/security.php',
                 '/admin/clearcenter-status.php'
-        );
+            );
+        }
 
         if ($this->get_admin_access_state()) {
             try {
                 $file = new File(self::FILE_ACCESS_DATA);
-                $rawlist = $file->LookupValue("/^$username\s*=\s*/");
+                $rawlist = $file->lookup_value("/^$username\s*=\s*/");
                 $valid_pages[Webconfig::ACCESS_TYPE_SUBADMIN] = explode("|", $rawlist);
             } catch (File_Not_Found_Exception $e) {
                 // Not fatal
@@ -455,19 +455,35 @@ class Webconfig extends Daemon
     }
 
     /**
-     * Sets the template for webconfig.
+     * Sets the theme for webconfig.
      *
-     * @param string $template template for webconfig
+     * @param string $theme theme for webconfig
      *
      * @return void
      * @throws Engine_Exception
      */
 
-    public function set_template($template)
+    public function set_theme($theme)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->_set_parameter("template", $template);
+        $this->_set_parameter('theme', $theme);
+    }
+
+    /**
+     * Sets the theme mode for webconfig.
+     *
+     * @param string $mode theme mode for webconfig
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    public function set_theme_mode($mode)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $this->_set_parameter('theme_mode', $mode);
     }
 
     /**
@@ -544,31 +560,34 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $configfile = new Configuration_File(self::FILE_CONFIG);
+        $config_file = new Configuration_File(self::FILE_CONFIG);
 
-        try {
-            $rawdata = $configfile->load();
+        $rawdata = $config_file->load();
 
-            if (isset($rawdata['allow_user']) && preg_match("/(true|1)/i", $rawdata['allow_user']))
-                $this->config['allow_user'] = TRUE;
-            else
-                $this->config['allow_user'] = FALSE;
+        if (isset($rawdata['allow_user']) && preg_match("/(false|0)/i", $rawdata['allow_user']))
+            $this->config['allow_user'] = FALSE;
+        else
+            $this->config['allow_user'] = TRUE;
 
-            if (isset($rawdata['allow_subadmins']) && preg_match("/(true|1)/i", $rawdata['allow_subadmins']))
-                $this->config['allow_subadmins'] = TRUE;
-            else
-                $this->config['allow_subadmins'] = FALSE;
+        if (isset($rawdata['allow_subadmins']) && preg_match("/(true|1)/i", $rawdata['allow_subadmins']))
+            $this->config['allow_subadmins'] = TRUE;
+        else
+            $this->config['allow_subadmins'] = FALSE;
 
-            if (isset($rawdata['allow_shell']) && preg_match("/(true|1)/i", $rawdata['allow_shell']))
-                $this->config['allow_shell'] = TRUE;
-            else
-                $this->config['allow_shell'] = FALSE;
+        if (isset($rawdata['allow_shell']) && preg_match("/(true|1)/i", $rawdata['allow_shell']))
+            $this->config['allow_shell'] = TRUE;
+        else
+            $this->config['allow_shell'] = FALSE;
 
-            $this->config['template'] = $rawdata['template'];
+        if (isset($rawdata['theme_mode']) && !empty($rawdata['theme_mode']))
+            $this->config['theme_mode'] = $rawdata['theme_mode'];
+        else
+            $this->config['theme_mode'] = 'normal';
 
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
-        }
+        if (isset($rawdata['theme']) && !empty($rawdata['theme']))
+            $this->config['theme'] = $rawdata['theme'];
+        else
+            $this->config['theme'] = '';
 
         $this->is_loaded = TRUE;
     }
@@ -588,15 +607,15 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $file = new File(self::FILE_CONFIG);
-            $match = $file->replace_lines("/^$key\s*=\s*/", "$key = $value\n");
+        $file = new File(self::FILE_CONFIG);
 
-            if (!$match)
-                $file->add_lines("$key = $value\n");
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
-        }
+        if (! $file->exists())
+            $file->create('root', 'root', '0644');
+
+        $match = $file->replace_lines("/^$key\s*=\s*/", "$key = $value\n");
+
+        if (!$match)
+            $file->add_lines("$key = $value\n");
 
         $this->is_loaded = FALSE;
     }

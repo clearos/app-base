@@ -33,6 +33,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+// Load dependencies
+///////////////////////////////////////////////////////////////////////////////
+
+$this->lang->load('base');
+$this->lang->load('date');
+$this->load->library('user_agent');
+
+///////////////////////////////////////////////////////////////////////////////
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -48,13 +56,13 @@ echo field_input('username', '', lang('base_username'));
 echo field_password('password', '', lang('base_password'));
 
 if ($login_failed)
-    echo field_view('login_status', $login_failed, '&nbsp;');
+    echo field_view('', $login_failed);
 
 echo form_fieldset_close();
 echo form_submit_custom('submit', lang('base_login'), 'high');
 
-// FIXME: if (console)
-    echo anchor_custom('/app/graphical_console/shutdown', lang('base_exit_console'), 'low');
+if (is_console())
+    echo anchor_custom('/app/graphical_console/shutdown', lang('base_exit_to_console'), 'low');
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form close

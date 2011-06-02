@@ -148,15 +148,11 @@ class Posix_User extends Engine
         // Check password
         //---------------
         
-        try {
-            $options['stdin'] = "$this->username $password";
+        $options['stdin'] = "$this->username $password";
+        $options['validate_exit_code'] = FALSE;
 
-            $shell = new Shell();
-            $retval = $shell->execute(self::COMMAND_CHKPWD, "", TRUE, $options);
-
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->GetMessage(), CLEAROS_ERROR);
-        }
+        $shell = new Shell();
+        $retval = $shell->execute(self::COMMAND_CHKPWD, "", TRUE, $options);
 
         if ($retval === 0)
             return TRUE;

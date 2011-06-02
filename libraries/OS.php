@@ -71,7 +71,7 @@ clearos_load_library('base/File');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Os extends Engine
+class OS extends Engine
 {
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S

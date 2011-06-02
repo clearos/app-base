@@ -214,7 +214,7 @@ $lang['base_stop'] = 'Stop';
 $lang['base_other'] = 'Other';
 $lang['base_processes'] = 'Processes';
 $lang['base_overview'] = 'Overview';
-$lang['base_exit_console'] = 'Exit Console';
+$lang['base_exit_to_console'] = 'Exit to Console';
 $lang['base_entry_already_exists'] = 'Item already exists.';
 
 $lang['base_exception_invalid_parameter'] = 'Invalid parameter specified.';
