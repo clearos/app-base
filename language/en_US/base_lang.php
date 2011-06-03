@@ -171,6 +171,7 @@ $lang['base_subcategory_mail_scanning'] = 'Mail Scanning';
 $lang['base_subcategory_database'] = 'Database';
 $lang['base_subcategory_accounts'] = 'Accounts';
 $lang['base_subcategory_directory'] = 'Directory';
+$lang['base_subcategory_marketplace'] = 'ClearCenter Marketplace';
 
 
 // Changed this one
