@@ -58,6 +58,7 @@ clearos_load_language('base');
 use \clearos\apps\\Exception as Exception;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
+use \clearos\framework\Logger as Logger;
 
 clearos_load_library('/Exception');
 clearos_load_library('base/Engine');
@@ -401,7 +402,7 @@ class Storage_Device extends Engine
                 if ($file->Exists())
                     list($info['vendor'], $info['model']) = preg_split('/ /', $file->get_contents(), 2);
             } catch (Exception $e) {
-                self::Log(COMMON_WARNING, $e->get_message(), __METHOD__, __LINE__);
+                Logger::log_exception($e);
             }
 
             // Here we are looking for detected partitions
@@ -517,7 +518,7 @@ class Storage_Device extends Engine
                 // Create a hashed array of all device nodes that match: /dev/s*
                 // XXX: This can be fairly expensive, takes a few seconds to run.
                 if (!($ph = popen('stat -c 0x%t:0x%T:%n /dev/s*', 'r')))
-                    throw new Exception("Error running stat command", COMMON_WARNING);
+                    throw new Exception("Error running stat command", CLEAROS_WARNING);
 
                 $nodes = array();
                 $major = '';
@@ -532,7 +533,7 @@ class Storage_Device extends Engine
 
                 // Clean exit?
                 if (pclose($ph) != 0)
-                    throw new Exception("Error running stat command", COMMON_WARNING);
+                    throw new Exception("Error running stat command", CLEAROS_WARNING);
 
                 // Hopefully we can now find the TRUE device name for each
                 // storage device found above.  Validation continues...
@@ -556,7 +557,7 @@ class Storage_Device extends Engine
                 }
             }
         } catch (Exception $e) {
-            self::Log(COMMON_WARNING, $e->get_message(), __METHOD__, __LINE__);
+            Logger::log_exception($e);
         }
 
         return $devices;
