@@ -55,7 +55,7 @@ clearos_load_language('base');
 // Classes
 //--------
 
-use \clearos\apps\\Exception as Exception;
+use \clearos\apps\Exception as Exception;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\framework\Logger as Logger;
@@ -125,7 +125,7 @@ class Storage_Device extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (! $this->is_scanned) $this->Scan($mounted, $swap);
+        if (! $this->is_scanned) $this->_scan($mounted, $swap);
 
         return $this->devices;
     }
