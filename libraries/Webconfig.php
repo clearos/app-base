@@ -226,6 +226,8 @@ class Webconfig extends Daemon
 
             $lines = $file->get_contents_as_array();
 
+        } catch (File_Not_Found_Exception $e) {
+            return array();
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
@@ -560,9 +562,14 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $config_file = new Configuration_File(self::FILE_CONFIG);
-
-        $rawdata = $config_file->load();
+        try {
+            $config_file = new Configuration_File(self::FILE_CONFIG);
+            $rawdata = $config_file->load();
+        } catch (File_Not_Found_Exception $e) {
+            // Not fatal, set defaults below
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
+        }
 
         if (isset($rawdata['allow_user']) && preg_match("/(false|0)/i", $rawdata['allow_user']))
             $this->config['allow_user'] = FALSE;
@@ -587,7 +594,7 @@ class Webconfig extends Daemon
         if (isset($rawdata['theme']) && !empty($rawdata['theme']))
             $this->config['theme'] = $rawdata['theme'];
         else
-            $this->config['theme'] = '';
+            $this->config['theme'] = 'clearos6x';
 
         $this->is_loaded = TRUE;
     }
