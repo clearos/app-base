@@ -194,7 +194,6 @@ $lang['base_access_denied_help'] = 'You do not have permission to view this page
 $lang['base_return_to_home_page'] = 'Return to home page';
 $lang['base_dashboard'] = 'Dashboard';
 $lang['base_errmsg_invalid'] = 'The following parameter is invalid: ';
-$lang['base_general_settings'] = 'General Settings'; 
 $lang['base_system_updated'] = 'System updated';
 $lang['base_ok'] = 'OK';
 $lang['base_deleted'] = 'Item was deleted';
