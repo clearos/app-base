@@ -37,28 +37,24 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 $this->lang->load('base');
-$this->lang->load('date');
-$this->load->library('user_agent');
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
 
 echo form_open('base/session/login');
-echo form_header(lang('base_login'), 'theme-login-form-header');
+echo form_header(lang('base_login'), array('id' => 'theme-login-form-header'));
 
 //////////////////////////////////////////////////////////////////////////////
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_fieldset(lang('base_login'));
 echo field_input('username', '', lang('base_username'));
 echo field_password('password', '', lang('base_password'));
 
 if ($login_failed)
     echo field_view('', $login_failed);
 
-echo form_fieldset_close();
 echo form_submit_custom('submit', lang('base_login'), 'high');
 
 if (is_console())
@@ -68,5 +64,5 @@ if (is_console())
 // Form close
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_footer('theme-login-form-footer');
+echo form_footer(array('id' => 'theme-login-form-footer'));
 echo form_close();
