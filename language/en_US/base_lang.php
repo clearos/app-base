@@ -173,6 +173,7 @@ $lang['base_subcategory_accounts'] = 'Accounts';
 $lang['base_subcategory_directory'] = 'Directory';
 $lang['base_subcategory_marketplace'] = 'ClearCenter Marketplace';
 $lang['base_subcategory_backup'] = 'Backup';
+$lang['base_subcategory_configuration'] = 'Configuration';
 
 
 // Changed this one
