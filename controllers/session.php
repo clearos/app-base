@@ -77,7 +77,7 @@ class Session extends ClearOS_Controller
         //------------------------------
 
         if ($this->session->userdata('logged_in')) {
-            $this->page->set_status_success(lang('base_you_are_already_logged_in'));
+            $this->page->set_message(lang('base_you_are_already_logged_in'), 'highlight');
             redirect('/base/');
         }
 
