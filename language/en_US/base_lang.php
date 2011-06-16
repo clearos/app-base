@@ -91,6 +91,7 @@ $lang['base_optional'] = 'Optional';
 $lang['base_or'] = 'Or';
 $lang['base_organization_not_configured'] = 'Information about your domain (e.g. example.com) and organization is required for this feature.';
 $lang['base_packets'] = 'Packets';
+$lang['base_account'] = 'Account';
 $lang['base_password'] = 'Password';
 $lang['base_please_wait'] = 'Please Wait';
 $lang['base_previous'] = 'Previous';
