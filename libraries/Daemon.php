@@ -239,6 +239,10 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
+	// TODO: this is kludgy
+	if ($this->processname === 'kernel')
+		return TRUE;
+
         $file = new File("/var/run/" . $this->processname . ".pid");
 
         if ($file->exists())
