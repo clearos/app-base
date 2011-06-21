@@ -46,7 +46,18 @@ $app['core_requires'] = array(
     'shadow-utils',
     'sudo',
     'sysvinit-tools',
+    'syswatch',
     'util-linux-ng',
     'webconfig-php',
     'webconfig-utils'
+);
+
+
+$app['core_file_manifest'] = array(
+   'webconfig-restart' => array(
+        'target' => '/usr/sbin/webconfig-restart',
+        'mode' => '0755',
+        'owner' => 'root',
+        'group' => 'root',
+    ),
 );

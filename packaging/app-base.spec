@@ -30,6 +30,7 @@ Requires: rpm
 Requires: shadow-utils
 Requires: sudo
 Requires: sysvinit-tools
+Requires: syswatch
 Requires: util-linux-ng
 Requires: webconfig-php
 Requires: webconfig-utils
@@ -47,6 +48,7 @@ This package provides the core API and libraries.
 mkdir -p -m 755 %{buildroot}/usr/clearos/apps/base
 cp -r * %{buildroot}/usr/clearos/apps/base/
 
+install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 
 %post
 logger -p local6.notice -t installer 'app-base - installing'
@@ -89,3 +91,4 @@ exit 0
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
+/usr/sbin/webconfig-restart
