@@ -32,5 +32,5 @@
 echo infobox_critical(
     lang('base_access_denied'), 
     lang('base_access_denied_help') . 
-    anchor_custom('/app/base/dashboard', lang('base_return_to_home_page'), 'high')
+    anchor_custom('/app/base/index', lang('base_return_to_home_page'), 'high')
 );
