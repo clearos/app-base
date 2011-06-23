@@ -76,15 +76,10 @@ class Session extends ClearOS_Controller
         // FIXME: Redirect if already logged in(?)
         //------------------------------
 
-        if ($this->session->userdata('logged_in')) {
+        if ($this->authorization->is_authenticated()) {
             $this->page->set_message(lang('base_you_are_already_logged_in'), 'highlight');
-            redirect('/base/');
+            redirect('/base/index');
         }
-
-        // Load libraries
-        //---------------
-
-        $this->load->library('base/Webconfig');
 
         // Set validation rules
         //---------------------
@@ -103,17 +98,13 @@ class Session extends ClearOS_Controller
 
         if ($this->input->post('submit') && ($form_ok)) {
             try {
-                $login_ok = $this->webconfig->authenticate($this->input->post('username'), $this->input->post('password'));
+                $login_ok = $this->authorization->authenticate($this->input->post('username'), $this->input->post('password'));
 
                 if ($login_ok) {
-                    // Set login session variables
-                    $this->session->set_userdata('logged_in', 'TRUE');
-                    $this->session->set_userdata('username', $this->input->post('username'));
-
                     // Redirect to dashboard page
-                    redirect('/base/');
+                    redirect('/base/index');
                 } else {
-                    $data['login_failed'] = "Login failed"; // FIXME: translate
+                    $data['login_failed'] = lang('base_login_failed');
                 }
             } catch (Engine_Exception $e) {
                 $this->page->view_exception($e);
@@ -135,16 +126,10 @@ class Session extends ClearOS_Controller
 
     function logout()
     {
-        // Load libraries
-        //---------------
+        // Logout via authorization handler
+        //---------------------------------
 
-        $this->load->library('base/Webconfig');
-
-        // Handle logout action
-        //---------------------
-
-        $this->session->unset_userdata('logged_in');
-        $this->session->unset_userdata('username');
+        $this->authorization->logout();
 
         // Load views
         //-----------

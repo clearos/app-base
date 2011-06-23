@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_login_failed'] = 'Login failed.';
+
 $lang['base_access_denied'] = 'Access Denied';
 $lang['base_action'] = 'Action';
 $lang['base_add'] = 'Add';

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Webconfig class.
+ * Access control class.
  *
  * @category   Apps
  * @package    Base
@@ -55,19 +55,17 @@ clearos_load_language('base');
 // Classes
 //--------
 
+use \clearos\apps\base\Access_Control as Access_Control;
 use \clearos\apps\base\Configuration_File as Configuration_File;
-use \clearos\apps\base\Daemon as Daemon;
+use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
-use \clearos\apps\base\Posix_User as Posix_User;
-use \clearos\apps\base\Webconfig as Webconfig;
 
+clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
-clearos_load_library('base/Daemon');
+clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
-clearos_load_library('base/Posix_User');
-clearos_load_library('base/Webconfig');
 
 // Exceptions
 //-----------
@@ -85,10 +83,7 @@ clearos_load_library('base/File_Not_Found_Exception');
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Webconfig class.
- *
- * Only application-level methods are in this class.  In other words, no
- * GUI components are found here.
+ * Access control class.
  *
  * @category   Apps
  * @package    Base
@@ -99,16 +94,23 @@ clearos_load_library('base/File_Not_Found_Exception');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Webconfig extends Daemon
+class Access_Control extends Engine
 {
     ///////////////////////////////////////////////////////////////////////////////
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    const FILE_CONFIG = '/etc/webconfig';
-    const FILE_ACCESS_DATA = '/etc/clearos/administrators.conf';
-    const FILE_SETUP_FLAG = '/etc/system/initialized/setup';
-    const FILE_INSTALL_SETTINGS = '/usr/share/system/settings/install';
+    // Files and paths
+    const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
+    const FILE_CUSTOM = '/var/clearos/base/access_control/custom/access_control';
+    const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
+    const PATH_PUBLIC = '/var/clearos/base/access_control/public';
+    const PATH_AUTHENTICATED = '/var/clearos/base/access_control/authenticated';
+
+    // Access types
+    const TYPE_PUBLIC = 'public';
+    const TYPE_CUSTOM = 'custom';
+    const TYPE_AUTHENTICATED = 'authenticated';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -122,151 +124,218 @@ class Webconfig extends Daemon
     ///////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Webconfig constructor.
+     * Access control constructor.
      */
 
     public function __construct()
     {
         clearos_profile(__METHOD__, __LINE__);
-
-        parent::__construct("webconfig-httpd");
     }
 
     /**
-     * Returns configured theme.
+     * Returns state of admin access.
      *
-     * @return string theme
+     * @return boolean state of admin access
      * @throws Engine_Exception
      */
 
-    public function get_theme()
+    public function get_custom_access_state()
     {
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->is_loaded)
             $this->_load_config();
 
-        return $this->config['theme'];
+        return $this->config['allow_custom'];
     }
 
     /**
-     * Returns the list of available themes for webconfig.
+     * Returns a list of valid custom users.
      *
-     * @return array list of theme names
-     * @throws Engine_Exception
+     * @return array list of valid custom usernames
      */
 
-    public function get_theme_list()
+    public function get_custom_users()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $folder = new Folder(CLEAROS_CORE_DIR  . "/htdocs/templates");
+        $users = array();
 
-        $theme_list = array();
+        $folder = new Folder(self::PATH_CUSTOM, FALSE);
 
-        try {
-            $folderlist = $folder->GetListing();
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
-        }
+        $configlets = $folder->get_listing();
 
-        foreach ($folderlist as $template) {
-            if (preg_match("/(base)|(default)/", $template))
-                continue;
+        foreach ($configlets as $configlet) {
+            $file = new File(self::PATH_CUSTOM . '/' . $configlet, FALSE);
+            $lines = $file->get_contents_as_array();
 
-            $templateinfo = array();
-
-            try {
-                $file = new Configuration_File(CLEAROS_CORE_DIR . "/htdocs/templates/" . $template . "/info");
-                if ($file->exists())
-                    $templateinfo = $file->load();
-            } catch (Engine_Exception $e) {
-                throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
+            foreach ($lines as $line) {
+                $parts = explode("=", $line);
+                $users[] = trim($parts[0]);
             }
-
-            $templatename = isset($templateinfo['name']) ? $templateinfo['name'] : $template;
-
-            $theme_list[$templatename] = $template;
         }
 
-        // Sort by name, but key by template directory
-
-        $list = array();
-        ksort($theme_list);
-
-        foreach ($theme_list as $name => $folder)
-            $list[$folder] = $name;
-
-        return $list;
+        return array_unique($users);
     }
 
     /**
-     * Returns configured theme mode.
+     * Returns state of user access.
      *
-     * @return string theme mode
+     * @return boolean state of user access
      * @throws Engine_Exception
      */
 
-    public function get_theme_mode()
+    public function get_authenticated_access_state()
     {
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->is_loaded)
             $this->_load_config();
 
-        return $this->config['theme_mode'];
+        return $this->config['allow_authenticated'];
     }
 
     /**
-     * Sets the theme for webconfig.
+     * Returns valid pages for a given user.
      *
-     * @param string $theme theme for webconfig
+     * @param string $username username
      *
-     * @return void
+     * @return array list of valid pages
      * @throws Engine_Exception
      */
 
-    public function set_theme($theme)
+    public function get_valid_pages($username)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->_set_parameter('theme', $theme);
+        $details = $this->get_valid_pages_details($username);
+
+        $pages = array_merge(
+            $details[Access_Control::TYPE_AUTHENTICATED],
+            $details[Access_Control::TYPE_CUSTOM],
+            $details[Access_Control::TYPE_PUBLIC]
+        );
+
+        return array_unique($pages);
     }
 
     /**
-     * Sets the theme mode for webconfig.
+     * Returns valid pages for a given user.
      *
-     * @param string $mode theme mode for webconfig
+     * @param string $username username
      *
-     * @return void
+     * @return array list of valid pages
      * @throws Engine_Exception
      */
 
-    public function set_theme_mode($mode)
+    public function get_valid_pages_details($username)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->_set_parameter('theme_mode', $mode);
+        $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array();
+        $valid_pages[Access_Control::TYPE_CUSTOM] = array();
+        $valid_pages[Access_Control::TYPE_PUBLIC] = array();
+
+        // Process public pages
+        //---------------------
+
+        $folder = new Folder(self::PATH_PUBLIC, FALSE);
+
+        $configlets = $folder->get_listing();
+
+        foreach ($configlets as $configlet) {
+            $file = new File(self::PATH_PUBLIC . '/' . $configlet, FALSE);
+            $pages = $file->get_contents_as_array();
+            $valid_pages[Access_Control::TYPE_PUBLIC] = array_merge($pages,  $valid_pages[Access_Control::TYPE_PUBLIC]);
+        }
+
+        // Process authenticated pages
+        //----------------------------
+
+        if ($this->get_authenticated_access_state()) {
+            $folder = new Folder(self::PATH_AUTHENTICATED, FALSE);
+
+            $configlets = $folder->get_listing();
+
+            foreach ($configlets as $configlet) {
+                $file = new File(self::PATH_AUTHENTICATED . '/' . $configlet, FALSE);
+                $pages = $file->get_contents_as_array();
+                $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array_merge($pages,  $valid_pages[Access_Control::TYPE_AUTHENTICATED]);
+            }
+        }
+
+        // Process custom pages
+        //---------------------
+
+        if ($this->get_custom_access_state()) {
+            $folder = new Folder(self::PATH_CUSTOM, FALSE);
+
+            $configlets = $folder->get_listing();
+
+            foreach ($configlets as $configlet) {
+                try {
+                    $file = new File(self::PATH_CUSTOM . '/' . $configlet, FALSE);
+                    $raw_pages = $file->lookup_value("/^$username\s*=\s*/");
+                } catch (File_No_Match_Exception $e) {
+                    // Not fatal
+                } 
+
+                if (! empty($raw_pages)) {
+                    $raw_pages = preg_replace('/\s+/', '', $raw_pages);
+                    $pages = explode(",", $raw_pages);
+                    $valid_pages[Access_Control::TYPE_CUSTOM] = array_merge($pages,  $valid_pages[Access_Control::TYPE_CUSTOM]);
+                }
+            }
+        }
+
+        return $valid_pages;
     }
 
     /**
-     * Sets the state of the setup/upgrade wizard.
+     * Sets state of admin access.
      *
-     * @param boolean $state state of setup/upgrade wizard
+     * @param boolean $state state of admin access
+     *
+     * @return boolean state of admin access
+     * @throws Engine_Exception
+     */
+
+    public function set_custom_access_state($state)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $stateval = $state ? 1 : 0;
+
+        $this->_set_parameter("allow_custom", $stateval);
+    }
+
+    /**
+     * Sets the list of pages a custom may access.
+     *
+     * @param string $username admin username
+     * @param array  $pages    string array of authorized pages
      *
      * @return void
      */
 
-    public function set_setup_state($state)
+    public function set_valid_pages($username, $pages)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $file = new File(self::FILE_SETUP_FLAG);
+        $file = new File(self::FILE_CUSTOM);
 
-        if ($state && !$file->exists())
+        if (! $file->exists())
             $file->create("root", "root", "0644");
-        else if (!$state && $file->exists())
-            $file->delete();
+
+        if ($pages) {
+            $value = implode("|", $pages);
+            $match = $file->replace_lines("/^$username\s*=\s*/", "$username = $value\n");
+
+            if (!$match)
+                $file->add_lines("$username = $value\n");
+        } else {
+            $file->delete_lines("/^$username\s*=/");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -286,27 +355,22 @@ class Webconfig extends Daemon
 
         try {
             $config_file = new Configuration_File(self::FILE_CONFIG);
-            $rawdata = $config_file->load();
+            $raw_data = $config_file->load();
         } catch (File_Not_Found_Exception $e) {
             // Not fatal, set defaults below
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
-        if (isset($rawdata['allow_shell']) && preg_match("/(true|1)/i", $rawdata['allow_shell']))
-            $this->config['allow_shell'] = TRUE;
+        if (isset($raw_data['allow_authenticated']) && preg_match("/(false|0)/i", $raw_data['allow_authenticated']))
+            $this->config['allow_authenticated'] = FALSE;
         else
-            $this->config['allow_shell'] = FALSE;
+            $this->config['allow_authenticated'] = TRUE;
 
-        if (isset($rawdata['theme_mode']) && !empty($rawdata['theme_mode']))
-            $this->config['theme_mode'] = $rawdata['theme_mode'];
+        if (isset($raw_data['allow_custom']) && preg_match("/(false|1)/i", $raw_data['allow_custom']))
+            $this->config['allow_custom'] = FALSE;
         else
-            $this->config['theme_mode'] = 'normal';
-
-        if (isset($rawdata['theme']) && !empty($rawdata['theme']))
-            $this->config['theme'] = $rawdata['theme'];
-        else
-            $this->config['theme'] = 'clearos6x';
+            $this->config['allow_custom'] = TRUE;
 
         $this->is_loaded = TRUE;
     }
