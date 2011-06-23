@@ -1,0 +1,4 @@
+/app/base/index
+/app/base/session/login
+/app/base/session/logout
+/app/base/session/access_denied

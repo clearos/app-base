@@ -60,4 +60,13 @@ $app['core_file_manifest'] = array(
         'owner' => 'root',
         'group' => 'root',
     ),
+   'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
+);
+
+$app['core_directory_manifest'] = array(
+    '/var/clearos/base' => array(),
+    '/var/clearos/base/access_control' => array(),
+    '/var/clearos/base/access_control/authenticated' => array(),
+    '/var/clearos/base/access_control/custom' => array(),
+    '/var/clearos/base/access_control/public' => array(),
 );
