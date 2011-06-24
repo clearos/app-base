@@ -74,11 +74,26 @@ class Session extends ClearOS_Controller
     function login()
     {
         // FIXME: Redirect if already logged in(?)
-        //------------------------------
+        //----------------------------------------
 
         if ($this->authorization->is_authenticated()) {
             $this->page->set_message(lang('base_you_are_already_logged_in'), 'highlight');
             redirect('/base/index');
+        }
+
+        // Set validation rules for language first
+        //----------------------------------------
+
+        if (is_library_installed('language/Locale')) {
+            $this->load->library('language/Locale');
+
+            $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
+            $form_ok = $this->form_validation->run();
+
+            if ($this->input->post('submit') && ($form_ok)) {
+                $this->login_session->set_locale($this->input->post('code'));
+                $this->login_session->reload_language('base');
+            }
         }
 
         // Set validation rules
@@ -86,7 +101,7 @@ class Session extends ClearOS_Controller
 
         // The login form handling is a bit different than your typical
         // web form validation.  We manually set the login_failed warning message.
-         
+
         $this->form_validation->set_policy('username', '', '', TRUE);
         $this->form_validation->set_policy('password', '', '', TRUE);
         $form_ok = $this->form_validation->run();
@@ -99,6 +114,7 @@ class Session extends ClearOS_Controller
         if ($this->input->post('submit') && ($form_ok)) {
             try {
                 $login_ok = $this->authorization->authenticate($this->input->post('username'), $this->input->post('password'));
+                $this->session->set_userdata('lang_code', $this->input->post('code'));
 
                 if ($login_ok) {
                     // Redirect to dashboard page
@@ -111,6 +127,20 @@ class Session extends ClearOS_Controller
                 return;
             }
         }
+
+        // Load view data
+        //---------------
+
+        // If session cookie holds last language, use it as the default.
+        // Otherwise, use the default system language as the default.
+
+        if (is_library_installed('language/Locale')) {
+            $data['code'] = $this->locale->get_language_code();
+            $data['languages'] = $this->locale->get_languages();
+        }
+        
+        if ($this->session->userdata('lang_code'))
+            $data['code'] = $this->session->userdata('lang_code');
 
         // Load views
         //-----------

@@ -52,6 +52,9 @@ echo form_header(lang('base_login'), array('id' => 'theme-login-form-header'));
 echo field_input('username', '', lang('base_username'));
 echo field_password('password', '', lang('base_password'));
 
+if (! empty($languages))
+    echo field_dropdown('code', $languages, $code, lang('base_language'));
+
 if ($login_failed)
     echo field_view('', $login_failed);
 
