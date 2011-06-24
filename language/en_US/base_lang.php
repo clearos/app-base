@@ -2,6 +2,7 @@
 
 $lang['base_login_failed'] = 'Login failed.';
 
+$lang['base_language'] = 'Language';
 $lang['base_access_denied'] = 'Access Denied';
 $lang['base_action'] = 'Action';
 $lang['base_add'] = 'Add';
@@ -303,6 +304,7 @@ $lang['base_to_manual'] = 'To Manual';
 $lang['base_unknown'] = 'Unknown';
 
 // Languages
+$lang['base_language_ca_es'] = 'Catalan';
 $lang['base_language_cs_cz'] = 'Czech';
 $lang['base_language_da_dk'] = 'Danish';
 $lang['base_language_de_de'] = 'German';
