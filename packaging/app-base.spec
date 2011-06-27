@@ -32,6 +32,7 @@ Requires: sudo
 Requires: sysvinit-tools
 Requires: syswatch
 Requires: util-linux-ng
+Requires: webconfig-mod_ssl
 Requires: webconfig-php
 Requires: webconfig-utils
 

@@ -48,6 +48,7 @@ $app['core_requires'] = array(
     'sysvinit-tools',
     'syswatch',
     'util-linux-ng',
+    'webconfig-mod_ssl',
     'webconfig-php',
     'webconfig-utils'
 );
