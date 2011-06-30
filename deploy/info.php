@@ -6,7 +6,7 @@
 
 $app['basename'] = 'base';
 $app['version'] = '5.9.9.2';
-$app['release'] = '3.1';
+$app['release'] = '4';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
 $app['license'] = 'GPLv3';

@@ -2,8 +2,8 @@
 Name: app-base
 Group: ClearOS/Apps
 Version: 5.9.9.2
-Release: 3.1%{dist}
-Summary: Base system and settings
+Release: 4%{dist}
+Summary: Dashboard
 License: GPLv3
 Packager: ClearFoundation
 Vendor: ClearFoundation
@@ -15,7 +15,7 @@ Requires: %{name}-core = %{version}-%{release}
 Base system and settings ... blah blah.
 
 %package core
-Summary: Base system and settings - APIs and install
+Summary: Dashboard - APIs and install
 Group: ClearOS/Libraries
 License: LGPLv3
 Requires: clearos-base
