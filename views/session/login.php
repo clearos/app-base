@@ -60,9 +60,6 @@ if ($login_failed)
 
 echo form_submit_custom('submit', lang('base_login'), 'high');
 
-if (is_console())
-    echo anchor_custom('/app/graphical_console/shutdown', lang('base_exit_to_console'), 'low');
-
 ///////////////////////////////////////////////////////////////////////////////
 // Form close
 ///////////////////////////////////////////////////////////////////////////////
