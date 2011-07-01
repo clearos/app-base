@@ -3,7 +3,7 @@ Name: app-base
 Group: ClearOS/Apps
 Version: 5.9.9.2
 Release: 4%{dist}
-Summary: Dashboard
+Summary: Base System
 License: GPLv3
 Packager: ClearFoundation
 Vendor: ClearFoundation
@@ -12,10 +12,10 @@ Buildarch: noarch
 Requires: %{name}-core = %{version}-%{release}
 
 %description
-Base system and settings ... blah blah.
+Welcome to ClearOS Enterprise 6.1.0 Alpha 1!
 
 %package core
-Summary: Dashboard - APIs and install
+Summary: Base System - APIs and install
 Group: ClearOS/Libraries
 License: LGPLv3
 Requires: clearos-base
@@ -37,7 +37,7 @@ Requires: webconfig-php
 Requires: webconfig-utils
 
 %description core
-Base system and settings ... blah blah.
+Welcome to ClearOS Enterprise 6.1.0 Alpha 1!
 
 This package provides the core API and libraries.
 

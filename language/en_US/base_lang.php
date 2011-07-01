@@ -1,5 +1,8 @@
 <?php
 
+$lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6.1.0 Alpha 1!'; // FIXME
+$lang['base_app_name'] = 'Base System';
+
 $lang['base_login_failed'] = 'Login failed.';
 
 $lang['base_language'] = 'Language';
