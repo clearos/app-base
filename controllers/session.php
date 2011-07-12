@@ -132,15 +132,40 @@ class Session extends ClearOS_Controller
         //---------------
 
         // If session cookie holds last language, use it as the default.
-        // Otherwise, use the default system language as the default.
+        // Otherwise, check the accept_language user agent variable
+        // Otherwise, use the default system language
 
         if (is_library_installed('language/Locale')) {
-            $data['code'] = $this->locale->get_language_code();
+            $system_code = $this->locale->get_language_code();
             $data['languages'] = $this->locale->get_languages();
         }
-        
-        if ($this->session->userdata('lang_code'))
+
+        if ($this->session->userdata('lang_code')) {
             $data['code'] = $this->session->userdata('lang_code');
+	} else {
+            $this->load->library('user_agent');
+
+            foreach ($this->agent->languages() as $browser_lang) {
+                $matches = array();
+                if (preg_match('/(.*)-(.*)/', $browser_lang, $matches))
+                    $browser_lang = $matches[1] . '_' . strtoupper($matches[2]);
+                else
+                    $browser_lang = $browser_lang . '_' . strtoupper($browser_lang);
+
+                if (array_key_exists($browser_lang, $data['languages'])) {
+                   $data['code'] = $browser_lang;
+                   $this->login_session->set_locale($browser_lang);
+                   $this->login_session->reload_language('base');
+                   break;
+                }
+            }
+	}
+
+        if (empty($data['code'])) {
+            $data['code'] = $system_code;
+            $this->login_session->set_locale($system_code);
+            $this->login_session->reload_language('base');
+        }
 
         // Load views
         //-----------
