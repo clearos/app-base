@@ -177,7 +177,7 @@ class Product extends Engine
      * @throws Engine_Exception
      */
 
-    function get_redirect_url()
+    public function get_redirect_url()
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -329,7 +329,7 @@ class Product extends Engine
     /**
      * Sets the partner region ID.
      *
-     * @param integer partner_region_id
+     * @return void
      * @throws Engine_Exception
      */
 
@@ -337,22 +337,19 @@ class Product extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $file = new Configuration_File(self::FILE_CONFIG);
-            $updated = $file->replace_lines("/^partner_region_id\s*=.*/", ($id < 0 ? "" : "partner_region_id = " . $id), 1);
-            if ($updated == 0 && $id > 0)
-                $file->add_lines("partner_region_id = " . $id . "\n");
-            $this->_load_config();
-        } catch (Exception $e) {
-            throw new EngineException(clearos_exception_message($e), COMMON_WARNING);
-        }
+        $file = new Configuration_File(self::FILE_CONFIG);
+        $updated = $file->replace_lines("/^partner_region_id\s*=.*/", ($id < 0 ? "" : "partner_region_id = " . $id), 1);
+
+        if ($updated == 0 && $id > 0)
+            $file->add_lines("partner_region_id = " . $id . "\n");
+
+        $this->_load_config();
     }
     
     /**
      * Loads configuration file.
      *
      * @access private
-     *
      * @return void
      * @throws Engine_Exception
      */
