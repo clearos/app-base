@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_category'] = 'Category';
+
 $lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6.1.0 Alpha 1!'; // FIXME
 $lang['base_app_name'] = 'Base System';
 
@@ -161,6 +163,7 @@ $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_server'] = 'Server';
 $lang['base_category_marketplace'] = 'Marketplace';
 
+$lang['base_subcategory_bandwidth_and_qos'] = 'Bandwidth and QoS';
 $lang['base_subcategory_content_filter_and_proxy'] = 'Content Filter and Proxy';
 $lang['base_subcategory_protocol_filter'] = 'Protocol Filter';
 $lang['base_subcategory_firewall'] = 'Firewall';
