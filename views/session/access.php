@@ -29,8 +29,14 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
+// FIXME: special wrappers for login page - keep them?
+echo "<div class='login'>";
+echo "<div class='logo-login'></div>";
+
 echo infobox_critical(
     lang('base_access_denied'), 
     lang('base_access_denied_help') . 
     anchor_custom('/app/base/index', lang('base_return_to_home_page'), 'high')
 );
+
+echo "</div>";

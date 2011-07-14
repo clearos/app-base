@@ -38,6 +38,10 @@
 
 $this->lang->load('base');
 
+// FIXME: special wrappers for login page - keep them?
+echo "<div class='login'>";
+echo "<div class='logo-login'></div>";
+
 ///////////////////////////////////////////////////////////////////////////////
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
@@ -66,3 +70,5 @@ echo form_submit_custom('submit', lang('base_login'), 'high');
 
 echo form_footer(array('id' => 'theme-login-form-footer'));
 echo form_close();
+
+echo "</div>";
