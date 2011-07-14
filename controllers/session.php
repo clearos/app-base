@@ -76,7 +76,7 @@ class Session extends ClearOS_Controller
         // FIXME: Redirect if already logged in(?)
         //----------------------------------------
 
-        if ($this->authorization->is_authenticated()) {
+        if ($this->login_session->is_authenticated()) {
             $this->page->set_message(lang('base_you_are_already_logged_in'), 'highlight');
             redirect('/base/index');
         }
@@ -91,7 +91,7 @@ class Session extends ClearOS_Controller
             $form_ok = $this->form_validation->run();
 
             if ($this->input->post('submit') && ($form_ok)) {
-                $this->login_session->set_locale($this->input->post('code'));
+                $this->login_session->set_language($this->input->post('code'));
                 $this->login_session->reload_language('base');
             }
         }
@@ -113,10 +113,11 @@ class Session extends ClearOS_Controller
 
         if ($this->input->post('submit') && ($form_ok)) {
             try {
-                $login_ok = $this->authorization->authenticate($this->input->post('username'), $this->input->post('password'));
-                $this->session->set_userdata('lang_code', $this->input->post('code'));
-
+                $login_ok = $this->login_session->authenticate($this->input->post('username'), $this->input->post('password'));
                 if ($login_ok) {
+                    $this->login_session->start_authenticated($this->input->post('username'));
+                    $this->login_session->set_language($this->input->post('code'));
+
                     // Redirect to dashboard page
                     redirect('/base/index');
                 } else {
@@ -142,28 +143,28 @@ class Session extends ClearOS_Controller
 
         if ($this->session->userdata('lang_code')) {
             $data['code'] = $this->session->userdata('lang_code');
-	} else {
-            $this->load->library('user_agent');
+        } else {
+                $this->load->library('user_agent');
 
-            foreach ($this->agent->languages() as $browser_lang) {
-                $matches = array();
-                if (preg_match('/(.*)-(.*)/', $browser_lang, $matches))
-                    $browser_lang = $matches[1] . '_' . strtoupper($matches[2]);
-                else
-                    $browser_lang = $browser_lang . '_' . strtoupper($browser_lang);
+                foreach ($this->agent->languages() as $browser_lang) {
+                    $matches = array();
+                    if (preg_match('/(.*)-(.*)/', $browser_lang, $matches))
+                        $browser_lang = $matches[1] . '_' . strtoupper($matches[2]);
+                    else
+                        $browser_lang = $browser_lang . '_' . strtoupper($browser_lang);
 
-                if (array_key_exists($browser_lang, $data['languages'])) {
-                   $data['code'] = $browser_lang;
-                   $this->login_session->set_locale($browser_lang);
-                   $this->login_session->reload_language('base');
-                   break;
+                    if (array_key_exists($browser_lang, $data['languages'])) {
+                       $data['code'] = $browser_lang;
+                       $this->login_session->set_language($browser_lang);
+                       $this->login_session->reload_language('base');
+                       break;
                 }
             }
-	}
+        }
 
         if (empty($data['code'])) {
             $data['code'] = $system_code;
-            $this->login_session->set_locale($system_code);
+            $this->login_session->set_language($system_code);
             $this->login_session->reload_language('base');
         }
 
@@ -181,10 +182,10 @@ class Session extends ClearOS_Controller
 
     function logout()
     {
-        // Logout via authorization handler
+        // Logout via login_session handler
         //---------------------------------
 
-        $this->authorization->logout();
+        $this->login_session->stop_authenticated();
 
         // Load views
         //-----------
