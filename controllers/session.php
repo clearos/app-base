@@ -62,7 +62,7 @@ class Session extends ClearOS_Controller
 
     function access_denied()
     {
-        $page['type'] = MY_Page::TYPE_SPLASH;
+        $page['type'] = MY_Page::TYPE_LOGIN;
 
         $this->page->view_form('session/access', array(), lang('base_access_denied'), $page);
     }
@@ -171,7 +171,7 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        $page['type'] = MY_Page::TYPE_SPLASH;
+        $page['type'] = MY_Page::TYPE_LOGIN;
 
         $this->page->view_form('session/login', $data, lang('base_login'), $page);
     }
@@ -190,7 +190,7 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        $page['type'] = MY_Page::TYPE_SPLASH;
+        $page['type'] = MY_Page::TYPE_LOGIN;
 
         $this->page->view_form('session/logout', $data, lang('base_logout'), $page);
     }

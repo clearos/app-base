@@ -29,12 +29,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-// FIXME: special wrappers for login page - keep them?
-echo "<div class='login'>";
-echo "<div class='logo-login'></div>";
-
-// FIXME: translate
-
 $login_button = anchor_custom('/app/base/session/login', lang('base_login'), 'high');
 
 echo infobox_highlight(
@@ -42,5 +36,3 @@ echo infobox_highlight(
     lang('base_logout_complete') .
     anchor_custom('/app/base/session/login', lang('base_login'), 'high')
 );
-
-echo "</div>";
