@@ -47,35 +47,51 @@
 
 class Daemon extends ClearOS_Controller
 {
+    protected $daemon_name = NULL;
+    protected $app_name = NULL;
+
+    /**
+     * Constructor.
+     */
+
+    function __construct($daemon_name, $app_name)
+    {
+        $this->daemon_name = $daemon_name;
+        $this->app_name = $app_name;
+    }
+
     /**
      * Default controller.
      */
 
-    function index($daemon = NULL)
+    function index()
     {
         // Load dependencies
         //------------------
 
         $this->lang->load('base');
 
-        $data['daemon'] = $daemon; 
+        $data['daemon_name'] = $this->daemon_name;
+        $data['app_name'] = $this->app_name;
 
         // Load views
         //-----------
 
-        $this->page->view_form('base/daemon', $data, lang('base_server_status'));
+        $options['javascript'] = array(clearos_app_htdocs('base') . '/daemon.js.php');
+
+        $this->page->display_view('base/daemon', $data, lang('base_server_status'), $options);
     }
 
     /**
      * Daemon status.
      */
 
-    function status($daemon = NULL)
+    function status()
     {
         header('Cache-Control: no-cache, must-revalidate');
         header('Content-type: application/json');
 
-        $this->load->library('base/Daemon', $daemon);
+        $this->load->library('base/Daemon', $this->daemon_name);
 
         $status['status'] = $this->daemon->get_status();
 
@@ -86,9 +102,9 @@ class Daemon extends ClearOS_Controller
      * Daemon start.
      */
 
-    function start($daemon = NULL)
+    function start()
     {
-        $this->load->library('base/Daemon', $daemon);
+        $this->load->library('base/Daemon', $this->daemon_name);
 
         try {
             $this->daemon->set_running_state(TRUE);
@@ -102,9 +118,9 @@ class Daemon extends ClearOS_Controller
      * Daemon stop.
      */
 
-    function stop($daemon = NULL)
+    function stop()
     {
-        $this->load->library('base/Daemon', $daemon);
+        $this->load->library('base/Daemon', $this->daemon_name);
 
         try {
             $this->daemon->set_running_state(FALSE);

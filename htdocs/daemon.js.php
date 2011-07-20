@@ -55,16 +55,17 @@ header('Content-Type:application/x-javascript');
 
 $(document).ready(function() {
     var clearos_daemon_name = $('#clearos_daemon_name').val();
+    var clearos_app_name = $('#clearos_app_name').val();
 
     if (clearos_daemon_name)
-        clearosDaemon(clearos_daemon_name);
+        clearosDaemon(clearos_daemon_name, clearos_app_name);
 });
 
 ///////////////////////////////////////////////////////////////////////////
 // D A E M O N
 ///////////////////////////////////////////////////////////////////////////
 
-function clearosDaemon(daemon) {
+function clearosDaemon(daemon, app_name) {
 
     // Translations
     //-------------
@@ -77,6 +78,7 @@ function clearosDaemon(daemon) {
     lang_stop = '<?php echo lang("base_stop"); ?>';
     lang_stopping = '<?php echo lang("base_stopping"); ?>';
     lang_stopped = '<?php echo lang("base_stopped"); ?>';
+    basename = '/app/' + app_name + '/server';
 
     // Click Events
     //-------------
@@ -108,7 +110,7 @@ function clearosDaemon(daemon) {
 
 function clearosStartDaemon(daemon) {
     $.ajax({
-        url: '/app/base/daemon/start/' + daemon, 
+        url: basename + '/start/' + daemon, 
         method: 'GET',
         dataType: 'json',
         success : function(payload) {
@@ -121,7 +123,7 @@ function clearosStartDaemon(daemon) {
 
 function clearosStopDaemon(daemon) {
     $.ajax({
-        url: '/app/base/daemon/stop/' + daemon, 
+        url: basename + '/stop/' + daemon, 
         method: 'GET',
         dataType: 'json',
         success : function(payload) {
@@ -137,7 +139,7 @@ function clearosGetDaemonStatus(daemon, timeout) {
     var clearos_daemon_name = $('#clearos_daemon_name').val();
 
     $.ajax({
-        url: '/app/base/daemon/status/' + clearos_daemon_name, 
+        url: basename + '/status/' + clearos_daemon_name, 
         method: 'GET',
         dataType: 'json',
         success : function(payload) {

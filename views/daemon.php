@@ -47,9 +47,10 @@ echo form_header(lang('base_server_status'));
 ///////////////////////////////////////////////////////////////////////////////
 
 // FIXME - Aaron styling
-echo "<input id='clearos_daemon_name' value='$daemon' type='hidden'>";
-echo "<input id='clearos_daemon_status_lock' value='off' type='hidden'>";
-echo "Status: <span id='clearos_daemon_status'></span> &nbsp; &nbsp; ";
+echo "<input id='clearos_app_name' value='$app_name' type='hidden'>\n";
+echo "<input id='clearos_daemon_name' value='$daemon_name' type='hidden'>\n";
+echo "<input id='clearos_daemon_status_lock' value='off' type='hidden'>\n";
+echo "Status: <span id='clearos_daemon_status'></span> &nbsp; &nbsp; \n";
 echo anchor_javascript('clearos_daemon_action', '', 'high');
 
 ///////////////////////////////////////////////////////////////////////////////
