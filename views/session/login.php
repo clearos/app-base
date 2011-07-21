@@ -58,7 +58,9 @@ if (! empty($languages))
 if ($login_failed)
     echo field_view('', $login_failed);
 
-echo form_submit_custom('submit', lang('base_login'), 'high');
+echo theme_field_button_set(
+    array(form_submit_custom('submit', lang('base_login'), 'high'))
+);
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form close

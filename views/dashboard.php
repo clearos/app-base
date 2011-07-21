@@ -29,8 +29,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight(
-    "<h2>Dashboard</h2> 
-	<p>Nothing to see here yet!  This is the future home of the ClearOS Dashboard.
+echo infobox_highlight('Dashboard',
+	"<p>Nothing to see here yet!  This is the future home of the ClearOS Dashboard.
 	Click on the menu links to view other apps.</p>"
 );
