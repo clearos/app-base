@@ -79,7 +79,7 @@ class Daemon extends ClearOS_Controller
 
         $options['javascript'] = array(clearos_app_htdocs('base') . '/daemon.js.php');
 
-        $this->page->display_view('base/daemon', $data, lang('base_server_status'), $options);
+        $this->page->view_form('base/daemon', $data, lang('base_server_status'), $options);
     }
 
     /**
