@@ -89,7 +89,6 @@ $codes = array(
     'GP' => lang('base_country_guadeloupe'),
     'GQ' => lang('base_country_equatorial_guinea'),
     'GR' => lang('base_country_greece'),
-    'GS' => lang('base_country_south_georgia_and_the_south_sandwich_islands'),
     'GT' => lang('base_country_guatemala'),
     'GU' => lang('base_country_guam'),
     'GW' => lang('base_country_guinea_bissau'),

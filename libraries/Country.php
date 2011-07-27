@@ -79,6 +79,7 @@ class Country extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     protected $codes = array();
+    protected $countries = array();
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -92,7 +93,7 @@ class Country extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        include 'Country.list.php';
+        include clearos_app_base('base') . '/deploy/countries.php';
 
         $this->codes = $codes;
     }
