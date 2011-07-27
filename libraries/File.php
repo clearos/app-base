@@ -766,17 +766,15 @@ class File extends Engine
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
-        if (!($fh_t = @fopen($tempfile, "w"))) {
-            // TODO: AddValidationError replacement
-            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
-        } else {
-            if ($contents)
-                fputs($fh_t, implode("\n", $contents) . "\n");
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new Engine_Exception(lang('base_file_open_error'));
 
-            fclose($fh_t);
+        if ($contents)
+            fputs($fh_t, implode("\n", $contents) . "\n");
 
-            $this->replace($tempfile);
-        }
+        fclose($fh_t);
+
+        $this->replace($tempfile);
     }
 
     /**
@@ -855,8 +853,8 @@ class File extends Engine
         fclose($fh_t);
 
         if (! $match) {
-            throw new File_No_Match_Exception($tempfile, $after);
             unlink($tempfile);
+            throw new File_No_Match_Exception($tempfile, $after);
         }
 
         $this->replace($tempfile);
@@ -899,8 +897,8 @@ class File extends Engine
         fclose($fh_t);
 
         if (! $match) {
-            throw new File_No_Match_Exception($tempfile, $before);
             unlink($tempfile);
+            throw new File_No_Match_Exception($tempfile, $before);
         }
 
         $this->replace($tempfile);
@@ -950,29 +948,27 @@ class File extends Engine
 
         $lines = $this->get_contents_as_array();
 
-        if (!($fh_t = @fopen($tempfile, "w"))) {
-            // TODO: AddValidationError replacement
-            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
-        } else {
-            $match = FALSE;
-            foreach ($lines as $line) {
-                if (preg_match($search, $line)) {
-                    fputs($fh_t, $prepend . $line . "\n");
-                    $match = TRUE;
-                } else {
-                    fputs($fh_t, $line . "\n");
-                }
-            }
+        if (!($fh_t = @fopen($tempfile, "w")))
+            throw new Engine_Exception(lang('base_file_open_error'));
 
-            fclose($fh_t);
+        $match = FALSE;
 
-            if (! $match) {
-                // TODO: AddValidationError replacement
-                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__,  __LINE__);
-                unlink($tempfile);
+        foreach ($lines as $line) {
+            if (preg_match($search, $line)) {
+                fputs($fh_t, $prepend . $line . "\n");
+                $match = TRUE;
             } else {
-                $prependlines = $this->replace($tempfile);
+                fputs($fh_t, $line . "\n");
             }
+        }
+
+        fclose($fh_t);
+
+        if (! $match) {
+            unlink($tempfile);
+            throw new File_No_Match_Exception($tempfile, $search);
+        } else {
+            $prependlines = $this->replace($tempfile);
         }
 
         return $prependlines;
@@ -1142,8 +1138,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w"))) {
-            // TODO: AddValidationError replacement
-            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+            throw new Engine_Exception(lang('base_file_open_error'));
         } else {
 
             // Find start tag
@@ -1181,9 +1176,8 @@ class File extends Engine
             fclose($fh_t);
 
             if (! $match) {
-                // TODO: AddValidationError replacement
-                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
                 unlink($tempfile);
+                throw new File_No_Match_Exception($tempfile, $search);
             } else {
                 $replaced = $this->replace($tempfile);
             }
@@ -1270,7 +1264,7 @@ class File extends Engine
      * @param string $replacement replacement expression
      *
      * @return boolean TRUE if any replacements were made
-     * @throws File_Not_Found_Exception Exception (inherited from get_contents_as_array)
+     * @throws File_Not_Found_Exception Exception, File_No_Match_Exception
      */
 
     public function replace_one_line_by_pattern($search, $replacement)
@@ -1284,8 +1278,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w"))) {
-            // TODO: AddValidationError replacement
-            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+            throw new Engine_Exception(lang('base_file_open_error'));
         } else {
             $match = FALSE;
             foreach ($lines as $line) {
@@ -1301,9 +1294,8 @@ class File extends Engine
             fclose($fh_t);
 
             if (! $match) {
-                // TODO: AddValidationError replacement
-                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
                 unlink($tempfile);
+                throw new File_No_Match_Exception($this->filename, $search);
             } else {
                 $replaced = $this->replace($tempfile);
             }
@@ -1333,8 +1325,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w"))) {
-            // TODO: AddValidationError replacement
-            $this->AddValidationError(FILE_LANG_ERRMSG_OPEN . $tempfile, __METHOD__, __LINE__);
+            throw new Engine_Exception(lang('base_file_open_error'));
         } else {
             $match = FALSE;
             foreach ($lines as $line) {
@@ -1350,9 +1341,8 @@ class File extends Engine
             fclose($fh_t);
 
             if (! $match) {
-                // TODO: AddValidationError replacement
-                $this->AddValidationError(LOCALE_LANG_ERRMSG_NO_MATCH, __METHOD__, __LINE__);
                 unlink($tempfile);
+                throw new File_No_Match_Exception($tempfile, $search);
             } else {
                 $replaced = $this->replace($tempfile);
             }
