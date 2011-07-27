@@ -1,5 +1,6 @@
 <?php
 
+$lang['base_not_specified'] = 'Not Specified';
 $lang['base_category'] = 'Category';
 
 $lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6.1.0 Alpha 1!'; // FIXME
