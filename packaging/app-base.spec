@@ -2,7 +2,7 @@
 Name: app-base
 Group: ClearOS/Apps
 Version: 5.9.9.3
-Release: 1%{dist}
+Release: 2.1%{dist}
 Summary: Base System
 License: GPLv3
 Packager: ClearFoundation
