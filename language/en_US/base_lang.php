@@ -1,5 +1,9 @@
 <?php
 
+$lang['base_connection_status'] = 'Connection Status';
+$lang['base_connecting...'] = 'Connecting ...';
+$lang['base_loading...'] = 'Loading ...';
+
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_category'] = 'Category';
 
