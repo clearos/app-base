@@ -169,6 +169,7 @@ $lang['base_category_network'] = 'Network';
 $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_server'] = 'Server';
 $lang['base_category_marketplace'] = 'Marketplace';
+$lang['base_category_my_account'] = 'My Account';
 
 $lang['base_subcategory_messaging_and_collaboration'] = 'Messaging and Collaboration';
 $lang['base_subcategory_bandwidth_and_qos'] = 'Bandwidth and QoS';
