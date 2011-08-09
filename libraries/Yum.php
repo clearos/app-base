@@ -137,6 +137,11 @@ class Yum extends Engine
             throw new Yum_Busy_Exception();
 
         try {
+            // Delete old yum log output file
+            $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
+            if ($log->exists())
+                $log->delete();
+            
             $shell = new Shell();
 
             $options = array(
