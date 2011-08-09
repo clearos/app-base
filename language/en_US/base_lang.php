@@ -99,6 +99,7 @@ $lang['base_month_8'] = 'August';
 $lang['base_month_9'] = 'September';
 $lang['base_next'] = 'Next';
 $lang['base_no'] = 'No';
+$lang['base_of'] = 'of';
 $lang['base_off'] = 'Off';
 $lang['base_current_password'] = 'Current Password';
 $lang['base_on'] = 'On';
