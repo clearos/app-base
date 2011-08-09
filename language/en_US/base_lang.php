@@ -171,6 +171,7 @@ $lang['base_category_server'] = 'Server';
 $lang['base_category_marketplace'] = 'Marketplace';
 $lang['base_category_my_account'] = 'My Account';
 
+$lang['base_subcategory_security'] = 'Security';
 $lang['base_subcategory_messaging_and_collaboration'] = 'Messaging and Collaboration';
 $lang['base_subcategory_bandwidth_and_qos'] = 'Bandwidth and QoS';
 $lang['base_subcategory_content_filter_and_proxy'] = 'Content Filter and Proxy';
