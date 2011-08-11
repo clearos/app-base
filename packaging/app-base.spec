@@ -1,8 +1,8 @@
 
 Name: app-base
 Group: ClearOS/Apps
-Version: 5.9.9.3
-Release: 2.1%{dist}
+Version: 5.9.9.4
+Release: 1.1%{dist}
 Summary: Base System
 License: GPLv3
 Packager: ClearFoundation
@@ -49,11 +49,13 @@ This package provides the core API and libraries.
 mkdir -p -m 755 %{buildroot}/usr/clearos/apps/base
 cp -r * %{buildroot}/usr/clearos/apps/base/
 
+install -d -m 0755 %{buildroot}/etc/clearos/base.d
 install -d -m 0755 %{buildroot}/var/clearos/base
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
+install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 
@@ -95,6 +97,7 @@ exit 0
 %exclude /usr/clearos/apps/base/packaging
 %exclude /usr/clearos/apps/base/tests
 %dir /usr/clearos/apps/base
+%dir /etc/clearos/base.d
 %dir /var/clearos/base
 %dir /var/clearos/base/access_control
 %dir /var/clearos/base/access_control/authenticated
@@ -103,5 +106,6 @@ exit 0
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
+/etc/clearos/base.d/access_control.conf
 /var/clearos/base/access_control/public
 /usr/sbin/webconfig-restart

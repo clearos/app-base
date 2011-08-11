@@ -5,8 +5,8 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '5.9.9.3';
-$app['release'] = '2.1';
+$app['version'] = '5.9.9.4';
+$app['release'] = '1.1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
 $app['license'] = 'GPLv3';
@@ -62,9 +62,11 @@ $app['core_file_manifest'] = array(
         'group' => 'root',
     ),
    'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
+   'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
 );
 
 $app['core_directory_manifest'] = array(
+    '/etc/clearos/base.d' => array(),
     '/var/clearos/base' => array(),
     '/var/clearos/base/access_control' => array(),
     '/var/clearos/base/access_control/authenticated' => array(),

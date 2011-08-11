@@ -359,7 +359,7 @@ class Access_Control extends Engine
         } catch (File_Not_Found_Exception $e) {
             // Not fatal, set defaults below
         } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
+            throw new Engine_Exception($e->get_message());
         }
 
         if (isset($raw_data['allow_authenticated']) && preg_match("/(false|0)/i", $raw_data['allow_authenticated']))
