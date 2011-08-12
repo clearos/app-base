@@ -42,7 +42,7 @@ $this->lang->load('base');
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_open('base/session/login');
+echo form_open('base/session/login/' . $redirect);
 echo form_header(lang('base_login'), array('id' => 'theme-login-form-header'));
 
 //////////////////////////////////////////////////////////////////////////////

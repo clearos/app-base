@@ -69,16 +69,26 @@ class Session extends ClearOS_Controller
 
     /**
      * Login handler.
+     *
+     * @param string $redirect redirect page after login, base64 encoded
      */
 
-    function login()
+    function login($redirect = NULL)
     {
-        // FIXME: Redirect if already logged in(?)
-        //----------------------------------------
+        // Handle page post login redirect
+        //--------------------------------
+
+        $data['redirect'] = $redirect;
+
+        $post_redirect = is_null($redirect) ? '/base/index' : base64_decode($redirect);
+        $post_redirect = preg_replace('/.*app\//', '/', $post_redirect); // trim /app prefix
+
+        // Redirect if already logged in
+        //------------------------------
 
         if ($this->login_session->is_authenticated()) {
             $this->page->set_message(lang('base_you_are_already_logged_in'), 'highlight');
-            redirect('/base/index');
+            redirect($post_redirect);
         }
 
         // Set validation rules for language first
@@ -119,7 +129,7 @@ class Session extends ClearOS_Controller
                     $this->login_session->set_language($this->input->post('code'));
 
                     // Redirect to dashboard page
-                    redirect('/base/index');
+                    redirect($post_redirect);
                 } else {
                     $data['login_failed'] = lang('base_login_failed');
                 }
@@ -171,16 +181,19 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        $page['type'] = MY_Page::TYPE_LOGIN;
+        // FIXME: temporary console mode for Aaron
+        $page['type'] = MY_Page::TYPE_CONSOLE;
 
         $this->page->view_form('session/login', $data, lang('base_login'), $page);
     }
 
     /**
      * Logout handler.
+     *
+     * @param string $redirect redirect after logout
      */
 
-    function logout()
+    function logout($redirect = NULL)
     {
         // Logout via login_session handler
         //---------------------------------
@@ -192,6 +205,9 @@ class Session extends ClearOS_Controller
 
         $page['type'] = MY_Page::TYPE_LOGIN;
 
-        $this->page->view_form('session/logout', $data, lang('base_logout'), $page);
+        if (empty($redirect))
+            $this->page->view_form('session/logout', $data, lang('base_logout'), $page);
+        else
+            redirect($redirect);
     }
 }
