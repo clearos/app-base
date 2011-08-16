@@ -80,7 +80,7 @@ class Session extends ClearOS_Controller
 
         $data['redirect'] = $redirect;
 
-        $post_redirect = is_null($redirect) ? '/base/index' : base64_decode($redirect);
+        $post_redirect = is_null($redirect) ? '/base/index' : base64_decode(strtr($redirect, '-@_', '+/='));
         $post_redirect = preg_replace('/.*app\//', '/', $post_redirect); // trim /app prefix
 
         // Redirect if already logged in
