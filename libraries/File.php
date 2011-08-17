@@ -535,22 +535,15 @@ class File extends Engine
             throw new File_Not_Found_Exception();
 
         if ($this->superuser) {
-            try {
-                $shell = new Shell();
-                $args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
-                $exitcode = $shell->execute(self::COMMAND_LS, $args, TRUE);
-            } catch (Engine_Exception $e) {
-                throw new File_Exception($e->GetMessage(), CLEAROS_WARNING);
-            }
+            $args = "-l --time-style=full-iso " . escapeshellarg($this->filename);
 
-            if ($exitcode == 0) {
-                $shell->get_last_output_line();
-                $parts = preg_split("/\s+/", $shell->get_last_output_line());
-                return strtotime($parts[5] . " " . substr($parts[6], 0, 8) . " " . $parts[7]);
+            $shell = new Shell();
+            $shell->execute(self::COMMAND_LS, $args, TRUE);
+            $shell->get_last_output_line();
 
-            } else {
-                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
-            }
+            $parts = preg_split("/\s+/", $shell->get_last_output_line());
+            return strtotime($parts[5] . " " . substr($parts[6], 0, 8) . " " . $parts[7]);
+
         } else {
             clearstatcache();
             return filemtime("$this->filename");
