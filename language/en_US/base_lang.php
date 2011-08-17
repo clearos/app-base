@@ -1,4 +1,5 @@
 <?php
+$lang['base_initialize'] = 'Initialize';
 
 $lang['base_connection_status'] = 'Connection Status';
 $lang['base_connecting...'] = 'Connecting ...';
