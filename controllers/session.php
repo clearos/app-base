@@ -181,8 +181,7 @@ class Session extends ClearOS_Controller
         // Load views
         //-----------
 
-        // FIXME: temporary console mode for Aaron
-        $page['type'] = MY_Page::TYPE_CONSOLE;
+        $page['type'] = MY_Page::TYPE_LOGIN;
 
         $this->page->view_form('session/login', $data, lang('base_login'), $page);
     }
