@@ -13,7 +13,6 @@ $lang['base_app_name'] = 'Base System';
 
 $lang['base_login_failed'] = 'Login failed.';
 
-$lang['base_language'] = 'Language';
 $lang['base_access_denied'] = 'Access Denied';
 $lang['base_action'] = 'Action';
 $lang['base_add'] = 'Add';
@@ -347,6 +346,7 @@ $lang['base_language_pt_br'] = 'Portuguese (Brazil)';
 $lang['base_language_pt_pt'] = 'Portuguese';
 $lang['base_language_sl_sl'] = 'Slovenian';
 $lang['base_language_sv_se'] = 'Swedish';
+$lang['base_language_tl_ph'] = 'Tagalog';
 $lang['base_language_tr_tr'] = 'Turkish';
 $lang['base_language_ro_ro'] = 'Romanian';
 $lang['base_language_ru_ru'] = 'Russian';
