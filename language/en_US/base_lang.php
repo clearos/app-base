@@ -159,6 +159,7 @@ $lang['base_veryhigh'] = 'Very High';
 $lang['base_verylow'] = 'Very Low';
 $lang['base_view'] = 'View';
 $lang['base_view_cart'] = 'View Cart';
+$lang['base_tooltip'] = 'Tooltip';
 $lang['base_waiting_for_directory_server'] = 'Waiting for LDAP Server';
 $lang['base_warning'] = 'Warning';
 $lang['base_wednesday'] = 'Wednesday';
