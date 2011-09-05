@@ -348,6 +348,7 @@ $lang['base_language_no_no'] = 'Norwegian';
 $lang['base_language_pl_pl'] = 'Polish';
 $lang['base_language_pt_br'] = 'Portuguese (Brazil)';
 $lang['base_language_pt_pt'] = 'Portuguese';
+$lang['base_language_sk_SK'] = 'Slovak';
 $lang['base_language_sl_sl'] = 'Slovenian';
 $lang['base_language_sv_se'] = 'Swedish';
 $lang['base_language_tl_ph'] = 'Tagalog';
