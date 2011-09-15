@@ -27,6 +27,7 @@ $lang['base_bytes'] = 'B';
 $lang['base_bytes_abbreviation'] = 'B';
 $lang['base_bytes_full'] = 'Bytes';
 $lang['base_cancel'] = 'Cancel';
+$lang['base_check_for_updates'] = 'Check for Updates';
 $lang['base_close'] = 'Close';
 $lang['base_configure'] = 'Configure';
 $lang['base_confirm'] = 'Confirm';
