@@ -25,7 +25,6 @@ $lang['base_already_exists'] = 'Item already exists.';
 $lang['base_back'] = 'Back';
 $lang['base_bits_per_second'] = 'bps';
 $lang['base_bytes'] = 'B';
-$lang['base_bytes_abbreviation'] = 'B';
 $lang['base_bytes_full'] = 'Bytes';
 $lang['base_bytes_per_second'] = 'Bps';
 $lang['base_cancel'] = 'Cancel';
