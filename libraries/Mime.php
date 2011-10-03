@@ -164,7 +164,7 @@ class Mime extends Engine
                     if (!isset($objSub1->encoding) || $objSub1->encoding == "")
                         $objSub1->encoding = 0;
                     $all[$pid]["encoding"] = $this->encoding[$objSub1->encoding];
-                    if (isset($objSub1->bytes)
+                    if (isset($objSub1->bytes))
                         $all[$pid]["size"] = strtolower($objSub1->bytes);
                     else
                         $all[$pid]["size"] = 0;
