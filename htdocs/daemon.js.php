@@ -59,6 +59,46 @@ $(document).ready(function() {
 
     if (clearos_daemon_name)
         clearosDaemon(clearos_daemon_name, clearos_app_name);
+    $('tbody', $('#sidebar_summary_table')).append(
+      '<tr>' +
+      '  <td><b><?php echo lang('base_status'); ?></b></td>' +
+      '  <td id=\'clearos_daemon_status\'><div class=\'theme-loading-small\'></div></td>' +
+      '</tr>' +
+      '<tr>' +
+      '  <td><b><?php echo lang('base_action'); ?></b></td>' +
+      '  <td>' +
+      '  <a href=\'#\' id=\'clearos_daemon_action\' class=\'theme-button-set-first theme-button-set-last theme-anchor theme-anchor-javascript theme-anchor-important\'>' +
+      '  </a>' +
+      '</td>' +
+      '</tr>'
+    );
+
+    // Click Events
+    //-------------
+
+    $('#clearos_daemon_action').click(function(e) {
+        var service_status = $("#clearos_daemon_action").html();
+        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
+        // Hacks to get style right
+        $(".theme-loading-small").css('background-position', '5 0');
+        $(".theme-loading-small").css('padding-left', '5');
+
+        if ($('#clearos_daemon_status_lock').val() == 'on') {
+            // Prevent double click
+        } else if (service_status == lang_stop) {
+            $('#clearos_daemon_status_lock').val('on');
+            $('#clearos_daemon_status').html(lang_stopping + '<span class="theme-loading"></span>');
+            clearosStopDaemon(clearos_daemon_name);
+        } else {
+            $('#clearos_daemon_status_lock').val('on');
+            $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
+            clearosStartDaemon(clearos_daemon_name);
+        }
+    });
+
+    // Main
+    //-----
+
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -79,26 +119,6 @@ function clearosDaemon(daemon, app_name) {
     lang_stopping = '<?php echo lang("base_stopping"); ?>';
     lang_stopped = '<?php echo lang("base_stopped"); ?>';
     basename = '/app/' + app_name + '/server';
-
-    // Click Events
-    //-------------
-
-    $('#clearos_daemon_action').click(function() {
-        $('#clearos_daemon_status_lock').val('on');
-        $("#clearos_daemon_action").hide();
-        $('#clearos_daemon_status').html('<span class="theme-loading"></span>');
-
-        if ($("#clearos_daemon_action").html() == lang_stop) {
-            $('#clearos_daemon_status').html(lang_stopping + '<span class="theme-loading"></span>');
-            clearosStopDaemon(daemon);
-        } else {
-            $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
-            clearosStartDaemon(daemon);
-        }
-    });
-
-    // Main
-    //-----
 
     $('#clearos_daemon_status').html('');
 
@@ -159,23 +179,17 @@ function clearosShowDaemonStatus(payload) {
     if (payload.status == 'running') {
         $("#clearos_daemon_status").html(lang_running);
         $("#clearos_daemon_action").html(lang_stop);
-        $("#clearos_daemon_action").show();
     } else if (payload.status == 'stopped') {
         $("#clearos_daemon_status").html(lang_stopped);
         $("#clearos_daemon_action").html(lang_start);
-        $("#clearos_daemon_action").show();
     } if (payload.status == 'starting') {
         $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
-        $("#clearos_daemon_action").hide();
     } if (payload.status == 'stopping') {
         $('#clearos_daemon_status').html(lang_stopping + '<span class="theme-loading"></span>');
-        $("#clearos_daemon_action").hide();
     } if (payload.status == 'restarting') {
         $('#clearos_daemon_status').html(lang_restarting + '<span class="theme-loading"></span>');
-        $("#clearos_daemon_action").hide();
     } if (payload.status == 'busy') {
         $('#clearos_daemon_status').html(lang_busy + '<span class="theme-loading"></span>');
-        $("#clearos_daemon_action").hide();
     }
 }
 

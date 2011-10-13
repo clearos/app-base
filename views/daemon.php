@@ -43,24 +43,3 @@ $this->lang->load('base');
 echo "<input id='clearos_app_name' value='$app_name' type='hidden'>\n";
 echo "<input id='clearos_daemon_name' value='$daemon_name' type='hidden'>\n";
 echo "<input id='clearos_daemon_status_lock' value='off' type='hidden'>\n";
-
-echo form_open('');
-echo form_header(lang('base_server_status'));
-
-///////////////////////////////////////////////////////////////////////////////
-// Form Fields and Buttons
-///////////////////////////////////////////////////////////////////////////////
-
-// FIXME - Aaron styling
-echo theme_field_view(lang('base_status'), '...', 'clearos_daemon_status', NULL, 'clearos_daemon_status');
-// echo  "Status: <span id='clearos_daemon_status'></span> &nbsp; &nbsp; \n";
-echo theme_field_button_set(
-    array(anchor_javascript('clearos_daemon_action', '', 'high'))
-);
-
-///////////////////////////////////////////////////////////////////////////////
-// Form close
-///////////////////////////////////////////////////////////////////////////////
-
-echo form_footer();
-echo form_close();
