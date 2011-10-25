@@ -12,6 +12,11 @@ $lang['base_category'] = 'Category';
 $lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
 $lang['base_app_name'] = 'Base System';
 
+$lang['base_highest'] = 'Highest';
+$lang['base_very_high'] = 'Very High';
+$lang['base_very_low'] = 'Very Low';
+$lang['base_lowest'] = 'Lowest';
+
 $lang['base_login_failed'] = 'Login failed.';
 
 $lang['base_access_denied'] = 'Access Denied';
