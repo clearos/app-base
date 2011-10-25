@@ -84,7 +84,7 @@ clearos_load_library('base/Engine_Exception');
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Configuration_File extends Engine
+class Configuration_File extends File
 {
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
