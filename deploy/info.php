@@ -72,4 +72,5 @@ $app['core_directory_manifest'] = array(
     '/var/clearos/base/access_control/authenticated' => array(),
     '/var/clearos/base/access_control/custom' => array(),
     '/var/clearos/base/access_control/public' => array(),
+    '/var/clearos/base/daemon' => array(),
 );

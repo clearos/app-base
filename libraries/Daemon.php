@@ -87,17 +87,15 @@ clearos_load_library('base/Validation_Exception');
  * there are some inconsistencies that make this impossible.  The meta file
  * holds the following information:
  *
- *  - the RPM where the daemon lives
- *  - the daemon/process name (what you see with ps)
- *  - whether or not the daemon supports a "/etc/rc.d/init.d/<xyz> reload"
- *  - a short title (eg Apache Web Server)
- *
- * Note: a few daemons are not really "running" per se, but are part of
- * the kernel e.g. the firewall and bandwidth limiter.
- *
- * Ideally, the constructor would require the same parameter as the
- * Software class -- the name of the package.  However, some packages
- * can have more than one daemon.
+ * $configlet = array(
+ *   - 'package'        => RPM package name
+ *   - 'process_name'   => process name (ps output)
+ *   - 'reloadable'     => whether or not the daemon supports "service x reload
+ *   - 'title'          => a short title
+ *   - 'pid_file'       => PID file
+ *   - 'url'            => (optional) URL to configure the app
+ *   - 'builtin'        => (optional) TRUE if this is built-in (e.g. firewall)
+ *   - 'skip_pidof'     => (optional) TRUE if a PID check should be skipped
  *
  * @category   Apps
  * @package    Base
@@ -119,6 +117,7 @@ class Daemon extends Software
     const COMMAND_SERVICE = '/sbin/service';
     const COMMAND_PIDOF = '/sbin/pidof';
     const PATH_INITD = '/etc/rc.d/rc3.d';
+    const PATH_CONFIGLET = '/var/clearos/base/daemon';
 
     const STATUS_BUSY = 'busy';
     const STATUS_RUNNING = 'running';
@@ -131,35 +130,8 @@ class Daemon extends Software
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @var string init script filename
-     */
-
     protected $initscript;
-
-    /**
-     * @var string the process name
-     */
-
-    protected $processname;
-
-    /**
-     * @var string short title
-     */
-
-    protected $title;
-
-    /**
-     * @var string software package name
-     */
-
-    protected $package;
-
-    /**
-     * @var boolean TRUE if daemon supports configuration reload
-     */
-
-    protected $reloadable;
+    protected $config;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -175,32 +147,23 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        global $DAEMONS;
+        $this->initscript = $initscript;
 
-        include_once "Daemon.inc.php";
+        $configlet_file = self::PATH_CONFIGLET . '/' . $initscript . '.php';
 
-        if (file_exists("Daemon.custom.php"))
-            include_once "Daemon.custom.php";
+        $file = new File($configlet_file);
 
-        if (isset($DAEMONS[$initscript][0])) {
-            $this->initscript = $initscript;
-            $this->package = $DAEMONS[$initscript][0];
-            $this->processname = $DAEMONS[$initscript][1];
-            $this->title = $DAEMONS[$initscript][3];
-
-            if ($DAEMONS[$initscript][2] == "yes")
-                $this->reloadable = TRUE;
-            else
-                $this->reloadable = FALSE;
+        if (file_exists($configlet_file)) {
+            include $configlet_file;
+            $this->config = $configlet;
         } else {
-            $this->initscript = $initscript;
-            $this->package = $initscript;
-            $this->processname = $initscript;
-            $this->title = $initscript;
-            $this->reloadable = FALSE;
+            $this->config['package'] = $initscript;
+            $this->config['process_name'] = $initscript;
+            $this->config['title'] = $initscript;
+            $this->config['reloadable'] = FALSE;
         }
 
-        parent::__construct($this->package);
+        parent::__construct($this->config['package']);
     }
 
     /**
@@ -215,13 +178,13 @@ class Daemon extends Software
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
+            throw new Engine_Exception(lang('daemon_not_installed'));
 
         $folder = new Folder(self::PATH_INITD);
         $listing = $folder->get_listing();
 
         foreach ($listing as $file) {
-            if (preg_match("/^S\d+$this->initscript$/", $file))
+            if (preg_match("/^S\d+" . $this->initscript . "$/", $file))
                 return TRUE;
         }
 
@@ -239,20 +202,44 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-	// TODO: this is kludgy
-	if ($this->processname === 'kernel')
-		return TRUE;
+        // Built-in daemons (e.g. firewall) are always "running"
+        //------------------------------------------------------
 
-        $file = new File("/var/run/" . $this->processname . ".pid");
-
-        if ($file->exists())
+        if (isset($this->config['builtin']) && $this->config['builtin'])
             return TRUE;
+
+        // Check the pid file
+        //-------------------
+
+        if (isset($this->config['pid_file'])) {
+            $file = new File($this->config['pid_file']);
+
+            if ($file->exists())
+                return TRUE;
+        } else {
+
+            $file = new File('/var/run/' . $this->config['process_name'] . '.pid');
+
+            if ($file->exists())
+                return TRUE;
+
+            $file = new File('/var/run/' . $this->config['process_name'] . '/' . $this->config['process_name'] . '.pid');
+
+            if ($file->exists())
+                return TRUE;
+        }
+
+        // Use pidof unless otherwise noted
+        //---------------------------------
+
+        if (isset($this->config['skip_pidof']) && $this->config['skip_pidof'])
+            return FALSE;
 
         // pidof will return non-zero if process not found, so avoid triggering exception
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s $this->processname", FALSE, $options);
+        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->config['process_name'], FALSE, $options);
 
         if ($exit_code == 0)
             return TRUE;
@@ -271,7 +258,7 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        return $this->processname;
+        return $this->config['process_name'];
     }
 
     /**
@@ -324,11 +311,13 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        return $this->title;
+        return $this->config['title'];
     }
 
     /**
      * Restarts the daemon if (and only if) it is already running.
+     *
+     * @param boolean $background run in background
      *
      * @return void
      * @throws Engine_Exception
@@ -341,7 +330,7 @@ class Daemon extends Software
         if (! $this->get_running_state())
             return;
 
-        $args = ($this->reloadable) ? 'reload' : 'restart';
+        $args = ($this->config['reloadable']) ? 'reload' : 'restart';
         $options['stdin'] = 'use_popen';
         $options['background'] = $background;
 
@@ -351,6 +340,8 @@ class Daemon extends Software
 
     /**
      * Restarts the daemon.
+     *
+     * @param boolean $background run in background
      *
      * @see Daemon::reset()
      * @return void
@@ -384,7 +375,7 @@ class Daemon extends Software
         Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
+            throw new Engine_Exception(lang('daemon_not_installed'));
 
         $args = ($state) ? 'on' : 'off';
 
@@ -408,7 +399,7 @@ class Daemon extends Software
         Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'), CLEAROS_ERROR);
+            throw new Engine_Exception(lang('daemon_not_installed'));
 
         $is_running = $this->get_running_state();
 
@@ -441,6 +432,8 @@ class Daemon extends Software
     
     public function validate_state($state)
     {
+        clearos_profile(__METHOD__, __LINE__);
+
         if (! is_bool($state))
             return lang('base_validate_state_invalid');
     }
