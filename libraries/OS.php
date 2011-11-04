@@ -52,8 +52,21 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+// Classes
+//--------
+
+use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
+
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
+
+// Exceptions
+//-----------
+
+use \clearos\apps\base\Engine_Exception as Engine_Exception;
+
+clearos_load_library('base/Engine_Exception');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -77,12 +90,9 @@ class OS extends Engine
     // V A R I A B L E S
     ///////////////////////////////////////////////////////////////////////////////
 
-    private $os = NULL;
-    private $version = NULL;
-    private $previous_os = NULL;
-    private $previous_version = NULL;
+    protected $os = NULL;
+    protected $version = NULL;
 
-    const FILE_CORE_RELEASE = '/etc/clearos-release';
     const FILE_RELEASE = '/etc/clearos-release';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -101,7 +111,6 @@ class OS extends Engine
     /**
      * Returns the name of the operating system/distribution.
      *
-     *
      * @return string OS name
      * @throws Engine_Exception
      */
@@ -119,7 +128,6 @@ class OS extends Engine
     /**
      * Returns the version of the operating system/distribution.
      *
-     *
      * @return string OS version
      * @throws Engine_Exception
      */
@@ -130,43 +138,13 @@ class OS extends Engine
 
         if (is_null($this->version))
             $this->_load_config();
-
-        return $this->version;
-    }
-
-    /**
-     * Returns the technical version of the operating system/distribution.
-     *
-     *
-     * @return string technical version
-     * @throws Engine_Exception
-     */
-
-    public function get_core_version()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        try {
-            $file = new File(Os::FILE_CORE_RELEASE);
-            $contents = $file->get_contents();
-        } catch (File_Not_Found_Exception $e) {
-            return $this->get_version();
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e));
-        }
-
-        $osinfo = explode(" release ", $contents);
-
-        if (count($osinfo) != 2)
-            throw new Engine_Exception(OS_LANG_ERRMSG_NAME_UNKNOWN);
-
-        return $osinfo[1];
     }
 
     /**
      * Populates version and name fields.
      *
      * @access private
+     * @return void
      * @throws Engine_Exception
      */
 
