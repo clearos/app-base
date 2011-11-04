@@ -1,8 +1,8 @@
 
 Name: app-base
 Group: ClearOS/Apps
-Version: 5.9.9.5
-Release: 4%{dist}
+Version: 6.1.0.beta2
+Release: 1%{dist}
 Summary: Base System
 License: GPLv3
 Packager: ClearFoundation
@@ -55,6 +55,7 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
+install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
@@ -103,6 +104,7 @@ exit 0
 %dir /var/clearos/base/access_control/authenticated
 %dir /var/clearos/base/access_control/custom
 %dir /var/clearos/base/access_control/public
+%dir /var/clearos/base/daemon
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
