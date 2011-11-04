@@ -138,6 +138,8 @@ class OS extends Engine
 
         if (is_null($this->version))
             $this->_load_config();
+
+        return $this->version;
     }
 
     /**
