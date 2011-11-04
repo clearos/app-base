@@ -52,8 +52,16 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-clearos_load_library('base/Engine');
+// Classes
+//--------
+
+use \clearos\apps\base\Configuration_File as Configuration_File;
+use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\OS as OS;
+
 clearos_load_library('base/Configuration_File');
+clearos_load_library('base/Engine');
+clearos_load_library('base/OS');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -184,7 +192,13 @@ class Product extends Engine
         if (!$this->is_loaded)
             $this->_load_config();
 
-        return $this->config['redirect_url'];
+        $os = new OS();
+        $os_name = preg_replace('/ /', '_', $os->get_name());
+        $os_version = preg_replace('/ /', '_', $os->get_version());
+
+        $full_url = $this->config['redirect_url'] . '/' . $os_name . '/' . $os_version;
+
+        return $full_url;
     }
 
     /**
