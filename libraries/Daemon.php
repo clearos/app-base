@@ -131,7 +131,7 @@ class Daemon extends Software
     ///////////////////////////////////////////////////////////////////////////////
 
     protected $initscript;
-    protected $config;
+    protected $details;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -155,15 +155,15 @@ class Daemon extends Software
 
         if (file_exists($configlet_file)) {
             include $configlet_file;
-            $this->config = $configlet;
+            $this->details = $configlet;
         } else {
-            $this->config['package'] = $initscript;
-            $this->config['process_name'] = $initscript;
-            $this->config['title'] = $initscript;
-            $this->config['reloadable'] = FALSE;
+            $this->details['package'] = $initscript;
+            $this->details['process_name'] = $initscript;
+            $this->details['title'] = $initscript;
+            $this->details['reloadable'] = FALSE;
         }
 
-        parent::__construct($this->config['package']);
+        parent::__construct($this->details['package']);
     }
 
     /**
@@ -205,25 +205,25 @@ class Daemon extends Software
         // Built-in daemons (e.g. firewall) are always "running"
         //------------------------------------------------------
 
-        if (isset($this->config['builtin']) && $this->config['builtin'])
+        if (isset($this->details['builtin']) && $this->details['builtin'])
             return TRUE;
 
         // Check the pid file
         //-------------------
 
-        if (isset($this->config['pid_file'])) {
-            $file = new File($this->config['pid_file']);
+        if (isset($this->details['pid_file'])) {
+            $file = new File($this->details['pid_file']);
 
             if ($file->exists())
                 return TRUE;
         } else {
 
-            $file = new File('/var/run/' . $this->config['process_name'] . '.pid');
+            $file = new File('/var/run/' . $this->details['process_name'] . '.pid');
 
             if ($file->exists())
                 return TRUE;
 
-            $file = new File('/var/run/' . $this->config['process_name'] . '/' . $this->config['process_name'] . '.pid');
+            $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid');
 
             if ($file->exists())
                 return TRUE;
@@ -232,14 +232,14 @@ class Daemon extends Software
         // Use pidof unless otherwise noted
         //---------------------------------
 
-        if (isset($this->config['skip_pidof']) && $this->config['skip_pidof'])
+        if (isset($this->details['skip_pidof']) && $this->details['skip_pidof'])
             return FALSE;
 
         // pidof will return non-zero if process not found, so avoid triggering exception
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->config['process_name'], FALSE, $options);
+        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->details['process_name'], FALSE, $options);
 
         if ($exit_code == 0)
             return TRUE;
@@ -258,7 +258,7 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        return $this->config['process_name'];
+        return $this->details['process_name'];
     }
 
     /**
@@ -311,7 +311,7 @@ class Daemon extends Software
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        return $this->config['title'];
+        return $this->details['title'];
     }
 
     /**
@@ -330,7 +330,7 @@ class Daemon extends Software
         if (! $this->get_running_state())
             return;
 
-        $args = ($this->config['reloadable']) ? 'reload' : 'restart';
+        $args = ($this->details['reloadable']) ? 'reload' : 'restart';
         $options['stdin'] = 'use_popen';
         $options['background'] = $background;
 
