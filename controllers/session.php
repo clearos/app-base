@@ -94,7 +94,7 @@ class Session extends ClearOS_Controller
         // Set validation rules for language first
         //----------------------------------------
 
-        if (is_library_installed('language/Locale')) {
+        if (clearos_app_installed('language')) {
             $this->load->library('language/Locale');
 
             $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
@@ -146,7 +146,8 @@ class Session extends ClearOS_Controller
         // Otherwise, check the accept_language user agent variable
         // Otherwise, use the default system language
 
-        if (is_library_installed('language/Locale')) {
+        // FIXME: should only show languages if full app is installed (not just the libraries)
+        if (clearos_app_installed('language')) {
             $system_code = $this->locale->get_language_code();
             $data['languages'] = $this->locale->get_languages();
         }
