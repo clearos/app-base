@@ -91,6 +91,7 @@ $lang['base_loading'] = 'Loading';
 $lang['base_login'] = 'Login';
 $lang['base_logout'] = 'Logout';
 $lang['base_logout_as'] = 'Logout as';
+$lang['base_logs_and_history'] = 'Logs/Notification History';
 $lang['base_low'] = 'Low';
 $lang['base_medium'] = 'Medium';
 $lang['base_megabits'] = 'Mb';
