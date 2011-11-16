@@ -1,4 +1,6 @@
 <?php
+
+$lang['base_success'] = 'Success';
 $lang['base_initialize'] = 'Initialize';
 
 $lang['base_connection_status'] = 'Connection Status';
@@ -185,7 +187,6 @@ $lang['base_view'] = 'View';
 $lang['base_view_cart'] = 'View Cart';
 $lang['base_tooltip'] = 'Tooltip';
 $lang['base_timestamp'] = 'Timestamp';
-$lang['base_waiting_for_directory_server'] = 'Waiting for LDAP Server';
 $lang['base_warning'] = 'Warning';
 $lang['base_wednesday'] = 'Wednesday';
 $lang['base_weekly'] = 'Weekly';
