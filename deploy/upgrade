@@ -24,4 +24,3 @@
 /usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
 /usr/sbin/addsudo /usr/sbin/app-rename app-base-core
 /usr/sbin/addsudo /usr/sbin/userdel app-base-core
-

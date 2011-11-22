@@ -29,7 +29,37 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight('Dashboard',
-	"<p>Nothing to see here yet!  This is the future home of the ClearOS Dashboard.
-	Click on the menu links to view other apps.</p>"
-);
+///////////////////////////////////////////////////////////////////////////////
+// Load dependencies
+///////////////////////////////////////////////////////////////////////////////
+
+$this->lang->load('base');
+
+///////////////////////////////////////////////////////////////////////////////
+// Form handler
+///////////////////////////////////////////////////////////////////////////////
+
+if ($action === 'shutdown') {
+    $body = field_view('', lang('shutdown_system_is_shutting_down'));
+} else if ($action === 'restart') {
+    $body = field_view('', lang('shutdown_system_is_restarting'));
+} else {
+    $body = field_button_set(
+        array(
+            anchor_custom('/app/shutdown/confirm_shutdown', lang('base_shutdown'), 'high'),
+            anchor_custom('/app/shutdown/confirm_restart', lang('base_restart'), 'high')
+        )
+    );
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Form 
+///////////////////////////////////////////////////////////////////////////////
+
+echo form_open('shutdown');
+echo form_header(lang('base_system'));
+
+echo $body;
+
+echo form_footer();
+echo form_close();

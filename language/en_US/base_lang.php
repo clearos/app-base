@@ -1,5 +1,18 @@
 <?php
 
+$lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
+$lang['base_app_name'] = 'General Settings';
+
+$lang['base_confirm_restart'] = 'Are you sure you want to restart your system?';
+$lang['base_confirm_shutdown'] = 'Are you sure you want to shutdown your system?';
+$lang['base_restart'] = 'Restart';
+$lang['base_shutdown'] = 'Shutdown';
+$lang['base_system'] = 'System';
+$lang['base_system_is_shutting_down'] = 'System is shutting down.';
+$lang['base_system_is_restarting'] = 'System is restarting.';
+
+
+
 $lang['base_success'] = 'Success';
 $lang['base_initialize'] = 'Initialize';
 
@@ -11,8 +24,6 @@ $lang['base_visit_marketplace'] = 'Visit Marketplace';
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_category'] = 'Category';
 
-$lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
-$lang['base_app_name'] = 'Base System';
 
 $lang['base_highest'] = 'Highest';
 $lang['base_very_high'] = 'Very High';

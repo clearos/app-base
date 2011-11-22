@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base controller.
+ * Shutdown/Restart controller.
  *
  * @category   Apps
  * @package    Base
@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Base controller.
+ * Shutdown/Restart controller.
  *
  * @category   Apps
  * @package    Base
@@ -45,7 +45,7 @@
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Base extends ClearOS_Controller
+class Shutdown extends ClearOS_Controller
 {
     /**
      * Date default controller
@@ -58,13 +58,11 @@ class Base extends ClearOS_Controller
         // Load libraries
         //---------------
 
-        $this->lang->load('base');
+        $data = array();
 
         // Load views
         //-----------
 
-        $views = array('base/shutdown');
-
-        $this->page->view_forms($views, lang('base_app_name'));
+        $this->page->view_form('base/shutdown', $data, lang('base_shutdown_and_restart'));
     }
 }
