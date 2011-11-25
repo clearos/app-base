@@ -82,10 +82,12 @@ class Validation_Exception extends Engine_Exception
     /**
      * Test if message is empty and if not, throw a validation exception.
      *
-     * @param   string $message error message
-     * @throws  Validation_Exception
-     * @returns void
+     * @param string $message error message
+     *
+     * @throws Validation_Exception
+     * @return void
      */
+
     static function is_valid($message)
     {
         if (is_string($message) && !empty($message))

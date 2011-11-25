@@ -172,8 +172,6 @@ class Software extends Engine
     }
 
     /**
-
-    /**
      * Returns a long description in text format.
      *
      * Descriptions can be anywhere from one-sentence long to several paragraphs.
@@ -440,9 +438,7 @@ class Software extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $rawoutput = explode("|", 
-            $this->get_rpm_info("%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{BUILDTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}")
-        );
+        $rawoutput = explode("|", $this->get_rpm_info("%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{BUILDTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}"));
 
         $this->license = $rawoutput[0];
         $this->description = $rawoutput[1];

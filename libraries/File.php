@@ -209,7 +209,7 @@ class File extends Engine
      *
      * Set maxbytes to -1 to disable file size limit.
      *
-     * @param int $maxbytes maximum number of bytes
+     * @param integer $max_bytes maximum number of bytes
      *
      * @return array contents of file
      * @throws File_Not_Found_Exception, File_Exception
@@ -409,7 +409,7 @@ class File extends Engine
             }
 
             if ($exitcode == 0) {
-                $md5 = trim(ereg_replace("$this->filename", "", $shell->get_last_output_line()));
+                $md5 = trim(preg_replace("/$this->filename/", '', $shell->get_last_output_line()));
                 return $md5;
             } else {
                 throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);

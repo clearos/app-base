@@ -51,7 +51,12 @@ class Daemon extends ClearOS_Controller
     protected $app_name = NULL;
 
     /**
-     * Constructor.
+     * Daemon constructor.
+     *
+     * @param string $daemon_name daemon name
+     * @param string $app_name    app that manages the daemon
+     *
+     * @return view
      */
 
     function __construct($daemon_name, $app_name)
@@ -61,7 +66,9 @@ class Daemon extends ClearOS_Controller
     }
 
     /**
-     * Default controller.
+     * Default daemon controller.
+     *
+     * @return view
      */
 
     function index()
@@ -84,6 +91,8 @@ class Daemon extends ClearOS_Controller
 
     /**
      * Daemon status.
+     *
+     * @return view
      */
 
     function status()
@@ -100,6 +109,8 @@ class Daemon extends ClearOS_Controller
 
     /**
      * Daemon start.
+     *
+     * @return view
      */
 
     function start()
@@ -116,6 +127,8 @@ class Daemon extends ClearOS_Controller
 
     /**
      * Daemon stop.
+     *
+     * @return view
      */
 
     function stop()

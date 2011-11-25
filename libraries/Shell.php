@@ -133,21 +133,21 @@ class Shell extends Engine
         $this->output = array();
 
         if (! is_bool($superuser))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'superuser'));
+            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
 
         if (isset($options['escape']) && (!is_bool($options['escape'])))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[escape]'));
+            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
 
         if (isset($options['log']) && (preg_match('/\//', $options['log']) || preg_match('/\.\./', $options['log'])))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[log]'));
+            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
 
         if (isset($options['validate_output']) && (!is_bool($options['validate_output'])))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[validate_output]'));
+            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
         else if (!isset($options['validate_output']))
             $options['validate_output'] = FALSE;
 
         if (isset($options['validate_exit_code']) && (!is_bool($options['validate_exit_code'])))
-            throw new Validation_Exception(sprintf(lang('base_errmsg_invalid_parameter'), 'options[validate_exit_code]'));
+            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
         else if (!isset($options['validate_exit_code']))
             $options['validate_exit_code'] = TRUE;
 
@@ -156,7 +156,7 @@ class Shell extends Engine
         // but with a less "pretty" error message.
 
         if (!$superuser && (!file_exists($command)))
-            throw new Validation_Exception(sprintf(lang('base_command_execution_failed'), $command));
+            throw new Validation_Exception(lang('base_command_execution_failed'));
 
         if (isset($options['escape']) && $options['escape']) {
             $command = escapeshellcmd($command);
@@ -200,17 +200,15 @@ class Shell extends Engine
             exec($exe, $this->output, $retval);
         }
 
-        if (isset($options['validate_exit_code']) && $options['validate_exit_code']
-            && $retval != 0) {
-            $message = sprintf(lang('base_command_execution_failed'), $command);
+        if (isset($options['validate_exit_code']) && $options['validate_exit_code'] && $retval != 0) {
+            $message = lang('base_command_execution_failed');
             if (isset($this->output[0]))
                 $message = $this->output[0];
             throw new Validation_Exception($message);
         }
 
-        if (isset($options['validate_output']) && $options['validate_output']
-            && !isset($this->output[0])) {
-            throw new Validation_Exception(sprintf(lang('base_errmsg_command_null_output'), $command));
+        if (isset($options['validate_output']) && $options['validate_output'] && !isset($this->output[0])) {
+            throw new Validation_Exception(lang('base_errmsg_command_null_output'));
         }
 
         return $retval;

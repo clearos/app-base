@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_match_not_found_in_file'] = 'Match not found in file.';
+
 $lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
 $lang['base_app_name'] = 'General Settings';
 

@@ -49,6 +49,8 @@ class Session extends ClearOS_Controller
 {
     /**
      * Default controller.
+     *
+     * @return view
      */
 
     function index()
@@ -58,6 +60,8 @@ class Session extends ClearOS_Controller
 
     /**
      * Access denied helper
+     *
+     * @return view
      */
 
     function access_denied()
@@ -71,6 +75,8 @@ class Session extends ClearOS_Controller
      * Login handler.
      *
      * @param string $redirect redirect page after login, base64 encoded
+     *
+     * @return view
      */
 
     function login($redirect = NULL)
@@ -146,7 +152,6 @@ class Session extends ClearOS_Controller
         // Otherwise, check the accept_language user agent variable
         // Otherwise, use the default system language
 
-        // FIXME: should only show languages if full app is installed (not just the libraries)
         if (clearos_app_installed('language')) {
             $system_code = $this->locale->get_language_code();
             $data['languages'] = $this->locale->get_languages();
@@ -155,20 +160,21 @@ class Session extends ClearOS_Controller
         if ($this->session->userdata('lang_code')) {
             $data['code'] = $this->session->userdata('lang_code');
         } else {
-                $this->load->library('user_agent');
+            $this->load->library('user_agent');
 
-                foreach ($this->agent->languages() as $browser_lang) {
-                    $matches = array();
-                    if (preg_match('/(.*)-(.*)/', $browser_lang, $matches))
-                        $browser_lang = $matches[1] . '_' . strtoupper($matches[2]);
-                    else
-                        $browser_lang = $browser_lang . '_' . strtoupper($browser_lang);
+            foreach ($this->agent->languages() as $browser_lang) {
+                $matches = array();
 
-                    if (array_key_exists($browser_lang, $data['languages'])) {
-                       $data['code'] = $browser_lang;
-                       $this->login_session->set_language($browser_lang);
-                       $this->login_session->reload_language('base');
-                       break;
+                if (preg_match('/(.*)-(.*)/', $browser_lang, $matches))
+                    $browser_lang = $matches[1] . '_' . strtoupper($matches[2]);
+                else
+                    $browser_lang = $browser_lang . '_' . strtoupper($browser_lang);
+
+                if (array_key_exists($browser_lang, $data['languages'])) {
+                    $data['code'] = $browser_lang;
+                    $this->login_session->set_language($browser_lang);
+                    $this->login_session->reload_language('base');
+                    break;
                 }
             }
         }
@@ -191,6 +197,8 @@ class Session extends ClearOS_Controller
      * Logout handler.
      *
      * @param string $redirect redirect after logout
+     *
+     * @return view
      */
 
     function logout($redirect = NULL)

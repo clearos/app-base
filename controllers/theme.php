@@ -29,14 +29,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- *
- * @package Frontend
- * @author {@link http://www.clearfoundation.com ClearFoundation}
- * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
- * @copyright Copyright 2010, ClearFoundation
- */
-
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
@@ -55,38 +47,44 @@
 
 class Theme extends ClearOS_Controller
 {
-	/**
-	 * DHCP server overview.
-	 */
+    /**
+     * Theme overview.
+     *
+     * @return view
+     */
 
-	function index()
-	{
-		echo "nothing to see here";
-	}
+    function index()
+    {
+        echo "nothing to see here";
+    }
 
-	/**
-	 * DHCP server summary view for mobile/control panel.
-	 */
+    /**
+     * Sets given them.
+     *
+     * @param string $theme theme name
+     *
+     * @return view
+     */
 
-	function set($theme)
-	{
-		// FIXME -- just a temporary hack for testing
+    function set($theme)
+    {
+        // TODO -- just a temporary hack for testing
 
-		if ($theme === 'clearos6x') {
-			$this->session->set_userdata('theme', 'clearos6x');
-			$this->session->set_userdata('theme_mode', 'normal');
-		} else if ($theme === 'clearos6xmobile') {
-			$this->session->set_userdata('theme', 'clearos6xmobile');
-			$this->session->set_userdata('theme_mode', 'control_panel');
-		}
+        if ($theme === 'clearos6x') {
+            $this->session->set_userdata('theme', 'clearos6x');
+            $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'clearos6xmobile') {
+            $this->session->set_userdata('theme', 'clearos6xmobile');
+            $this->session->set_userdata('theme_mode', 'control_panel');
+        }
 
-		$this->load->library('user_agent');
+        $this->load->library('user_agent');
 
-		if ($this->agent->is_referral()) {
-			$baseapp = preg_replace('/.*\/app\//', '', $this->agent->referrer());
-			redirect('/' . $baseapp);
-		} else {
-			redirect('/base/index');
-		}
-	}
+        if ($this->agent->is_referral()) {
+            $baseapp = preg_replace('/.*\/app\//', '', $this->agent->referrer());
+            redirect('/' . $baseapp);
+        } else {
+            redirect('/base/index');
+        }
+    }
 }

@@ -39,7 +39,6 @@ $this->lang->load('base');
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
 
-// FIXME
 echo "<input id='clearos_app_name' value='$app_name' type='hidden'>\n";
 echo "<input id='clearos_daemon_name' value='$daemon_name' type='hidden'>\n";
 echo "<input id='clearos_daemon_status_lock' value='off' type='hidden'>\n";

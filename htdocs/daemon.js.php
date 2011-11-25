@@ -4,12 +4,12 @@
  * Global ajax helpers.
  *
  * @category   ClearOS
- * @package    Framework
+ * @package    Base
  * @subpackage Javascript
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/framework/
+ * @link       http://www.clearfoundation.com/docs/developer/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////

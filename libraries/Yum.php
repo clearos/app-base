@@ -103,8 +103,8 @@ class Yum extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     const COMMAND_WC_YUM = '/usr/sbin/wc-yum';
-	const COMMAND_PID = "/sbin/pidof";
-	const FILE_LOG = "yum.log";
+    const COMMAND_PID = "/sbin/pidof";
+    const FILE_LOG = "yum.log";
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -145,7 +145,7 @@ class Yum extends Engine
             $shell = new Shell();
 
             $options = array(
-			    'background' => TRUE,
+                'background' => TRUE,
                 'log' =>self::FILE_LOG
             );
 
@@ -197,15 +197,15 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-		try {
-			$log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
-			$lines = $log->get_contents_as_array();
-		} catch (FileNotFoundException $e) {
-			$lines = array();
-		} catch (Exception $e) {
+        try {
+            $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
+            $lines = $log->get_contents_as_array();
+        } catch (FileNotFoundException $e) {
+            $lines = array();
+        } catch (Exception $e) {
             throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
-		}
-		
-		return $lines;
+        }
+        
+        return $lines;
     }
 }
