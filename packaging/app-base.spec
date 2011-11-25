@@ -3,19 +3,20 @@ Name: app-base
 Group: ClearOS/Apps
 Version: 6.1.0.beta2
 Release: 1%{dist}
-Summary: Base System
+Summary: General Settings
 License: GPLv3
 Packager: ClearFoundation
 Vendor: ClearFoundation
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = %{version}-%{release}
+Obsoletes: app-shutdown
 
 %description
 Welcome to ClearOS Enterprise 6!
 
 %package core
-Summary: Base System - APIs and install
+Summary: General Settings - APIs and install
 Group: ClearOS/Libraries
 License: LGPLv3
 Requires: clearos-base
@@ -35,6 +36,7 @@ Requires: util-linux-ng
 Requires: webconfig-mod_ssl
 Requires: webconfig-php
 Requires: webconfig-utils
+Obsoletes: app-shutdown-core
 
 %description core
 Welcome to ClearOS Enterprise 6!
@@ -57,6 +59,7 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
+install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 
@@ -109,5 +112,6 @@ exit 0
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
 /etc/clearos/base.d/access_control.conf
+/etc/cron.d/app-base
 /var/clearos/base/access_control/public
 /usr/sbin/webconfig-restart

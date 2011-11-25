@@ -32,6 +32,14 @@ $app['subcategory'] = lang('base_subcategory_settings');
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
+// FIXME: beta only - remove for final
+$app['obsoletes'] = array(
+    'app-shutdown',
+);
+$app['core_obsoletes'] = array(
+    'app-shutdown-core',
+);
+
 $app['core_requires'] = array(
     'clearos-base',
     'clearos-framework',
@@ -54,14 +62,15 @@ $app['core_requires'] = array(
 
 
 $app['core_file_manifest'] = array(
-   'webconfig-restart' => array(
+    'webconfig-restart' => array(
         'target' => '/usr/sbin/webconfig-restart',
         'mode' => '0755',
         'owner' => 'root',
         'group' => 'root',
     ),
-   'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
-   'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
+    'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
+    'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
+    'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
 );
 
 $app['core_directory_manifest'] = array(

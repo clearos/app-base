@@ -1,0 +1,23 @@
+#!/bin/sh
+
+#------------------------------------------------------------------------------
+#
+# A simple service watcher.
+#
+#------------------------------------------------------------------------------
+
+DAEMONS="webconfig suvad vpnwatchd syswatch l7-filter ldapsync ntop snortsam snort eziod"
+LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
+PIDOF="/sbin/pidof"
+
+for DAEMON in $DAEMONS; do
+	INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
+	if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
+		PID=`$PIDOF $DAEMON`
+		if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
+			$LOGGER "restarting $DAEMON"
+			/etc/rc.d/init.d/$DAEMON stop
+			/etc/rc.d/init.d/$DAEMON start
+		fi
+	fi
+done

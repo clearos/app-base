@@ -20,6 +20,7 @@ $lang['base_connection_status'] = 'Connection Status';
 $lang['base_connecting...'] = 'Connecting ...';
 $lang['base_initializing...'] = 'Initializing ...';
 $lang['base_loading...'] = 'Loading ...';
+$lang['base_busy...'] = 'Busy...';
 $lang['base_visit_marketplace'] = 'Visit Marketplace';
 
 $lang['base_not_specified'] = 'Not Specified';
