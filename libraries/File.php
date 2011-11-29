@@ -924,18 +924,18 @@ class File extends Engine
      *
      * Any line matching the search string will be changed.
      *
-     * @param string $search  regular expression used to match removed lines
-     * @param string $prepend prepend string
+     * @param string $search regular expression used to match removed lines
+     * @param string $prefix prefix string
      *
      * @return boolean TRUE if any matches were made
      * @throws File_Not_Found_Exception
      */
 
-    public function prepend_lines($search, $prepend)
+    public function prefix_lines($search, $prefix)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $prependlines = FALSE;
+        $prefix_lines = FALSE;
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
@@ -948,7 +948,7 @@ class File extends Engine
 
         foreach ($lines as $line) {
             if (preg_match($search, $line)) {
-                fputs($fh_t, $prepend . $line . "\n");
+                fputs($fh_t, $prefix . $line . "\n");
                 $match = TRUE;
             } else {
                 fputs($fh_t, $line . "\n");
@@ -961,10 +961,10 @@ class File extends Engine
             unlink($tempfile);
             throw new File_No_Match_Exception($tempfile, $search);
         } else {
-            $prependlines = $this->replace($tempfile);
+            $prefix_lines = $this->replace($tempfile);
         }
 
-        return $prependlines;
+        return $prefix_lines;
     }
 
     /**
