@@ -1,0 +1,23 @@
+#!/bin/sh
+
+###############################################################################
+# V A L I D A T E
+###############################################################################
+
+if [ -z "$1" ]; then
+        echo "Usage: $0 <app>"
+        exit 1
+else
+        COMMAND="$1"
+fi
+
+###############################################################################
+# M A I N
+###############################################################################
+
+if [ -x "/usr/clearos/apps/$1/deploy/syncaction" ]; then
+        /usr/bin/logger -p local6.notice -t clearsync "running action for $1"
+        /usr/clearos/apps/$1/deploy/syncaction
+else
+        /usr/bin/logger -p local6.notice -t clearsync "no action for $1"
+fi

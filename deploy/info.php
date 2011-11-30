@@ -62,6 +62,12 @@ $app['core_requires'] = array(
 
 
 $app['core_file_manifest'] = array(
+    'syncaction' => array(
+        'target' => '/usr/sbin/syncaction',
+        'mode' => '0755',
+        'owner' => 'root',
+        'group' => 'root',
+    ),
     'webconfig-restart' => array(
         'target' => '/usr/sbin/webconfig-restart',
         'mode' => '0755',

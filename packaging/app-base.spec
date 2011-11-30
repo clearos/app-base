@@ -62,6 +62,7 @@ install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0644 packaging/clearos-beta.repo %{buildroot}/etc/yum.repos.d/clearos-beta.repo
+install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 
 %post
@@ -116,4 +117,5 @@ exit 0
 /etc/cron.d/app-base
 /var/clearos/base/access_control/public
 /etc/yum.repos.d/clearos-beta.repo
+/usr/sbin/syncaction
 /usr/sbin/webconfig-restart
