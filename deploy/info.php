@@ -71,6 +71,7 @@ $app['core_file_manifest'] = array(
     'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
     'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
     'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
+    'clearos-beta.repo' => array( 'target' => '/etc/yum.repos.d/clearos-beta.repo' ),
 );
 
 $app['core_directory_manifest'] = array(

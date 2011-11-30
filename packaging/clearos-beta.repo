@@ -1,0 +1,18 @@
+[clearcore-current]
+name=ClearOS Core 6.1 - $basearch - Current
+baseurl=http://current.clearfoundation.com/clearcore/stage/current/$basearch
+enabled=1
+gpgcheck=0
+
+[clearos-current]
+name=ClearOS Enterprise 6 - $basearch - Devel 
+baseurl=http://current.clearfoundation.com/develrepo/$basearch
+enabled=0
+gpgcheck=0
+
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=0
