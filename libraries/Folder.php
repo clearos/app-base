@@ -400,7 +400,7 @@ class Folder extends Engine
                          'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
                     );
                 } else {
-                    // First non-diretory...break out?
+                    // First non-directory...break out?
                     if (!$include_files)
                         break;
                     $files[] = array(
