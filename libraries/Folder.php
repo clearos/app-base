@@ -363,7 +363,7 @@ class Folder extends Engine
      * @return array file listing
      */
 
-    public function get_listing($detailed = FALSE)
+    public function get_listing($detailed = FALSE, $include_files = TRUE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -375,7 +375,8 @@ class Folder extends Engine
         if ($detailed) {
             try {
                 $shell = new Shell();
-                $options = ' -lA --time-style=full-iso ' . escapeshellarg($this->folder);
+                // The group-directories-first will put all directories first, speeding up this function if include files is false
+                $options = ' -lA --group-directories-first --time-style=full-iso ' . escapeshellarg($this->folder);
                 if ($shell->execute(self::COMMAND_LS, $options, TRUE) != 0)
                     throw new Folder_Exception($shell->get_first_output_line());
             } catch(Engine_Exception $e) {
@@ -389,21 +390,26 @@ class Folder extends Engine
             $files = array();
             foreach ($lines as $line) {
                 $parts = preg_split("/\s+/", $line, 9);
-                // We want to list all directories first, the files
+                // We want to list all directories first, then files
                 if (substr($parts[0], 0, 1) == 'd') {
                     $directories[] = array(
                          'name' => $parts[8],
+                         'is_dir' => TRUE,
                          'properties' => $parts[0],
                          'size' => $parts[4],
                          'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
                     );
                 } else {
+                    // First non-diretory...break out?
+                    if (!$include_files)
+                        break;
                     $files[] = array(
-                                   'name' => $parts[8],
-                                   'properties' => $parts[0],
-                                   'size' => $parts[4],
-                                   'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-                               );
+                       'name' => $parts[8],
+                       'is_dir' => FALSE,
+                       'properties' => $parts[0],
+                       'size' => $parts[4],
+                       'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
+                   );
                 }
             }
             $listing = array_merge($directories, $files);
