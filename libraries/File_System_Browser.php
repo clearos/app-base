@@ -132,7 +132,7 @@ class File_System_Browser extends Engine
      * throws Folder_Not_Found_Exception
      */
 
-    public function get_listing($path, $include_files = FALSE, $ref = '.selected')
+    public function get_listing($path, $include_files = FALSE, $ref = 'selected')
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -144,7 +144,7 @@ class File_System_Browser extends Engine
         $list = $folder->get_listing(TRUE, $include_files);
 
         $selections = array();
-        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . $ref, TRUE);
+        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . '.' . $ref, TRUE);
         if ($file->exists())
             $selections = unserialize($file->get_contents());
 
@@ -175,7 +175,7 @@ class File_System_Browser extends Engine
      * throws Folder_Not_Found_Exception
      */
 
-    public function select_file($path, $include = FALSE, $ref = '.selected')
+    public function select_file($path, $include = FALSE, $ref = 'selected')
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -187,7 +187,7 @@ class File_System_Browser extends Engine
 
         $selections = array();
 
-        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . $ref, TRUE);
+        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . '.' . $ref, TRUE);
         if ($file->exists()) {
             $selections = unserialize($file->get_contents());
             $file->delete();
@@ -202,5 +202,80 @@ class File_System_Browser extends Engine
 
         $file->create('root', 'root', '0640');
         $selections = $file->add_lines(serialize($selections));
+    }
+ 
+    /**
+     * Get selections.
+     *
+     * @param string $ref reference ID
+     *
+     * @return array
+     *
+     * throws Engine_Exception
+     */
+
+    public function get_selections($ref = 'selected')
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . '.' . $ref, TRUE);
+
+        if ($file->exists())
+            return unserialize($file->get_contents());
+
+        // Return empty array
+        return array();
+    }
+
+    /**
+     * Reset selections.
+     *
+     * @param string $ref reference ID
+     *
+     * @return void
+     *
+     * throws Engine_Exception
+     */
+
+    public function reset($ref = 'selected')
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . '.' . $ref, TRUE);
+
+        if ($file->exists())
+            $file->delete();
+    }
+
+    /**
+     * Initialize selections.
+     *
+     * @param string $filename filename of existing selection serialized data
+     * @param string $ref      reference ID
+     *
+     * @return void
+     *
+     * throws Engine_Exception
+     */
+
+    public function init($filename, $ref = 'selected')
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File($filename, TRUE);
+        if (!$file->exists()) {
+            // Nothing to do
+            return;
+        }
+
+        $selections = $file->get_contents();
+
+        $file = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_SELECT . '_' . $this->CI->session->userdata['file_system_browser'] . '.' . $ref, TRUE);
+
+        if ($file->exists())
+            $file->delete();
+
+        $file->create('root', 'root', '0640');
+        $file->add_lines($selections);
     }
 }
