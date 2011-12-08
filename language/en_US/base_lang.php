@@ -138,6 +138,7 @@ $lang['base_month_6'] = 'June';
 $lang['base_month_7'] = 'July';
 $lang['base_month_8'] = 'August';
 $lang['base_month_9'] = 'September';
+$lang['base_new'] = 'New';
 $lang['base_next'] = 'Next';
 $lang['base_no'] = 'No';
 $lang['base_of'] = 'of';
