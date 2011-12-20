@@ -49,6 +49,7 @@ $lang['base_all'] = 'All';
 $lang['base_already_exists'] = 'Item already exists.';
 $lang['base_authenticate'] = 'Authenticate';
 $lang['base_back'] = 'Back';
+$lang['base_bits'] = 'b';
 $lang['base_bits_per_second'] = 'b/s';
 $lang['base_bytes'] = 'B';
 $lang['base_bytes_full'] = 'Bytes';
