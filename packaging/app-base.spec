@@ -1,12 +1,10 @@
 
 Name: app-base
-Group: ClearOS/Apps
 Version: 6.2.0.beta3
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
-Packager: ClearFoundation
-Vendor: ClearFoundation
+Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = %{version}-%{release}
@@ -17,8 +15,8 @@ Welcome to ClearOS Enterprise 6!
 
 %package core
 Summary: General Settings - APIs and install
-Group: ClearOS/Libraries
 License: LGPLv3
+Group: ClearOS/Libraries
 Requires: clearos-base
 Requires: clearos-framework
 Requires: system-theme
