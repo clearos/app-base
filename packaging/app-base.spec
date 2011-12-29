@@ -33,6 +33,7 @@ Requires: syswatch
 Requires: util-linux-ng
 Requires: webconfig-mod_ssl
 Requires: webconfig-php
+Requires: webconfig-php-process
 Requires: webconfig-utils
 Obsoletes: app-shutdown-core
 
