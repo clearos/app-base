@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# Sudoers
+#--------
 
 /usr/sbin/addsudo /bin/cat app-base-core
 /usr/sbin/addsudo /bin/chmod app-base-core
@@ -24,3 +26,14 @@
 /usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
 /usr/sbin/addsudo /usr/sbin/app-rename app-base-core
 /usr/sbin/addsudo /usr/sbin/userdel app-base-core
+
+
+# TODO: move this to clearsync
+LINE=`grep "^Cmnd_Alias CLEARSYNC" /etc/sudoers 2>/dev/null`
+CHECK=`echo $LINE, | grep /usr/sbin/syncaction,`
+if [ -z "$CHECK" ]; then
+    ESCAPE=`echo /usr/sbin/syncaction | sed 's/\//\\\\\//g'`
+    sed -i -e "s/Cmnd_Alias CLEARSYNC.*=/Cmnd_Alias CLEARSYNC = $ESCAPE,/i" /etc/sudoers
+    sed -i -e "s/[[:space:]]*,[[:space:]]*$//i" /etc/sudoers
+    chmod 440 /etc/sudoers
+fi
