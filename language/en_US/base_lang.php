@@ -1,6 +1,7 @@
 <?php
 
 $lang['base_group'] = 'Group';
+$lang['base_app_policy'] = 'App Policy';
 
 $lang['base_match_not_found_in_file'] = 'Match not found in file.';
 
