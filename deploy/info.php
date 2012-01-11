@@ -57,6 +57,7 @@ $app['core_requires'] = array(
     'util-linux-ng',
     'webconfig-mod_ssl',
     'webconfig-php',
+    'webconfig-php-ldap',
     'webconfig-php-process',
     'webconfig-utils'
 );
