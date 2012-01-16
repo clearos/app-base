@@ -48,102 +48,8 @@
 class Wizard extends ClearOS_Controller
 {
     ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
-    ///////////////////////////////////////////////////////////////////////////////
-
-    protected $steps = array();
-
-    ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
-
-    function __construct()
-    {
-        // FIXME: translations
-        $this->lang->load('date');
-        $this->lang->load('language');
-        $this->lang->load('network');
-
-        $this->steps = array(
-            0 => array(
-                'nav' => 'wizard/language',
-                'module' => 'language',
-                'method' => 'edit',
-                'params' => '',
-                'title' => lang('language_app_name'),
-                'category' => 'Install Wizard',
-                'subcategory' => 'Setup',
-            ),
-            1 => array(
-                'nav' => 'wizard/date',
-                'module' => 'date',
-                'method' => 'edit',
-                'title' => lang('date_app_name'),
-                'category' => 'Install Wizard',
-                'subcategory' => 'Setup',
-            ),
-            2 => array(
-                'nav' => 'wizard/network',
-                'module' => 'network/iface',
-                'method' => 'index',
-                'title' => lang('network_app_name'),
-                'category' => 'Install Wizard',
-                'subcategory' => 'Setup',
-            ),
-            3 => array(
-                'nav' => 'wizard/register',
-                'module' => 'registration',
-                'method' => 'index',
-                'title' => 'Registration',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Setup',
-            ),
-            4 => array(
-                'nav' => 'wizard/$marketplace2',
-                'module' => 'marketplace/wizard_helper',
-                'method' => 'index',
-                'param' => 'server',
-                'title' => 'Server Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-            ),
-            5 => array(
-                'nav' => 'wizard/marketplace1',
-                'module' => 'marketplace/wizard_helper',
-                'method' => 'index',
-                'param' => 'gateway',
-                'title' => 'Gateway Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-            ),
-            6 => array(
-                'nav' => 'wizard/$marketplace2',
-                'module' => 'marketplace/wizard_helper',
-                'method' => 'index',
-                'param' => 'network',
-                'title' => 'Network Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-            ),
-            7 => array(
-                'nav' => 'wizard/$marketplace2',
-                'module' => 'marketplace/wizard_helper',
-                'method' => 'index',
-                'param' => 'system',
-                'title' => 'System Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-            ),
-            8 => array(
-                'nav' => 'wizard/$marketplace3',
-                'module' => 'marketplace',
-                'method' => 'install',
-                'title' => 'Confirm',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-            ),
-        );
-    }
 
     /**
      * Wizard server summary view.
@@ -153,21 +59,105 @@ class Wizard extends ClearOS_Controller
 
     function index($step = 0)
     {
-        $this->page->view_wizard($step, $this->steps, lang('install_wizard_app_name'));
-    }
+        // FIXME: translations
+        if ($step != 0) {
+            $this->lang->load('date');
+            $this->lang->load('language');
+            $this->lang->load('network');
+        }
 
-    function date()
-    {
-        $this->page->view_wizard(1, $this->steps, lang('install_wizard_app_name'));
-    }
+        $steps = array();
 
-    function language()
-    {
-        $this->page->view_wizard(0, $this->steps, lang('install_wizard_app_name'));
-    }
+/*
+        $steps[] = array(
+            'nav' => 'wizard/language',
+            'module' => 'language',
+            'method' => 'edit',
+            'params' => '',
+            'title' => lang('language_app_name'),
+            'category' => 'Install Wizard',
+            'subcategory' => 'Setup',
+        );
+*/
 
-    function network()
-    {
-        $this->page->view_wizard(2, $this->steps, lang('install_wizard_app_name'));
+        $steps[] = array(
+            'nav' => 'wizard/date',
+            'module' => 'date',
+            'method' => 'edit',
+            'title' => lang('date_app_name'),
+            'category' => 'Install Wizard',
+            'subcategory' => 'Setup',
+        );
+
+/*
+        $steps[] = array(
+            'nav' => 'wizard/network',
+            'module' => 'network/iface',
+            'method' => 'index',
+            'title' => lang('network_app_name'),
+            'category' => 'Install Wizard',
+            'subcategory' => 'Setup',
+        );
+*/
+
+        $steps[] = array(
+            'nav' => 'wizard/register',
+            'module' => 'registration',
+            'method' => 'register',
+            'title' => 'Registration',
+            'category' => 'Install Wizard',
+            'subcategory' => 'Setup',
+        );
+
+        $steps[] = array(
+            'nav' => 'wizard/$marketplace2',
+            'module' => 'marketplace/wizard_helper',
+            'method' => 'index',
+            'param' => 'server',
+            'title' => 'Server Apps',
+            'category' => 'Install Wizard',
+            'subcategory' => 'Marketplace',
+        );
+
+        $steps[] = array(
+            'nav' => 'wizard/marketplace1',
+            'module' => 'marketplace/wizard_helper',
+            'method' => 'index',
+            'param' => 'gateway',
+            'title' => 'Gateway Apps',
+            'category' => 'Install Wizard',
+            'subcategory' => 'Marketplace',
+        );
+
+        $steps[] = array(
+            'nav' => 'wizard/$marketplace2',
+            'module' => 'marketplace/wizard_helper',
+            'method' => 'index',
+            'param' => 'network',
+            'title' => 'Network Apps',
+            'category' => 'Install Wizard',
+            'subcategory' => 'Marketplace',
+        );
+
+        $steps[] = array(
+            'nav' => 'wizard/$marketplace2',
+            'module' => 'marketplace/wizard_helper',
+            'method' => 'index',
+            'param' => 'system',
+            'title' => 'System Apps',
+            'category' => 'Install Wizard',
+            'subcategory' => 'Marketplace',
+        );
+
+        $steps[] = array(
+                'nav' => 'wizard/$marketplace3',
+                'module' => 'marketplace',
+                'method' => 'install',
+                'title' => 'Confirm',
+                'category' => 'Install Wizard',
+                'subcategory' => 'Marketplace',
+        );
+
+        $this->page->view_wizard($step, $steps, lang('install_wizard_app_name'));
     }
 }
