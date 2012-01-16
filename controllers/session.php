@@ -196,26 +196,16 @@ class Session extends ClearOS_Controller
     /**
      * Logout handler.
      *
-     * @param string $redirect redirect after logout
-     *
      * @return view
      */
 
-    function logout($redirect = NULL)
+    function logout()
     {
         // Logout via login_session handler
         //---------------------------------
 
         $this->login_session->stop_authenticated();
 
-        // Load views
-        //-----------
-
-        $page['type'] = MY_Page::TYPE_LOGIN;
-
-        if (empty($redirect))
-            $this->page->view_form('session/logout', $data, lang('base_logout'), $page);
-        else
-            redirect($redirect);
+        redirect('/base/session/login');
     }
 }
