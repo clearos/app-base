@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Install wizard flag
+touch /var/clearos/base/wizard

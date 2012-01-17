@@ -90,10 +90,10 @@ clearos_load_library('base/Software_Not_Installed_Exception');
 class Install_Wizard extends Engine
 {
     ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
+    // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    protected $steps = array();
+    const FILE_STATE = '/var/clearos/base/wizard';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -106,6 +106,21 @@ class Install_Wizard extends Engine
     public function __construct()
     {
         clearos_profile(__METHOD__, __LINE__);
+    }
+
+    /**
+     * Returns link to first step.
+     *
+     * @return string link to first step
+     */
+
+    public function get_first_step()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $steps = $this->get_steps();
+
+        return preg_replace('/^\/app/', '', $steps[0]['nav']);
     }
 
     /**
@@ -229,5 +244,28 @@ class Install_Wizard extends Engine
         }
 
         return $steps;
+    }
+
+    /**
+     * Starts the install wizard mode.
+     *
+     * @param boolean $state state of install wizard
+     *
+     * @return void
+     */
+
+    public function set_state($state)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_STATE);
+
+        if ($state) {
+            if (! $file->exists())
+                $file->create('root', 'root', '0644');
+        } else {
+            if ($file->exists())
+                $file->delete();
+        }
     }
 }
