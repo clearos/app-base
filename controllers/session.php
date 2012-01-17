@@ -81,6 +81,9 @@ class Session extends ClearOS_Controller
 
     function login($redirect = NULL)
     {
+        // FIXME:
+        $this->load->library('language/Locale');
+
         // Handle page post login redirect
         //--------------------------------
 
@@ -134,8 +137,16 @@ class Session extends ClearOS_Controller
                     $this->login_session->start_authenticated($this->input->post('username'));
                     $this->login_session->set_language($this->input->post('code'));
 
-                    // Redirect to dashboard page
-                    redirect($post_redirect);
+                    // If first boot, set the default language and start the wizard, 
+                    // otherwise, go to redirect page
+                    if ($this->login_session->is_install_wizard_mode()) {
+                        if ($this->input->post('code'))
+                            $this->locale->set_language_code($this->input->post('code'));
+
+                        redirect('/language'); // FIXME: use Wizard class.
+                    } else {
+                        redirect($post_redirect);
+                    }
                 } else {
                     $data['login_failed'] = lang('base_login_failed');
                 }
