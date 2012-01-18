@@ -108,4 +108,26 @@ class Wizard extends ClearOS_Controller
 
         redirect('/base');
     }
+
+    /**
+     * Stops install wizard and redirects to Marketplace (if installed)
+     *
+     * @return view
+     */
+
+    function finish()
+    {
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Install_Wizard');
+
+        // Start wizard mode
+        //------------------
+
+        $this->install_wizard->set_state('FALSE');
+        $this->session->unset_userdata('wizard', FALSE);
+
+        redirect('/marketplace');
+    }
 }

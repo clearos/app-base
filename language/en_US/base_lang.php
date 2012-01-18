@@ -1,5 +1,8 @@
 <?php
 
+$lang['base_version'] = 'Version';
+$lang['base_vendor'] = 'Vendor';
+
 $lang['base_group'] = 'Group';
 $lang['base_app_policy'] = 'App Policy';
 $lang['base_install_wizard'] = 'Install Wizard';

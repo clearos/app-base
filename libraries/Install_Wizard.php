@@ -206,7 +206,15 @@ class Install_Wizard extends Engine
 
         if (clearos_app_installed('marketplace')) {
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard_helper/index/server',
+                'nav' => '/app/marketplace/wizard/intro',
+                'title' => 'Getting Started',
+                'category' => 'Install Wizard',
+                'subcategory' => 'Marketplace',
+                'type' => 'wide'
+            );
+
+            $steps[] = array(
+                'nav' => '/app/marketplace/wizard/index/server',
                 'title' => 'Server Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
@@ -214,7 +222,7 @@ class Install_Wizard extends Engine
             );
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard_helper/index/gateway',
+                'nav' => '/app/marketplace/wizard/index/gateway',
                 'title' => 'Gateway Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
@@ -222,7 +230,7 @@ class Install_Wizard extends Engine
             );
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard_helper/index/network',
+                'nav' => '/app/marketplace/wizard/index/network',
                 'title' => 'Network Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
@@ -230,7 +238,7 @@ class Install_Wizard extends Engine
             );
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard_helper/index/system',
+                'nav' => '/app/marketplace/wizard/index/system',
                 'title' => 'System Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
@@ -241,7 +249,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/marketplace/install',
                 'title' => 'Review',
                 'category' => 'Install Wizard',
-                'subcategory' => 'Finish Install',
+                'subcategory' => 'Marketplace Wrap-up',
                 'type' => 'wide'
             );
 
@@ -249,7 +257,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/marketplace/progress',
                 'title' => 'Install',
                 'category' => 'Install Wizard',
-                'subcategory' => 'Finish Install',
+                'subcategory' => 'Marketplace Wrap-up',
                 'type' => 'wide'
             );
         } else {
