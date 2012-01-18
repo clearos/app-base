@@ -138,12 +138,15 @@ class Install_Wizard extends Engine
         // Language
         //---------
 
+        /*
         $steps[] = array(
             'nav' => '/app/language/edit',
             'title' => lang('language_app_name'),
             'category' => lang('base_install_wizard'),
             'subcategory' => lang('base_getting_started'),
+            'type' => 'normal'
         );
+        */
 
         // Network
         //--------
@@ -156,6 +159,7 @@ class Install_Wizard extends Engine
                 'title' => lang('network_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_getting_started'),
+                'type' => 'normal'
             );
         }
 
@@ -169,6 +173,7 @@ class Install_Wizard extends Engine
                 'title' => lang('registration_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_getting_started'),
+                'type' => 'normal'
             );
         }
 
@@ -180,6 +185,7 @@ class Install_Wizard extends Engine
             'title' => lang('date_app_name'),
             'category' => lang('base_install_wizard'),
             'subcategory' => lang('base_getting_started'),
+            'type' => 'normal'
         );
 
         // Central Management
@@ -191,6 +197,7 @@ class Install_Wizard extends Engine
                 'title' => lang('central_management_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_getting_started'),
+                'type' => 'normal'
             );
         }
 
@@ -203,6 +210,7 @@ class Install_Wizard extends Engine
                 'title' => 'Server Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
+                'type' => 'wide'
             );
 
             $steps[] = array(
@@ -210,6 +218,7 @@ class Install_Wizard extends Engine
                 'title' => 'Gateway Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
+                'type' => 'wide'
             );
 
             $steps[] = array(
@@ -217,6 +226,7 @@ class Install_Wizard extends Engine
                 'title' => 'Network Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
+                'type' => 'wide'
             );
 
             $steps[] = array(
@@ -224,6 +234,7 @@ class Install_Wizard extends Engine
                 'title' => 'System Apps',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
+                'type' => 'wide'
             );
 
             $steps[] = array(
@@ -231,6 +242,7 @@ class Install_Wizard extends Engine
                 'title' => 'Review',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Finish Install',
+                'type' => 'wide'
             );
 
             $steps[] = array(
@@ -238,6 +250,7 @@ class Install_Wizard extends Engine
                 'title' => 'Install',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Finish Install',
+                'type' => 'wide'
             );
         } else {
             // TODO
