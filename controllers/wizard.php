@@ -55,7 +55,25 @@ class Wizard extends ClearOS_Controller
 
     function index()
     {
-        redirect('/base');
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Install_Wizard');
+
+        // Load view data
+        //---------------
+
+        try {
+            $data['first_step'] = '/app' . $this->install_wizard->get_step(2);
+        } catch (Engine_Exception $e) {
+            $this->page->view_exception($e);
+            return;
+        }
+
+        // Load view
+        //----------
+
+        $this->page->view_form('base/wizard', $data, lang('base_install_wizard'));
     }
 
     /**
@@ -82,7 +100,7 @@ class Wizard extends ClearOS_Controller
         // Redirect to first page
         //-----------------------
 
-        $first_step = $this->install_wizard->get_first_step();
+        $first_step = $this->install_wizard->get_step(1);
 
         redirect($first_step);
     }

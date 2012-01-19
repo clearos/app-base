@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_configuration'] = 'Configuration';
+
 $lang['base_version'] = 'Version';
 $lang['base_vendor'] = 'Vendor';
 

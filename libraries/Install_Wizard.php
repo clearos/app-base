@@ -109,18 +109,19 @@ class Install_Wizard extends Engine
     }
 
     /**
-     * Returns link to first step.
+     * Returns link to given step.
      *
-     * @return string link to first step
+     * @return string link to given step
      */
 
-    public function get_first_step()
+    public function get_step($number)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $steps = $this->get_steps();
+        $number--;
 
-        return preg_replace('/^\/app/', '', $steps[0]['nav']);
+        return preg_replace('/^\/app/', '', $steps[$number]['nav']);
     }
 
     /**
@@ -135,6 +136,17 @@ class Install_Wizard extends Engine
 
         $steps = array();
 
+        // Intro
+        //------
+
+        $steps[] = array(
+            'nav' => '/app/base/wizard',
+            'title' => lang('base_getting_started'),
+            'category' => lang('base_install_wizard'),
+            'subcategory' => lang('base_configuration'),
+            'type' => 'intro'
+        );
+
         // Language
         //---------
 
@@ -143,7 +155,7 @@ class Install_Wizard extends Engine
             'nav' => '/app/language/edit',
             'title' => lang('language_app_name'),
             'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_getting_started'),
+            'subcategory' => lang('base_configuration'),
             'type' => 'normal'
         );
         */
@@ -158,7 +170,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network',
                 'title' => lang('network_app_name'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_getting_started'),
+                'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
             );
         }
@@ -172,7 +184,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/registration',
                 'title' => lang('registration_app_name'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_getting_started'),
+                'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
             );
         }
@@ -180,13 +192,16 @@ class Install_Wizard extends Engine
         // Date
         //-----
 
-        $steps[] = array(
-            'nav' => '/app/date/edit',
-            'title' => lang('date_app_name'),
-            'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_getting_started'),
-            'type' => 'normal'
-        );
+        if (clearos_app_installed('date')) {
+            clearos_load_language('registration');
+            $steps[] = array(
+                'nav' => '/app/date/edit',
+                'title' => lang('date_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+        }
 
         // Central Management
         //-------------------
@@ -196,7 +211,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/central_management',
                 'title' => lang('central_management_app_name'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_getting_started'),
+                'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
             );
         }
@@ -210,7 +225,7 @@ class Install_Wizard extends Engine
                 'title' => 'Getting Started',
                 'category' => 'Install Wizard',
                 'subcategory' => 'Marketplace',
-                'type' => 'wide'
+                'type' => 'intro'
             );
 
             $steps[] = array(
