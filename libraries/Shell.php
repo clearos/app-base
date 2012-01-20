@@ -168,11 +168,11 @@ class Shell extends Engine
         else
             $exe = $command;
 
-        if ($superuser)
-            $exe = self::COMMAND_SUDO . ' ' . $exe;
-
         if (isset($options['env']))
             $exe = $options['env'] . " $exe";
+
+        if ($superuser)
+            $exe = self::COMMAND_SUDO . ' ' . $exe;
 
         // If set to background, output *must* be redirected to 
         // either a log or /dev/null
