@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_configure_policy'] = 'Configure Policy';
+
 $lang['base_configuration'] = 'Configuration';
 
 $lang['base_version'] = 'Version';
