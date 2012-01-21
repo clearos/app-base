@@ -1,4 +1,5 @@
 <?php
+$lang['base_disable_auto_configuration'] = 'Disable Auto Configuration';
 
 $lang['base_configure_policy'] = 'Configure Policy';
 
