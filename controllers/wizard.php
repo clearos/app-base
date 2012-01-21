@@ -121,7 +121,7 @@ class Wizard extends ClearOS_Controller
         // Start wizard mode
         //------------------
 
-        $this->install_wizard->set_state('FALSE');
+        $this->install_wizard->set_state(FALSE);
         $this->session->unset_userdata('wizard', FALSE);
 
         redirect('/base');
@@ -143,7 +143,7 @@ class Wizard extends ClearOS_Controller
         // Start wizard mode
         //------------------
 
-        $this->install_wizard->set_state('FALSE');
+        $this->install_wizard->set_state(FALSE);
         $this->session->unset_userdata('wizard', FALSE);
 
         redirect('/marketplace');
