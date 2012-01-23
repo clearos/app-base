@@ -14,6 +14,7 @@ $lang['base_install_wizard'] = 'Install Wizard';
 $lang['base_getting_started'] = 'Getting Started';
 
 $lang['base_match_not_found_in_file'] = 'Match not found in file.';
+$lang['base_password_and_verify_do_not_match'] = 'Password and verify do not match.';
 
 $lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
 $lang['base_app_name'] = 'General Settings';
