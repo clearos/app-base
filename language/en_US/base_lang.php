@@ -1,4 +1,9 @@
 <?php
+
+$lang['base_file_open_error'] = 'File open error';
+$lang['base_shutdown_restart'] = 'Shutdown / Restart';
+$lang['base_system_is_restarting'] = 'System is restarting.';
+$lang['base_system_is_shutting_down'] = 'System is shutting down.';
 $lang['base_disable_auto_configuration'] = 'Disable Auto Configuration';
 
 $lang['base_configure_policy'] = 'Configure Policy';

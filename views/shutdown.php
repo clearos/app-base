@@ -40,10 +40,10 @@ $this->lang->load('base');
 ///////////////////////////////////////////////////////////////////////////////
 
 if ($action === 'shutdown') {
-    echo infobox_highlight(lang('base_status'), lang('basesystem_is_shutting_down'));
+    echo infobox_highlight(lang('base_status'), lang('base_system_is_shutting_down'));
     return;
 } else if ($action === 'restart') {
-    echo infobox_highlight(lang('base_status'), lang('basesystem_is_restarting'));
+    echo infobox_highlight(lang('base_status'), lang('base_system_is_restarting'));
     return;
 }
 
