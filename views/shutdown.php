@@ -40,16 +40,11 @@ $this->lang->load('base');
 ///////////////////////////////////////////////////////////////////////////////
 
 if ($action === 'shutdown') {
-    $body = field_view('', lang('shutdown_system_is_shutting_down'));
+    echo infobox_highlight(lang('base_status'), lang('basesystem_is_shutting_down'));
+    return;
 } else if ($action === 'restart') {
-    $body = field_view('', lang('shutdown_system_is_restarting'));
-} else {
-    $body = field_button_set(
-        array(
-            anchor_custom('/app/shutdown/confirm_shutdown', lang('base_shutdown'), 'high'),
-            anchor_custom('/app/shutdown/confirm_restart', lang('base_restart'), 'high')
-        )
-    );
+    echo infobox_highlight(lang('base_status'), lang('basesystem_is_restarting'));
+    return;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -59,7 +54,12 @@ if ($action === 'shutdown') {
 echo form_open('shutdown');
 echo form_header(lang('base_system'));
 
-echo $body;
+echo field_button_set(
+    array(
+        anchor_custom('/app/base/shutdown/confirm_shutdown', lang('base_shutdown'), 'high'),
+        anchor_custom('/app/base/shutdown/confirm_restart', lang('base_restart'), 'high')
+    )
+);
 
 echo form_footer();
 echo form_close();

@@ -145,7 +145,7 @@ class Session extends ClearOS_Controller
                         if ($this->input->post('code'))
                             $this->locale->set_language_code($this->input->post('code'));
 
-                        redirect('/base/wizard'); // FIXME: use Wizard class.
+                        redirect('/base/wizard');
                     } else {
                         redirect($post_redirect);
                     }
