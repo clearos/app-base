@@ -41,8 +41,9 @@ $this->lang->load('base');
 // FIXME: translate
 
 
+// <h3>" . $this->session->userdata['os_name'] . " " . $this->session->userdata['os_base_version'] . "</h3>
 $left = "
-<h3>" . $this->session->userdata['os_name'] . " " . $this->session->userdata['os_base_version'] . "</h3>
+<h3>Welcome to the Install Wizard!</h3>
 <p>The install wizard is going to take you through the basic steps to get your " . $this->session->userdata['os_name'] . " system up and running.  Once you have the basics all configured, you will be ready to move on to 
 Marketplace to select apps and services</p>
 ";
@@ -64,7 +65,7 @@ $start_wizard = "<p align='center'>" .  anchor_custom($first_step, 'Start the Wi
 // FIXME: this blurb should change on ClearBOX hardware
 $right = "
 <h3>Looking for Hardware? Take a Look at ClearBOX...</h3>
-<p>Here comes the shameless plug! ClearBOX is a high performance server from ClearCenter specifically designed to run the ClearOS platform. We designed this LInux IT server with ClearOS in mind and frankly, we're proud of our work! ClearBOX delivers leading technology and performance to leverage the strengths of ClearOS.</p>
+<p>Here comes the shameless plug. ClearBOX is a high performance server from ClearCenter specifically designed to run the ClearOS platform. We designed this LInux IT server with ClearOS in mind and frankly, we're proud of our work! ClearBOX delivers leading technology and performance to leverage the strengths of ClearOS.</p>
 
 <p><a style='background: transparent; border: none; float: none; padding: 0; margin: 0; color: #e1852e;' href='http://www.clearcenter.com/clearbox'>Read More...</a></p>
 
@@ -72,8 +73,9 @@ $right = "
 <p align='center'><img src='" . clearos_app_htdocs('base') . "/clearbox-product.jpg' alt='ClearBOX'></p>
 ";
 
+// 'Welcome to the Install Wizard!',
 echo infobox_highlight(
-    'Welcome to the Install Wizard!',
+    $this->session->userdata['os_name'] . " " . $this->session->userdata['os_base_version'],
     "<table cellpadding='7' border='0'>
         <tr>
             <td valign='top' colspan='2'>$left</td>
