@@ -4,10 +4,10 @@ baseurl=http://current.clearfoundation.com/clearcore/stage/current/$basearch
 enabled=1
 gpgcheck=0
 
-[clearos-current]
-name=ClearOS Enterprise 6 - $basearch - Devel 
+[cleardevel]
+name=ClearOS Developer 6 - $basearch - Developer Extras 
 baseurl=http://current.clearfoundation.com/develrepo/$basearch
-enabled=0
+enabled=1
 gpgcheck=0
 
 [epel]
