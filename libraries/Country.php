@@ -96,6 +96,8 @@ class Country extends Engine
         include clearos_app_base('base') . '/deploy/countries.php';
 
         $this->codes = $codes;
+
+        asort($this->codes);
     }
 
     /**
