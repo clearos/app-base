@@ -67,7 +67,7 @@ $right = "
 <h3>Looking for Hardware? Take a Look at ClearBOX...</h3>
 <p>Here comes the shameless plug. ClearBOX is a high performance server from ClearCenter specifically designed to run the ClearOS platform. We designed this LInux IT server with ClearOS in mind and frankly, we're proud of our work! ClearBOX delivers leading technology and performance to leverage the strengths of ClearOS.</p>
 
-<p><a style='background: transparent; border: none; float: none; padding: 0; margin: 0; color: #e1852e;' href='http://www.clearcenter.com/clearbox'>Read More...</a></p>
+<p><a style='background: transparent; border: none; float: none; padding: 0; margin: 0; color: #e1852e;' target='_blank' href='http://www.clearcenter.com/clearbox'>Read More...</a></p>
 
 
 <p align='center'><img src='" . clearos_app_htdocs('base') . "/clearbox-product.jpg' alt='ClearBOX'></p>
