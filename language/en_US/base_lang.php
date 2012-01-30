@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_detailed_report'] = 'Detailed Report';
+
 $lang['base_file_open_error'] = 'File open error';
 $lang['base_shutdown_restart'] = 'Shutdown / Restart';
 $lang['base_system_is_restarting'] = 'System is restarting.';

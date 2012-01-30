@@ -45,7 +45,7 @@ $this->lang->load('base');
 $left = "
 <h3>Welcome to the Install Wizard!</h3>
 <p>The install wizard is going to take you through the basic steps to get your " . $this->session->userdata['os_name'] . " system up and running.  Once you have the basics all configured, you will be ready to move on to 
-Marketplace to select apps and services</p>
+Marketplace to select apps and services.</p>
 ";
 
 $help_text = "
