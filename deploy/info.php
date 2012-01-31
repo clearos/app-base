@@ -64,6 +64,7 @@ $app['core_requires'] = array(
 
 
 $app['core_file_manifest'] = array(
+    'filewatch-base-install.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-install.conf'),
     'syncaction' => array(
         'target' => '/usr/sbin/syncaction',
         'mode' => '0755',
