@@ -148,12 +148,9 @@ class File_System_Browser extends Engine
         if ($file->exists())
             $selections = unserialize($file->get_contents());
 
-        clearos_profile(__METHOD__, __LINE__, "TODO " .  $path);
         $list_with_selections = array();
 
         foreach ($list as $entry) {
-            if (preg_match($entry['name'], "/.*ben.*/"))
-                clearos_profile(__METHOD__, __LINE__, "TODO " . $entry['name']);
             $entry['selected'] = in_array(($path == '/' ? $path : $path . '/') . $entry['name'], $selections);
             // Convenience key added...full path with base64 encoding (for easy URI handling)
             $entry['base64'] = base64_encode(($path == '/' ? $path : $path . '/') . $entry['name']);
