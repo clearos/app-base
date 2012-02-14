@@ -200,7 +200,7 @@ class Folder extends Engine
 
                 $shell = new Shell();
 
-                if ($shell->execute(self::COMMAND_CHOWN, $owner . " $flags " . $this->folder, TRUE) != 0)
+                if ($shell->execute(self::COMMAND_CHOWN, "'" . $owner . "' $flags '" . $this->folder . "'", TRUE) != 0)
                     throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
             } catch(Engine_Exception $e) {
                 throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
@@ -213,7 +213,7 @@ class Folder extends Engine
 
                 $shell = new Shell();
 
-                if ($shell->execute(self::COMMAND_CHOWN, ':' . $group . " $flags " . $this->folder, TRUE) != 0)
+                if ($shell->execute(self::COMMAND_CHOWN, ":'" . $group . "' $flags '" . $this->folder . "'", TRUE) != 0)
                     throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
             } catch(Engine_Exception $e) {
                 throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
