@@ -105,10 +105,8 @@ class Webconfig extends Daemon
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    const FILE_CONFIG = '/etc/webconfig';
-    const FILE_ACCESS_DATA = '/etc/clearos/administrators.conf';
-    const FILE_SETUP_FLAG = '/etc/system/initialized/setup';
-    const FILE_INSTALL_SETTINGS = '/usr/share/system/settings/install';
+    const FILE_CONFIG = '/etc/clearos/webconfig';
+    const PATH_THEMES = '/usr/clearos/themes';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -146,7 +144,9 @@ class Webconfig extends Daemon
         if (! $this->is_loaded)
             $this->_load_config();
 
-        return $this->config['theme'];
+        $theme = (empty($this->config['theme'])) ? 'default' : $this->config['theme'];
+
+        return $theme;
     }
 
     /**
@@ -156,48 +156,28 @@ class Webconfig extends Daemon
      * @throws Engine_Exception
      */
 
-    public function get_theme_list()
+    public function get_themes()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $folder = new Folder(CLEAROS_CORE_DIR  . "/htdocs/templates");
+        $folder = new Folder(self::PATH_THEMES);
 
         $theme_list = array();
+        $folder_list = $folder->get_listing();
 
-        try {
-            $folderlist = $folder->GetListing();
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
-        }
+        foreach ($folder_list as $theme) {
+            $file = new File(self::PATH_THEMES . '/' . $theme . '/info/info');
 
-        foreach ($folderlist as $template) {
-            if (preg_match("/(base)|(default)/", $template))
+            if (!$file->exists())
                 continue;
 
-            $templateinfo = array();
-
-            try {
-                $file = new Configuration_File(CLEAROS_CORE_DIR . "/htdocs/templates/" . $template . "/info");
-                if ($file->exists())
-                    $templateinfo = $file->load();
-            } catch (Engine_Exception $e) {
-                throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
-            }
-
-            $templatename = isset($templateinfo['name']) ? $templateinfo['name'] : $template;
-
-            $theme_list[$templatename] = $template;
+            // FIXME info/info -> deploy/info.php
+            include self::PATH_THEMES . '/' . $theme . '/info/info';
+            $theme_list[$theme] = $package;
         }
 
-        // Sort by name, but key by template directory
-
-        $list = array();
-        ksort($theme_list);
-
-        foreach ($theme_list as $name => $folder)
-            $list[$folder] = $name;
-
-        return $list;
+        // TODO: Sort by name, but key by theme directory
+        return $theme_list;
     }
 
     /**
@@ -247,26 +227,6 @@ class Webconfig extends Daemon
         clearos_profile(__METHOD__, __LINE__);
 
         $this->_set_parameter('theme_mode', $mode);
-    }
-
-    /**
-     * Sets the state of the setup/upgrade wizard.
-     *
-     * @param boolean $state state of setup/upgrade wizard
-     *
-     * @return void
-     */
-
-    public function set_setup_state($state)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $file = new File(self::FILE_SETUP_FLAG);
-
-        if ($state && !$file->exists())
-            $file->create("root", "root", "0644");
-        else if (!$state && $file->exists())
-            $file->delete();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
