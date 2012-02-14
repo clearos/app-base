@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.0.2';
+$app['version'] = '1.0.3';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -59,6 +59,7 @@ $app['core_requires'] = array(
     'webconfig-php',
     'webconfig-php-ldap',
     'webconfig-php-process',
+    'webconfig-php-xml',
     'webconfig-utils'
 );
 

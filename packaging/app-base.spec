@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.0.2
+Version: 1.0.3
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -12,7 +12,7 @@ Requires: %{name}-core = 1:%{version}-%{release}
 Obsoletes: app-shutdown
 
 %description
-Welcome to ClearOS Enterprise 6!
+Welcome to ClearOS 6!
 
 %package core
 Summary: General Settings - APIs and install
@@ -36,11 +36,12 @@ Requires: webconfig-mod_ssl
 Requires: webconfig-php
 Requires: webconfig-php-ldap
 Requires: webconfig-php-process
+Requires: webconfig-php-xml
 Requires: webconfig-utils
 Obsoletes: app-shutdown-core
 
 %description core
-Welcome to ClearOS Enterprise 6!
+Welcome to ClearOS 6!
 
 This package provides the core API and libraries.
 
