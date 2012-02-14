@@ -1,5 +1,8 @@
 <?php
 
+$lang['base_progress'] = 'Progress';
+$lang['base_file_size'] = 'File Size';
+
 $lang['base_detailed_report'] = 'Detailed Report';
 
 $lang['base_file_open_error'] = 'File open error';
@@ -23,8 +26,9 @@ $lang['base_getting_started'] = 'Getting Started';
 $lang['base_match_not_found_in_file'] = 'Match not found in file.';
 $lang['base_password_and_verify_do_not_match'] = 'Password and verify do not match.';
 
-$lang['base_app_description'] = 'Welcome to ClearOS Enterprise 6!'; // FIXME
+$lang['base_app_description'] = 'Welcome to ClearOS 6!'; // FIXME
 $lang['base_app_name'] = 'General Settings';
+$lang['base_file'] = 'File';
 
 $lang['base_confirm_restart'] = 'Are you sure you want to restart your system?';
 $lang['base_confirm_shutdown'] = 'Are you sure you want to shutdown your system?';
