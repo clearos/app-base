@@ -81,7 +81,6 @@ $(document).ready(function() {
         $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
         // Hacks to get style right
         $(".theme-loading-small").css('background-position', '5 0');
-        $(".theme-loading-small").css('padding-left', '5');
 
         if ($('#clearos_daemon_status_lock').val() == 'on') {
             // Prevent double click
