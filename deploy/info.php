@@ -20,25 +20,11 @@ $app['description'] = lang('base_app_description');
 $app['name'] = lang('base_app_name');
 $app['category'] = lang('base_category_system');
 $app['subcategory'] = lang('base_subcategory_settings');
-
-/////////////////////////////////////////////////////////////////////////////
-// Controllers
-/////////////////////////////////////////////////////////////////////////////
-
-// Special case -- hide this from controller list
-// $app['controllers']['base']['title'] = lang('base_dashboard');
+$app['menu_enabled'] = FALSE;
 
 /////////////////////////////////////////////////////////////////////////////
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
-
-// FIXME: beta only - remove for final
-$app['obsoletes'] = array(
-    'app-shutdown',
-);
-$app['core_obsoletes'] = array(
-    'app-shutdown-core',
-);
 
 $app['core_requires'] = array(
     'clearos-base',
