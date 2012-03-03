@@ -66,9 +66,11 @@ class Session extends ClearOS_Controller
 
     function access_denied()
     {
-        $page['type'] = MY_Page::TYPE_LOGIN;
+        $data['redirect'] = '/app/' . $this->session->userdata('default_app');
 
-        $this->page->view_form('session/access', array(), lang('base_access_denied'), $page);
+        $page['type'] = MY_Page::TYPE_SPLASH;
+
+        $this->page->view_form('session/access', $data, lang('base_access_denied'), $page);
     }
 
     /**
@@ -81,9 +83,6 @@ class Session extends ClearOS_Controller
 
     function login($redirect = NULL)
     {
-        // FIXME:
-        $this->load->library('language/Locale');
-
         // Handle page post login redirect
         //--------------------------------
 

@@ -1,4 +1,5 @@
 <?php
+$lang['base_please_start_here_instead'] = 'Please start here instead.';
 
 $lang['base_progress'] = 'Progress';
 $lang['base_file_size'] = 'File Size';
