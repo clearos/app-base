@@ -1,5 +1,7 @@
 <?php
 $lang['base_please_start_here_instead'] = 'Please start here instead.';
+$lang['base_new_password'] = 'New Password';
+$lang['base_your_password_has_been_updated'] = 'Your password has been updated.';
 
 $lang['base_progress'] = 'Progress';
 $lang['base_file_size'] = 'File Size';
