@@ -92,9 +92,9 @@ class Posix_User extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    const COMMAND_CHKPWD = "/usr/sbin/app-passwd";
-    const COMMAND_PASSWD = "/usr/bin/passwd";
-    const COMMAND_USERDEL = "/usr/sbin/userdel";
+    const COMMAND_CHKPWD = '/usr/sbin/app-passwd';
+    const COMMAND_PASSWD = '/usr/bin/passwd';
+    const COMMAND_USERDEL = '/usr/sbin/userdel';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -148,11 +148,11 @@ class Posix_User extends Engine
         // Check password
         //---------------
         
-        $options['stdin'] = "$this->username $password";
+        $options['stdin'] = $this->username . ' ' . $password;
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $retval = $shell->execute(self::COMMAND_CHKPWD, "", TRUE, $options);
+        $retval = $shell->execute(self::COMMAND_CHKPWD, '', TRUE, $options);
 
         if ($retval === 0)
             return TRUE;
@@ -186,7 +186,7 @@ class Posix_User extends Engine
             $shell = new Shell();
 
             $username = escapeshellarg($this->username);
-            $retval = $shell->execute(self::COMMAND_USERDEL, "$username", TRUE);
+            $retval = $shell->execute(self::COMMAND_USERDEL, $username, TRUE);
 
             if ($retval != 0)
                 throw new Engine_Exception($shell->get_last_output_line(), CLEAROS_ERROR);
@@ -208,30 +208,14 @@ class Posix_User extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        // Validate
-        //---------
-
-        $error = $this->validate_password($password);
-
-        if ($error)
-            throw new Validation_Exception($error, CLEAROS_ERROR);
+        Validation_Exception::is_valid($this->validate_password($password));
         
-        // Update
-        //-------
+        $shell = new Shell();
 
-        try {
-            $shell = new Shell();
+        $user = escapeshellarg($this->username);
+        $options['stdin'] = $password;
 
-            $user = escapeshellarg($this->username);
-            $options['stdin'] = $password;
-
-            $retval = $shell->execute(self::COMMAND_PASSWD, "--stdin $user", TRUE, $options);
-
-            if ($retval != 0)
-                throw new Engine_Exception($shell->get_last_output_line(), CLEAROS_ERROR);
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->GetMessage(), CLEAROS_ERROR);
-        }
+        $shell->execute(self::COMMAND_PASSWD, '--stdin ' . $user, TRUE, $options);
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -243,17 +227,14 @@ class Posix_User extends Engine
      *
      * @param string $password password
      *
-     * @return boolean TRUE if password is valid
+     * @return string error message if passsword is invalid
      */
 
     public function validate_password($password)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (preg_match("/[\|;\*]/", $password))
-            return lang('base_errmsg_password_invalid');
-        else
-            return '';
+        return;
     }
 
     /**
@@ -261,16 +242,14 @@ class Posix_User extends Engine
      *
      * @param string $username username
      *
-     * @return boolean TRUE if username is valid
+     * @return string error message if username is invalid
      */
 
     public function validate_username($username)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (preg_match("/^([a-z0-9_\-\.\$]+)$/", $username))
-            return '';
-        else
+        if (!preg_match('/^([a-z0-9_\-\.\$]+)$/', $username))
             return lang('base_errmsg_username_invalid');
     }
 }
