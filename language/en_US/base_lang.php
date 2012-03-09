@@ -1,4 +1,9 @@
 <?php
+
+$lang['base_size'] = 'Size';
+$lang['base_file_size'] = 'File Size';
+$lang['base_filename'] = 'Filename';
+$lang['base_options'] = 'Options';
 $lang['base_please_start_here_instead'] = 'Please start here instead.';
 $lang['base_new_password'] = 'New Password';
 $lang['base_your_password_has_been_updated'] = 'Your password has been updated.';
