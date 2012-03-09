@@ -11,13 +11,19 @@ else
         COMMAND="$1"
 fi
 
+if [ -n "$2" ]; then
+    FLAG=$2
+else
+    FLAG=""
+fi
+
 ###############################################################################
 # M A I N
 ###############################################################################
 
 if [ -x "/usr/clearos/apps/$1/deploy/syncaction" ]; then
-        /usr/bin/logger -p local6.notice -t clearsync "running action for $1"
-        /usr/clearos/apps/$1/deploy/syncaction
+        /usr/bin/logger -p local6.notice -t clearsync "running action for $1 $FLAG"
+        /usr/clearos/apps/$1/deploy/syncaction "$FLAG"
 else
         /usr/bin/logger -p local6.notice -t clearsync "no action for $1"
 fi
