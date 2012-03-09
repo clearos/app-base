@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.0.4
+Version: 1.0.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -9,7 +9,6 @@ Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
-Obsoletes: app-shutdown
 
 %description
 Welcome to ClearOS 6!
@@ -38,7 +37,6 @@ Requires: webconfig-php-ldap
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils
-Obsoletes: app-shutdown-core
 
 %description core
 Welcome to ClearOS 6!
