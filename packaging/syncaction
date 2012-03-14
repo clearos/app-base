@@ -13,8 +13,10 @@ fi
 
 if [ -n "$2" ]; then
     FLAG=$2
+    FLAG_LOG=" - $FLAG"
 else
     FLAG=""
+    FLAG_LOG=""
 fi
 
 ###############################################################################
@@ -22,8 +24,8 @@ fi
 ###############################################################################
 
 if [ -x "/usr/clearos/apps/$1/deploy/syncaction" ]; then
-        /usr/bin/logger -p local6.notice -t clearsync "running action for $1 $FLAG"
+        /usr/bin/logger -p local6.notice -t clearsync "$1 - event triggered$FLAG_LOG"
         /usr/clearos/apps/$1/deploy/syncaction "$FLAG"
 else
-        /usr/bin/logger -p local6.notice -t clearsync "no action for $1"
+        /usr/bin/logger -p local6.notice -t clearsync "$1 - no events defined"
 fi
