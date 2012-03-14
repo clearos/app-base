@@ -1,5 +1,7 @@
 <?php
 
+$lang['base_automatic_configuration_enabled'] = 'Automatic Configuration Enabled';
+
 $lang['base_size'] = 'Size';
 $lang['base_file_size'] = 'File Size';
 $lang['base_filename'] = 'Filename';
