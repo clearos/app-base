@@ -27,6 +27,8 @@
 /usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
 /usr/sbin/addsudo /usr/sbin/app-rename app-base-core
 /usr/sbin/addsudo /usr/sbin/userdel app-base-core
+/usr/sbin/addsudo /usr/bin/yum app-base-core
+/usr/sbin/addsudo /usr/bin/yum-config-manager app-base-core
 
 # TODO: this is just 6 beta policy change.  Remove after 6 final release.
 # Requires bumping clearos-base though...

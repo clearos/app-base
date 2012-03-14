@@ -57,9 +57,11 @@ clearos_load_language('base');
 
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\Shell as Shell;
+use \clearos\apps\marketplace\Marketplace as Marketplace;
 
 clearos_load_library('base/Engine');
 clearos_load_library('base/Shell');
+clearos_load_library('marketplace/Marketplace');
 
 // Exceptions
 //-----------
@@ -99,12 +101,24 @@ clearos_load_library('base/Yum_Busy_Exception');
 class Yum extends Engine
 {
     ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
+    // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
     const COMMAND_WC_YUM = '/usr/sbin/wc-yum';
+    const COMMAND_YUM = '/usr/bin/yum';
+    const COMMAND_YUM_CONFIG_MANAGER = '/usr/bin/yum-config-manager';
     const COMMAND_PID = "/sbin/pidof";
+    const FILE_CACHE_REPO_LIST = "yum_repo.list";
     const FILE_LOG = "yum.log";
+    const REPO_ACTIVE = 1;
+    const REPO_DISABLED = 2;
+    const REPO_ALL = 3;
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A R I A B L E S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    protected $cache_repo_list;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -175,6 +189,11 @@ class Yum extends Engine
             $shell = new Shell();
             $options['env'] = 'LANG=en_US';
             $options['validate_exit_code'] = FALSE;
+            $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
+
+            if ($exitcode == 0)
+                return TRUE;
+
             $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
 
             if ($exitcode == 0)
@@ -207,5 +226,182 @@ class Yum extends Engine
         }
         
         return $lines;
+    }
+
+    /**
+     * Returns boolean indicating whether import is currently running.
+     *
+     * @return boolean
+     * @throws Engine_Exception
+     */
+
+    public function get_repo_list()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $shell = new Shell();
+            $repo_list = array();
+
+            // Check cache
+            if ($this->_check_cache_repo_list())
+                return $this->cache_repo_list;
+
+            // Enabled repos
+            //--------------
+            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist enabled');
+            if ($exitcode != 0)
+                throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+            $rows = $shell->get_output();
+            // Pop off first and last rows
+            array_shift($rows);
+            array_pop($rows);
+            foreach ($rows as $row) {
+                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+([\d]+)$/", $row, $match)) 
+                    $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
+            }
+
+            // Disabled repos
+            //---------------
+            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist disabled');
+            if ($exitcode != 0)
+                throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+            $rows = $shell->get_output();
+            // Pop off first and last rows
+            array_shift($rows);
+            array_pop($rows);
+            foreach ($rows as $row) {
+                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)$/", $row, $match)) 
+                    $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
+            }
+            
+            $this->_cache_repo_list($repo_list);
+
+            return $repo_list;
+        } catch (Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e));
+        }
+    }
+
+    /**
+     * Returns boolean indicating whether import is currently running.
+     *
+     * @param String  $name    repo name
+     * @param boolean $enabled boolean
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    public function set_enabled($name, $enabled)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            // Enabled repos
+            //--------------
+            $shell = new Shell();
+            $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE);
+
+            if ($retval != 0) {
+                $errstr = $shell->get_last_output_line();
+                throw new Engine_Exception($errstr, CLEAROS_WARNING);
+            }
+            $this->_delete_cache_repo_list();
+        } catch (Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e));
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // P R I V A T E   M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Save to cache
+     *
+     * @access private
+     *
+     * @array $repo_list repository list
+     *
+     * @return void
+     */
+
+    protected function _cache_repo_list($repo_list)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            // Save cached copy
+            $file = new File(CLEAROS_CACHE_DIR . "/" . self::FILE_CACHE_REPO_LIST);
+            if ($file->exists())
+                $file->delete();
+            $file->create('webconfig', 'webconfig', '0644');
+            $file->add_lines(json_encode($repo_list));
+        } catch (Exception $e) {
+            clearos_profile('Cache Error occurred ' . clearos_exception_message($e), __LINE__);
+        }
+    }
+
+    /**
+     * Check the cache availability
+     *
+     * @param string $sig signature
+     *
+     * @access private
+     *
+     * @return boolean true if cached data available
+     */
+
+    protected function _check_cache_repo_list()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            // 4 hours in seconds
+            $cache_time = 14400;
+            $filename = CLEAROS_CACHE_DIR . "/" . self::FILE_CACHE_REPO_LIST; 
+
+            if (file_exists($filename))
+                $lastmod = filemtime($filename);
+            else
+                return FALSE;
+
+            if ($lastmod && (time() - $lastmod < $cache_time)) {
+                $bob = file_get_contents($filename);
+                $this->cache_repo_list = json_decode(file_get_contents($filename));
+                return TRUE;
+            }
+            return FALSE;
+        } catch (Exception $e) {
+            clearos_profile('Cache Error occurred ' . clearos_exception_message($e), __LINE__);
+            return FALSE;
+        }
+    }
+
+    /**
+     * Deletes a cache repo list file.
+     *
+     * @return void
+     *
+     */
+
+    protected function _delete_cache_repo_list()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            // If Marketplace exists, delete cached files
+            if (clearos_library_installed('marketplace/Marketplace')) {
+                $marketplace = new Marketplace();   
+                $marketplace->delete_cache();
+            }
+            $file = new File(CLEAROS_CACHE_DIR . "/" . self::FILE_CACHE_REPO_LIST);
+            if ($file->exists())
+                $file->delete();
+        } catch (Exception $e) {
+            clearos_profile('Cache Error occurred ' . clearos_exception_message($e), __LINE__);
+            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+        }
     }
 }
