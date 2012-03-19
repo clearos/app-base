@@ -337,7 +337,7 @@ class Yum extends Engine
             if ($file->exists())
                 $file->delete();
             $file->create('webconfig', 'webconfig', '0644');
-            $file->add_lines(json_encode($repo_list));
+            $file->add_lines(serialize($repo_list));
         } catch (Exception $e) {
             clearos_profile('Cache Error occurred ' . clearos_exception_message($e), __LINE__);
         }
@@ -368,8 +368,7 @@ class Yum extends Engine
                 return FALSE;
 
             if ($lastmod && (time() - $lastmod < $cache_time)) {
-                $bob = file_get_contents($filename);
-                $this->cache_repo_list = json_decode(file_get_contents($filename));
+                $this->cache_repo_list = unserialize(file_get_contents($filename));
                 return TRUE;
             }
             return FALSE;
