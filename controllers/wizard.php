@@ -64,6 +64,9 @@ class Wizard extends ClearOS_Controller
         //---------------
 
         try {
+            $this->install_wizard->set_state('TRUE');
+            $this->session->set_userdata('wizard', TRUE);
+
             $data['first_step'] = '/app' . $this->install_wizard->get_step(2);
         } catch (Engine_Exception $e) {
             $this->page->view_exception($e);
@@ -122,7 +125,8 @@ class Wizard extends ClearOS_Controller
         //------------------
 
         $this->install_wizard->set_state(FALSE);
-        $this->session->unset_userdata('wizard', FALSE);
+        $this->session->unset_userdata('wizard');
+        $this->session->unset_userdata('wizard_redirect');
 
         redirect('/base');
     }

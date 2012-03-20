@@ -134,6 +134,8 @@ class Install_Wizard extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        clearos_load_language('base');
+
         $steps = array();
 
         // Intro
@@ -143,7 +145,7 @@ class Install_Wizard extends Engine
             'nav' => '/app/base/wizard',
             'title' => lang('base_getting_started'),
             'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_configuration'),
+            'subcategory' => lang('base_registration'),
             'type' => 'intro'
         );
 
@@ -155,7 +157,7 @@ class Install_Wizard extends Engine
             'nav' => '/app/language/edit',
             'title' => lang('language_app_name'),
             'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_configuration'),
+            'subcategory' => lang('base_registration'),
             'type' => 'normal'
         );
         */
@@ -167,10 +169,18 @@ class Install_Wizard extends Engine
             clearos_load_language('network');
 
             $steps[] = array(
-                'nav' => '/app/network',
-                'title' => lang('network_app_name'),
+                'nav' => '/app/network/mode',
+                'title' => 'Network Mode', // FIXME
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_configuration'),
+                'subcategory' => lang('base_registration'),
+                'type' => 'normal'
+            );
+
+            $steps[] = array(
+                'nav' => '/app/network/iface',
+                'title' => lang('network_connecting_to_the_internet'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_registration'),
                 'type' => 'normal'
             );
         }
@@ -184,10 +194,50 @@ class Install_Wizard extends Engine
                 'nav' => '/app/registration',
                 'title' => lang('registration_app_name'),
                 'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_registration'),
+                'type' => 'normal'
+            );
+        }
+
+        // Default hostname and domain
+        //----------------------------
+
+        if (clearos_app_installed('network')) {
+            clearos_load_language('network');
+
+            $steps[] = array(
+                'nav' => '/app/network/hostname',
+                'title' => 'Hostname', //  lang('network_FIXME'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+
+            $steps[] = array(
+                'nav' => '/app/network/domain',
+                'title' => 'Domain', //  lang('network_FIXME'),
+                'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
             );
         }
+
+        // Security Certificates
+        //----------------------
+
+/*
+FIXME
+        if (clearos_app_installed('certificate_manager')) {
+            clearos_load_language('certificate_manager');
+            $steps[] = array(
+                'nav' => '/app/certificate_manager',
+                'title' => lang('certificate_manager_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+        }
+*/
 
         // Date
         //-----
@@ -206,10 +256,10 @@ class Install_Wizard extends Engine
         // Central Management
         //-------------------
 
-        if (clearos_app_installed('central_management')) {
+        if (clearos_app_installed('account_synchronization')) {
             $steps[] = array(
-                'nav' => '/app/central_management',
-                'title' => lang('central_management_app_name'),
+                'nav' => '/app/account_synchronization',
+                'title' => lang('account_synchronization_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'

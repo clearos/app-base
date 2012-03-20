@@ -1,5 +1,8 @@
 <?php
 
+$lang['base_registration'] = 'Registration';
+$lang['base_wizard'] = 'Wizard';
+
 $lang['base_automatic_configuration_enabled'] = 'Automatic Configuration Enabled';
 
 $lang['base_size'] = 'Size';
