@@ -6,7 +6,7 @@
 #
 #------------------------------------------------------------------------------
 
-DAEMONS="webconfig suvad vpnwatchd syswatch l7-filter ldapsync ntop snortsam snort eziod"
+DAEMONS="webconfig suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod"
 LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
 PIDOF="/sbin/pidof"
 
@@ -17,6 +17,9 @@ for DAEMON in $DAEMONS; do
 		if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
 			$LOGGER "restarting $DAEMON"
 			/etc/rc.d/init.d/$DAEMON stop
+			/etc/rc.d/init.d/$DAEMON start
+		elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
+			$LOGGER "hard starting $DAEMON"
 			/etc/rc.d/init.d/$DAEMON start
 		fi
 	fi
