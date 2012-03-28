@@ -1,5 +1,11 @@
 <?php
 
+$lang['base_waiting'] = 'Waiting';
+
+$lang['base_looking_for_a_command_line?'] = 'Looking for a command line?';
+$lang['base_go_to_the_command_line'] = 'Go to the command line...';
+$lang['base_finish_install_wizard'] = 'Finish Install Wizard';
+
 $lang['base_registration'] = 'Registration';
 $lang['base_wizard'] = 'Wizard';
 

@@ -46,11 +46,13 @@ $app['core_requires'] = array(
     'webconfig-php-ldap',
     'webconfig-php-process',
     'webconfig-php-xml',
-    'webconfig-utils'
+    'webconfig-utils',
+    'webconfig-zend-guard-loader'
 );
 
 
 $app['core_file_manifest'] = array(
+    'base.acl' => array( 'target' => '/var/clearos/base/access_control/authenticated/base' ),
     'filewatch-base-install.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-install.conf'),
     'syncaction' => array(
         'target' => '/usr/sbin/syncaction',

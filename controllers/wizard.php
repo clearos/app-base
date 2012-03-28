@@ -152,4 +152,15 @@ class Wizard extends ClearOS_Controller
 
         redirect('/marketplace');
     }
+
+    /**
+     * Redirects to next step in the wizard.
+     *
+     * @return redirect
+     */
+
+    function next_step()
+    {
+        redirect($this->session->userdata('wizard_redirect'));
+    }
 }
