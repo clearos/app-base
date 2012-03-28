@@ -206,6 +206,33 @@ class Yum extends Engine
     }
 
     /**
+     * Returns TRUE if the wc-yum is already running.
+     *
+     * @return boolean TRUE if wc-yum is running
+     * @throws Engine_Exception
+     */
+
+    public function is_wc_busy()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $shell = new Shell();
+            $options['env'] = 'LANG=en_US';
+            $options['validate_exit_code'] = FALSE;
+
+            $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
+
+            if ($exitcode == 0)
+                return TRUE;
+            else
+                return FALSE;
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
+        }
+    }
+
+    /**
      * Returns array of log lines.
      *
      * @return boolean TRUE if yum is running
