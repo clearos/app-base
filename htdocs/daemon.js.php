@@ -179,7 +179,8 @@ function clearosShowDaemonStatus(payload) {
         $("#clearos_daemon_status").html(lang_running);
         $("#clearos_daemon_action").html(lang_stop);
     } else if (payload.status == 'stopped') {
-        $("#clearos_daemon_status").html(lang_stopped);
+        // TODO: move styling to theme
+        $("#clearos_daemon_status").html("<span style='color: red'>" + lang_stopped + "</span>");
         $("#clearos_daemon_action").html(lang_start);
     } if (payload.status == 'starting') {
         $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
