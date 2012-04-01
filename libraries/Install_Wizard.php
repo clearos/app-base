@@ -230,6 +230,19 @@ class Install_Wizard extends Engine
             );
         }
 
+        // Central Management
+        //-------------------
+
+        if (clearos_app_installed('account_synchronization')) {
+            $steps[] = array(
+                'nav' => '/app/account_synchronization',
+                'title' => lang('account_synchronization_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+        }
+
         // Security Certificates
         //----------------------
 
@@ -252,19 +265,6 @@ class Install_Wizard extends Engine
             $steps[] = array(
                 'nav' => '/app/date/edit',
                 'title' => lang('date_app_name'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_configuration'),
-                'type' => 'normal'
-            );
-        }
-
-        // Central Management
-        //-------------------
-
-        if (clearos_app_installed('account_synchronization')) {
-            $steps[] = array(
-                'nav' => '/app/account_synchronization',
-                'title' => lang('account_synchronization_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
