@@ -1,0 +1,13 @@
+//---------------------------------------------------------------------------
+// CodeIgniter Translations
+//---------------------------------------------------------------------------
+
+A lot of translations (200+) are found in CodeIgniter, but we don't use
+that many yet.  We maintain a much smaller list here (translating is
+already hard enough!). 
+
+framework_lang.php contains the list of tags that need translating via the
+translation srever.
+
+framework_override.php contains a list of translations that are already
+defined.  These are just mapped to their equivalent "base" translation.
