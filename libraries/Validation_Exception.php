@@ -76,7 +76,7 @@ class Validation_Exception extends Engine_Exception
 
     public function __construct($message)
     {
-        parent::__construct($message, CLEAROS_INFO);
+        parent::__construct($message, CLEAROS_ERROR);
     }
 
     /**
