@@ -56,17 +56,22 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
 use \clearos\apps\base\Shell as Shell;
 use \clearos\apps\marketplace\Marketplace as Marketplace;
 
 clearos_load_library('base/Engine');
+clearos_load_library('base/File');
 clearos_load_library('base/Shell');
 clearos_load_library('marketplace/Marketplace');
+
 
 // Exceptions
 //-----------
 
+use \Exception as Exception;
 use \clearos\apps\base\Engine_Exception as Engine_Exception;
+use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\Yum_Busy_Exception as Yum_Busy_Exception;
 
 clearos_load_library('base/Engine_Exception');
@@ -246,7 +251,7 @@ class Yum extends Engine
         try {
             $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
             $lines = $log->get_contents_as_array();
-        } catch (FileNotFoundException $e) {
+        } catch (File_Not_Found_Exception $e) {
             $lines = array();
         } catch (Exception $e) {
             throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
@@ -274,31 +279,17 @@ class Yum extends Engine
             if ($this->_check_cache_repo_list())
                 return $this->cache_repo_list;
 
-            // Enabled repos
-            //--------------
-            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist enabled');
+            // Get repos
+            //----------
+            $options['env'] = 'LANG=en_US';
+            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist all', TRUE, $options);
             if ($exitcode != 0)
                 throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
             $rows = $shell->get_output();
-            // Pop off first and last rows
-            array_shift($rows);
-            array_pop($rows);
             foreach ($rows as $row) {
-                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+([\d]+)$/", $row, $match)) 
+                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)$/", $row, $match)) 
                     $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
-            }
-
-            // Disabled repos
-            //---------------
-            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist disabled');
-            if ($exitcode != 0)
-                throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
-            $rows = $shell->get_output();
-            // Pop off first and last rows
-            array_shift($rows);
-            array_pop($rows);
-            foreach ($rows as $row) {
-                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)$/", $row, $match)) 
+                else if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+disabled$/", $row, $match)) 
                     $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
             }
             
