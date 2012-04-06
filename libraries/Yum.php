@@ -249,15 +249,22 @@ class Yum extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         try {
-            $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
+            $sanitized = array();
+            $log = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_LOG);
             $lines = $log->get_contents_as_array();
+            // Could be non-JSON in the log-file from yum plugins
+            foreach ($lines as $line) { 
+                if (json_decode($line) === NULL)
+                    continue;
+                array_push($sanitized, $line);
+            }
         } catch (File_Not_Found_Exception $e) {
-            $lines = array();
+            // Send back empty array
         } catch (Exception $e) {
             throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
         }
         
-        return $lines;
+        return $sanitized;
     }
 
     /**
