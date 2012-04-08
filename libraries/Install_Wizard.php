@@ -149,19 +149,6 @@ class Install_Wizard extends Engine
             'type' => 'intro'
         );
 
-        // Language
-        //---------
-
-        /*
-        $steps[] = array(
-            'nav' => '/app/language/edit',
-            'title' => lang('language_app_name'),
-            'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_registration'),
-            'type' => 'normal'
-        );
-        */
-
         // Network
         //--------
 
@@ -187,6 +174,20 @@ class Install_Wizard extends Engine
             $steps[] = array(
                 'nav' => '/app/network/dns',
                 'title' => lang('network_dns_servers'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_registration'),
+                'type' => 'normal'
+            );
+        }
+
+        // Software Updates
+        //-----------------
+
+        if (clearos_app_installed('software_updates')) {
+            clearos_load_language('software_updates');
+            $steps[] = array(
+                'nav' => '/app/software_updates/first_boot',
+                'title' => lang('software_updates_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_registration'),
                 'type' => 'normal'
@@ -224,33 +225,6 @@ class Install_Wizard extends Engine
             $steps[] = array(
                 'nav' => '/app/network/hostname',
                 'title' => lang('network_hostname'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_configuration'),
-                'type' => 'normal'
-            );
-        }
-
-        // Central Management
-        //-------------------
-
-        if (clearos_app_installed('account_synchronization')) {
-            $steps[] = array(
-                'nav' => '/app/account_synchronization',
-                'title' => lang('account_synchronization_app_name'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_configuration'),
-                'type' => 'normal'
-            );
-        }
-
-        // Security Certificates
-        //----------------------
-
-        if (clearos_app_installed('certificate_manager')) {
-            clearos_load_language('certificate_manager');
-            $steps[] = array(
-                'nav' => '/app/certificate_manager/certificate',
-                'title' => lang('certificate_manager_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
