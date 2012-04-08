@@ -62,5 +62,6 @@ echo infobox_highlight(
     "<div style='background: url(" . clearos_app_htdocs('base') . "/$sidebar_image) no-repeat; height:374px; width:670px; margin-left: 15px; margin-top: 15px;'>
         <p style='line-height: 20px; width: 285px; font-size: 13px; position: relative; top: 262px; left: 368px;'>$blurb</p>
     </div>
-    "
+    ",
+    array('id' => 'getting_started')
 );

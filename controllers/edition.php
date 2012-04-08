@@ -87,6 +87,6 @@ class Edition extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->view_form('base/which_edition', $data, lang('base_select_edition'));
+        $this->page->view_form('base/edition', $data, lang('base_select_edition'));
     }
 }

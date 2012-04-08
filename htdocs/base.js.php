@@ -57,6 +57,8 @@ $(document).ready(function() {
     $("#wizard_nav_next").click(function(){
         if ($('#professional_already_installed').length != 0)
             window.location = '/app/base/wizard/next_step';
+        else if ($('#getting_started').length != 0)
+            window.location = '/app/base/wizard/next_step';
         else
             $('form#edition_form').submit();
     });
