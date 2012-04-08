@@ -36,7 +36,7 @@
 $this->lang->load('base');
 
 ///////////////////////////////////////////////////////////////////////////////
-// Form
+// Content
 ///////////////////////////////////////////////////////////////////////////////
 // TODO: translate
 // TODO: move HTML/CSS elements to theme
@@ -57,11 +57,19 @@ if (preg_match('/Community/', $this->session->userdata['os_name'])) {
     ";
 }
 
-echo infobox_highlight(
-    $this->session->userdata['os_name'] . ' ' . $this->session->userdata['os_base_version'],
-    "<div style='background: url(" . clearos_app_htdocs('base') . "/$sidebar_image) no-repeat; height:374px; width:670px; margin-left: 15px; margin-top: 15px;'>
+///////////////////////////////////////////////////////////////////////////////
+// Form
+///////////////////////////////////////////////////////////////////////////////
+
+echo form_open('base/wizard', array('id' => 'getting_started'));
+echo form_header($this->session->userdata['os_name'] . ' ' . $this->session->userdata['os_base_version']);
+
+echo form_banner(
+    "<div style='background: url(" . clearos_app_htdocs('base') . "/$sidebar_image) no-repeat; height:374px; width:682px; margin-left: 15px; margin-top: 15px;'>
         <p style='line-height: 20px; width: 285px; font-size: 13px; position: relative; top: 262px; left: 368px;'>$blurb</p>
     </div>
-    ",
-    array('id' => 'getting_started')
+    "
 );
+
+echo form_footer();
+echo form_close();

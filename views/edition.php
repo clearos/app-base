@@ -37,7 +37,7 @@ if ($professional_already_installed) {
 // TODO: integrate radio set into theme
 // TODO: integrate text size and other hard-coded elements in theme_field_radio_set_item
 
-$banner = "<p align='center' style='width: 680'><img src='" . clearos_app_htdocs('base') . "/thanks.png' alt=''></p>";
+$banner = "<p align='center' style='width: 687'><img src='" . clearos_app_htdocs('base') . "/thanks.png' alt=''></p>";
 
 $community_label = "<span style='font-size: 13px;'>Install ClearOS Community</span>";
 $community_options['image'] = clearos_app_htdocs('base') . '/community_logo.png';
