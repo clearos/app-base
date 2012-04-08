@@ -50,8 +50,16 @@ header('Content-Type:application/x-javascript');
 ?>
 
 $(document).ready(function() {
-    // Wizard: disable next button, use a custom "start wizard" instead.
-    $('#theme_wizard_nav').hide();
+
+    // Wizard next button handling
+    //----------------------------
+
+    $("#wizard_nav_next").click(function(){
+        if ($('#professional_already_installed').length != 0)
+            window.location = '/app/base/wizard/next_step';
+        else
+            $('form#edition_form').submit();
+    });
 });
 
 // vim: ts=4 syntax=javascript

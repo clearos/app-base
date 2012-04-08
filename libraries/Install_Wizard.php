@@ -52,24 +52,13 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-// Classes
-//--------
-
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\Shell as Shell;
+use \clearos\apps\base\File as File;
+use \clearos\apps\base\OS as OS;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/Shell');
-
-// Exceptions
-//-----------
-
-use \clearos\apps\base\Engine_Exception as Engine_Exception;
-use \clearos\apps\base\Software_Not_Installed_Exception as Software_Not_Installed_Exception;
-
-clearos_load_library('base/Engine_Exception');
-clearos_load_library('base/Software_Not_Installed_Exception');
-
+clearos_load_library('base/File');
+clearos_load_library('base/OS');
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -145,7 +134,7 @@ class Install_Wizard extends Engine
             'nav' => '/app/base/wizard',
             'title' => lang('base_getting_started'),
             'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_registration'),
+            'subcategory' => lang('base_network'),
             'type' => 'intro'
         );
 
@@ -159,7 +148,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/mode',
                 'title' => lang('network_network_mode'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_registration'),
+                'subcategory' => lang('base_network'),
                 'type' => 'normal'
             );
 
@@ -167,7 +156,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/iface',
                 'title' => lang('network_network_interfaces'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_registration'),
+                'subcategory' => lang('base_network'),
                 'type' => 'normal'
             );
 
@@ -175,16 +164,33 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/dns',
                 'title' => lang('network_dns_servers'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_registration'),
+                'subcategory' => lang('base_network'),
                 'type' => 'normal'
             );
         }
 
-        // Software Updates
-        //-----------------
+        // Which Edition
+        //--------------
 
         if (clearos_app_installed('software_updates')) {
             clearos_load_language('software_updates');
+
+            $os = new OS();
+            $os_name = $os->get_name();
+
+            if (preg_match('/ClearOS Community/', $os_name)) {
+                $steps[] = array(
+                    'nav' => '/app/base/edition',
+                    'title' => lang('base_select_edition'),
+                    'category' => lang('base_install_wizard'),
+                    'subcategory' => lang('base_registration'),
+                    'type' => 'intro'
+                );
+            }
+
+            // Software Updates
+            //-----------------
+
             $steps[] = array(
                 'nav' => '/app/software_updates/first_boot',
                 'title' => lang('software_updates_app_name'),

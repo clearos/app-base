@@ -17,30 +17,56 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 $this->lang->load('base');
-$this->lang->load('marketplace');
+
+///////////////////////////////////////////////////////////////////////////////
+// Infobox
+///////////////////////////////////////////////////////////////////////////////
+
+if ($professional_already_installed) {
+    echo infobox_highlight('Thank You', 'blah', array('id' => 'professional_already_installed'));
+    return;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Content
+///////////////////////////////////////////////////////////////////////////////
+
+// TODO: form width needs to be more flexible.  Hack in width for now.
+// TODO: convert image to text
+// TODO: translate
+// TODO: integrate radio set into theme
+// TODO: integrate text size and other hard-coded elements in theme_field_radio_set_item
+
+$banner = "<p align='center' style='width: 680'><img src='" . clearos_app_htdocs('base') . "/thanks.png' alt=''></p>";
+
+$community_label = "<span style='font-size: 13px;'>Install ClearOS Community</span>";
+$community_options['image'] = clearos_app_htdocs('base') . '/community_logo.png';
+$community_options['orientation'] = 'horizontal';
+
+$professional_label = "<span style='font-size: 13px;'>Install and Evaluate ClearOS Professional</span>";
+$professional_options['image'] = clearos_app_htdocs('base') . '/professional_logo.png';
+$professional_options['orientation'] = 'horizontal';
+
+$options['orientation'] = 'horizontal';
+
+$read_only = FALSE;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight(
-    'Which Edition?',
-	"
-<div style='background: url(" . clearos_app_htdocs('base') . "/thanks.png) no-repeat; height:366px; width:668px; margin-left: 15px; margin-top: 15px; position: relative;'>
-		
-	  <div style='position: absolute; bottom: 2px; left: 0px; margin: 0; display: block; font-size: 13px;'><input style='height: 15px; margin: 0; margin-right: 16px;' type='radio' name='edition' value='no-firewall' /><span style='top: -1px; position: relative;'> Install ClearOS Community</span></div>
-  <div style='position: absolute; bottom: 2px; left: 248px; margin: 0; display: block; font-size: 13px;'><input style='height: 15px; margin-right: 16px;' type='radio' name='edition' value='standalone' /><span style='top: -1px; position: relative;'>Upgrade to <a style='color: #e1852e;' href='http://www.clearcenter.com/Software/clearos-overview.html' target='_blank'>ClearOS Professional</a> and recieve a 30 Day Trial</span></div>
- </form>
-	
-	</div>
-	
-"
+echo form_open('base/edition', array('id' => 'edition_form'));
+echo form_header(lang('base_select_edition'));
+
+echo form_banner($banner);
+echo field_radio_set(
+    '',
+    array(
+        field_radio_set_item('community', 'edition', $community_label, TRUE, $read_only, $community_options),
+        field_radio_set_item('professional', 'edition', $professional_label, FALSE, $read_only, $professional_options)
+    ),
+    array('orientation' => 'horizontal')
 );
 
-// Fake nav buttons... normally not here
-echo "
-<p align='center'>" . 
-	anchor_custom('/app/base/wizard/test/marketplace_pro', 'Fake Previous Button') . " " .
-	anchor_custom('/app/base/wizard/test/network_mode', 'Fake Next Button') . "
-</p>
-";
+echo form_footer();
+echo form_close();
