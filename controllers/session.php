@@ -90,6 +90,7 @@ class Session extends ClearOS_Controller
 
         $post_redirect = is_null($redirect) ? '/base/index' : base64_decode(strtr($redirect, '-@_', '+/='));
         $post_redirect = preg_replace('/.*app\//', '/', $post_redirect); // trim /app prefix
+        $code = ($this->input->post('code')) ? $this->input->post('code') : 'en_US';
 
         // Redirect if already logged in
         //------------------------------
@@ -105,11 +106,13 @@ class Session extends ClearOS_Controller
         if (clearos_app_installed('language')) {
             $this->load->library('language/Locale');
 
-            $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
-            $form_ok = $this->form_validation->run();
+            if ($this->input->post('code')) {
+                $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
+                $form_ok = $this->form_validation->run();
+            }
 
             if ($this->input->post('submit') && ($form_ok)) {
-                $this->login_session->set_language($this->input->post('code'));
+                $this->login_session->set_language($code);
                 $this->login_session->reload_language('base');
             }
         }
@@ -134,15 +137,15 @@ class Session extends ClearOS_Controller
                 $login_ok = $this->login_session->authenticate($this->input->post('username'), $this->input->post('password'));
                 if ($login_ok) {
                     $this->login_session->start_authenticated($this->input->post('username'));
-                    $this->login_session->set_language($this->input->post('code'));
+                    $this->login_session->set_language($code);
 
                     //` If first boot, set the default language and start the wizard, 
                     // otherwise, go to redirect page
                     if (clearos_console()) {
                         redirect('/network');
                     } else if ($this->login_session->is_install_wizard_mode()) {
-                        if ($this->input->post('code'))
-                            $this->locale->set_language_code($this->input->post('code'));
+                        if ($code)
+                            $this->locale->set_language_code($code);
 
                         redirect('/base/wizard');
                     } else {
@@ -166,10 +169,13 @@ class Session extends ClearOS_Controller
 
         if (clearos_app_installed('language')) {
             $system_code = $this->locale->get_language_code();
-            $data['languages'] = $this->locale->get_languages();
+            $data['languages'] = $this->locale->get_framework_languages();
+        } else {
+            $system_code = 'en_US';
+            $data['languages'] = array();
         }
 
-        if ($this->session->userdata('lang_code')) {
+        if ($this->session->userdata('lang_code') && array_key_exists($this->session->userdata('lang_code'), $data['languages'])) {
             $data['code'] = $this->session->userdata('lang_code');
         } else {
             $this->load->library('user_agent');
