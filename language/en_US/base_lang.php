@@ -327,6 +327,7 @@ $lang['base_exception_invalid_parameter'] = 'Invalid parameter specified.';
 $lang['base_exitconsole'] = 'Exit Console';
 $lang['base_exit_to_console'] = 'Exit to Console';
 $lang['base_expires'] = 'Expires';
+$lang['base_file_extension'] = 'File Extension';
 $lang['base_file_ade'] = 'Microsoft Access project extension';
 $lang['base_file_adp'] = 'Microsoft Access project';
 $lang['base_file_app'] = 'Executable application';
