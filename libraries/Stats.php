@@ -168,15 +168,30 @@ class Stats extends Engine
             if (!preg_match('/^([A-z_]+):[[:space:]]+([0-9]+).*$/', $line, $parts))
                 continue;
 
-            if ($parts[1] == "MemTotal")
-                $info['memory_total'] = (float)$parts[2];
-            else if ($parts[1] == "MemFree")
-                $info['memory_free'] = (float)$parts[2];
-            else if ($parts[1] == "SwapTotal")
+            if ($parts[1] == 'MemTotal')
+                $info['total'] = (float)$parts[2];
+            else if ($parts[1] == 'MemFree')
+                $info['free'] = (float)$parts[2];
+            else if ($parts[1] == 'SwapTotal')
                 $info['swap_total'] = (float)$parts[2];
-            else if ($parts[1] == "SwapFree")
+            else if ($parts[1] == 'SwapFree')
                 $info['swap_free'] = (float)$parts[2];
+            else if ($parts[1] == 'Cached')
+                $info['cached'] = (float)$parts[2];
+            else if ($parts[1] == 'Buffers')
+                $info['buffers'] = (float)$parts[2];
         }
+
+        // Calculate kernel_and_apps
+        // total = cached + buffers + kernel_and_apps + free
+        $info['used'] =  $info['total'] - $info['free'];
+        $info['kernel_and_apps'] = $info['total'] - $info['free'] - $info['cached'] - $info['buffers'];
+
+        // Calculate some percentages
+        $info['buffers_percent'] = round(($info['buffers'] / $info['total']) * 100);
+        $info['cached_percent'] = round(($info['cached'] / $info['total']) * 100);
+        $info['free_percent'] = round(($info['free'] / $info['total']) * 100);
+        $info['kernel_and_apps_percent'] = 100 - $info['free_percent'] - $info['cached_percent'] - $info['buffers_percent'] ;
 
         return $info;
     }
