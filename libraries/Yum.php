@@ -109,6 +109,8 @@ class Yum extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
+    // FIXME: wc-yum has ClearCenter hooks and is part of the ClearCenter app.
+    // wc-yum needs to move to the base app, but with ClearCenter hooks optional/disabled.
     const COMMAND_WC_YUM = '/usr/sbin/wc-yum';
     const COMMAND_YUM = '/usr/bin/yum';
     const COMMAND_YUM_CONFIG_MANAGER = '/usr/bin/yum-config-manager';
