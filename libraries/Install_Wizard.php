@@ -257,58 +257,52 @@ class Install_Wizard extends Engine
         if (clearos_app_installed('marketplace')) {
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/intro',
-                'title' => 'Getting Started',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
+                'title' => lang('marketplace_getting_started'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('marketplace_marketplace'),
                 'type' => 'intro'
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/index/server',
-                'title' => 'Server Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-                'type' => 'wide'
+                'title' => lang('marketplace_server_apps'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('marketplace_marketplace'),
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/index/gateway',
-                'title' => 'Gateway Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-                'type' => 'wide'
+                'title' => lang('marketplace_gateway_apps'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('marketplace_marketplace'),
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/index/network',
-                'title' => 'Network Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-                'type' => 'wide'
+                'title' => lang('marketplace_network_apps'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('marketplace_marketplace'),
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/index/system',
-                'title' => 'System Apps',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace',
-                'type' => 'wide'
+                'title' => lang('marketplace_system_apps'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('marketplace_marketplace'),
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/install',
-                'title' => 'Review',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace Wrap-up',
-                'type' => 'wide'
+                'title' => lang('marketplace_review'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_finish'),
             );
 
             $steps[] = array(
                 'nav' => '/app/marketplace/progress',
-                'title' => 'Install',
-                'category' => 'Install Wizard',
-                'subcategory' => 'Marketplace Wrap-up',
-                'type' => 'wide'
+                'title' => lang('marketplace_download_and_install'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_finish'),
             );
         } else {
             // TODO
