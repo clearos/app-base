@@ -11,7 +11,7 @@ Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
 
 %description
-Welcome to ClearOS 6!
+The Base app provides core system libraries and tools.
 
 %package core
 Summary: General Settings - APIs and install
@@ -40,7 +40,7 @@ Requires: webconfig-utils
 Requires: webconfig-zend-guard-loader
 
 %description core
-Welcome to ClearOS 6!
+The Base app provides core system libraries and tools.
 
 This package provides the core API and libraries.
 
