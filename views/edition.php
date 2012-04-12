@@ -39,7 +39,7 @@ if ($professional_already_installed) {
 $banner = "<h2 style='font-size: 1.8em; color: #909090; width: 687px;'>Thank You for Choosing ClearOS</h2>";
 $banner .= "<img style='float: right;' src='" . clearos_app_htdocs('base') . "/thanks.png' alt=''>";
 $banner .= "<p style='font-size: 1.2em; line-height: 20px;'>ClearOS Community Edition is supported by a community of volunteers donating their time and knowledge via the ClearFoundation.  This support model may not be the best solution for your business or organisation.  Please consider all factors (technical skill, number of users, data sensitivity, resources etc.) when considering using ClearOS Community Edition in a commercial, professional, educational or large-scale deployment.";
-$banner .= "<p style='font-size: 1.2em; line-height: 20px;'>ClearCenter offers a commercially supported version of ClearOS called ClearOS Professional Edition.  If you would like to upgrade to a 30 day evaluation of ClearOS Professional Edition, select this option below.  If not, you can request an upgrade of this Community install to ClearOS Professional Edition within the next 30 days without penalty.</p>";
+$banner .= "<p style='font-size: 1.2em; line-height: 20px;'>ClearCenter offers a commercially supported version of ClearOS called ClearOS Professional Edition.  If you would like to upgrade to a 30-day evaluation of ClearOS Professional Edition, please select this option.</p>";
 
 $community_label = "<span style='font-size: 13px;'>Install ClearOS Community</span>";
 $community_options['image'] = clearos_app_htdocs('base') . '/community_logo.png';
