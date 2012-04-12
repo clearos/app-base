@@ -91,6 +91,7 @@ class Shell extends Engine
     protected $output = array();
 
     const COMMAND_SUDO = "/usr/bin/sudo";
+    const PATH_LOG = '/var/clearos/framework/tmp/';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -178,7 +179,7 @@ class Shell extends Engine
         // either a log or /dev/null
 
         if (isset($options['log']))
-            $exe .= ' >>' . CLEAROS_TEMP_DIR . '/' . $options['log'];
+            $exe .= ' >>' . self::PATH_LOG . '/' . $options['log'];
         else if (isset($options['background']) && $options['background'])
             $exe .= ' >/dev/null';
 
