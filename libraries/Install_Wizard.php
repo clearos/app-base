@@ -293,7 +293,7 @@ class Install_Wizard extends Engine
 
             $steps[] = array(
                 'nav' => '/app/marketplace/install',
-                'title' => lang('marketplace_review'),
+                'title' => lang('marketplace_app_review'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_finish'),
             );
