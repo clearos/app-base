@@ -69,6 +69,10 @@ $app['core_file_manifest'] = array(
     'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
     'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
     'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
+    'wc-yum' => array(
+        'target' => '/usr/sbin/wc-yum',
+        'mode' => '0755',
+    ),
 );
 
 $app['core_directory_manifest'] = array(

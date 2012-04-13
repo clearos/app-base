@@ -65,6 +65,7 @@ install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/p
 install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
+install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 
 %post
@@ -121,4 +122,5 @@ exit 0
 /var/clearos/base/access_control/authenticated/base
 /etc/clearsync.d/filewatch-base-install.conf
 /usr/sbin/syncaction
+/usr/sbin/wc-yum
 /usr/sbin/webconfig-restart
