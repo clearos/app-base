@@ -157,28 +157,24 @@ class Yum extends Engine
         if ($this->is_busy())
             throw new Yum_Busy_Exception();
 
-        try {
-            // Delete old yum log output file
-            $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
-            if ($log->exists())
-                $log->delete();
-            
-            $shell = new Shell();
+        // Delete old yum log output file
+        $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
+        if ($log->exists())
+            $log->delete();
+        
+        $shell = new Shell();
 
-            $options = array(
-                'background' => TRUE,
-                'log' =>self::FILE_LOG
-            );
+        $options = array(
+            'background' => TRUE,
+            'log' =>self::FILE_LOG
+        );
 
-            $exitcode = $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
+        $exitcode = $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
 
-            if ($exitcode != 0)
-                throw new Engine_Exception(lang('base_yum_something_went_wrong'), CLEAROS_ERROR);
+        if ($exitcode != 0)
+            throw new Engine_Exception(lang('base_yum_something_went_wrong'), CLEAROS_ERROR);
 
-            $output = $shell->get_output();
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
-        }
+        $output = $shell->get_output();
     }
 
     /**
@@ -192,24 +188,20 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $shell = new Shell();
-            $options['env'] = 'LANG=en_US';
-            $options['validate_exit_code'] = FALSE;
-            $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
+        $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
+        $options['validate_exit_code'] = FALSE;
+        $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
 
-            if ($exitcode == 0)
-                return TRUE;
+        if ($exitcode == 0)
+            return TRUE;
 
-            $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
+        $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
 
-            if ($exitcode == 0)
-                return TRUE;
-            else
-                return FALSE;
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
-        }
+        if ($exitcode == 0)
+            return TRUE;
+        else
+            return FALSE;
     }
 
     /**
@@ -223,20 +215,16 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $shell = new Shell();
-            $options['env'] = 'LANG=en_US';
-            $options['validate_exit_code'] = FALSE;
+        $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
+        $options['validate_exit_code'] = FALSE;
 
-            $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
+        $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_WC_YUM, FALSE, $options);
 
-            if ($exitcode == 0)
-                return TRUE;
-            else
-                return FALSE;
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
-        }
+        if ($exitcode == 0)
+            return TRUE;
+        else
+            return FALSE;
     }
 
     /**
@@ -280,34 +268,30 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            $shell = new Shell();
-            $repo_list = array();
+        $shell = new Shell();
+        $repo_list = array();
 
-            // Check cache
-            if ($this->_check_cache_repo_list())
-                return $this->cache_repo_list;
+        // Check cache
+        if ($this->_check_cache_repo_list())
+            return $this->cache_repo_list;
 
-            // Get repos
-            //----------
-            $options['env'] = 'LANG=en_US';
-            $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist all', TRUE, $options);
-            if ($exitcode != 0)
-                throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
-            $rows = $shell->get_output();
-            foreach ($rows as $row) {
-                if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)$/", $row, $match)) 
-                    $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
-                else if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+disabled$/", $row, $match)) 
-                    $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
-            }
-            
-            $this->_cache_repo_list($repo_list);
-
-            return $repo_list;
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e));
+        // Get repos
+        //----------
+        $options['env'] = 'LANG=en_US';
+        $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist all', TRUE, $options);
+        if ($exitcode != 0)
+            throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+        $rows = $shell->get_output();
+        foreach ($rows as $row) {
+            if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)$/", $row, $match)) 
+                $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
+            else if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+disabled$/", $row, $match)) 
+                $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
         }
+        
+        $this->_cache_repo_list($repo_list);
+
+        return $repo_list;
     }
 
     /**
@@ -324,20 +308,18 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        try {
-            // Enabled repos
-            //--------------
-            $shell = new Shell();
-            $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE);
+        // Enabled repos
+        //--------------
 
-            if ($retval != 0) {
-                $errstr = $shell->get_last_output_line();
-                throw new Engine_Exception($errstr, CLEAROS_WARNING);
-            }
-            $this->_delete_cache_repo_list();
-        } catch (Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e));
+        $shell = new Shell();
+        $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE);
+
+        if ($retval != 0) {
+            $errstr = $shell->get_last_output_line();
+            throw new Engine_Exception($errstr);
         }
+
+        $this->_delete_cache_repo_list();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
