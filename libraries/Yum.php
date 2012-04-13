@@ -117,6 +117,7 @@ class Yum extends Engine
     const COMMAND_PID = "/sbin/pidof";
     const FILE_CACHE_REPO_LIST = "yum_repo.list";
     const FILE_LOG = "yum.log";
+    const FILE_BASIC_LOG = "yum-basic.log";
     const REPO_ACTIVE = 1;
     const REPO_DISABLED = 2;
     const REPO_ALL = 3;
@@ -142,7 +143,7 @@ class Yum extends Engine
     }
 
     /**
-     * Install a list of packages using YUM.
+     * Install a list of packages using wc-yum.
      *
      * @param array $list list of package names to install
      *
@@ -178,9 +179,62 @@ class Yum extends Engine
     }
 
     /**
-     * Returns TRUE if the yum is already running.
+     * Install a list of packages using YUM.
+     *
+     * @param array $list list of package names to install
+     *
+     * @return void
+     * @throws Engine_Exception, Yum_Busy_Exception
+     */
+
+    public function basic_upgrade($list)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if ($this->is_busy())
+            throw new Yum_Busy_Exception();
+
+        // Delete old yum log output file
+        $log = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_LOG);
+        if ($log->exists())
+            $log->delete();
+        
+        $shell = new Shell();
+
+        $options = array(
+            'background' => TRUE,
+            'log' => self::FILE_BASIC_LOG
+        );
+
+        $shell->execute(self::COMMAND_YUM, 'upgrade ' . implode(' ', $list), TRUE, $options);
+    }
+
+    /**
+     * Returns TRUE if yum is already running.
      *
      * @return boolean TRUE if yum is running
+     * @throws Engine_Exception
+     */
+
+    public function is_basic_busy()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+        $options['env'] = 'LANG=en_US';
+        $options['validate_exit_code'] = FALSE;
+        $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
+
+        if ($exitcode == 0)
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    /**
+     * Returns TRUE if yum or wc-yum is already running.
+     *
+     * @return boolean TRUE if yum or wc-yum is running
      * @throws Engine_Exception
      */
 
