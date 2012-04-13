@@ -67,10 +67,9 @@ class Edition extends ClearOS_Controller
         try {
             $os_name = $this->os->get_name();
 
+            // TODO: remove hard coding and generalize
             if (preg_match('/ClearOS Professional/', $os_name))
-                $data['professional_already_installed'] = TRUE;
-            else
-                $data['professional_already_installed'] = FALSE;
+                redirect($this->session->userdata['wizard_redirect']);
         } catch (Exception $e) {
             $this->page->view_exception($e);
             return;

@@ -67,6 +67,7 @@ install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clears
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
+install -D -m 0755 packaging/yum-install %{buildroot}/usr/sbin/yum-install
 
 %post
 logger -p local6.notice -t installer 'app-base - installing'
@@ -124,3 +125,4 @@ exit 0
 /usr/sbin/syncaction
 /usr/sbin/wc-yum
 /usr/sbin/webconfig-restart
+/usr/sbin/yum-install

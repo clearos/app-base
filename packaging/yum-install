@@ -1,0 +1,127 @@
+#!/usr/clearos/sandbox/usr/bin/php
+<?php
+
+/**
+ * ClearOS Account Import script.
+ *
+ * @category   Apps
+ * @package    Account_Import
+ * @subpackage Scripts
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2008-2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/account_import/
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// B O O T S T R A P
+///////////////////////////////////////////////////////////////////////////////
+
+$bootstrap = getenv('CLEAROS_BOOTSTRAP') ? getenv('CLEAROS_BOOTSTRAP') : '/usr/clearos/framework/shared';
+require_once $bootstrap . '/bootstrap.php';
+
+///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+// Classes
+//--------
+
+use \clearos\apps\base\File as File;
+use \clearos\apps\base\Shell as Shell;
+use \clearos\apps\base\Yum as Yum;
+
+clearos_load_library('base/File');
+clearos_load_library('base/Shell');
+clearos_load_library('base/Yum');
+
+// Exceptions
+//-----------
+
+use \Exception as Exception;
+use \clearos\apps\base\Yum_Busy_Exception as Yum_Busy_Exception;
+
+clearos_load_library('base/Yum_Busy_Exception');
+
+///////////////////////////////////////////////////////////////////////////////
+// M A I N
+///////////////////////////////////////////////////////////////////////////////
+
+// Open log file right away
+//-------------------------
+
+$file = new File(CLEAROS_TEMP_DIR . '/yum-install.log');
+
+try {
+	if ($file->exists())
+        $file->delete();
+
+    $file->create('root', 'root', '0644', TRUE);
+	$file->add_lines("software updates installing...\n");
+} catch (Exception $e) {
+    clearos_log('software-updates', 'error occurred: ' . (clearos_exception_message($e)));
+}
+
+// Create RPM list
+//----------------
+
+array_shift($argv);
+$rpmlist = '';
+
+foreach ($argv as $rpm)
+	$rpmlist .= $rpm . ' ';
+
+// Run install
+//------------
+
+try {
+	$options = array();
+	$options['log'] = 'yum-install.log';
+
+	$shell = new Shell();
+	$shell->execute(Yum::COMMAND_YUM, "-y install $rpmlist", TRUE, $options);
+} catch (Yum_Busy_Exception $e) {
+    clearos_log('software-updates', 'yum system is busy');
+    return;
+} catch (Exception $e) {
+    clearos_log('software-updates', 'error occurred: ' . (clearos_exception_message($e)));
+}
+
+// Push log information into /var/log/system
+//------------------------------------------
+
+try {
+    $lines = $file->get_contents_as_array();
+} catch (Exception $e) {
+    clearos_log('software-updates', 'error occurred: ' . (clearos_exception_message($e)));
+}
+
+clearos_log('software-updates', 'log: ------------------- software update ------------------------------');
+
+foreach ($lines as $line)
+    clearos_log('software-updates', 'log: ' . $line);
+
+clearos_log('software-updates', 'log: ------------------- software update complete ---------------------');

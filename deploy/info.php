@@ -73,6 +73,10 @@ $app['core_file_manifest'] = array(
         'target' => '/usr/sbin/wc-yum',
         'mode' => '0755',
     ),
+    'yum-install' => array(
+        'target' => '/usr/sbin/yum-install',
+        'mode' => '0755',
+    ),
 );
 
 $app['core_directory_manifest'] = array(

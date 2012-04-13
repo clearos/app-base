@@ -58,13 +58,10 @@ clearos_load_language('base');
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Shell as Shell;
-use \clearos\apps\marketplace\Marketplace as Marketplace;
 
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Shell');
-clearos_load_library('marketplace/Marketplace');
-
 
 // Exceptions
 //-----------
@@ -76,7 +73,6 @@ use \clearos\apps\base\Yum_Busy_Exception as Yum_Busy_Exception;
 
 clearos_load_library('base/Engine_Exception');
 clearos_load_library('base/Yum_Busy_Exception');
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
@@ -109,15 +105,13 @@ class Yum extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
-    // FIXME: wc-yum has ClearCenter hooks and is part of the ClearCenter app.
-    // wc-yum needs to move to the base app, but with ClearCenter hooks optional/disabled.
     const COMMAND_WC_YUM = '/usr/sbin/wc-yum';
     const COMMAND_YUM = '/usr/bin/yum';
     const COMMAND_YUM_CONFIG_MANAGER = '/usr/bin/yum-config-manager';
-    const COMMAND_PID = "/sbin/pidof";
-    const FILE_CACHE_REPO_LIST = "yum_repo.list";
-    const FILE_LOG = "yum.log";
-    const FILE_BASIC_LOG = "yum-basic.log";
+    const COMMAND_PID = '/sbin/pidof';
+    const COMMAND_YUM_INSTALL = '/usr/sbin/yum-install';
+    const FILE_CACHE_REPO_LIST = 'yum_repo.list';
+    const FILE_LOG = 'yum.log';
     const REPO_ACTIVE = 1;
     const REPO_DISABLED = 2;
     const REPO_ALL = 3;
@@ -159,7 +153,7 @@ class Yum extends Engine
             throw new Yum_Busy_Exception();
 
         // Delete old yum log output file
-        $log = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_LOG);
+        $log = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_LOG);
         if ($log->exists())
             $log->delete();
         
@@ -173,13 +167,13 @@ class Yum extends Engine
         $exitcode = $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
 
         if ($exitcode != 0)
-            throw new Engine_Exception(lang('base_yum_something_went_wrong'), CLEAROS_ERROR);
+            throw new Engine_Exception(lang('base_yum_something_went_wrong'));
 
         $output = $shell->get_output();
     }
 
     /**
-     * Install a list of packages using YUM.
+     * Install a list of packages using yum-install wrapper.
      *
      * @param array $list list of package names to install
      *
@@ -187,26 +181,14 @@ class Yum extends Engine
      * @throws Engine_Exception, Yum_Busy_Exception
      */
 
-    public function basic_upgrade($list)
+    public function run_upgrade($list)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if ($this->is_busy())
-            throw new Yum_Busy_Exception();
-
-        // Delete old yum log output file
-        $log = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_LOG);
-        if ($log->exists())
-            $log->delete();
-        
         $shell = new Shell();
+        $options['background'] = TRUE;
 
-        $options = array(
-            'background' => TRUE,
-            'log' => self::FILE_BASIC_LOG
-        );
-
-        $shell->execute(self::COMMAND_YUM, 'upgrade ' . implode(' ', $list), TRUE, $options);
+        $shell->execute(self::COMMAND_YUM_INSTALL, implode(' ', $list), TRUE, $options);
     }
 
     /**
@@ -216,7 +198,7 @@ class Yum extends Engine
      * @throws Engine_Exception
      */
 
-    public function is_basic_busy()
+    public function is_yum_busy()
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -455,15 +437,16 @@ class Yum extends Engine
         try {
             // If Marketplace exists, delete cached files
             if (clearos_library_installed('marketplace/Marketplace')) {
-                $marketplace = new Marketplace();   
+                $marketplace = new \clearos\apps\marketplace\Marketplace();   
                 $marketplace->delete_cache();
             }
+
             $file = new File(CLEAROS_CACHE_DIR . "/" . self::FILE_CACHE_REPO_LIST);
             if ($file->exists())
                 $file->delete();
         } catch (Exception $e) {
             clearos_profile('Cache Error occurred ' . clearos_exception_message($e), __LINE__);
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+            throw new Engine_Exception(clearos_exception_message($e));
         }
     }
 }
