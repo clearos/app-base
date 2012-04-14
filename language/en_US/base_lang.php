@@ -40,6 +40,7 @@ $lang['base_close'] = 'Close';
 $lang['base_command_execution_failed'] = 'Command execution failed.';
 $lang['base_configuration'] = 'Configuration';
 $lang['base_configure'] = 'Configure';
+$lang['base_configure_app'] = 'Configure App';
 $lang['base_configure_policy'] = 'Configure Policy';
 $lang['base_confirm'] = 'Confirm';
 $lang['base_confirm_delete'] = 'Confirm Delete';
