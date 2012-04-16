@@ -166,7 +166,7 @@ function clearosGetDaemonStatus(daemon, timeout) {
             if (clearos_daemon_status_lock == 'off')
                 clearosShowDaemonStatus(payload);
 
-            window.setTimeout(clearosGetDaemonStatus, 1000);
+            window.setTimeout(clearosGetDaemonStatus, 3000);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             window.setTimeout(clearosGetDaemonStatus, 1000);
