@@ -2,7 +2,7 @@
 <?php
 
 /**
- * ClearOS Account Import script.
+ * Yum install wrapper.
  *
  * @category   Apps
  * @package    Account_Import
@@ -10,7 +10,7 @@
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2008-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/account_import/
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
 ///////////////////////////////////////////////////////////////////////////////
