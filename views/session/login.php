@@ -38,6 +38,7 @@
 
 $this->lang->load('base');
 
+// TODO: Aaron can improve the look and feel of the IP address ...
 $ip_extras = ($connect_ip) ? ' @ ' . $connect_ip : '';
 
 ///////////////////////////////////////////////////////////////////////////////
