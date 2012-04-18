@@ -38,6 +38,8 @@
 
 $this->lang->load('base');
 
+$ip_extras = ($connect_ip) ? ' @ ' . $connect_ip : '';
+
 ///////////////////////////////////////////////////////////////////////////////
 // Form open
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,6 +56,9 @@ echo field_password('password', '', lang('base_password'));
 
 if (count($languages) > 1)
     echo field_dropdown('code', $languages, $code, lang('base_language'));
+
+if ($ip_extras)
+    echo field_view('', "<span style='color: #666666'>" . $ip_extras . "</span>");
 
 if ($login_failed)
     echo field_view('', $login_failed);

@@ -175,6 +175,15 @@ class Session extends ClearOS_Controller
             $data['languages'] = array();
         }
 
+        $data['connect_ip'] = '';
+
+        if (clearos_console() && clearos_app_installed('network')) {
+            $this->load->library('network/Iface_Manager');
+            $lan_ips = $this->iface_manager->get_most_trusted_ips();
+            if (!empty($lan_ips[0]))
+                $data['connect_ip'] = $lan_ips[0];
+        }
+
         if ($this->session->userdata('lang_code') && array_key_exists($this->session->userdata('lang_code'), $data['languages'])) {
             $data['code'] = $this->session->userdata('lang_code');
         } else {
