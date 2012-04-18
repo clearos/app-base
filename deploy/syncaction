@@ -1,5 +1,10 @@
 #!/bin/sh
 
-# FIXME: see how this behaves in the beta.  It should only be done
+# TODO: see how this behaves.  It should only be done
 # on virtual machines (use virt-what tool)
 sed -i -e 's/ rhgb/ video=vesafb vga=0x314 rhgb/' /boot/grub/grub.conf
+
+# TODO: anaconda should really use "Linux" instead of ClearOS xyz
+# It's referring to the kernel, not the OS
+sed -i -e 's/ClearOS Community/Linux/' /boot/grub/grub.conf
+sed -i -e 's/ClearOS Professional/Linux/' /boot/grub/grub.conf
