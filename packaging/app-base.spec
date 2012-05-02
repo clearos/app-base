@@ -1,23 +1,22 @@
 
 Name: app-base
-Group: ClearOS/Apps
+Epoch: 1
 Version: 1.1.1
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
-Packager: ClearFoundation
-Vendor: ClearFoundation
+Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
-Requires: %{name}-core = %{version}-%{release}
+Requires: %{name}-core = 1:%{version}-%{release}
 
 %description
 The Base app provides core system libraries and tools.
 
 %package core
-Summary: General Settings - APIs and install
-Group: ClearOS/Libraries
+Summary: General Settings - Core
 License: LGPLv3
+Group: ClearOS/Libraries
 Requires: clearos-base
 Requires: clearos-framework
 Requires: system-theme
@@ -64,8 +63,6 @@ install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
-install -D -m 0644 packaging/clearcenter-marketplace.conf %{buildroot}/etc/yum/pluginconf.d/clearcenter-marketplace.conf
-install -D -m 0644 packaging/clearcenter-marketplace.py %{buildroot}/usr/lib/yum-plugins/clearcenter-marketplace.py
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
@@ -124,8 +121,6 @@ exit 0
 /etc/cron.d/app-base
 /var/clearos/base/access_control/public
 /var/clearos/base/access_control/authenticated/base
-/etc/yum/pluginconf.d/clearcenter-marketplace.conf
-/usr/lib/yum-plugins/clearcenter-marketplace.py
 /etc/clearsync.d/filewatch-base-install.conf
 /usr/sbin/syncaction
 /usr/sbin/wc-yum

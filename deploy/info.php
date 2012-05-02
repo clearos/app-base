@@ -73,14 +73,6 @@ $app['core_file_manifest'] = array(
         'target' => '/usr/sbin/wc-yum',
         'mode' => '0755',
     ),
-    'clearcenter-marketplace.py' => array(
-        'target' => '/usr/lib/yum-plugins/clearcenter-marketplace.py',
-        'mode' => '0644',
-    ),
-    'clearcenter-marketplace.conf' => array(
-        'target' => '/etc/yum/pluginconf.d/clearcenter-marketplace.conf',
-        'mode' => '0644',
-    ),
     'yum-install' => array(
         'target' => '/usr/sbin/yum-install',
         'mode' => '0755',
