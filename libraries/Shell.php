@@ -204,11 +204,11 @@ class Shell extends Engine
             $message = lang('base_command_execution_failed');
             if (isset($this->output[0]))
                 $message = $this->output[0];
-            throw new Validation_Exception($message);
+            throw new Engine_Exception($message);
         }
 
         if (isset($options['validate_output']) && $options['validate_output'] && !isset($this->output[0])) {
-            throw new Validation_Exception(lang('base_errmsg_command_null_output'));
+            throw new Engine_Exception(lang('base_errmsg_command_null_output'));
         }
 
         return $retval;
