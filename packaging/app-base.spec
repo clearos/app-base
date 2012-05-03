@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.1.1
+Version: 1.1.2
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -14,7 +14,7 @@ Requires: %{name}-core = 1:%{version}-%{release}
 The Base app provides core system libraries and tools.
 
 %package core
-Summary: General Settings - Core
+Summary: General Settings - APIs and install
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
@@ -38,6 +38,7 @@ Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils
 Requires: webconfig-zend-guard-loader
+Requires: yum-utils
 
 %description core
 The Base app provides core system libraries and tools.

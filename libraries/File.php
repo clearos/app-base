@@ -224,8 +224,10 @@ class File extends Engine
 
         clearstatcache();
 
-        if (! $this->exists() )
+        if (! $this->exists() ) {
+            clearos_profile(__METHOD__, __LINE__, "File not found: " . $this->filename);
             throw new File_Not_Found_Exception();
+        }
 
         // If readable by webconfig, then use file_get_contents instead of shell
 

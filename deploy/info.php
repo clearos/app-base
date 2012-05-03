@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.1.1';
+$app['version'] = '1.1.2';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -47,7 +47,8 @@ $app['core_requires'] = array(
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils',
-    'webconfig-zend-guard-loader'
+    'webconfig-zend-guard-loader',
+    'yum-utils'
 );
 
 

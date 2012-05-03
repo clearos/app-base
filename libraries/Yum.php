@@ -437,6 +437,7 @@ class Yum extends Engine
         try {
             // If Marketplace exists, delete cached files
             if (clearos_library_installed('marketplace/Marketplace')) {
+		clearos_load_library('marketplace/Marketplace');
                 $marketplace = new \clearos\apps\marketplace\Marketplace();   
                 $marketplace->delete_cache();
             }
