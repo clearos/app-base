@@ -14,7 +14,7 @@ Requires: %{name}-core = 1:%{version}-%{release}
 The Base app provides core system libraries and tools.
 
 %package core
-Summary: General Settings - APIs and install
+Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
@@ -60,10 +60,13 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
+install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-6 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
 install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
+install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
+install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
@@ -118,10 +121,13 @@ exit 0
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
+/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /var/clearos/base/access_control/public
 /var/clearos/base/access_control/authenticated/base
+/etc/yum.repos.d/clearos-developer.repo
+/etc/yum.repos.d/clearos-epel.repo
 /etc/clearsync.d/filewatch-base-install.conf
 /usr/sbin/syncaction
 /usr/sbin/wc-yum

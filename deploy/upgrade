@@ -31,6 +31,9 @@
 /usr/sbin/addsudo /usr/bin/yum-config-manager app-base-core
 /usr/sbin/addsudo /usr/sbin/yum-install app-base-core
 
+# Import EPEL key
+rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6  >/dev/null 2>&1
+
 # TODO: this is just 6 beta policy change.  Remove after 6 final release.
 # Requires bumping clearos-base though...
 /sbin/chkconfig auditd on >/dev/null 2>&1
