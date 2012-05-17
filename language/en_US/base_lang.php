@@ -31,6 +31,7 @@ $lang['base_category'] = 'Category';
 $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_my_account'] = 'My Account';
 $lang['base_category_network'] = 'Network';
+$lang['base_category_reports'] = 'Reports';
 $lang['base_category_server'] = 'Server';
 $lang['base_category_spotlight'] = 'Spotlight';
 $lang['base_category_system'] = 'System';
