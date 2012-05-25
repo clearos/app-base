@@ -12,6 +12,7 @@
 /usr/sbin/addsudo /bin/mkdir app-base-core
 /usr/sbin/addsudo /bin/mv app-base-core
 /usr/sbin/addsudo /bin/rm app-base-core
+/usr/sbin/addsudo /bin/rmdir app-base-core
 /usr/sbin/addsudo /bin/touch app-base-core
 /usr/sbin/addsudo /sbin/chkconfig app-base-core
 /usr/sbin/addsudo /sbin/shutdown app-base-core
