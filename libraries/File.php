@@ -1345,4 +1345,100 @@ class File extends Engine
 
         return $replaced;
     }
+
+    /**
+     * Returns the contents of a file using advisory locking.
+     *
+     * This method and it's companion replace_contents_locked,
+     * will not work if the calling process owner does not have
+     * direct read or write access respectively.  There is no
+     * way place an advisory lock on a file via sudo.
+     *
+     * These methods are intended to be used to read/write
+     * shared state files between multiple processes.
+     *
+     * @return string contents of file
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function get_contents_locked()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $fh = fopen($this->filename, 'a+');
+        if (!is_resource($fh)) {
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (flock($fh, LOCK_EX) === false) {
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (fseek($fh, SEEK_SET, 0) == -1) {
+            flock($fh, LOCK_UN);
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+
+        $contents = stream_get_contents($fh);
+
+        flock($fh, LOCK_UN);
+
+        return $contents;
+    }
+
+    /**
+     * Replaces contents of a file using an advisory file lock.
+     *
+     * @param string $contents replacement contents
+     *
+     * @return boolean TRUE if any replacements were made
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function replace_contents_locked($contents)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $fh = fopen($this->filename, 'a+');
+        if (!is_resource($fh)) {
+            throw new File_Exception(FILE_LANG_ERRMSG_OPEN .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (flock($fh, LOCK_EX) === false) {
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (fseek($fh, SEEK_SET, 0) == -1) {
+            flock($fh, LOCK_UN);
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (ftruncate($fh, 0) === false) {
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+            flock($fh, LOCK_UN);
+            fclose($fh);
+        }
+        if (fseek($fh, SEEK_SET, 0) == -1) {
+            flock($fh, LOCK_UN);
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        if (fwrite($fh, $contents) === false) {
+            flock($fh, LOCK_UN);
+            fclose($fh);
+            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
+                " - " . $this->filename, CLEAROS_WARNING);
+        }
+        fflush($fh);
+        flock($fh, LOCK_UN);
+        fclose($fh);
+    }
+
 }
