@@ -78,6 +78,10 @@ $app['core_file_manifest'] = array(
         'target' => '/usr/sbin/yum-install',
         'mode' => '0755',
     ),
+    'webconfig-service' => array(
+        'target' => '/usr/sbin/webconfig-service',
+        'mode' => '0755',
+    ),
     'RPM-GPG-KEY-EPEL-6' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
