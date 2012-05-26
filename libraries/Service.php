@@ -121,12 +121,19 @@ class Service extends Daemon
         parent::__construct($init);
     }
 
+    /**
+     * Create service factory.
+     *
+     * @param int $argc argument count.
+     * @param array $argv parameter array.
+     */
+
     public final static function create($argc, $argv)
     {
         // Parse command-line options
         $options = getopt('a:s:p:h');
         if ($options === false || array_key_exists('h', $options)) {
-            printf("%s: ClearOS Service Start Usage\n", basename($argv[0]));
+            printf("%s: ClearOS Webconfig Service Usage\n", basename($argv[0]));
             printf("Copyright (C) 2012 ClearFoundation\n");
             printf("  -a {app}\n\tSpecify application base name.\n");
             printf("  -s {name}\n\tSpecify service to start.\n");
@@ -154,12 +161,15 @@ class Service extends Daemon
         $service_class = $options['s'];
         $pid_file = $options['p'];
 
-        $loader = "clearos_load_library(\"$app_name/$service_class\"); \$service = new \\clearos\\apps\\$app_name\\$service_class(\$argc, \$argv);";
+        $loader = "
+            clearos_load_library(\"$app_name/$service_class\");
+            \$service = new \\clearos\\apps\\$app_name\\$service_class(\$argc, \$argv);
+        ";
+
+        eval($loader);
+        if (!is_object($service)) exit(1);
 
         try {
-            eval($loader);
-            if (!is_object($service)) exit(1);
-
             switch (($pid = pcntl_fork())) {
             case -1:
                 exit(1);
@@ -186,9 +196,15 @@ class Service extends Daemon
         return 0;
     }
 
+    /**
+     * Service entry point.
+     *
+     * Entry method (main).  Pure virtual override.
+     *
+     */
+
     public function entry()
     {
-        // Pure virtual, must override.
         // TODO: translate
         throw new Engine_Exception('Call to pure virtual method');
     }
