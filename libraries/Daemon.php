@@ -178,7 +178,7 @@ class Daemon extends Software
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'));
+            throw new Engine_Exception(lang('base_not_installed'));
 
         $folder = new Folder(self::PATH_INITD);
         $listing = $folder->get_listing();
@@ -375,7 +375,7 @@ class Daemon extends Software
         Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'));
+            throw new Engine_Exception(lang('base_not_installed'));
 
         $args = ($state) ? 'on' : 'off';
 
@@ -399,7 +399,7 @@ class Daemon extends Software
         Validation_Exception::is_valid($this->validate_state($state));
 
         if (! $this->is_installed())
-            throw new Engine_Exception(lang('daemon_not_installed'));
+            throw new Engine_Exception(lang('base_not_installed'));
 
         $is_running = $this->get_running_state();
 
