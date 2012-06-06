@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.1.5
+Version: 1.1.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -25,12 +25,15 @@ Requires: coreutils
 Requires: file
 Requires: initscripts
 Requires: passwd
+Requires: pciutils
 Requires: rpm
 Requires: shadow-utils
 Requires: sudo
 Requires: sysvinit-tools
 Requires: syswatch
+Requires: tmpwatch
 Requires: util-linux-ng
+Requires: usbutils
 Requires: webconfig-mod_ssl
 Requires: webconfig-php
 Requires: webconfig-php-ldap

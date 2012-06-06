@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.1.5';
+$app['version'] = '1.1.6';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -35,12 +35,15 @@ $app['core_requires'] = array(
     'file',
     'initscripts',
     'passwd',
+    'pciutils',
     'rpm',
     'shadow-utils',
     'sudo',
     'sysvinit-tools',
     'syswatch',
+    'tmpwatch',
     'util-linux-ng',
+    'usbutils',
     'webconfig-mod_ssl',
     'webconfig-php',
     'webconfig-php-ldap',
