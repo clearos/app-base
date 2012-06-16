@@ -172,24 +172,28 @@ class Install_Wizard extends Engine
         // Which Edition
         //--------------
 
-        if (clearos_app_installed('software_updates')) {
-            clearos_load_language('software_updates');
+        if (clearos_app_installed('upgrade')) {
+            clearos_load_language('upgrade');
 
             $os = new OS();
             $os_name = $os->get_name();
 
             if (preg_match('/ClearOS Community/', $os_name)) {
                 $steps[] = array(
-                    'nav' => '/app/base/edition',
-                    'title' => lang('base_select_edition'),
+                    'nav' => '/app/upgrade/edition',
+                    'title' => lang('upgrade_select_edition'),
                     'category' => lang('base_install_wizard'),
                     'subcategory' => lang('base_registration'),
                     'type' => 'intro'
                 );
             }
+        }
 
-            // Software Updates
-            //-----------------
+        // Software Updates
+        //-----------------
+
+        if (clearos_app_installed('software_updates')) {
+            clearos_load_language('software_updates');
 
             $steps[] = array(
                 'nav' => '/app/software_updates/first_boot',

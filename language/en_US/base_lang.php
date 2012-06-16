@@ -622,7 +622,6 @@ $lang['base_sdn_password_invalid'] = 'Incorrect password';
 $lang['base_sdn_password_reset'] = 'Password reset successful.  The new password was sent to the following e-mail address';
 $lang['base_search'] = 'Search';
 $lang['base_select_all'] = 'Select All';
-$lang['base_select_edition'] = 'Select Edition';
 $lang['base_select_none'] = 'Select None';
 $lang['base_select'] = 'Select';
 $lang['base_send'] = 'Send';
