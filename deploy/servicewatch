@@ -6,7 +6,7 @@
 #
 #------------------------------------------------------------------------------
 
-DAEMONS="webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod"
+DAEMONS="webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod amavisd"
 LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
 PIDOF="/sbin/pidof"
 
