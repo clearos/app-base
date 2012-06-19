@@ -172,16 +172,16 @@ class Install_Wizard extends Engine
         // Which Edition
         //--------------
 
-        if (clearos_app_installed('upgrade')) {
-            clearos_load_language('upgrade');
+        if (clearos_app_installed('edition')) {
+            clearos_load_language('edition');
 
             $os = new OS();
             $os_name = $os->get_name();
 
             if (preg_match('/ClearOS Community/', $os_name)) {
                 $steps[] = array(
-                    'nav' => '/app/upgrade/edition',
-                    'title' => lang('upgrade_select_edition'),
+                    'nav' => '/app/edition',
+                    'title' => lang('edition_select_edition'),
                     'category' => lang('base_install_wizard'),
                     'subcategory' => lang('base_registration'),
                     'type' => 'intro'
@@ -245,10 +245,26 @@ class Install_Wizard extends Engine
         //-----
 
         if (clearos_app_installed('date')) {
-            clearos_load_language('registration');
+            clearos_load_language('date');
+
             $steps[] = array(
                 'nav' => '/app/date/edit',
                 'title' => lang('date_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+        }
+
+        // Account Synchronization
+        //------------------------
+
+        if (clearos_app_installed('account_synchronization')) {
+            clearos_load_language('account_synchronization');
+
+            $steps[] = array(
+                'nav' => '/app/account_synchronization',
+                'title' => lang('account_synchronization_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
@@ -259,6 +275,8 @@ class Install_Wizard extends Engine
         //------------
 
         if (clearos_app_installed('marketplace')) {
+            clearos_load_language('marketplace');
+
             $steps[] = array(
                 'nav' => '/app/marketplace/wizard/intro',
                 'title' => lang('marketplace_getting_started'),
