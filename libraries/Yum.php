@@ -137,6 +137,21 @@ class Yum extends Engine
     }
 
     /**
+     * Cleans yum cache.
+     *
+     * @return void
+     * @throws Engine_Exception, Yum_Busy_Exception
+     */
+
+    public function clean()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_YUM, 'clean all', TRUE);
+    }
+
+    /**
      * Install a list of packages using wc-yum.
      *
      * @param array $list list of package names to install
