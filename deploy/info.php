@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.1.6';
+$app['version'] = '1.2.0';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -28,8 +28,8 @@ $app['menu_enabled'] = FALSE;
 
 $app['core_requires'] = array(
     'clearos-base',
-    'clearos-framework',
-    'system-theme',
+    'clearos-framework >= 6.2.3',
+    'theme-default >= 6.2.3',
     'chkconfig',
     'coreutils',
     'file',

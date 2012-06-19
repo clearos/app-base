@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.1.6
+Version: 1.2.0
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -18,8 +18,8 @@ Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
-Requires: clearos-framework
-Requires: system-theme
+Requires: clearos-framework >= 6.2.3
+Requires: theme-default >= 6.2.3
 Requires: chkconfig
 Requires: coreutils
 Requires: file
