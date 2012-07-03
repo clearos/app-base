@@ -48,6 +48,3 @@ if [ -z "$CHECK" ]; then
     sed -i -e "s/[[:space:]]*,[[:space:]]*$//i" /etc/sudoers
     chmod 440 /etc/sudoers
 fi
-
-# FIXME FIXME FIXME - beta only
-/usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
