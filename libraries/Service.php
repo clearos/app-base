@@ -174,6 +174,7 @@ class Service extends Daemon
             case -1:
                 exit(1);
             case 0:
+                set_time_limit(0);
                 exit($service->entry());
             }
 
