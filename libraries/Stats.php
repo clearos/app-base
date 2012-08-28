@@ -86,6 +86,13 @@ class Stats extends Engine
     const FILE_UPTIME = '/proc/uptime';
     const FILE_PROC_LOADAVG = '/proc/loadavg';
     const FILE_PROC_MEMINFO = '/proc/meminfo';
+    const FILE_CLEAROS_VERSION = '/etc/redhat-release';
+    const FILE_YUM_LOG = '/var/log/yum.log';
+    const FILE_CPUINFO = '/proc/cpuinfo';
+    const FILE_MEMINFO = '/proc/meminfo';
+    const CMD_UNAME = '/bin/uname';
+    const CMD_DATE = '/bin/date';
+    const CMD_CAT = '/bin/cat';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -195,4 +202,143 @@ class Stats extends Engine
 
         return $info;
     }
+
+    /**
+     * Returns ClearOS version.
+     *
+     * @return string version information
+     * @throws Engine_Exception
+     */
+
+    public function get_clearos_version()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $file = new File(self::FILE_CLEAROS_VERSION);
+
+        $lines = $file->get_contents_as_array();
+        return $lines;
+    }
+
+    /**
+     * Returns kernel version.
+     *
+     * @return string kernel version
+     * @throws Engine_Exception
+     */
+
+    public function get_kernel_version()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $shell = new Shell();
+        $args = '-r';
+
+        $shell->execute(self::CMD_UNAME, $args, FALSE, $options);
+        $retval = $shell->get_output();
+
+        return $retval;
+
+    }
+    /**
+     * Returns system date and time.
+     *
+     * @return string date and time
+     * @throws Engine_Exception
+     */
+
+    public function get_system_time()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $shell = new Shell();
+        $args = '';
+
+        $shell->execute(self::CMD_DATE, $args, FALSE, $options);
+        $retval = $shell->get_output();
+
+        return $retval;
+    }
+
+    /**
+     * Returns software updates - last 10 entries
+     *
+     * @return array software updates
+     * @throws Engine_Exception
+     */
+
+    public function get_yum_log()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $file = new File(self::FILE_YUM_LOG);
+
+        $entries = $file->get_contents_as_array();
+
+        //fix at 10 lines for now, as only meant to be preview
+        $recententries = array_slice($entries, -10, 10);
+
+        foreach ($recententries as $line){
+            $pieces = explode(' ', $line);
+            $output['date'] = $pieces[0] . ' ' . $pieces[1];
+            $output['time'] = $pieces[2];
+            $output['action'] = $pieces[3];
+            $output['package'] = $pieces[4];
+            $log[] = $output;
+        }
+
+        return $log;
+    }
+
+    /**
+     * Returns cpu model name.
+     *
+     * @return array cpu model
+     * @throws Engine_Exception
+     */
+
+    public function get_cpu_model()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $file = new File(self::FILE_CPUINFO);
+
+        $lines = $file->get_contents_as_array();
+        //multiple cores will appear as individual entries, but only the first is displayed
+
+        foreach ($lines as $line) {
+            if(preg_match('/model name/',$line)){
+                 $pieces = explode(":",$line);
+                 $retval[] = trim($pieces[1]);
+            }
+        }
+        return $retval;
+    }
+
+    /**
+     * Returns total RAM in GB
+     *
+     * @return string total RAM
+     * @throws Engine_Exception
+     */
+
+    public function get_mem_size()
+    {
+        clearos_profile(__METHOD__,__LINE__);
+
+        $file = new File(self::FILE_MEMINFO);
+
+        $lines = $file->get_contents_as_array();
+
+        foreach ($lines as $line) {
+            if(preg_match('/MemTotal/',$line)){
+                $pieces = explode(":",$line);
+                $valuekB = trim($pieces[1]);
+                $valueGB = round(str_replace(' kB', '', $valuekB)/(1024*1024),2);
+            }
+        }
+        return $valueGB;
+
+    }
+
 }
