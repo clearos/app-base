@@ -2,6 +2,3 @@
 
 # Install wizard flag
 touch /var/clearos/base/wizard
-
-# Clearsync
-/sbin/service clearsyncd start

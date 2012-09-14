@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.2.5
+Version: 1.2.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -19,6 +19,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
 Requires: clearos-framework >= 6.2.3
+Requires: csplugin-filewatch
 Requires: theme-default >= 6.2.3
 Requires: chkconfig
 Requires: coreutils
@@ -71,6 +72,7 @@ install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_contr
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
+install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
@@ -133,6 +135,7 @@ exit 0
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-epel.repo
 /etc/clearsync.d/filewatch-base-install.conf
+/etc/clearsync.d/filewatch-base-webconfig.conf
 /usr/sbin/syncaction
 /usr/sbin/wc-yum
 /usr/sbin/webconfig-restart

@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.2.5';
+$app['version'] = '1.2.6';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -29,6 +29,7 @@ $app['menu_enabled'] = FALSE;
 $app['core_requires'] = array(
     'clearos-base',
     'clearos-framework >= 6.2.3',
+    'csplugin-filewatch',
     'theme-default >= 6.2.3',
     'chkconfig',
     'coreutils',
@@ -58,6 +59,7 @@ $app['core_requires'] = array(
 $app['core_file_manifest'] = array(
     'base.acl' => array( 'target' => '/var/clearos/base/access_control/authenticated/base' ),
     'filewatch-base-install.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-install.conf'),
+    'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'syncaction' => array(
         'target' => '/usr/sbin/syncaction',
         'mode' => '0755',

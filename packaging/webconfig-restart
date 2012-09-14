@@ -1,8 +1,3 @@
 #!/bin/sh
 
-# Some upgrade processes via webconfig must restart webconfig.  For example,
-# the webconfig-ldap RPM is installed when OpenLDAP users/groups is installed.
-# This webconfig restart needs to be done as a background process or bad 
-# things can happen.  We use syswatch to accomplish this.
-
-killall -q -USR1 syswatch
+# Deprecated.  Remove when all references are removed from apps
