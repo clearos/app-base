@@ -83,6 +83,6 @@ class Folder_Already_Exists_Exception extends Engine_Exception
 
     public function __construct($folder, $code)
     {
-        parent::__construct(FOLDER_LANG_ERRMSG_EXISTS . " - " . $folder, $code);
+        parent::__construct(lang('base_folder_already_exists'), $code);
     }
 }

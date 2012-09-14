@@ -82,6 +82,6 @@ class File_Not_Found_Exception extends Engine_Exception
 
     public function __construct($code = CLEAROS_INFO)
     {
-        parent::__construct(lang('base_exception_file_not_found'), $code);
+        parent::__construct(lang('base_file_not_found'), $code);
     }
 }

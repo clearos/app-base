@@ -250,6 +250,6 @@ class Posix_User extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!preg_match('/^([a-z0-9_\-\.\$]+)$/', $username))
-            return lang('base_errmsg_username_invalid');
+            return lang('base_username_invalid');
     }
 }

@@ -193,7 +193,7 @@ class Configuration_File extends File
                     $match = array_map('trim', explode($this->token[1], $line));
                     $config_file[$key][$match[0]] = $match[1];
                 } else {
-                    throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                    throw new Engine_Exception(lang('base_file_parse_error'), CLEAROS_ERROR);
                 }
             }
 
@@ -213,7 +213,7 @@ class Configuration_File extends File
                 } elseif (preg_match($this->token, $line, $match)) {
                     $config_file[$match[1]] = $match[2];
                 } else {
-                    throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                    throw new Engine_Exception(lang('base_file_parse_error'), CLEAROS_ERROR);
                 }
             }
 
@@ -233,7 +233,7 @@ class Configuration_File extends File
                     $match = array_map('trim', preg_split($this->token, $line, $this->limit));
 
                     if (($match[0] == $line)||(empty($match[0]))) {
-                        throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                        throw new Engine_Exception(lang('base_file_parse_error'), CLEAROS_ERROR);
                     } else {
                         if ($this->limit == 2) {
                             $config_file[$match[0]] = $match[1];
@@ -260,7 +260,7 @@ class Configuration_File extends File
                     $match = array_map('trim', explode($this->token, $line, $this->limit));
 
                     if ($match[0] == $line) {
-                        throw new Engine_Exception(lang('base_exception_file_parse_error'), CLEAROS_ERROR);
+                        throw new Engine_Exception(lang('base_file_parse_error'), CLEAROS_ERROR);
                     } else {
                         if ($this->limit == 2) {
                             $config_file[$match[0]] = $match[1];

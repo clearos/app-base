@@ -133,21 +133,21 @@ class Shell extends Engine
         $this->output = array();
 
         if (! is_bool($superuser))
-            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
+            throw new Validation_Exception(lang('base_parameter_invalid'));
 
         if (isset($options['escape']) && (!is_bool($options['escape'])))
-            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
+            throw new Validation_Exception(lang('base_parameter_invalid'));
 
         if (isset($options['log']) && (preg_match('/\//', $options['log']) || preg_match('/\.\./', $options['log'])))
-            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
+            throw new Validation_Exception(lang('base_parameter_invalid'));
 
         if (isset($options['validate_output']) && (!is_bool($options['validate_output'])))
-            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
+            throw new Validation_Exception(lang('base_parameter_invalid'));
         else if (!isset($options['validate_output']))
             $options['validate_output'] = FALSE;
 
         if (isset($options['validate_exit_code']) && (!is_bool($options['validate_exit_code'])))
-            throw new Validation_Exception(lang('base_errmsg_invalid_parameter'));
+            throw new Validation_Exception(lang('base_parameter_invalid'));
         else if (!isset($options['validate_exit_code']))
             $options['validate_exit_code'] = TRUE;
 
@@ -208,7 +208,7 @@ class Shell extends Engine
         }
 
         if (isset($options['validate_output']) && $options['validate_output'] && !isset($this->output[0])) {
-            throw new Engine_Exception(lang('base_errmsg_command_null_output'));
+            throw new Engine_Exception(lang('base_command_returned_no_output'));
         }
 
         return $retval;
