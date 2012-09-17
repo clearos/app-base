@@ -508,6 +508,7 @@ $lang['base_login'] = 'Login';
 $lang['base_logout_as'] = 'Logout as';
 $lang['base_logout_complete'] = 'Logout complete.';
 $lang['base_logout'] = 'Logout';
+$lang['base_logs_and_history'] = 'Logs/Notification History';
 $lang['base_looking_for_a_command_line?'] = 'Looking for a command line?';
 $lang['base_lowest'] = 'Lowest';
 $lang['base_low'] = 'Low';
