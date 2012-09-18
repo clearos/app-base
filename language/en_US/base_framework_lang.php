@@ -1,4 +1,5 @@
 <?php
+$lang['required'] = $lang['base_this_field_required'];
 $lang['terabyte_abbr'] = $lang['base_terabytes'];
 $lang['gigabyte_abbr'] = $lang['base_gigabytes'];
 $lang['megabyte_abbr'] = $lang['base_megabytes'];
