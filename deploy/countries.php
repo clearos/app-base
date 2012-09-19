@@ -238,7 +238,6 @@ $codes = array(
     'WF' => lang('base_country_wallis_and_futuna'),
     'WK' => lang('base_country_wake_island'),
     'WS' => lang('base_country_samoa'),
-    'YD' => lang('base_country_yemen'),
     'YE' => lang('base_country_yemen'),
     'YT' => lang('base_country_mayotte'),
     'ZA' => lang('base_country_south_africa'),
