@@ -239,7 +239,6 @@ $lang['base_country_vietnam'] = 'Vietnam';
 $lang['base_country_wake_island'] = 'Wake Island';
 $lang['base_country_wallis_and_futuna'] = 'Wallis and Futuna';
 $lang['base_country_western_sahara'] = 'Western Sahara';
-$lang['base_country_yemen'] = 'People\'s Democratic Republic of Yemen';
 $lang['base_country_yemen'] = 'Yemen';
 $lang['base_country_zambia'] = 'Zambia';
 $lang['base_country_zimbabwe'] = 'Zimbabwe';
