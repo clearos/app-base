@@ -3,7 +3,7 @@ Name: app-base
 Epoch: 1
 Version: 1.2.7
 Release: 1%{dist}
-Summary: General Settings
+Summary: **base_app_name**
 License: GPLv3
 Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
@@ -11,10 +11,10 @@ Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
 
 %description
-The Base app provides core system libraries and tools.
+**base_app_description**
 
 %package core
-Summary: General Settings - Core
+Summary: **base_app_name** - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
@@ -45,7 +45,7 @@ Requires: webconfig-zend-guard-loader
 Requires: yum-utils
 
 %description core
-The Base app provides core system libraries and tools.
+**base_app_description**
 
 This package provides the core API and libraries.
 
@@ -64,6 +64,7 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
+install -d -m 0755 %{buildroot}/var/clearos/base/translations
 install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-6 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
@@ -124,6 +125,7 @@ exit 0
 %dir /var/clearos/base/access_control/custom
 %dir /var/clearos/base/access_control/public
 %dir /var/clearos/base/daemon
+%dir /var/clearos/base/translations
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
