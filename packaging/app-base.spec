@@ -1,9 +1,9 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.2.7
+Version: 1.2.8
 Release: 1%{dist}
-Summary: **base_app_name**
+Summary: General Settings
 License: GPLv3
 Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
@@ -11,10 +11,10 @@ Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
 
 %description
-**base_app_description**
+The Base app provides core system libraries and tools.
 
 %package core
-Summary: **base_app_name** - Core
+Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
@@ -45,7 +45,7 @@ Requires: webconfig-zend-guard-loader
 Requires: yum-utils
 
 %description core
-**base_app_description**
+The Base app provides core system libraries and tools.
 
 This package provides the core API and libraries.
 
