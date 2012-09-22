@@ -49,6 +49,7 @@ $input_codes = array(
     'fr_FR',
     'id_ID',
     'it_IT',
+    'my_MM',
     'nl_NL',
     'no',
     'pl_PL',
