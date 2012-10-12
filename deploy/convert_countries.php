@@ -46,6 +46,7 @@ $input_codes = array(
     'de_DE',
     'en_US',
     'es_ES',
+    'fa_IR',
     'fr_FR',
     'id_ID',
     'it_IT',
