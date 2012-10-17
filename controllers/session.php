@@ -144,7 +144,7 @@ class Session extends ClearOS_Controller
                     if (clearos_console()) {
                         redirect('/network');
                     } else if ($this->login_session->is_install_wizard_mode()) {
-                        if ($code)
+                        if (clearos_app_installed('language') && ($code))
                             $this->locale->set_language_code($code);
 
                         redirect('/base/wizard');
