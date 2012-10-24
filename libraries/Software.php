@@ -438,7 +438,8 @@ class Software extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $rawoutput = explode("|", $this->get_rpm_info("%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{BUILDTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}"));
+        $info_string = '%{LICENSE}|%{DESCRIPTION}|%{SIZE}|%{INSTALLTIME}|%{BUILDTIME}|%{PACKAGER}|%{RELEASE}|%{SUMMARY}|%{VERSION}';
+        $rawoutput = explode("|", $this->get_rpm_info($info_string));
 
         $this->license = $rawoutput[0];
         $this->description = $rawoutput[1];

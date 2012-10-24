@@ -547,7 +547,9 @@ class Storage_Device extends Engine
                     $devices[$key]['device'] = $nodes[$device['nodes']];
 
                     // Here we are looking for detected partitions
-                    if (($partitions = $this->_scan_dir($device['path'], '/^' . basename($nodes[$device['nodes']]) . '\d$/')) !== FALSE && count($partitions) > 0) {
+                    $partitions = $this->_scan_dir($device['path'], '/^' . basename($nodes[$device['nodes']]) . '\d$/');
+
+                    if (($partitions !== FALSE) && count($partitions) > 0) {
                         foreach($partitions as $partition)
                             $devices[$key]['partition'][] = dirname($nodes[$device['nodes']]) . '/' . $partition;
                     }

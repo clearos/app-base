@@ -100,6 +100,8 @@ class Install_Wizard extends Engine
     /**
      * Returns link to given step.
      *
+     * @param integer $number install step
+     *
      * @return string link to given step
      */
 
