@@ -83,6 +83,6 @@ class Software_Not_Installed_Exception extends Engine_Exception
 
     public function __construct($package_name, $code)
     {
-        parent::__construct(SOFTWARE_LANG_ERRMSG_NOT_INSTALLED . " - $package_name", $code);
+        parent::__construct(lang('base_not_installed') . " - $package_name", $code);
     }
 }

@@ -212,7 +212,7 @@ class Stats extends Engine
 
     public function get_clearos_version()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $file = new File(self::FILE_CLEAROS_VERSION);
 
@@ -229,7 +229,7 @@ class Stats extends Engine
 
     public function get_kernel_version()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
         $args = '-r';
@@ -249,7 +249,7 @@ class Stats extends Engine
 
     public function get_system_time()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
         $args = '';
@@ -269,7 +269,7 @@ class Stats extends Engine
 
     public function get_yum_log()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $file = new File(self::FILE_YUM_LOG);
 
@@ -278,7 +278,7 @@ class Stats extends Engine
         //fix at 10 lines for now, as only meant to be preview
         $recententries = array_slice($entries, -10, 10);
 
-        foreach ($recententries as $line){
+        foreach ($recententries as $line) {
             $pieces = explode(' ', $line);
             $output['date'] = $pieces[0] . ' ' . $pieces[1];
             $output['time'] = $pieces[2];
@@ -299,7 +299,7 @@ class Stats extends Engine
 
     public function get_cpu_model()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $file = new File(self::FILE_CPUINFO);
 
@@ -307,8 +307,8 @@ class Stats extends Engine
         //multiple cores will appear as individual entries, but only the first is displayed
 
         foreach ($lines as $line) {
-            if(preg_match('/model name/',$line)){
-                 $pieces = explode(":",$line);
+            if (preg_match('/model name/', $line)) {
+                 $pieces = explode(":", $line);
                  $retval[] = trim($pieces[1]);
             }
         }
@@ -324,17 +324,17 @@ class Stats extends Engine
 
     public function get_mem_size()
     {
-        clearos_profile(__METHOD__,__LINE__);
+        clearos_profile(__METHOD__, __LINE__);
 
         $file = new File(self::FILE_MEMINFO);
 
         $lines = $file->get_contents_as_array();
 
         foreach ($lines as $line) {
-            if(preg_match('/MemTotal/',$line)){
-                $pieces = explode(":",$line);
+            if (preg_match('/MemTotal/', $line)) {
+                $pieces = explode(":", $line);
                 $valuekB = trim($pieces[1]);
-                $valueGB = round(str_replace(' kB', '', $valuekB)/(1024*1024),2);
+                $valueGB = round(str_replace(' kB', '', $valuekB)/(1024*1024), 2);
             }
         }
         return $valueGB;

@@ -163,7 +163,7 @@ class File_System_Browser extends Engine
     /**
      * Select or (deselect) a file/folder.
      *
-     * @param string $file    starting path
+     * @param string $path    starting path
      * @param boolen $include include file/folder in array
      * @param string $ref     reference ID
      *

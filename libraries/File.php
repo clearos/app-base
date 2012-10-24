@@ -197,7 +197,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!is_int($maxbytes) || $maxbytes < -1)
-            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
 
         $contents = $this->get_contents_as_array($maxbytes);
 
@@ -220,7 +220,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!is_int($max_bytes) || $max_bytes < -1)
-            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
 
         clearstatcache();
 
@@ -238,7 +238,7 @@ class File extends Engine
                 $contents = file_get_contents($this->filename, FALSE, NULL, 0);
 
             if ($contents === FALSE)
-                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+                throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
 
             $this->contents = explode("\n", rtrim($contents));
         } else {
@@ -272,7 +272,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!is_int($maxbytes) || $maxbytes < -1)
-            throw new Validation_Exception(LOCALE_LANG_ERRMSG_INVALID_TYPE, __METHOD__, __LINE__);
+            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
 
         $contents = $this->get_contents_as_array();
 
@@ -379,7 +379,7 @@ class File extends Engine
             $parts = preg_split("/\s+/", $shell->get_last_output_line());
             return (int)$parts[3];
         } else {
-            throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+            throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
         }
     }
 
@@ -414,7 +414,7 @@ class File extends Engine
                 $md5 = trim(preg_replace("/$this->filename/", '', $shell->get_last_output_line()));
                 return $md5;
             } else {
-                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, CLEAROS_WARNING);
+                throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
             }
         } else {
             return md5_file($this->get_filename());
@@ -447,7 +447,7 @@ class File extends Engine
         }
 
         if ($exitcode != 0)
-            throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHMOD . " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
     }
 
 
@@ -468,7 +468,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (empty($owner) && empty($group))
-            throw new Validation_Exception(LOCALE_LANG_ERRMSG_NO_ENTRIES, __METHOD__, __LINE__);
+            throw new Validation_Exception(lang('base_ooos'), __METHOD__, __LINE__);
 
         // TODO: more input validation
 
@@ -485,7 +485,7 @@ class File extends Engine
             }
 
             if ($exitcode != 0)
-                throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, CLEAROS_WARNING);
+                throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
         }
 
         if (! empty($group)) {
@@ -496,7 +496,7 @@ class File extends Engine
             }
 
             if ($exitcode != 0)
-                throw new File_Permissions_Exception(FILE_LANG_ERRMSG_CHOWN . " - " . $this->filename, CLEAROS_WARNING);
+                throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
         }
     }
 
@@ -796,7 +796,7 @@ class File extends Engine
         }
 
         if (!($fh_t = @fopen($tempfile, "w")))
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+            throw new File_Exception(lang('base_file_open_error') . " - " . $tempfile, CLEAROS_INFO);
 
         // Remove and then re-insert newline on files...
         // this catches invalid files with no newline at the end
@@ -832,7 +832,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w")))
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+            throw new File_Exception(lang('base_file_open_error') . " - " . $tempfile, CLEAROS_INFO);
 
         $match = FALSE;
 
@@ -876,7 +876,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w")))
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+            throw new File_Exception(lang('base_file_open_error') . " - " . $tempfile, CLEAROS_INFO);
 
         $match = FALSE;
 
@@ -1205,7 +1205,7 @@ class File extends Engine
         $lines = $this->get_contents_as_array();
 
         if (!($fh_t = @fopen($tempfile, "w")))
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN . " - " . $tempfile, CLEAROS_INFO);
+            throw new File_Exception(lang('base_file_open_error') . " - " . $tempfile, CLEAROS_INFO);
 
         // Find start tag
         foreach ($lines as $line) {
@@ -1366,20 +1366,17 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $fh = fopen($this->filename, 'a+');
-        if (!is_resource($fh)) {
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN .
-                " - " . $this->filename, CLEAROS_WARNING);
-        }
-        if (flock($fh, LOCK_EX) === false) {
+        if (!is_resource($fh))
+            throw new File_Exception(lang('base_file_open_error'), CLEAROS_WARNING);
+
+        if (flock($fh, LOCK_EX) === FALSE) {
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' LOCK_EX', CLEAROS_WARNING);
         }
         if (fseek($fh, SEEK_SET, 0) == -1) {
             flock($fh, LOCK_UN);
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' SEEK_SET', CLEAROS_WARNING);
         }
 
         $contents = stream_get_contents($fh);
@@ -1403,42 +1400,40 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $fh = fopen($this->filename, 'a+');
-        if (!is_resource($fh)) {
-            throw new File_Exception(FILE_LANG_ERRMSG_OPEN .
-                " - " . $this->filename, CLEAROS_WARNING);
-        }
-        if (flock($fh, LOCK_EX) === false) {
+        if (!is_resource($fh))
+            throw new File_Exception(lang('base_file_open_error'), CLEAROS_WARNING);
+
+        if (flock($fh, LOCK_EX) === FALSE) {
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' LOCK_EX', CLEAROS_WARNING);
         }
+
         if (fseek($fh, SEEK_SET, 0) == -1) {
             flock($fh, LOCK_UN);
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' LOCK_SET', CLEAROS_WARNING);
         }
-        if (ftruncate($fh, 0) === false) {
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+
+        if (ftruncate($fh, 0) === FALSE) {
             flock($fh, LOCK_UN);
             fclose($fh);
+            throw new File_Exception(lang('base_file_open_error') . ' ftruncate', CLEAROS_WARNING);
         }
+
         if (fseek($fh, SEEK_SET, 0) == -1) {
             flock($fh, LOCK_UN);
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' SEEK_SET', CLEAROS_WARNING);
         }
-        if (fwrite($fh, $contents) === false) {
+
+        if (fwrite($fh, $contents) === FALSE) {
             flock($fh, LOCK_UN);
             fclose($fh);
-            throw new File_Exception(FILE_LANG_ERRMSG_LOCK .
-                " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Exception(lang('base_file_open_error') . ' fwrite', CLEAROS_WARNING);
         }
+
         fflush($fh);
         flock($fh, LOCK_UN);
         fclose($fh);
     }
-
 }

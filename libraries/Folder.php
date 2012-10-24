@@ -358,7 +358,8 @@ class Folder extends Engine
      *
      * The current (.) and and parent (..) entries are not included.
      *
-     * @param boolean $detailed if TRUE, array contains detailed information about directory
+     * @param boolean $detailed      if TRUE, array contains detailed information about directory
+     * @param boolean $include_files include files in listing flag
      *
      * @return array file listing
      */
@@ -403,13 +404,14 @@ class Folder extends Engine
                     // First non-directory...break out?
                     if (!$include_files)
                         break;
+
                     $files[] = array(
-                       'name' => $parts[8],
-                       'is_dir' => FALSE,
-                       'properties' => $parts[0],
-                       'size' => $parts[4],
-                       'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
-                   );
+                        'name' => $parts[8],
+                        'is_dir' => FALSE,
+                        'properties' => $parts[0],
+                        'size' => $parts[4],
+                        'modified' => strtotime($parts[5] . ' ' . substr($parts[6], 0, 8) . ' ' . $parts[7])
+                    );
                 }
             }
             $listing = array_merge($directories, $files);
@@ -528,7 +530,7 @@ class Folder extends Engine
             else
                 return (int)$parts[0];
         } else {
-            throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
+            throw new Engine_Exception(lang('base_ooops'), COMMON_WARNING);
         }
     }
 
@@ -552,7 +554,7 @@ class Folder extends Engine
             if ($exitcode == 0)
                 return $shell->get_last_output_line();
             else
-                throw new Engine_Exception(LOCALE_LANG_ERRMSG_WEIRD, COMMON_WARNING);
+                throw new Engine_Exception(lang('base_ooops'), COMMON_WARNING);
         }
 
         return realpath($this->folder);

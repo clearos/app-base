@@ -339,7 +339,7 @@ class Software extends Engine
             $shell = new Shell();
             $exitcode = $shell->execute(self::COMMAND_RPM, "-q --queryformat \"%{VERSION}\\n\" $rpm", FALSE);
             if ($exitcode != 0)
-                throw new Engine_Exception(SOFTWARE_LANG_ERRMSG_LOOKUP_ERROR, CLEAROS_WARNING);
+                throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
             $rawoutput = $shell->get_output();
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_exception(), CLEAROS_WARNING);
@@ -355,7 +355,7 @@ class Software extends Engine
             try {
                 $exitcode = $shell->execute(self::COMMAND_RPM, "-q --queryformat \"%{RELEASE}\\n\" $rpm", FALSE);
                 if ($exitcode != 0)
-                    throw new Engine_Exception(SOFTWARE_LANG_ERRMSG_LOOKUP_ERROR, CLEAROS_WARNING);
+                    throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
                 $rawoutput = $shell->get_output();
             } catch (Engine_Exception $e) {
                 throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
@@ -379,7 +379,7 @@ class Software extends Engine
             $exitcode = $shell->execute(self::COMMAND_RPM, "-q --queryformat \"" . $tag . "\" $rpm", FALSE);
 
             if ($exitcode != 0)
-                throw new Engine_Exception(SOFTWARE_LANG_ERRMSG_LOOKUP_ERROR, CLEAROS_WARNING);
+                throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
 
             $rawoutput = $shell->get_output();
         } catch (Engine_Exception $e) {

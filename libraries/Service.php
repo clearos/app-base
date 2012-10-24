@@ -93,23 +93,13 @@ clearos_load_library('base/File_Not_Found_Exception');
 class Service extends Daemon
 {
     ///////////////////////////////////////////////////////////////////////////////
-    // C O N S T A N T S
-    ///////////////////////////////////////////////////////////////////////////////
-
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // V A R I A B L E S
-    ///////////////////////////////////////////////////////////////////////////////
-
-
-    ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
 
     /**
      * Service constructor.
      *
-     * @param int $argc argument count.
+     * @param int   $argc argument count.
      * @param array $argv parameter array.
      */
 
@@ -124,15 +114,17 @@ class Service extends Daemon
     /**
      * Create service factory.
      *
-     * @param int $argc argument count.
+     * @param int   $argc argument count.
      * @param array $argv parameter array.
+     *
+     * @return integer exit code
      */
 
     public final static function create($argc, $argv)
     {
         // Parse command-line options
         $options = getopt('a:s:p:h');
-        if ($options === false || array_key_exists('h', $options)) {
+        if ($options === FALSE || array_key_exists('h', $options)) {
             printf("%s: ClearOS Webconfig Service Usage\n", basename($argv[0]));
             printf("Copyright (C) 2012 ClearFoundation\n");
             printf("  -a {app}\n\tSpecify application base name.\n");
@@ -156,7 +148,7 @@ class Service extends Daemon
             exit(1);
         }
 
-        $service = null;
+        $service = NULL;
         $app_name = $options['a'];
         $service_class = $options['s'];
         $pid_file = $options['p'];
@@ -171,11 +163,11 @@ class Service extends Daemon
 
         try {
             switch (($pid = pcntl_fork())) {
-            case -1:
-                exit(1);
-            case 0:
-                set_time_limit(0);
-                exit($service->entry());
+                case -1:
+                    exit(1);
+                case 0:
+                    set_time_limit(0);
+                    exit($service->entry());
             }
 
             $file = new File($pid_file);
@@ -202,6 +194,7 @@ class Service extends Daemon
      *
      * Entry method (main).  Pure virtual override.
      *
+     * @return void
      */
 
     public function entry()

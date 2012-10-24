@@ -380,10 +380,9 @@ class Yum extends Engine
     /**
      * Save to cache
      *
+     * @param array $repo_list repository list
+     *
      * @access private
-     *
-     * @array $repo_list repository list
-     *
      * @return void
      */
 
@@ -406,10 +405,7 @@ class Yum extends Engine
     /**
      * Check the cache availability
      *
-     * @param string $sig signature
-     *
      * @access private
-     *
      * @return boolean true if cached data available
      */
 
@@ -452,7 +448,7 @@ class Yum extends Engine
         try {
             // If Marketplace exists, delete cached files
             if (clearos_library_installed('marketplace/Marketplace')) {
-		clearos_load_library('marketplace/Marketplace');
+                clearos_load_library('marketplace/Marketplace');
                 $marketplace = new \clearos\apps\marketplace\Marketplace();   
                 $marketplace->delete_cache();
             }
