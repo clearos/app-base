@@ -121,17 +121,20 @@ class Stats extends Engine
         $file = new File(self::FILE_UPTIME);
         $contents = $file->get_contents();
 
+        // Idle time is across all CPUs, so normalize it
+        $num_cpus = $this->get_cpu_count();
+
         list($uptime, $idle) = explode(' ', chop($contents));
 
         $result = array();
         $result['uptime'] = sprintf('%d', $uptime);
-        $result['idle'] = sprintf('%d', $idle);
+        $result['idle'] = sprintf('%d', ($idle / $num_cpus));
 
         return $result;
     }
 
     /**
-     * Returns load averages and processes running/total.
+     * Returns load averages.
      *
      * @return array loadavg
      * @throws Engine_Exception
@@ -201,6 +204,30 @@ class Stats extends Engine
         $info['kernel_and_apps_percent'] = 100 - $info['free_percent'] - $info['cached_percent'] - $info['buffers_percent'] ;
 
         return $info;
+    }
+
+    /**
+     * Returns processes information.
+     *
+     * @return array processes information
+     * @throws Engine_Exception
+     */
+
+    public function get_process_stats()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_PROC_LOADAVG);
+        $contents = $file->get_contents();
+
+        $all_fields = explode(' ', chop($contents));
+        $fields = explode('/', $all_fields[3]);
+
+        $result = array();
+        $result['running'] = $fields[0];
+        $result['total'] = $fields[1];
+
+        return $result;
     }
 
     /**
@@ -288,6 +315,30 @@ class Stats extends Engine
         }
 
         return $log;
+    }
+
+    /**
+     * Returns CPU count.
+     *
+     * @return integer number of CPUs
+     * @throws Engine_Exception
+     */
+
+    public function get_cpu_count()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_CPUINFO);
+
+        $lines = $file->get_contents_as_array();
+        $count = 0;
+
+        foreach ($lines as $line) {
+            if (preg_match('/^processor\s*:/', $line))
+                $count++;
+        }
+
+        return $count;
     }
 
     /**
