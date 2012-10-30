@@ -196,12 +196,15 @@ class Stats extends Engine
         // total = cached + buffers + kernel_and_apps + free
         $info['used'] =  $info['total'] - $info['free'];
         $info['kernel_and_apps'] = $info['total'] - $info['free'] - $info['cached'] - $info['buffers'];
+        $info['swap_used'] = $info['swap_total'] - $info['swap_free'];
 
         // Calculate some percentages
         $info['buffers_percent'] = round(($info['buffers'] / $info['total']) * 100);
         $info['cached_percent'] = round(($info['cached'] / $info['total']) * 100);
         $info['free_percent'] = round(($info['free'] / $info['total']) * 100);
         $info['kernel_and_apps_percent'] = 100 - $info['free_percent'] - $info['cached_percent'] - $info['buffers_percent'] ;
+
+        ksort($info);
 
         return $info;
     }
