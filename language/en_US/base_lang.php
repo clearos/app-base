@@ -299,6 +299,7 @@ $lang['base_new'] = 'New';
 $lang['base_new_password'] = 'New Password';
 $lang['base_next'] = 'Next';
 $lang['base_no'] = 'No';
+$lang['base_nothing_to_report'] = 'Nothing to report.';
 $lang['base_not_installed'] = 'Software is not installed';
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_off'] = 'Off';
