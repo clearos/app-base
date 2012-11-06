@@ -329,7 +329,13 @@ class Install_Wizard extends Engine
                 'subcategory' => lang('base_finish'),
             );
         } else {
-            // TODO
+            $steps[] = array(
+                'nav' => '/app/base/wizard/stop',
+                'title' => lang('base_finish'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'intro'
+            );
         }
 
         return $steps;
