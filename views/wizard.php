@@ -46,14 +46,14 @@ if (preg_match('/Community/', $this->session->userdata['os_name'])) {
     $blurb = "
         Did you know that ClearCenter offers ClearOS Professional which includes professional support, 
         optional hardware appliances with software pre-installed and professional apps &amp; services?
-        <a style='color: #e1852e' href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>Contact</a> a solution specialists today.
+        <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>Contact</a> a solution specialists today.
     ";
 } else {
     $sidebar_image = 'pro-get-started.png';
     $blurb = "
         Did you know that ClearCenter offers industry specific solutions to simplify your deployment of ClearOS?  Click
-        <a style='color: #e1852e;' href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
-        <a style='color: #e1852e;' href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
+        <a href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
+        <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
     ";
 }
 
