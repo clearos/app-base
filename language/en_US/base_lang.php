@@ -58,6 +58,7 @@ $lang['base_dashboard_report'] = 'Dashboard Report';
 $lang['base_date'] = 'Date';
 $lang['base_day'] = 'Day';
 $lang['base_days'] = 'Days';
+$lang['base_dead'] = 'Dead';
 $lang['base_default'] = 'Default';
 $lang['base_delete'] = 'Delete';
 $lang['base_deleted'] = 'Item was deleted';

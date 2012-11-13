@@ -117,6 +117,7 @@ function clearosDaemon(daemon, app_name) {
     lang_stop = '<?php echo lang("base_stop"); ?>';
     lang_stopping = '<?php echo lang("base_stopping"); ?>';
     lang_stopped = '<?php echo lang("base_stopped"); ?>';
+    lang_dead = '<?php echo lang("base_dead"); ?>';
     basename = '/app/' + app_name + '/server';
 
     $('#clearos_daemon_status').html('');
@@ -181,6 +182,10 @@ function clearosShowDaemonStatus(payload) {
     } else if (payload.status == 'stopped') {
         // TODO: move styling to theme
         $("#clearos_daemon_status").html("<span style='color: red'>" + lang_stopped + "</span>");
+        $("#clearos_daemon_action").html(lang_start);
+    } else if (payload.status == 'dead') {
+        // TODO: move styling to theme
+        $("#clearos_daemon_status").html("<span style='color: red'>" + lang_dead + "</span>");
         $("#clearos_daemon_action").html(lang_start);
     } if (payload.status == 'starting') {
         $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');

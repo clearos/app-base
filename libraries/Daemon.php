@@ -125,6 +125,7 @@ class Daemon extends Software
     const STATUS_STOPPED = 'stopped';
     const STATUS_STOPPING = 'stopping';
     const STATUS_RESTARTING = 'restarting';
+    const STATUS_DEAD = 'dead';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -208,43 +209,76 @@ class Daemon extends Software
         if (isset($this->details['builtin']) && $this->details['builtin'])
             return TRUE;
 
-        // Check the pid file
-        //-------------------
+        $skip_pidof = FALSE;
+        if (isset($this->details['skip_pidof']))
+            $skip_pidof = $this->details['skip_pidof'];
 
-        if (isset($this->details['pid_file'])) {
-            $file = new File($this->details['pid_file']);
+        $pid = $this->get_process_id($skip_pidof);
 
-            if ($file->exists())
-                return TRUE;
-        } else {
-
-            $file = new File('/var/run/' . $this->details['process_name'] . '.pid');
-
-            if ($file->exists())
-                return TRUE;
-
-            $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid');
-
-            if ($file->exists())
-                return TRUE;
-        }
-
-        // Use pidof unless otherwise noted
-        //---------------------------------
-
-        if (isset($this->details['skip_pidof']) && $this->details['skip_pidof'])
+        if ($pid == 0)
             return FALSE;
 
-        // pidof will return non-zero if process not found, so avoid triggering exception
+        return TRUE;
+    }
+
+    /**
+     * Returns the process ID.
+     *
+     * @param boolean $skip_pidof Skip running of 'pidof'
+     *
+     * @return integer process ID
+     */
+
+    public function get_process_id($skip_pidof = FALSE)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // Determine the PID filename
+        //---------------------------
+
+        if (isset($this->details['pid_file']))
+            $file = new File($this->details['pid_file']);
+
+        if (! $file->exists())
+            $file = new File('/var/run/' . $this->details['process_name'] . '.pid');
+
+        if (! $file->exists())
+            $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid');
+
+        if ($file->exists()) {
+            $pid = trim($file->get_contents());
+            if (strlen($pid) > 0 && is_numeric($pid)) {
+                $folder = new Folder("/proc/$pid");
+                if ($folder->exists())
+                    return $pid;
+            }
+        }
+
+        // Use 'pidof' unless otherwise noted
+        //-----------==----------------------
+
+        if ($skip_pidof === TRUE)
+            return 0;
+
+        // 'pidof' will return non-zero if process not found,
+        // so avoid triggering exception
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->details['process_name'], FALSE, $options);
+        $exit_code = $shell->execute(self::COMMAND_PIDOF,
+            "-x -s " .$this->details['process_name'], FALSE, $options);
 
-        if ($exit_code == 0)
-            return TRUE;
-        else
-            return FALSE;
+        if ($exit_code != 0)
+            return 0;
+
+        $pid = trim($shell->get_first_output_line());
+        if (strlen($pid) > 0 && is_numeric($pid)) {
+            $folder = new Folder("/proc/$pid");
+            if ($folder->exists())
+                return $pid;
+        }
+
+        return 0;
     }
 
     /**
@@ -296,6 +330,12 @@ class Daemon extends Software
         }
 
         $retval = ($this->get_running_state()) ? self::STATUS_RUNNING : self::STATUS_STOPPED;
+
+        if ($retval == self::STATUS_RUNNING) {
+            $pid = $this->get_process_id(TRUE);
+            if ($pid == 0)
+                $retval = self::STATUS_DEAD;
+        }
 
         return $retval;
     }
