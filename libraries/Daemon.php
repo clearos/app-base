@@ -236,10 +236,11 @@ class Daemon extends Software
         // Determine the PID filename
         //---------------------------
 
+        $file = null;
         if (isset($this->details['pid_file']))
             $file = new File($this->details['pid_file']);
 
-        if (! $file->exists())
+        if (is_null($file) || ! $file->exists())
             $file = new File('/var/run/' . $this->details['process_name'] . '.pid');
 
         if (! $file->exists())
@@ -255,7 +256,7 @@ class Daemon extends Software
         }
 
         // Use 'pidof' unless otherwise noted
-        //-----------==----------------------
+        //-----------------------------------
 
         if ($skip_pidof === TRUE)
             return 0;
