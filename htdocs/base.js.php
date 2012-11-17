@@ -45,6 +45,8 @@ header('Content-Type:application/x-javascript');
 
 $(document).ready(function() {
 
+    document.getElementsByName("username")[0].select();
+
     // Wizard next button handling
     //----------------------------
 
