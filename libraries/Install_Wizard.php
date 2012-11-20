@@ -162,6 +162,16 @@ class Install_Wizard extends Engine
                 'type' => 'normal'
             );
 
+            if (clearos_app_installed('upstream_proxy')) {
+                $steps[] = array(
+                    'nav' => '/app/upstream_proxy',
+                    'title' => lang('network_upstream_proxy'),
+                    'category' => lang('base_install_wizard'),
+                    'subcategory' => lang('base_network'),
+                    'type' => 'normal'
+                );
+            }
+
             $steps[] = array(
                 'nav' => '/app/network/dns',
                 'title' => lang('network_dns_servers'),
