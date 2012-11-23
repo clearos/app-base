@@ -123,8 +123,8 @@ class Session extends ClearOS_Controller
         // The login form handling is a bit different than your typical
         // web form validation.  We manually set the login_failed warning message.
 
-        $this->form_validation->set_policy('username', '', '', TRUE);
-        $this->form_validation->set_policy('password', '', '', TRUE);
+        $this->form_validation->set_policy('clearos_username', '', '', TRUE);
+        $this->form_validation->set_policy('clearos_password', '', '', TRUE);
         $form_ok = $this->form_validation->run();
 
         // Handle form submit
@@ -134,9 +134,9 @@ class Session extends ClearOS_Controller
 
         if ($this->input->post('submit') && ($form_ok)) {
             try {
-                $login_ok = $this->login_session->authenticate($this->input->post('username'), $this->input->post('password'));
+                $login_ok = $this->login_session->authenticate($this->input->post('clearos_username'), $this->input->post('clearos_password'));
                 if ($login_ok) {
-                    $this->login_session->start_authenticated($this->input->post('username'));
+                    $this->login_session->start_authenticated($this->input->post('clearos_username'));
                     $this->login_session->set_language($code);
 
                     //` If first boot, set the default language and start the wizard, 

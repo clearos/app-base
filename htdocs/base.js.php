@@ -45,7 +45,8 @@ header('Content-Type:application/x-javascript');
 
 $(document).ready(function() {
 
-    document.getElementsByName("username")[0].select();
+    if ($("#clearos_username").length) 
+        document.getElementsByName("clearos_username")[0].select();
 
     // Wizard next button handling
     //----------------------------

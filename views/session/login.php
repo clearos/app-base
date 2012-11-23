@@ -52,8 +52,8 @@ echo form_header(lang('base_login'), array('id' => 'theme-login-form-header'));
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-echo field_input('username', '', lang('base_username'));
-echo field_password('password', '', lang('base_password'));
+echo field_input('clearos_username', '', lang('base_username'));
+echo field_password('clearos_password', '', lang('base_password'));
 
 if (count($languages) > 1)
     echo field_dropdown('code', $languages, $code, lang('base_language'));
