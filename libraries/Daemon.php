@@ -258,7 +258,7 @@ class Daemon extends Software
         // Use 'pidof' unless otherwise noted
         //-----------------------------------
 
-        if ($skip_pidof === TRUE)
+        if (($skip_pidof === TRUE) && isset($this->details['pid_file']))
             return 0;
 
         // 'pidof' will return non-zero if process not found,
