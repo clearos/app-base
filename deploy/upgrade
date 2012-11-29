@@ -52,4 +52,5 @@ fi
 # Reload clearsyncd
 #------------------
 
+# FIXME: move to install for 6.4 release
 /sbin/service clearsyncd condrestart >/dev/null 2>&1
