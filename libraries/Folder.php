@@ -338,7 +338,9 @@ class Folder extends Engine
         if ($this->superuser) {
             try {
                 $shell = new Shell();
-                if ($shell->execute(self::COMMAND_LS, escapeshellarg($this->folder), TRUE) != 0)
+                $options['validate_exit_code'] = FALSE;
+
+                if ($shell->execute(self::COMMAND_LS, escapeshellarg($this->folder), TRUE, $options) != 0)
                     return FALSE;
                 else
                     return TRUE;
