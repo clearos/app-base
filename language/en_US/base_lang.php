@@ -416,6 +416,7 @@ $lang['base_version'] = 'Version';
 $lang['base_very_high'] = 'Very High';
 $lang['base_very_low'] = 'Very Low';
 $lang['base_view'] = 'View';
+$lang['base_view_details'] = 'View Details';
 $lang['base_view_cart'] = 'View Cart';
 $lang['base_visit_marketplace'] = 'Visit Marketplace';
 $lang['base_waiting'] = 'Waiting';
