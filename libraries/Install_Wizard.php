@@ -164,7 +164,7 @@ class Install_Wizard extends Engine
 
             if (clearos_app_installed('upstream_proxy')) {
                 $steps[] = array(
-                    'nav' => '/app/upstream_proxy',
+                    'nav' => '/app/upstream_proxy/edit',
                     'title' => lang('network_upstream_proxy'),
                     'category' => lang('base_install_wizard'),
                     'subcategory' => lang('base_network'),
