@@ -268,6 +268,21 @@ class Install_Wizard extends Engine
             );
         }
 
+        // Storage Manager
+        //----------------
+
+        if (clearos_app_installed('storage')) {
+            clearos_load_language('storage');
+
+            $steps[] = array(
+                'nav' => '/app/storage',
+                'title' => lang('storage_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_configuration'),
+                'type' => 'normal'
+            );
+        }
+
         // Account Synchronization
         //------------------------
 
