@@ -20,7 +20,7 @@ Group: ClearOS/Libraries
 Requires: clearos-base
 Requires: clearos-framework >= 6.4.6
 Requires: csplugin-filewatch
-Requires: theme-default >= 6.4.7
+Requires: theme-default >= 6.4.8
 Requires: chkconfig
 Requires: coreutils
 Requires: file
