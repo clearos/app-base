@@ -312,8 +312,8 @@ class Stats extends Engine
             $pieces = explode(' ', $line);
             $output['date'] = $pieces[0] . ' ' . $pieces[1];
             $output['time'] = $pieces[2];
-            $output['action'] = $pieces[3];
-            $output['package'] = $pieces[4];
+            $output['action'] = preg_replace('/\:$/','', $pieces[3]);
+            $output['package'] = preg_replace('/^\d+\:/', '', $pieces[4]);
             $log[] = $output;
         }
 
