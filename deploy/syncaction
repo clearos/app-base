@@ -12,7 +12,13 @@ if [ "$1" == "install_event" ]; then
     sed -i -e 's/ClearOS Community/Linux/' /boot/grub/grub.conf
     sed -i -e 's/ClearOS Professional/Linux/' /boot/grub/grub.conf
 elif [ "$1" == "webconfig_change_event" ]; then
-    logger -p local6.notice -t clearsync "base - running webconfig restart request"
+    logger -p local6.notice -t clearsync "base - webconfig restart requested"
+
+    # Flock was not behaving, so use simple file test
+    [ -e /var/tmp/webconfig-restart ] && exit 0
+    touch /var/tmp/webconfig-restart
+
+    trap "rm -f /var/tmp/webconfig-restart" 0 1 2 3 15
 
     while [ -n "`/sbin/pidof -x wc-yum`" ]; do
         logger -p local6.notice -t clearsync 'base - waiting to restart webconfig'
@@ -20,5 +26,19 @@ elif [ "$1" == "webconfig_change_event" ]; then
     done
 
     logger -p local6.notice -t clearsync 'base - restarting webconfig'
-    /sbin/service webconfig condrestart
+    /sbin/service webconfig restart
+
+    # TODO: this is a workaround for a weird issue when system-mysqld is installed
+    # It dies (process dead) when the above webconfig restart is performed.
+    logger -p local6.notice -t clearsync 'base - checking system database'
+    sleep 3
+    PID=`/sbin/pidof system-mysqld`
+    if ( [ -z "$PID" ] && [ -e /var/lock/subsys/system-mysqld ] ); then
+        logger -p local6.notice -t clearsync 'base - reviving system-mysqld'
+        /sbin/service system-mysqld stop >/dev/null 2>&1
+        sleep 2
+        /sbin/service system-mysqld start >/dev/null 2>&1
+    fi
+
+    rm -f /var/tmp/webconfig-restart
 fi
