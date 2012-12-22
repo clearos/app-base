@@ -48,9 +48,3 @@ if [ -z "$CHECK" ]; then
     sed -i -e "s/[[:space:]]*,[[:space:]]*$//i" /etc/sudoers
     chmod 440 /etc/sudoers
 fi
-
-# Reload clearsyncd
-#------------------
-
-# FIXME: move to install for 6.4 release
-/sbin/service clearsyncd condrestart >/dev/null 2>&1
