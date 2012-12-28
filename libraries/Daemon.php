@@ -238,13 +238,13 @@ class Daemon extends Software
 
         $file = null;
         if (isset($this->details['pid_file']))
-            $file = new File($this->details['pid_file']);
+            $file = new File($this->details['pid_file'], TRUE);
 
         if (is_null($file) || ! $file->exists())
-            $file = new File('/var/run/' . $this->details['process_name'] . '.pid');
+            $file = new File('/var/run/' . $this->details['process_name'] . '.pid', TRUE);
 
         if (! $file->exists())
-            $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid');
+            $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid', TRUE);
 
         if ($file->exists()) {
             $pid = trim($file->get_contents());
