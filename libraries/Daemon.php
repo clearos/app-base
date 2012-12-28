@@ -236,6 +236,9 @@ class Daemon extends Software
         // Determine the PID filename
         //---------------------------
 
+        if (($this->initscript === 'smartd') && isset($this->details['pid_file']) && preg_match('/subsys/', $this->details['pid_file']))
+            unset($this->details['pid_file']);
+
         $file = null;
         if (isset($this->details['pid_file']))
             $file = new File($this->details['pid_file'], TRUE);
