@@ -11,6 +11,7 @@
 /usr/sbin/addsudo /bin/ls app-base-core
 /usr/sbin/addsudo /bin/mkdir app-base-core
 /usr/sbin/addsudo /bin/mv app-base-core
+/usr/sbin/addsudo /bin/rpm app-base-core
 /usr/sbin/addsudo /bin/rm app-base-core
 /usr/sbin/addsudo /bin/rmdir app-base-core
 /usr/sbin/addsudo /bin/touch app-base-core
