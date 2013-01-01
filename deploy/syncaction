@@ -5,6 +5,8 @@ if [ "$1" == "install_event" ]; then
 
     # TODO: see how this behaves.  It should only be done
     # on virtual machines (use virt-what tool)
+    # First command is to cleanup duplicates [tracker #909]
+    sed -i -e 's/ video=vesafb.* rhgb/ rhgb/' /boot/grub/grub.conf
     sed -i -e 's/ rhgb/ video=vesafb vga=0x314 rhgb/' /boot/grub/grub.conf
 
     # TODO: anaconda should really use "Linux" instead of ClearOS xyz
