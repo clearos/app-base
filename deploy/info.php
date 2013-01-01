@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.4.12';
+$app['version'] = '1.4.14';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -28,7 +28,7 @@ $app['menu_enabled'] = FALSE;
 
 $app['core_requires'] = array(
     'clearos-base',
-    'clearos-framework >= 6.4.8',
+    'clearos-framework >= 6.4.13',
     'csplugin-filewatch',
     'theme-default >= 6.4.8',
     'chkconfig',
