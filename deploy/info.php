@@ -28,9 +28,9 @@ $app['menu_enabled'] = FALSE;
 
 $app['core_requires'] = array(
     'clearos-base',
-    'clearos-framework >= 6.4.13',
+    'clearos-framework >= 6.4.14',
     'csplugin-filewatch',
-    'theme-default >= 6.4.8',
+    'theme-default >= 6.4.14',
     'chkconfig',
     'coreutils',
     'file',

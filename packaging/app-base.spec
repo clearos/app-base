@@ -18,9 +18,9 @@ Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
-Requires: clearos-framework >= 6.4.13
+Requires: clearos-framework >= 6.4.14
 Requires: csplugin-filewatch
-Requires: theme-default >= 6.4.8
+Requires: theme-default >= 6.4.14
 Requires: chkconfig
 Requires: coreutils
 Requires: file
