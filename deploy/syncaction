@@ -13,6 +13,11 @@ if [ "$1" == "install_event" ]; then
     # It's referring to the kernel, not the OS
     sed -i -e 's/ClearOS Community/Linux/' /boot/grub/grub.conf
     sed -i -e 's/ClearOS Professional/Linux/' /boot/grub/grub.conf
+
+elif [ "$1" == "clearsync_change_event" ]; then
+    logger -p local6.notice -t clearsync "base - clearsync configuration change detected"
+    /sbin/service clearsyncd condrestart >/dev/null 2>&1
+
 elif [ "$1" == "webconfig_change_event" ]; then
     logger -p local6.notice -t clearsync "base - webconfig restart requested"
 

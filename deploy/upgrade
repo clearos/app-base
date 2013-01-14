@@ -46,5 +46,12 @@ if [ -z "$CHECK" ]; then
     chmod 440 /etc/sudoers
 fi
 
+# Reload clearsyncd 
+# TODO: remove after version 7
+#-----------------------------
+
+logger -p local6.notice -t clearsync "base - clearsync configuration change detected"
+/sbin/service clearsyncd condrestart >/dev/null 2>&1
+
 # FIXME FIXME FIXME - beta only
 /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
