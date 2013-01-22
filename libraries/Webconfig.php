@@ -266,7 +266,7 @@ class Webconfig extends Daemon
         if (isset($rawdata['theme']) && !empty($rawdata['theme']))
             $this->config['theme'] = $rawdata['theme'];
         else
-            $this->config['theme'] = 'default';
+            $this->config['theme'] = 'clearos6x';
 
         $this->is_loaded = TRUE;
     }
