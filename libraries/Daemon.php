@@ -251,7 +251,7 @@ class Daemon extends Software
 
         if ($file->exists()) {
             // Misbehaving daemons can have multiple PIDs -- use the first one listed
-            $pid = trim(preg_replace('/\s.*/', '', $file->get_contents()));
+            $pid = preg_replace('/\s.*/', '', trim($file->get_contents()));
             if (strlen($pid) > 0 && is_numeric($pid)) {
                 $folder = new Folder("/proc/$pid");
                 if ($folder->exists())
