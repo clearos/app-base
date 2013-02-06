@@ -93,6 +93,7 @@ class Stats extends Engine
     const CMD_UNAME = '/bin/uname';
     const CMD_DATE = '/bin/date';
     const CMD_CAT = '/bin/cat';
+    const CMD_DF = '/bin/df';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -393,6 +394,39 @@ class Stats extends Engine
         }
         return $valueGB;
 
+    }
+    /**
+     * Returns filesystem usage
+     *
+     * @return array file system usage
+     * @throws Engine_Exception
+     */
+
+    public function get_filesystem_usage()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+        $args = '-h';
+
+        $shell->execute(self::CMD_DF, $args, FALSE, $options);
+        $retval = $shell->get_output();
+
+        foreach ($retval as $line){
+            $line = preg_replace('/\s+/', '|', $line);
+            $pieces = explode('|', $line);
+            if (preg_match('/Filesystem/', $line) || preg_match('/tmpfs/', $line))
+                continue;
+            
+            $result['filesystem'] = $pieces[0];
+            $result['size'] = $pieces[1];
+            $result['used'] = $pieces[2];
+            $result['avail'] = $pieces[3];
+            $result['use'] = $pieces[4];
+            $result['mounted'] = $pieces[5];
+            $results[] = $result;
+        }
+        return $results;
     }
 
 }

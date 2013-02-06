@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.4.12
+Version: 1.4.15
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -18,9 +18,10 @@ Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base
-Requires: clearos-framework >= 6.4.8
+Requires: clearos-framework >= 6.4.14
+Requires: clearos-release
 Requires: csplugin-filewatch
-Requires: theme-default >= 6.4.8
+Requires: theme-default >= 6.4.14
 Requires: chkconfig
 Requires: coreutils
 Requires: file
@@ -72,6 +73,7 @@ install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/p
 install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
+install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
@@ -136,6 +138,7 @@ exit 0
 /var/clearos/base/access_control/authenticated/base
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-epel.repo
+/etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-install.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
 /usr/sbin/syncaction

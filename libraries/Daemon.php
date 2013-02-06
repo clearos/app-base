@@ -250,7 +250,8 @@ class Daemon extends Software
             $file = new File('/var/run/' . $this->details['process_name'] . '/' . $this->details['process_name'] . '.pid', TRUE);
 
         if ($file->exists()) {
-            $pid = trim($file->get_contents());
+            // Misbehaving daemons can have multiple PIDs -- use the first one listed
+            $pid = preg_replace('/\s.*/', '', trim($file->get_contents()));
             if (strlen($pid) > 0 && is_numeric($pid)) {
                 $folder = new Folder("/proc/$pid");
                 if ($folder->exists())
