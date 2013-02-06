@@ -70,6 +70,7 @@ use \clearos\apps\base\File_Exception as File_Exception;
 use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
 use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\File_Permissions_Exception as File_Permissions_Exception;
+use \clearos\apps\base\File_Too_Large_Exception as File_Too_Large_Exception;
 use \clearos\apps\base\Validation_Exception as Validation_Exception;
 
 clearos_load_library('base/Engine_Exception');
@@ -77,6 +78,7 @@ clearos_load_library('base/File_Already_Exists_Exception');
 clearos_load_library('base/File_Exception');
 clearos_load_library('base/File_No_Match_Exception');
 clearos_load_library('base/File_Not_Found_Exception');
+clearos_load_library('base/File_Too_Large_Exception');
 clearos_load_library('base/File_Permissions_Exception');
 clearos_load_library('base/Validation_Exception');
 
@@ -139,11 +141,13 @@ class File extends Engine
     const COMMAND_TOUCH = '/bin/touch';
     const COMMAND_CHOWN = '/bin/chown';
     const COMMAND_CHMOD = '/bin/chmod';
+    const COMMAND_GREP = '/bin/grep';
     const COMMAND_LS = '/bin/ls';
     const COMMAND_MD5 = '/usr/bin/md5sum';
     const COMMAND_FILE = '/usr/bin/file';
-    const COMMAND_HEAD = '/usr/bin/head';
+    const COMMAND_TAIL = '/usr/bin/tail';
     const COMMAND_REPLACE = '/usr/sbin/app-rename';
+    const MAX_BYTES = 128000000;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -184,22 +188,15 @@ class File extends Engine
     /**
      * Returns the contents of a file.
      *
-     * Set maxbytes to -1 to disable file size limit.
-     *
-     * @param int $maxbytes maximum number of bytes
-     *
      * @return string contents of file
      * @throws File_Not_Found_Exception
      */
 
-    public function get_contents($maxbytes = -1)
+    public function get_contents()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!is_int($maxbytes) || $maxbytes < -1)
-            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
-
-        $contents = $this->get_contents_as_array($maxbytes);
+        $contents = $this->get_contents_as_array();
 
         return implode("\n", $contents);
     }
@@ -207,20 +204,20 @@ class File extends Engine
     /**
      * Returns the contents of a file in an array.
      *
-     * Set maxbytes to -1 to disable file size limit.
-     *
-     * @param integer $max_bytes maximum number of bytes
-     *
      * @return array contents of file
      * @throws File_Not_Found_Exception, File_Exception
      */
 
-    public function get_contents_as_array($max_bytes = -1)
+    public function get_contents_as_array()
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!is_int($max_bytes) || $max_bytes < -1)
-            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
+        // Check size
+        $file_bytes = ($this->get_size() * 2); // File size != memory size, so double as a safe estimate
+        $system_max_bytes = $this->_get_system_max_bytes();
+
+        if ($file_bytes > $system_max_bytes)
+            throw new File_Too_Large_Exception($this->filename);
 
         clearstatcache();
 
@@ -232,10 +229,7 @@ class File extends Engine
         // If readable by webconfig, then use file_get_contents instead of shell
 
         if (is_readable($this->filename)) {
-            if ($max_bytes > 0)
-                $contents = file_get_contents($this->filename, FALSE, NULL, 0, $max_bytes);
-            else
-                $contents = file_get_contents($this->filename, FALSE, NULL, 0);
+            $contents = file_get_contents($this->filename, FALSE, NULL, 0);
 
             if ($contents === FALSE)
                 throw new Engine_Exception(lang('base_ooops'), CLEAROS_WARNING);
@@ -243,11 +237,7 @@ class File extends Engine
             $this->contents = explode("\n", rtrim($contents));
         } else {
             $shell = new Shell();
-
-            if ($max_bytes >= 0)
-                $shell->execute(File::COMMAND_HEAD, "-c $max_bytes $this->filename", TRUE);
-            else
-                $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
+            $shell->execute(File::COMMAND_CAT, escapeshellarg($this->filename), TRUE);
 
             $this->contents = $shell->get_output();
         }
@@ -258,39 +248,85 @@ class File extends Engine
     /**
      * Returns the contents of a file that match the given regular expression.
      *
-     * Set maxbytes to -1 to disable file size limit.
-     *
-     * @param string $regex    search string
-     * @param int    $maxbytes maximum number of bytes
+     * @param string  $regex     search string
+     * @param integer $max_lines maximum number of lines to return
      *
      * @return array contents of file
-     * @throws File_Not_Found_Exception, EngineException
+     * @throws File_Not_Found_Exception, File_Too_Large_Exception
      */
 
-    public function get_search_results($regex, $maxbytes = -1)
+    public function get_search_results($regex, $max_lines = -1)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!is_int($maxbytes) || $maxbytes < -1)
-            throw new Validation_Exception(lang('base_parameter_invalid'), __METHOD__, __LINE__);
+        // Validation
+        //-----------
 
-        $contents = $this->get_contents_as_array();
+        if (! $this->exists() ) {
+            clearos_profile(__METHOD__, __LINE__, "File not found: " . $this->filename);
+            throw new File_Not_Found_Exception();
+        }
 
-        $result = array();
-        $count = 0;
+        // Full results, no max lines specified
+        //-------------------------------------
 
-        foreach ($contents as $line) {
-            if (preg_match("/$regex/", $line)) {
-                $result[] = $line;
-                if ($maxbytes != -1) {
-                    $count += strlen($line);
-                    if ($count > $maxbytes)
-                        break;
+        $shell = new Shell();
+
+        $results = array();
+        $options['validate_exit_code'] = FALSE;
+        $tempfile = tempnam('/var/tmp', 'log_viewer.');
+        $file = new File($tempfile);
+
+        if ($max_lines === -1) {
+            try {
+                $retval = $shell->execute(File::COMMAND_GREP, '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile, TRUE, $options);
+                if ($retval === 0)
+                    $results = $file->get_contents_as_array();
+
+                $file->delete();
+            } catch (\Exception $e) {
+                if ($file->exists())
+                    $file->delete();
+                throw $e;
+            }
+        } else {
+            try {
+                $retval = $shell->execute(File::COMMAND_GREP, '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile, TRUE, $options);
+                if ($retval === 0) {
+                    $search_file = new File($tempfile);
+                    $results = $search_file->get_tail($max_lines);
                 }
+
+                $file->delete();
+            } catch (\Exception $e) {
+                if ($file->exists())
+                    $file->delete();
+                throw $e;
             }
         }
 
-        return $result;
+        return $results;
+    }
+
+    /**
+     * Returns tail contents of a file.
+     *
+     * @param integer $lines number of lines
+     *
+     * @return array tail contents of file
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function get_tail($lines)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+
+        $shell->execute(File::COMMAND_TAIL, '-n ' . $lines . ' ' . escapeshellarg($this->filename), TRUE);
+        $contents = $shell->get_output();
+
+        return $contents;
     }
 
     /**
@@ -1435,5 +1471,31 @@ class File extends Engine
         fflush($fh);
         flock($fh, LOCK_UN);
         fclose($fh);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // P R I V A T E  M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Returns maximum bytes allowed by the system.
+     *
+     * @return integer maximum bytes
+     */
+
+    protected function _get_system_max_bytes()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $memory_limit = ini_get('memory_limit');
+
+        $matches = array();
+
+        if (preg_match('/([0-9]+)M/', $memory_limit, $matches))
+            $max = $matches[1] * 1000000; // Add a little buffer, use 1000 instead of 1024
+        else
+            $max = self::MAX_BYTES;
+
+        return $max;
     }
 }
