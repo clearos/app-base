@@ -20,7 +20,7 @@ elif [ "$1" == "webconfig_change_event" ]; then
 
     trap "rm -f /var/tmp/webconfig-restart" 0 1 2 3 15
 
-    while [ -n "`/sbin/pidof -x wc-yum`" ]; do
+    while ( [ -n "`/sbin/pidof -x wc-yum`" ] ||  [ -n "`/sbin/pidof -x yum`" ] ); do
         logger -p local6.notice -t clearsync 'base - waiting to restart webconfig'
         sleep 3
     done
