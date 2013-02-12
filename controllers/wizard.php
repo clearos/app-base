@@ -50,10 +50,12 @@ class Wizard extends ClearOS_Controller
     /**
      * Wizard default controller
      *
+     * @param string $start start flag
+     *
      * @return string
      */
 
-    function index()
+    function index($start = NULL)
     {
         // Load dependencies
         //------------------
@@ -64,10 +66,18 @@ class Wizard extends ClearOS_Controller
         //---------------
 
         try {
-            $this->install_wizard->set_state('TRUE');
             $this->session->set_userdata('wizard', TRUE);
+            $state = $this->install_wizard->get_state();
 
-            $data['first_step'] = '/app' . $this->install_wizard->get_step(2);
+            // Jump to last wizard step if user is returning
+            if ($start == "start") {
+                $this->install_wizard->set_state(0);
+            } else if ($state && ($state >= 1)) {
+                $step = $this->install_wizard->get_step($state + 1);
+                redirect($step);
+            } else {
+                $this->install_wizard->set_state(0);
+            }
         } catch (Engine_Exception $e) {
             $this->page->view_exception($e);
             return;
@@ -97,7 +107,7 @@ class Wizard extends ClearOS_Controller
         // Start wizard mode
         //------------------
 
-        $this->install_wizard->set_state('TRUE');
+        $this->install_wizard->set_state(0);
         $this->session->set_userdata('wizard', TRUE);
 
         // Redirect to first page
@@ -124,7 +134,7 @@ class Wizard extends ClearOS_Controller
         // Start wizard mode
         //------------------
 
-        $this->install_wizard->set_state(FALSE);
+        $this->install_wizard->set_state(-1);
         $this->session->unset_userdata('wizard');
         $this->session->unset_userdata('wizard_redirect');
 
@@ -147,7 +157,7 @@ class Wizard extends ClearOS_Controller
         // Start wizard mode
         //------------------
 
-        $this->install_wizard->set_state(FALSE);
+        $this->install_wizard->set_state(-1);
         $this->session->unset_userdata('wizard', FALSE);
 
         redirect('/marketplace');

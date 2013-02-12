@@ -139,7 +139,7 @@ class Session extends ClearOS_Controller
                     $this->login_session->start_authenticated($this->input->post('clearos_username'));
                     $this->login_session->set_language($code);
 
-                    //` If first boot, set the default language and start the wizard, 
+                    // If first boot, set the default language and start the wizard, 
                     // otherwise, go to redirect page
                     if (clearos_console()) {
                         redirect('/network');

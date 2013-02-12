@@ -133,7 +133,7 @@ class Install_Wizard extends Engine
         //------
 
         $steps[] = array(
-            'nav' => '/app/base/wizard',
+            'nav' => '/app/base/wizard/index/start',
             'title' => lang('base_getting_started'),
             'category' => lang('base_install_wizard'),
             'subcategory' => lang('base_network'),
@@ -367,6 +367,29 @@ class Install_Wizard extends Engine
     }
 
     /**
+     * Returns saved step.
+     *
+     * When a user logs out mid-wizard, the step is saved. 
+     *
+     * @return integer saved step
+     */
+
+    public function get_state()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_STATE);
+
+        if ($file->exists())
+            $step = trim($file->get_contents());
+
+        if (($step < 0) || ($step > count($this->get_steps())))
+            $step = 0;
+
+        return $step;
+    }
+
+    /**
      * Starts the install wizard mode.
      *
      * @param boolean $state state of install wizard
@@ -380,12 +403,12 @@ class Install_Wizard extends Engine
 
         $file = new File(self::FILE_STATE);
 
-        if ($state) {
-            if (! $file->exists())
-                $file->create('root', 'root', '0644');
-        } else {
-            if ($file->exists())
-                $file->delete();
+        if ($file->exists())
+            $file->delete();
+
+        if ($state != -1) {
+            $file->create('root', 'root', '0644');
+            $file->add_lines("$state\n");
         }
     }
 }
