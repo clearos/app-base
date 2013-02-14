@@ -148,6 +148,8 @@ class Session extends ClearOS_Controller
                             $this->locale->set_language_code($code);
 
                         redirect('/base/wizard');
+                    } else if (preg_match('/^\/base\//', $post_redirect) && clearos_app_installed('dashboard')) {
+                        redirect('/dashboard');
                     } else {
                         redirect($post_redirect);
                     }
