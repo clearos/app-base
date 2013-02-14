@@ -275,7 +275,7 @@ class Install_Wizard extends Engine
             clearos_load_language('storage');
 
             $steps[] = array(
-                'nav' => '/app/storage',
+                'nav' => '/app/storage/devices',
                 'title' => lang('storage_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
@@ -290,7 +290,7 @@ class Install_Wizard extends Engine
             clearos_load_language('account_synchronization');
 
             $steps[] = array(
-                'nav' => '/app/account_synchronization',
+                'nav' => '/app/account_synchronization/settings',
                 'title' => lang('account_synchronization_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
