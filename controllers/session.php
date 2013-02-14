@@ -123,7 +123,7 @@ class Session extends ClearOS_Controller
         // The login form handling is a bit different than your typical
         // web form validation.  We manually set the login_failed warning message.
 
-        $this->form_validation->set_policy('clearos_username', '', '', TRUE);
+        $this->form_validation->set_policy('clearos_username', 'base/Posix_User', 'validate_username', TRUE);
         $this->form_validation->set_policy('clearos_password', '', '', TRUE);
         $form_ok = $this->form_validation->run();
 
