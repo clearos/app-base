@@ -7,6 +7,7 @@
 /usr/sbin/addsudo /bin/chmod app-base-core
 /usr/sbin/addsudo /bin/chown app-base-core
 /usr/sbin/addsudo /bin/cp app-base-core
+/usr/sbin/addsudo /bin/grep app-base-core
 /usr/sbin/addsudo /bin/kill app-base-core
 /usr/sbin/addsudo /bin/ls app-base-core
 /usr/sbin/addsudo /bin/mkdir app-base-core
