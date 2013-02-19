@@ -83,6 +83,8 @@ class Session extends ClearOS_Controller
 
     function login($redirect = NULL)
     {
+        $this->load->library('user_agent');
+
         // Handle page post login redirect
         //--------------------------------
 
@@ -189,8 +191,6 @@ class Session extends ClearOS_Controller
         if ($this->session->userdata('lang_code') && array_key_exists($this->session->userdata('lang_code'), $data['languages'])) {
             $data['code'] = $this->session->userdata('lang_code');
         } else {
-            $this->load->library('user_agent');
-
             foreach ($this->agent->languages() as $browser_lang) {
                 $matches = array();
 
@@ -214,12 +214,19 @@ class Session extends ClearOS_Controller
             $this->login_session->reload_language('base');
         }
 
+        // IE warning
+        $browser_supported = (preg_match('/MSIE [678]\./', $this->agent->agent_string())) ? FALSE : TRUE;
+
         // Load views
         //-----------
 
-        $page['type'] = MY_Page::TYPE_LOGIN;
-
-        $this->page->view_form('session/login', $data, lang('base_login'), $page);
+        if ($browser_supported) {
+            $page['type'] = MY_Page::TYPE_LOGIN;
+            $this->page->view_form('session/login', $data, lang('base_login'), $page);
+        } else {
+            $page['type'] = MY_Page::TYPE_SPLASH;
+            $this->page->view_form('session/ie_warning', $data, lang('base_login'), $page);
+        }
     }
 
     /**
