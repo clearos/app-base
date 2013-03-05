@@ -66,7 +66,10 @@ class Session extends ClearOS_Controller
 
     function access_denied()
     {
-        $data['redirect'] = '/app/' . $this->session->userdata('default_app');
+        if ($this->session->userdata('default_app'))
+            $data['redirect'] = '/app/' . $this->session->userdata('default_app');
+        else
+            $data['redirect'] = '';
 
         $page['type'] = MY_Page::TYPE_SPLASH;
 

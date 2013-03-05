@@ -29,8 +29,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_critical(
-    lang('base_access_denied'), 
-    lang('base_access_denied_help') . " " .
-    anchor_custom($redirect, lang('base_please_start_here_instead'), 'high')
-);
+if ($redirect) {
+    echo infobox_critical(
+        lang('base_access_denied'), 
+        lang('base_access_denied_help') . " " .
+        anchor_custom($redirect, lang('base_please_start_here_instead'), 'high')
+    );
+} else {
+    echo infobox_critical(
+        lang('base_information'), 
+        lang('base_no_apps_available')
+    );
+}

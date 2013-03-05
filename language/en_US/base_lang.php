@@ -307,6 +307,7 @@ $lang['base_new'] = 'New';
 $lang['base_new_password'] = 'New Password';
 $lang['base_next'] = 'Next';
 $lang['base_no'] = 'No';
+$lang['base_no_apps_available'] = 'Login was successful, but no apps are enabled for your account.';
 $lang['base_not_installed'] = 'Software is not installed';
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_nothing_to_report'] = 'Nothing to report.';
