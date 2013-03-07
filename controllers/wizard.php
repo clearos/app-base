@@ -138,7 +138,10 @@ class Wizard extends ClearOS_Controller
         $this->session->unset_userdata('wizard');
         $this->session->unset_userdata('wizard_redirect');
 
-        redirect('/base');
+        if (clearos_app_installed('dashboard'))
+            redirect('/dashboard');
+        else
+            redirect('/base');
     }
 
     /**
