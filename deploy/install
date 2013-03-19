@@ -1,4 +1,16 @@
 #!/bin/sh
 
+# Add http caching to yum by default
+#-----------------------------------
+
+CHECK=`grep ^http_caching= /etc/yum.conf`
+
+if ( [ -e /etc/yum.conf ] && [ -z "$CHECK" ] ); then
+    logger -p local6.notice -t clearsync "base - adding httpd_caching to yum"
+    sed -i -e "s/\[main\]/\[main\]\nhttp_caching=packages/" /etc/yum.conf
+fi
+
 # Install wizard flag
+#--------------------
+
 touch /var/clearos/base/wizard
