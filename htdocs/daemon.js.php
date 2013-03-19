@@ -189,12 +189,20 @@ function clearosShowDaemonStatus(payload) {
         $("#clearos_daemon_action").html(lang_start);
     } if (payload.status == 'starting') {
         $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
+        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
+        $(".theme-loading-small").css('background-position', '5 0');
     } if (payload.status == 'stopping') {
         $('#clearos_daemon_status').html(lang_stopping + '<span class="theme-loading"></span>');
+        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
+        $(".theme-loading-small").css('background-position', '5 0');
     } if (payload.status == 'restarting') {
         $('#clearos_daemon_status').html(lang_restarting + '<span class="theme-loading"></span>');
+        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
+        $(".theme-loading-small").css('background-position', '5 0');
     } if (payload.status == 'busy') {
         $('#clearos_daemon_status').html(lang_busy + '<span class="theme-loading"></span>');
+        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
+        $(".theme-loading-small").css('background-position', '5 0');
     }
 }
 
