@@ -217,18 +217,19 @@ class Session extends ClearOS_Controller
             $this->login_session->reload_language('base');
         }
 
-        // IE warning
-        $browser_supported = (preg_match('/MSIE [678]\./', $this->agent->agent_string())) ? FALSE : TRUE;
+        // IE warning - http://www.zytrax.com/tech/web/browser_ids.htm
+        $is_old_ie = (preg_match('/MSIE [678]\./', $this->agent->agent_string())) ? TRUE : FALSE;
+        $is_really_new_ie_in_compat = (preg_match('/Trident\/[0-9]+/', $this->agent->agent_string())) ? TRUE : FALSE;
 
         // Load views
         //-----------
 
-        if ($browser_supported) {
-            $page['type'] = MY_Page::TYPE_LOGIN;
-            $this->page->view_form('session/login', $data, lang('base_login'), $page);
-        } else {
+        if ($is_old_ie && !$is_really_new_ie_in_compat) {
             $page['type'] = MY_Page::TYPE_SPLASH;
             $this->page->view_form('session/ie_warning', $data, lang('base_login'), $page);
+        } else {
+            $page['type'] = MY_Page::TYPE_LOGIN;
+            $this->page->view_form('session/login', $data, lang('base_login'), $page);
         }
     }
 
