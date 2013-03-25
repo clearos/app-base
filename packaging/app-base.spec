@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.4.22
+Version: 1.4.23
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -14,7 +14,7 @@ Requires: %{name}-core = 1:%{version}-%{release}
 The Base app provides core system libraries and tools.
 
 %package core
-Summary: General Settings - Core
+Summary: General Settings - APIs and install
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: clearos-base

@@ -154,13 +154,14 @@ class Yum extends Engine
     /**
      * Install a list of packages using wc-yum.
      *
-     * @param array $list list of package names to install
+     * @param array   $list              list of package names to install
+     * @param boolean $run_in_background if FALSE, do not run in background (default = TRUE)
      *
      * @return void
      * @throws Engine_Exception, Yum_Busy_Exception
      */
 
-    public function install($list)
+    public function install($list, $run_in_background = TRUE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -174,10 +175,10 @@ class Yum extends Engine
         
         $shell = new Shell();
 
-        $options = array(
-            'background' => TRUE,
-            'log' =>self::FILE_LOG
-        );
+        $options = array('log' =>self::FILE_LOG);
+
+        if ($run_in_background)
+            $options['background'] = TRUE;
 
         $exitcode = $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
 
