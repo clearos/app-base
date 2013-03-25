@@ -10,6 +10,11 @@ if ( [ -e /etc/yum.conf ] && [ -z "$CHECK" ] ); then
     sed -i -e "s/\[main\]/\[main\]\nhttp_caching=packages/" /etc/yum.conf
 fi
 
+# Anaconda - start clearsync to ensure syncation install_event happens
+#---------------------------------------------------------------------
+
+/sbin/service clearsyncd restart >/dev/null 2>&1
+
 # Install wizard flag
 #--------------------
 
