@@ -445,5 +445,6 @@ $lang['base_years'] = 'Years';
 $lang['base_yes'] = 'Yes';
 $lang['base_you_are_already_logged_in'] = 'You are already logged in!';
 $lang['base_your_password_has_been_updated'] = 'Your password has been updated.';
+$lang['base_yum_busy_exception'] = 'Package manager is currently busy.';
 include 'base_categories_lang.php';
 include 'base_countries_lang.php';
