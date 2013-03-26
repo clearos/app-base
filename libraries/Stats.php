@@ -407,7 +407,7 @@ class Stats extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
-        $args = '-h';
+        $args = '-hP';
 
         $shell->execute(self::CMD_DF, $args, FALSE, $options);
         $retval = $shell->get_output();
