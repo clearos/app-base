@@ -54,5 +54,10 @@ fi
 logger -p local6.notice -t clearsync "base - clearsync configuration change detected"
 /sbin/service clearsyncd condrestart >/dev/null 2>&1
 
-# FIXME FIXME FIXME - beta only
-/usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
+# Testing mode
+#-------------
+
+IS_TESTING=`grep -E '(Alpha|Beta|RC)' /etc/clearos-release`
+if [ -n "$IS_TESTING" ]; then
+    /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
+fi
