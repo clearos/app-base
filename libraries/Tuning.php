@@ -96,6 +96,7 @@ class Tuning extends Engine
     const LEVEL_MEDIUM  = 'medium';
     const LEVEL_LARGE  = 'large';
     const LEVEL_VERY_LARGE  = 'very_large';
+    const LEVEL_CUSTOM = 'custom';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -122,6 +123,7 @@ class Tuning extends Engine
             self::LEVEL_MEDIUM => lang('base_medium'),
             self::LEVEL_LARGE => lang('base_large'),
             self::LEVEL_VERY_LARGE => lang('base_extra_large'),
+            self::LEVEL_CUSTOM => lang('base_custom'),
         );
 
     }
