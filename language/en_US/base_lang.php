@@ -52,6 +52,7 @@ $lang['base_connection_status'] = 'Connection Status';
 $lang['base_continue'] = 'Continue';
 $lang['base_create'] = 'Create';
 $lang['base_current_password'] = 'Current Password';
+$lang['base_custom'] = 'Custom';
 $lang['base_daily'] = 'Daily';
 $lang['base_dashboard'] = 'Dashboard';
 $lang['base_dashboard_report'] = 'Dashboard Report';
