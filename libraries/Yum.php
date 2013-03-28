@@ -280,6 +280,39 @@ class Yum extends Engine
     }
 
     /**
+     * Returns status of install.
+     *
+     * @return array status information
+     */
+
+    public function get_status()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $logs = $this->get_logs();
+        $logs = array_reverse($logs);
+
+        foreach ($logs as $log) {
+            $last = json_decode($log);
+
+            // Make sure we're getting valid JSON
+            if (!is_object($last))
+                continue;
+
+            $status = array(
+                'code' => $last->code,
+                'details' => $last->details,
+                'progress' => $last->progress,
+                'overall' => $last->overall,
+                'errmsg' => $last->errmsg,
+                'busy' => $this->is_busy(),
+                'wc_busy' => $this->is_wc_busy()
+            );  
+            return $status;
+        }
+    }
+
+    /**
      * Returns array of log lines.
      *
      * @return boolean TRUE if yum is running
