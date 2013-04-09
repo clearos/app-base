@@ -77,6 +77,83 @@ class Session extends ClearOS_Controller
     }
 
     /**
+     * Root change password.
+     *
+     * @return view
+     */
+
+    function change_password()
+    {
+        // Load libraries
+        //---------------
+
+        $this->lang->load('base');
+        $this->load->library('base/Posix_User', 'root');
+        $this->load->library('base/Install_Wizard', 'root');
+
+        // If password has changed, don't require another change (e.g. back button was pressed)
+        //-------------------------------------------------------------------------------------
+
+        try {
+            $data['password_changed'] = $this->install_wizard->get_password_changed_state();
+            $require_field = ($data['password_changed']) ? FALSE : TRUE;
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
+        }
+
+        // Validation
+        //-----------
+
+        $this->form_validation->set_policy('password', 'users/User_Engine', 'validate_password', $require_field);
+        $this->form_validation->set_policy('verify', 'users/User_Engine', 'validate_password', $require_field);
+
+        $form_ok = $this->form_validation->run();
+
+        // Extra Validation
+        //------------------
+
+        $password = ($this->input->post('password')) ? $this->input->post('password') : '';
+        $verify = ($this->input->post('verify')) ? $this->input->post('verify') : '';
+
+        if ($password != $verify) {
+            $this->form_validation->set_error('verify', lang('base_password_and_verify_do_not_match'));
+            $form_ok = FALSE;
+        } else if (!empty($password)) {
+            try {
+                $is_weak = $this->posix_user->is_weak_password($this->input->post('password'));
+            } catch (Engine_Exception $e) {
+                $this->page->view_exception($e);
+                return;
+            }
+
+            if ($is_weak) {
+                $this->form_validation->set_error('verify', lang('base_password_too_weak'));
+                $form_ok = FALSE;
+            }
+        }
+
+        // Handle form submit
+        //-------------------
+
+        if (!empty($password) && ($form_ok)) {
+            try {
+                $this->posix_user->set_password($this->input->post('password'));
+                $this->install_wizard->set_password_changed_state(TRUE);
+                redirect($this->session->userdata('wizard_redirect'));
+            } catch (Exception $e) {
+                $this->page->view_exception($e);
+                return;
+            }
+        }
+
+        // Load the views
+        //---------------
+
+        $this->page->view_form('change_password', $data, lang('base_change_password'));
+    }
+
+    /**
      * Login handler.
      *
      * @param string $redirect redirect page after login, base64 encoded
@@ -152,7 +229,7 @@ class Session extends ClearOS_Controller
                         if (clearos_app_installed('language') && ($code))
                             $this->locale->set_language_code($code);
 
-                        redirect('/base/wizard');
+                        redirect('/base/wizard/index/start');
                     } else if (preg_match('/^\/base\//', $post_redirect) && clearos_app_installed('dashboard')) {
                         redirect('/dashboard');
                     } else {

@@ -52,7 +52,14 @@ $(document).ready(function() {
     //----------------------------
 
     $("#wizard_nav_next").click(function(){
-        window.location = '/app/base/wizard/next_step';
+        if ($(location).attr('href').match('.*\/change_password') != null) {
+            if ($('#password_changed').length != 0)
+                window.location = '/app/base/wizard/next_step';
+            else
+                $('form#change_password_form').submit();
+        } else {
+            window.location = '/app/base/wizard/next_step';
+        }
     });
 });
 

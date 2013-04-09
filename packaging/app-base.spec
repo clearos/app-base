@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.4.31
+Version: 1.4.34
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -80,6 +80,7 @@ install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
 install -D -m 0755 packaging/webconfig-service %{buildroot}/usr/sbin/webconfig-service
+install -D -m 0644 packaging/wizard.conf %{buildroot}/etc/clearos/base.d/wizard.conf
 install -D -m 0755 packaging/yum-install %{buildroot}/usr/sbin/yum-install
 
 %post
@@ -145,4 +146,5 @@ exit 0
 /usr/sbin/wc-yum
 /usr/sbin/webconfig-restart
 /usr/sbin/webconfig-service
+%config(noreplace) /etc/clearos/base.d/wizard.conf
 /usr/sbin/yum-install

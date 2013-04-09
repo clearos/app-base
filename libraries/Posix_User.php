@@ -56,9 +56,11 @@ clearos_load_language('base');
 //--------
 
 use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
 use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
+clearos_load_library('base/File');
 clearos_load_library('base/Shell');
 
 // Exceptions
@@ -95,6 +97,7 @@ class Posix_User extends Engine
     const COMMAND_CHKPWD = '/usr/sbin/app-passwd';
     const COMMAND_PASSWD = '/usr/bin/passwd';
     const COMMAND_USERDEL = '/usr/sbin/userdel';
+    const COMMAND_CRACKLIB_CHECK = '/usr/sbin/cracklib-check';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -195,6 +198,42 @@ class Posix_User extends Engine
         }
     }
 
+    /**
+     * Checks password complexity.
+     *
+     * @param string $password password
+     *
+     * @return boolean TRUE if password is too weak
+     * @throws Engine_Exception, Validation_Exception 
+     */
+
+    public function is_weak_password($password)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        Validation_Exception::is_valid($this->validate_password($password));
+
+        $file = new File(CLEAROS_TEMP_DIR . '/password_check');
+
+        if ($file->exists())
+            $file->delete();
+
+        $options['stdin'] = "\"$password\"";
+        $options['log'] = 'password_check';
+        $options['env'] = 'LANG=en_US';
+
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_CRACKLIB_CHECK, '', FALSE, $options);
+
+        $file = new File(CLEAROS_TEMP_DIR . '/password_check');
+        $output = $file->get_contents();
+
+        if (preg_match('/: OK$/', $output))
+            return FALSE;
+        else
+            return TRUE;
+    }
+        
     /**
      * Sets the user's system password.
      *

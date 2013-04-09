@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.4.31';
+$app['version'] = '1.4.34';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -21,6 +21,17 @@ $app['name'] = lang('base_app_name');
 $app['category'] = lang('base_category_system');
 $app['subcategory'] = lang('base_subcategory_settings');
 $app['menu_enabled'] = FALSE;
+
+/////////////////////////////////////////////////////////////////////////////
+// Controller info
+/////////////////////////////////////////////////////////////////////////////
+
+// Wizard extras
+$app['controllers']['session']['wizard_name'] = lang('base_change_password');
+$app['controllers']['session']['wizard_description'] = lang('base_change_password_description');
+$app['controllers']['session']['inline_help'] = array(
+    lang('base_change_password') => lang('base_change_password_help'),
+);
 
 /////////////////////////////////////////////////////////////////////////////
 // Packaging
@@ -77,6 +88,11 @@ $app['core_file_manifest'] = array(
     'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
     'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
     'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
+    'wizard.conf' => array(
+        'target' => '/etc/clearos/base.d/wizard.conf',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
     'wc-yum' => array(
         'target' => '/usr/sbin/wc-yum',
         'mode' => '0755',

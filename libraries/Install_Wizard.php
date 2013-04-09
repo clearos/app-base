@@ -52,10 +52,12 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
+use \clearos\apps\base\Configuration_File as Configuration_File;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\OS as OS;
 
+clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/OS');
@@ -82,7 +84,15 @@ class Install_Wizard extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
+    // TODO: merge state into configuration file
     const FILE_STATE = '/var/clearos/base/wizard';
+    const FILE_CONFIG = '/etc/clearos/base.d/wizard.conf';
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // M E M B E R S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    protected $config = array();
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -139,6 +149,19 @@ class Install_Wizard extends Engine
             'subcategory' => lang('base_network'),
             'type' => 'intro'
         );
+
+        // Change Password
+        //----------------
+
+        if ($this->get_force_change_password_state()) {
+            $steps[] = array(
+                'nav' => '/app/base/session/change_password',
+                'title' => lang('base_change_password'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_network'),
+                'type' => 'normal'
+            );
+        }
 
         // Network
         //--------
@@ -367,6 +390,44 @@ class Install_Wizard extends Engine
     }
 
     /**
+     * Returns password changed state.
+     *
+     * @return boolean TRUE if default password has been changed
+     * @throws Engine_Exception
+     */
+
+    public function get_password_changed_state()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $this->_load_config();
+
+        if (preg_match('/yes/i', $this->config['password_changed']))
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    /**
+     * Returns change default password state.
+     *
+     * @return boolean TRUE if change password is required
+     * @throws Engine_Exception
+     */
+
+    public function get_force_change_password_state()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $this->_load_config();
+
+        if (preg_match('/yes/i', $this->config['force_change_password']))
+            return TRUE;
+        else
+            return FALSE;
+    }
+
+    /**
      * Returns saved step.
      *
      * When a user logs out mid-wizard, the step is saved. 
@@ -390,6 +451,23 @@ class Install_Wizard extends Engine
     }
 
     /**
+     * Sets password changed state.
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    public function set_password_changed_state($state)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $state_value = ($state) ? 'yes' : 'no';
+
+        $file = new File(self::FILE_CONFIG);
+        $file->replace_lines('/^password_changed\s*=/', "password_changed = $state_value\n");
+    }
+
+    /**
      * Starts the install wizard mode.
      *
      * @param boolean $state state of install wizard
@@ -410,5 +488,29 @@ class Install_Wizard extends Engine
             $file->create('root', 'root', '0644');
             $file->add_lines("$state\n");
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // P R I V A T E  M E T H O D S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Loads configuration file.
+     *
+     * @access private
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    protected function _load_config()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!empty($this->config))
+            return $this->config;
+
+        $file = new Configuration_File(self::FILE_CONFIG);
+
+        $this->config = $file->load();
     }
 }
