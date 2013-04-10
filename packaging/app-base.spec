@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.4.34
+Version: 1.4.35
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -82,6 +82,8 @@ install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-r
 install -D -m 0755 packaging/webconfig-service %{buildroot}/usr/sbin/webconfig-service
 install -D -m 0644 packaging/wizard.conf %{buildroot}/etc/clearos/base.d/wizard.conf
 install -D -m 0755 packaging/yum-install %{buildroot}/usr/sbin/yum-install
+
+rm -rf %{buildroot}/usr/clearos/apps/base/libraries_zendguard
 
 %post
 logger -p local6.notice -t installer 'app-base - installing'
