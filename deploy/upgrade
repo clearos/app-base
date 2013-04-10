@@ -47,11 +47,25 @@ if [ -z "$CHECK" ]; then
     chmod 440 /etc/sudoers
 fi
 
+# FIXME: Wah?  Selinux policy is stomped on by anaconda
+#------------------------------------------------------
+
+if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
+    CHECK=`grep ^SELINUX= /etc/selinux/config 2>/dev/null | sed 's/.*=//'`
+    if [ -z "$CHECK" ]; then
+        logger -p local6.notice -t installer "app-base-core - disabling SELinux with new configuration"
+        echo "SELINUX=disabled" >> /etc/selinux/config
+    elif [ "$CHECK" != "disabled" ]; then
+        logger -p local6.notice -t installer "app-base-core - disabling SELinux"
+        sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
+    fi
+fi
+
 # Reload clearsyncd 
 # TODO: remove after version 7
 #-----------------------------
 
-logger -p local6.notice -t clearsync "base - clearsync configuration change detected"
+logger -p local6.notice -t installer "app-base-core - clearsync configuration change detected"
 /sbin/service clearsyncd condrestart >/dev/null 2>&1
 
 # Testing mode
