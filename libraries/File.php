@@ -411,6 +411,9 @@ class File extends Engine
         if (! $this->exists())
             throw new File_Not_Found_Exception();
 
+        if (is_readable($this->filename))
+            return filesize($this->filename);
+
         try {
             $shell = new Shell();
             $args = "-loL " . escapeshellarg($this->filename);
