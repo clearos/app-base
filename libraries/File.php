@@ -134,6 +134,12 @@ class File extends Engine
 
     protected $contents = NULL;
 
+    /**
+     * Skip size check.
+     */
+
+    protected $skip_size_check = FALSE;
+
     const COMMAND_RM = '/bin/rm';
     const COMMAND_CAT = '/bin/cat';
     const COMMAND_MOVE = '/bin/mv';
@@ -161,7 +167,7 @@ class File extends Engine
      * @param boolean $temporary create a temporary file
      */
 
-    public function __construct($filename, $superuser = FALSE, $temporary = FALSE)
+    public function __construct($filename, $superuser = FALSE, $temporary = FALSE, $options = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -172,6 +178,7 @@ class File extends Engine
             $this->filename = $filename;
 
         $this->superuser = $superuser;
+        $this->skip_size_check = (!empty($options['skip_size_check']) && $options['skip_size_check']) ? TRUE : FALSE;
     }
 
     /**
@@ -213,11 +220,13 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         // Check size
-        $file_bytes = ($this->get_size() * 2); // File size != memory size, so double as a safe estimate
-        $system_max_bytes = $this->_get_system_max_bytes();
+        if (! $this->skip_size_check) {
+            $file_bytes = ($this->get_size() * 2); // File size != memory size, so double as a safe estimate
+            $system_max_bytes = $this->_get_system_max_bytes();
 
-        if ($file_bytes > $system_max_bytes)
-            throw new File_Too_Large_Exception($this->filename);
+            if ($file_bytes > $system_max_bytes)
+                throw new File_Too_Large_Exception($this->filename);
+        }
 
         clearstatcache();
 

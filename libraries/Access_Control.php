@@ -244,7 +244,9 @@ class Access_Control extends Engine
         $configlets = $folder->get_listing();
 
         foreach ($configlets as $configlet) {
-            $file = new File(self::PATH_PUBLIC . '/' . $configlet, FALSE);
+            $options['skip_size_check'] = TRUE;
+
+            $file = new File(self::PATH_PUBLIC . '/' . $configlet, FALSE, FALSE, $options);
             $pages = $file->get_contents_as_array();
             $valid_pages[Access_Control::TYPE_PUBLIC] = array_merge($pages,  $valid_pages[Access_Control::TYPE_PUBLIC]);
         }
@@ -258,7 +260,9 @@ class Access_Control extends Engine
             $configlets = $folder->get_listing();
 
             foreach ($configlets as $configlet) {
-                $file = new File(self::PATH_AUTHENTICATED . '/' . $configlet, FALSE);
+                $options['skip_size_check'] = TRUE;
+
+                $file = new File(self::PATH_AUTHENTICATED . '/' . $configlet, FALSE, FALSE, $options);
                 $pages = $file->get_contents_as_array();
                 $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array_merge($pages,  $valid_pages[Access_Control::TYPE_AUTHENTICATED]);
             }
@@ -274,7 +278,9 @@ class Access_Control extends Engine
 
             foreach ($configlets as $configlet) {
                 try {
-                    $file = new File(self::PATH_CUSTOM . '/' . $configlet, FALSE);
+                    $options['skip_size_check'] = TRUE;
+
+                    $file = new File(self::PATH_CUSTOM . '/' . $configlet, FALSE, FALSE, $options);
                     $raw_pages = $file->lookup_value("/^$username\s*=\s*/");
                 } catch (File_No_Match_Exception $e) {
                     // Not fatal
