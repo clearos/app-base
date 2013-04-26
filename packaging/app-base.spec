@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.4.36
+Version: 1.4.37
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -21,7 +21,7 @@ Requires: clearos-base
 Requires: clearos-framework >= 6.4.24
 Requires: clearos-release
 Requires: csplugin-filewatch
-Requires: theme-default >= 6.4.24
+Requires: theme-default >= 6.4.25
 Requires: chkconfig
 Requires: coreutils
 Requires: file
