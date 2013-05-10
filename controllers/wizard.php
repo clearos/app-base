@@ -137,6 +137,7 @@ class Wizard extends ClearOS_Controller
         $this->install_wizard->set_state(-1);
         $this->session->unset_userdata('wizard');
         $this->session->unset_userdata('wizard_redirect');
+        $this->session->unset_userdata('wizard_marketplace_mode');
 
         if (clearos_app_installed('dashboard'))
             redirect('/dashboard');

@@ -92,6 +92,7 @@ class Install_Wizard extends Engine
     // M E M B E R S
     ///////////////////////////////////////////////////////////////////////////////
 
+    protected $CI = NULL;
     protected $config = array();
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -105,6 +106,7 @@ class Install_Wizard extends Engine
     public function __construct()
     {
         clearos_profile(__METHOD__, __LINE__);
+        $this->CI =& get_instance();
     }
 
     /**
@@ -328,7 +330,7 @@ class Install_Wizard extends Engine
             clearos_load_language('marketplace');
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard/intro',
+                'nav' => '/app/marketplace/wizard',
                 'title' => lang('marketplace_getting_started'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('marketplace_marketplace'),
@@ -336,29 +338,8 @@ class Install_Wizard extends Engine
             );
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard/index/server',
-                'title' => lang('marketplace_server_apps'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('marketplace_marketplace'),
-            );
-
-            $steps[] = array(
-                'nav' => '/app/marketplace/wizard/index/gateway',
-                'title' => lang('marketplace_gateway_apps'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('marketplace_marketplace'),
-            );
-
-            $steps[] = array(
-                'nav' => '/app/marketplace/wizard/index/network',
-                'title' => lang('marketplace_network_apps'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('marketplace_marketplace'),
-            );
-
-            $steps[] = array(
-                'nav' => '/app/marketplace/wizard/index/system',
-                'title' => lang('marketplace_system_apps'),
+                'nav' => '/app/marketplace/wizard/selection/' . $this->CI->session->userdata('wizard_marketplace_mode'),
+                'title' => lang('marketplace_app_selection'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('marketplace_marketplace'),
             );
