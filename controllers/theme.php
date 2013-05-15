@@ -70,11 +70,11 @@ class Theme extends ClearOS_Controller
     {
         // TODO -- just a temporary hack for testing
 
-        if ($theme === 'clearos6x') {
-            $this->session->set_userdata('theme', 'clearos6x');
+        if ($theme === 'default') {
+            $this->session->set_userdata('theme', 'default');
             $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'clearos6xmobile') {
-            $this->session->set_userdata('theme', 'clearos6xmobile');
+        } else if ($theme === 'mobile_default') {
+            $this->session->set_userdata('theme', 'mobile_default');
             $this->session->set_userdata('theme_mode', 'control_panel');
         }
 
