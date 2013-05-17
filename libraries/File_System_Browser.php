@@ -136,10 +136,10 @@ class File_System_Browser extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!is_dir($path))
-            throw new Folder_Not_Found_Exception();
-
         $folder = new Folder($path, TRUE);
+
+        if (!$folder->exists())
+            throw new Folder_Not_Found_Exception();
 
         $list = $folder->get_listing(TRUE, $include_files);
 
@@ -176,10 +176,16 @@ class File_System_Browser extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        $folder = new Folder($path, TRUE);
+
         // Is it a directory?
-        if (!is_dir($path)) {
-            if (!is_file($path))
+        if (!$folder->exists()) {
+            // Is it a file?
+            $file = new File($path, TRUE);
+            if (!$file->exists()) {
+                // Nothing for us here...bail
                 throw new Folder_Not_Found_Exception();
+            }
         }
 
         $selections = array();
