@@ -3,9 +3,9 @@
 /**
  * Folder manipulation class.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -86,9 +86,9 @@ clearos_load_library('base/Folder_Permissions_Exception');
  * The Folder class can be used for creating, reading and manipulating
  * folders (directories) on the filesystem.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
