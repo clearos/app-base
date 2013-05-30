@@ -102,7 +102,6 @@ class Access_Control extends Engine
 
     // Files and paths
     const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
-    const FILE_CUSTOM = '/var/clearos/base/access_control/custom/access_control';
     const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
     const PATH_PUBLIC = '/var/clearos/base/access_control/public';
     const PATH_AUTHENTICATED = '/var/clearos/base/access_control/authenticated';
@@ -110,6 +109,7 @@ class Access_Control extends Engine
     // Access types
     const TYPE_PUBLIC = 'public';
     const TYPE_CUSTOM = 'custom';
+    const TYPE_ADMINISTRATORS = 'administrators';
     const TYPE_AUTHENTICATED = 'authenticated';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -150,35 +150,6 @@ class Access_Control extends Engine
     }
 
     /**
-     * Returns a list of valid custom users.
-     *
-     * @return array list of valid custom usernames
-     */
-
-    public function get_custom_users()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $users = array();
-
-        $folder = new Folder(self::PATH_CUSTOM, FALSE);
-
-        $configlets = $folder->get_listing();
-
-        foreach ($configlets as $configlet) {
-            $file = new File(self::PATH_CUSTOM . '/' . $configlet, FALSE);
-            $lines = $file->get_contents_as_array();
-
-            foreach ($lines as $line) {
-                $parts = explode("=", $line);
-                $users[] = trim($parts[0]);
-            }
-        }
-
-        return array_unique($users);
-    }
-
-    /**
      * Returns state of user access.
      *
      * @return boolean state of user access
@@ -211,6 +182,7 @@ class Access_Control extends Engine
         $details = $this->get_valid_pages_details($username);
 
         $pages = array_merge(
+            $details[Access_Control::TYPE_ADMINISTRATORS],
             $details[Access_Control::TYPE_AUTHENTICATED],
             $details[Access_Control::TYPE_CUSTOM],
             $details[Access_Control::TYPE_PUBLIC]
@@ -232,6 +204,7 @@ class Access_Control extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        $valid_pages[Access_Control::TYPE_ADMINISTRATORS] = array();
         $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array();
         $valid_pages[Access_Control::TYPE_CUSTOM] = array();
         $valid_pages[Access_Control::TYPE_PUBLIC] = array();
@@ -248,7 +221,7 @@ class Access_Control extends Engine
 
             $file = new File(self::PATH_PUBLIC . '/' . $configlet, FALSE, FALSE, $options);
             $pages = $file->get_contents_as_array();
-            $valid_pages[Access_Control::TYPE_PUBLIC] = array_merge($pages,  $valid_pages[Access_Control::TYPE_PUBLIC]);
+            $valid_pages[Access_Control::TYPE_PUBLIC] = array_merge($pages, $valid_pages[Access_Control::TYPE_PUBLIC]);
         }
 
         // Process authenticated pages
@@ -264,11 +237,29 @@ class Access_Control extends Engine
 
                 $file = new File(self::PATH_AUTHENTICATED . '/' . $configlet, FALSE, FALSE, $options);
                 $pages = $file->get_contents_as_array();
-                $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array_merge($pages,  $valid_pages[Access_Control::TYPE_AUTHENTICATED]);
+                $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array_merge($pages, $valid_pages[Access_Control::TYPE_AUTHENTICATED]);
             }
         }
 
+        // Process administrators pages
+        //-----------------------------
+
+        if (clearos_app_installed('administrators') && !empty($username)) {
+            clearos_load_library('administrators/Administrators');
+
+            $administrators = new \clearos\apps\administrators\Administrators;
+            $apps = $administrators->get_user_apps($username);
+
+            $pages = array();
+
+            foreach ($apps as $app)
+                $pages[] = '/app/' . $app;
+
+            $valid_pages[Access_Control::TYPE_ADMINISTRATORS] = array_merge($pages, $valid_pages[Access_Control::TYPE_ADMINISTRATORS]);
+        }
+
         // Process custom pages
+        // TODO: deprecate
         //---------------------
 
         if ($this->get_custom_access_state()) {
@@ -289,7 +280,7 @@ class Access_Control extends Engine
                 if (! empty($raw_pages)) {
                     $raw_pages = preg_replace('/\s+/', '', $raw_pages);
                     $pages = explode(",", $raw_pages);
-                    $valid_pages[Access_Control::TYPE_CUSTOM] = array_merge($pages,  $valid_pages[Access_Control::TYPE_CUSTOM]);
+                    $valid_pages[Access_Control::TYPE_CUSTOM] = array_merge($pages, $valid_pages[Access_Control::TYPE_CUSTOM]);
                 }
             }
         }
@@ -313,35 +304,6 @@ class Access_Control extends Engine
         $stateval = $state ? 1 : 0;
 
         $this->_set_parameter("allow_custom", $stateval);
-    }
-
-    /**
-     * Sets the list of pages a custom may access.
-     *
-     * @param string $username admin username
-     * @param array  $pages    string array of authorized pages
-     *
-     * @return void
-     */
-
-    public function set_valid_pages($username, $pages)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $file = new File(self::FILE_CUSTOM);
-
-        if (! $file->exists())
-            $file->create("root", "root", "0644");
-
-        if ($pages) {
-            $value = implode("|", $pages);
-            $match = $file->replace_lines("/^$username\s*=\s*/", "$username = $value\n");
-
-            if (!$match)
-                $file->add_lines("$username = $value\n");
-        } else {
-            $file->delete_lines("/^$username\s*=/");
-        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////
