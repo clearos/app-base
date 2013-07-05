@@ -3,9 +3,9 @@
 /**
  * Change password view.
  *
- * @category   apps
- * @package    base
- * @subpackage views
+ * @category   ClearOS
+ * @package    User_Profile
+ * @subpackage Views
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2013 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later

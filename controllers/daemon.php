@@ -3,9 +3,9 @@
 /**
  * Daemon controller.
  *
- * @category   apps
- * @package    base
- * @subpackage controllers
+ * @category   Apps
+ * @package    Base
+ * @subpackage Controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -36,9 +36,9 @@
 /**
  * Daemon controller.
  *
- * @category   apps
- * @package    base
- * @subpackage controllers
+ * @category   Apps
+ * @package    Base
+ * @subpackage Controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later

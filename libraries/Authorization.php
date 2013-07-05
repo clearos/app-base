@@ -3,9 +3,9 @@
 /**
  * Authorization class.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -79,9 +79,9 @@ clearos_load_library('base/Engine_Exception');
 /**
  * Authorization class.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -177,19 +177,6 @@ class Authorization extends Engine
         $valid_authenticated_urls = $valid_urls[Access_Control::TYPE_AUTHENTICATED];
         $valid_custom_urls = $valid_urls[Access_Control::TYPE_CUSTOM];
         $valid_public_urls = $valid_urls[Access_Control::TYPE_PUBLIC];
-        $valid_administrator_urls = $valid_urls[Access_Control::TYPE_ADMINISTRATORS];
-
-        // administrators access - allow access to administrator URLs
-        //-----------------------------------------------------------
-
-        if ($username) {
-            foreach ($valid_administrator_urls as $valid_url) {
-                $valid_url_regex = preg_quote($valid_url, '/');
-
-                if (preg_match("/$valid_url_regex/", $url))
-                    return TRUE;
-            }
-        }
 
         // custom access - allow access to configured URLs
         //------------------------------------------------
@@ -205,7 +192,7 @@ class Authorization extends Engine
         }
 
         // normal user - allow access to user-specific URLs
-        //-------------------------------------------------
+        //------------------------------------------------------------
 
         if ($allow_authenticted && $username) {
             foreach ($valid_authenticated_urls as $valid_url) {

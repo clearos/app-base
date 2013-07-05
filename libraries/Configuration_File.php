@@ -3,9 +3,9 @@
 /**
  * Configuration file handling class.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -75,9 +75,9 @@ clearos_load_library('base/Engine_Exception');
 /**
  * Configuration file handling class.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later

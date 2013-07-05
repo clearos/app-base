@@ -3,9 +3,9 @@
 /**
  * Core engine exception class for the API.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2002-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -56,9 +56,9 @@ use \clearos\framework\Logger as Logger;
 /**
  * Base exception for all exceptions in the API.
  *
- * @category   apps
- * @package    base
- * @subpackage libraries
+ * @category   Apps
+ * @package    Base
+ * @subpackage Exceptions
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2002-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
