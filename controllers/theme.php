@@ -3,9 +3,9 @@
 /**
  * Theme configuration controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -36,9 +36,9 @@
 /**
  * Theme configuration controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -70,11 +70,11 @@ class Theme extends ClearOS_Controller
     {
         // TODO -- just a temporary hack for testing
 
-        if ($theme === 'clearos6x') {
-            $this->session->set_userdata('theme', 'clearos6x');
+        if ($theme === 'default') {
+            $this->session->set_userdata('theme', 'default');
             $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'clearos6xmobile') {
-            $this->session->set_userdata('theme', 'clearos6xmobile');
+        } else if ($theme === 'mobile_default') {
+            $this->session->set_userdata('theme', 'mobile_default');
             $this->session->set_userdata('theme_mode', 'control_panel');
         }
 

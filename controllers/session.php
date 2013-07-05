@@ -3,9 +3,9 @@
 /**
  * Login session controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -36,9 +36,9 @@
 /**
  * Login session controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later

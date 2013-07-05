@@ -3,9 +3,9 @@
 /**
  * Software package management class.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -87,9 +87,9 @@ clearos_load_library('base/Software_Not_Installed_Exception');
  * way to call this constructor), then this class will assume that you mean
  * the most recent version.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later

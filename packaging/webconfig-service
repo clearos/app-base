@@ -4,8 +4,8 @@
 /**
  * ClearOS service launcher.
  *
- * @category   Apps
- * @package    Base
+ * @category   apps
+ * @package    base
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
