@@ -7,9 +7,9 @@
  * This tool converts the lists from https://github.com/umpirsky/country-list/
  * and converts them to the CodeIgniter format.
  *
- * @category   apps
- * @package    base
- * @subpackage scripts
+ * @category   Apps
+ * @package    Base
+ * @subpackage Scripts
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
