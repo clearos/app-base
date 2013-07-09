@@ -3,9 +3,9 @@
 /**
  * System tuning class.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -75,9 +75,9 @@ clearos_load_library('base/Engine_Exception');
 /**
  * System tuning class.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2012 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later

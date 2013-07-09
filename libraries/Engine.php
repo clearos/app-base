@@ -3,9 +3,9 @@
 /**
  * Core engine class for the API.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2002-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
@@ -49,9 +49,9 @@ require_once $bootstrap . '/bootstrap.php';
 /**
  * Core engine class for the API.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Libraries
+ * @category   apps
+ * @package    base
+ * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2002-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later

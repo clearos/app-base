@@ -3,9 +3,9 @@
 /**
  * Wizard controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -36,9 +36,9 @@
 /**
  * Wizard controller.
  *
- * @category   Apps
- * @package    Base
- * @subpackage Controllers
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -137,6 +137,7 @@ class Wizard extends ClearOS_Controller
         $this->install_wizard->set_state(-1);
         $this->session->unset_userdata('wizard');
         $this->session->unset_userdata('wizard_redirect');
+        $this->session->unset_userdata('wizard_marketplace_mode');
 
         if (clearos_app_installed('dashboard'))
             redirect('/dashboard');
