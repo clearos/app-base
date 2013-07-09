@@ -107,13 +107,20 @@ class Script extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     /**
-     * Shell constructor.
+     * Script constructor.
+     *
+     * @param string $script_name name of script
      */
 
-    public function __construct()
+    public function __construct($script_name = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
-        $this->script_name = basename($_SERVER['SCRIPT_NAME']);
+        
+        if ($script_name == NULL)
+            $this->script_name = basename($_SERVER['SCRIPT_NAME']);
+        else
+            $this->script_name = $script_name;
+
         $this->lock_file = self::DIR_LOCK . '/' . $this->script_name . self::LOCK_SUFFIX;
     }
 
@@ -134,11 +141,11 @@ class Script extends Engine
             $file = new File($this->lock_file);
             if ($file->exists()) {
                 $this->pid = $file->get_contents();
-                $running = $this->_is_running();
+                $running = $this->is_running();
                 if ($running) {
                     for ($counter = 0; $counter < $retries; $counter++) {
                         sleep($interval);
-                        $running = $this->_is_running();
+                        $running = $this->is_running();
                     }
                     if ($running) {
                         clearos_log($this->script_name, 'Unable to start script - currently running.');
@@ -185,7 +192,7 @@ class Script extends Engine
      * @throws Engine_Exception
      */
 
-    private function _is_running()
+    public function is_running()
     {
         clearos_profile(__METHOD__, __LINE__);
 
