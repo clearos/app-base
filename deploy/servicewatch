@@ -10,6 +10,9 @@ DAEMONS="slapd webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snor
 LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
 PIDOF="/sbin/pidof"
 
+CHECK_BACKUP=`$PIDOF -x configuration-restore`
+[ -n "$CHECK_BACKUP" ] && exit 0
+
 for DAEMON in $DAEMONS; do
 	INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
 	if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
