@@ -138,17 +138,23 @@ class Yum extends Engine
 
     /**
      * Cleans yum cache.
+     * @param boolean $run_in_background if FALSE, do not run in background (default = FALSE)
      *
      * @return void
      * @throws Engine_Exception, Yum_Busy_Exception
      */
 
-    public function clean()
+    public function clean($run_in_background = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        $options = array();
+
+        if ($run_in_background)
+            $options['background'] = TRUE;
+
         $shell = new Shell();
-        $shell->execute(self::COMMAND_YUM, 'clean all', TRUE);
+        $shell->execute(self::COMMAND_YUM, 'clean all', TRUE, $options);
     }
 
     /**
@@ -175,7 +181,7 @@ class Yum extends Engine
         
         $shell = new Shell();
 
-        $options = array('log' =>self::FILE_LOG);
+        $options = array('log' => self::FILE_LOG);
 
         if ($run_in_background)
             $options['background'] = TRUE;
@@ -364,8 +370,11 @@ class Yum extends Engine
         //----------
         $options['env'] = 'LANG=en_US';
         $exitcode = $shell->execute(self::COMMAND_YUM, 'repolist all', TRUE, $options);
-        if ($exitcode != 0)
+        if ($exitcode != 0) {
+            // Run a 'clean all'...this can fix issues so next time this function is called it may work.
+            $this->clean(TRUE);
             throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+        }
         $rows = $shell->get_output();
         foreach ($rows as $row) {
             if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)$/", $row, $match)) 
