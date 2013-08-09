@@ -338,7 +338,7 @@ class Install_Wizard extends Engine
             );
 
             $steps[] = array(
-                'nav' => '/app/marketplace/wizard/selection/' . $this->CI->session->userdata('wizard_marketplace_mode'),
+                'nav' => '/app/marketplace/wizard/selection',
                 'title' => lang('marketplace_app_selection'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('marketplace_marketplace'),
