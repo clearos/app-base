@@ -53,7 +53,7 @@ $app['core_requires'] = array(
     'shadow-utils',
     'sudo',
     'sysvinit-tools',
-    'syswatch',
+    'syswatch >= 6.5.0',
     'tmpwatch',
     'util-linux-ng',
     'usbutils',

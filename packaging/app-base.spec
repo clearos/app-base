@@ -32,7 +32,7 @@ Requires: rpm
 Requires: shadow-utils
 Requires: sudo
 Requires: sysvinit-tools
-Requires: syswatch
+Requires: syswatch >= 6.5.0
 Requires: tmpwatch
 Requires: util-linux-ng
 Requires: usbutils
