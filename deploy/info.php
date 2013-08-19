@@ -39,10 +39,10 @@ $app['controllers']['session']['inline_help'] = array(
 
 $app['core_requires'] = array(
     'clearos-base',
-    'clearos-framework >= 6.4.27',
+    'clearos-framework >= 6.5.0',
     'clearos-release',
     'csplugin-filewatch',
-    'theme-default >= 6.4.25',
+    'theme-default >= 6.5.0',
     'chkconfig',
     'coreutils',
     'file',
