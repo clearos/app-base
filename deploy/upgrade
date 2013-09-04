@@ -34,8 +34,9 @@
 /usr/sbin/addsudo /usr/bin/yum-config-manager app-base-core
 /usr/sbin/addsudo /usr/sbin/yum-install app-base-core
 
-# Import EPEL key
-rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6  >/dev/null 2>&1
+# Import keys
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
 
 # TODO: move this to clearsync
 LINE=`grep "^Cmnd_Alias CLEARSYNC" /etc/sudoers 2>/dev/null`
