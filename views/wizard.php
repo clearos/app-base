@@ -41,21 +41,11 @@ $this->lang->load('base');
 // TODO: translate
 // TODO: move HTML/CSS elements to theme
 
-if (preg_match('/Community/', $this->session->userdata['os_name'])) {
-    $sidebar_image = 'community-get-started.png';
-    $blurb = "
-        Did you know that ClearCenter offers ClearOS Professional which includes professional support, 
-        optional hardware appliances with software pre-installed and professional apps &amp; services?
-        <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>Contact</a> a solution specialists today.
-    ";
-} else {
-    $sidebar_image = 'pro-get-started.png';
-    $blurb = "
-        Did you know that ClearCenter offers industry specific solutions to simplify your deployment of ClearOS?  Click
-        <a href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
-        <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
-    ";
-}
+$blurb = "
+    Did you know that ClearCenter offers industry specific solutions to simplify your deployment of ClearOS?  Click
+    <a href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
+    <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
+";
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form
@@ -64,10 +54,32 @@ if (preg_match('/Community/', $this->session->userdata['os_name'])) {
 echo form_open('base/wizard', array('id' => 'getting_started'));
 echo form_header($this->session->userdata['os_name'] . ' ' . $this->session->userdata['os_base_version']);
 
-echo form_banner(
-    "<div style='background: url(" . clearos_app_htdocs('base') . "/$sidebar_image) no-repeat; height:374px; width:682px; margin-left: 15px; margin-top: 15px;'>
-        <p style='line-height: 20px; width: 285px; font-size: 13px; position: relative; top: 262px; left: 368px;'>$blurb</p>
-    </div>
+// default CSS causee grief with paragraph tags, use tables for now.  Sigh.
+echo form_banner("
+    <table border='0' cellpadding='0' cellspacing='0'>
+        <tr>
+            <td valign='top'>
+                <h2 style='font-size: 1.8em; color: #909090;'>" . lang('base_getting_started') ." </h2>
+                <p style='font-size: 1.2em; line-height: 20px;'>
+                The Install Wizard will guide you through the needed steps to get ClearOS up and running.  
+                After the basics are configured, you'll have a chance to run the ClearOS Marketplace wizard to 
+                install apps.<p>
+                <p style='font-size: 1.2em; line-height: 20px;'>If you need assistance during installation and configuration, 
+                please review the help on the right-hand side of the wizard.  You can also find more in-depth
+                help online:</p>
+                <ul>
+                    <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/support/documentation/clearos_install_guide/start'>Install Guide</a></li>
+                    <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/support/documentation/user_guide/start'>User Guide</a></li>
+                </ul>
+                </p>
+            </td>
+            <td width='330'>
+                <div style='background: url(" . clearos_app_htdocs('base') . "/get-started.png) no-repeat; height:358px; width:330px; margin: 10px;'>
+                <p style='line-height: 20px; font-size: 13px; position: relative; top: 242px; padding: 20px;'>$blurb</p>
+                </div>
+            </td>
+        </tr>
+    </table>
     "
 );
 
