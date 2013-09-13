@@ -42,7 +42,6 @@ Requires: webconfig-php-ldap
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils
-Requires: webconfig-zend-guard-loader
 Requires: yum-utils
 
 %description core

@@ -63,7 +63,6 @@ $app['core_requires'] = array(
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils',
-    'webconfig-zend-guard-loader',
     'yum-utils'
 );
 
