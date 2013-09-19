@@ -68,10 +68,9 @@ echo form_banner("
                 please review the help on the right-hand side of the wizard.  You can also find more in-depth
                 help online:</p>
                 <ul>
-                    <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/support/documentation/clearos_install_guide/start'>Install Guide</a></li>
-                    <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/support/documentation/user_guide/start'>User Guide</a></li>
+                    <li style='font-size: 1.2em; line-height: 20px;'><a  href='http://www.clearcenter.com/support/documentation/clearos_install_guide/start' target='_blank'>Install Guide</a></li>
+                    <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/support/documentation/user_guide/start' target='_blank'>User Guide</a></li>
                 </ul>
-                </p>
             </td>
             <td width='330'>
                 <div style='background: url(" . clearos_app_htdocs('base') . "/get-started.png) no-repeat; height:358px; width:330px; margin: 10px;'>
