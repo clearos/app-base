@@ -106,6 +106,7 @@ class Webconfig extends Daemon
     ///////////////////////////////////////////////////////////////////////////////
 
     const FILE_CONFIG = '/etc/clearos/webconfig';
+    const FILE_RESTART = '/var/clearos/base/webconfig_restart';
     const PATH_THEMES = '/usr/clearos/themes';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -195,6 +196,30 @@ class Webconfig extends Daemon
             $this->_load_config();
 
         return $this->config['theme_mode'];
+    }
+
+    /**
+     * Restarts webconfig in a gentle way.
+     *
+     * A webconfig restart request through the GUI needs special handling.  
+     * To avoid killing itself, a restart is handled by the external
+     * clearsync system.
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    public function reset_gently()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_RESTART);
+
+        if ($file->exists())
+            $file->delete();
+
+        $file->create('root', 'root', '0644');
+        $file->add_lines("restart requested\n");
     }
 
     /**
