@@ -164,6 +164,7 @@ class Session extends ClearOS_Controller
     function login($redirect = NULL)
     {
         $this->load->library('user_agent');
+        $this->load->library('base/Access_Control');
 
         // Handle page post login redirect
         //--------------------------------
@@ -230,10 +231,14 @@ class Session extends ClearOS_Controller
                             $this->locale->set_language_code($code);
 
                         redirect('/base/wizard/index/start');
-                    } else if (preg_match('/^\/base\//', $post_redirect) && clearos_app_installed('dashboard')) {
-                        redirect('/dashboard');
                     } else {
-                        redirect($post_redirect);
+                        // Go to the dashboard if access control allows it
+                        $valid_pages = $this->access_control->get_valid_pages($this->input->post('clearos_username'));
+                        if (preg_match('/^\/base\//', $post_redirect) && in_array('dashboard', $valid_pages)) {
+                            redirect('/dashboard');
+                        } else {
+                            redirect($post_redirect);
+                        }
                     }
                 } else {
                     $data['login_failed'] = lang('base_login_failed');
