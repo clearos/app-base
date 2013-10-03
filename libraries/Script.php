@@ -161,7 +161,7 @@ class Script extends Engine
             $file->add_lines($this->pid);
             return TRUE;
         } catch (Exception $e) {
-            clearos_log($this->script_name, sprintf('Unable to create lock file: %s.', clearos_error_msg($e)));
+            clearos_log($this->script_name, sprintf('Unable to create lock file: %s.', clearos_exception_message($e)));
             throw new Engine_Exception(lang('base_unable_to_create_lock_file'), CLEAROS_WARNING);
         }
     }
