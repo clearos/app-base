@@ -409,7 +409,10 @@ class Stats extends Engine
         $shell = new Shell();
         $args = '-hP';
 
-        $shell->execute(self::CMD_DF, $args, FALSE, $options);
+        // df can send a bad exit code for specific mount points - sett tracker #1363
+        $options['validate_exit_code'] = FALSE;
+
+        $shell->execute(self::CMD_DF, $args, TRUE, $options);
         $retval = $shell->get_output();
 
         foreach ($retval as $line){
@@ -426,6 +429,7 @@ class Stats extends Engine
             $result['mounted'] = $pieces[5];
             $results[] = $result;
         }
+
         return $results;
     }
 
