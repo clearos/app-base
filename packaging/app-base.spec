@@ -66,6 +66,7 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -d -m 0755 %{buildroot}/var/clearos/base/translations
 install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-6 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
+install -D -m 0644 packaging/RPM-GPG-KEY-atrpms %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
@@ -132,6 +133,7 @@ exit 0
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
 /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
+/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /var/clearos/base/access_control/public

@@ -38,6 +38,7 @@
 # Import keys
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms >/dev/null 2>&1
 
 # TODO: move this to clearsync
 LINE=`grep "^Cmnd_Alias CLEARSYNC" /etc/sudoers 2>/dev/null`
@@ -73,4 +74,5 @@ logger -p local6.notice -t installer "app-base-core - clearsync configuration ch
 # Testing mode
 #-------------
 
+/usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
 /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
