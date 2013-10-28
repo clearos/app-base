@@ -17,6 +17,7 @@ The Base app provides core system libraries and tools.
 Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
+Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 6.5.0
 Requires: clearos-release

@@ -38,6 +38,7 @@ $app['controllers']['session']['inline_help'] = array(
 /////////////////////////////////////////////////////////////////////////////
 
 $app['core_requires'] = array(
+    'acpid',
     'clearos-base',
     'clearos-framework >= 6.5.0',
     'clearos-release',
