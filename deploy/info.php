@@ -64,6 +64,7 @@ $app['core_requires'] = array(
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils',
+    'wget',
     'yum-utils'
 );
 

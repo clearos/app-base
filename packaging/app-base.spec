@@ -43,6 +43,7 @@ Requires: webconfig-php-ldap
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils
+Requires: wget
 Requires: yum-utils
 
 %description core
