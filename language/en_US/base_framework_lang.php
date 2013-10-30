@@ -8,7 +8,6 @@ $lang['kilobyte_abbr'] = $lang['base_kilobytes'];
 $lang['upload_file_exceeds_limit'] = $lang['base_upload_file_exceeds_limit'];
 $lang['upload_file_exceeds_form_limit'] = $lang['base_upload_file_exceeds_form_limit'];
 $lang['upload_file_partial'] = $lang['base_upload_file_partial'];
-$lang['upload_no_temp_directory'] = $lang['base_upload_no_temp_directory'];
 $lang['upload_unable_to_write_file'] = $lang['base_upload_unable_to_write_file'];
 $lang['upload_stopped_by_extension'] = $lang['base_upload_stopped_by_extension'];
 $lang['upload_no_file_selected'] = $lang['base_upload_no_file_selected'];
