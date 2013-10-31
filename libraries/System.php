@@ -52,13 +52,16 @@ clearos_load_language('base');
 // D E P E N D E N C I E S
 ///////////////////////////////////////////////////////////////////////////////
 
-// Classes
-//--------
-
 use \clearos\apps\base\Engine as Engine;
+use \clearos\apps\base\File as File;
+use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
+use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
+clearos_load_library('base/File');
+clearos_load_library('base/File_No_Match_Exception');
+clearos_load_library('base/File_Not_Found_Exception');
 clearos_load_library('base/Shell');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -84,6 +87,7 @@ class System extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     const COMMAND_SHUTDOWN = '/sbin/shutdown';
+    const FILE_CONFIG = '/etc/clearos/base.d/system.conf';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -96,6 +100,33 @@ class System extends Engine
     public function __construct()
     {
         clearos_profile(__METHOD__, __LINE__);
+    }
+
+    /**
+     * Returns state of virtual machine image.
+     *
+     * @return boolean TRUE if system built from defualt virtual machine image
+     * @throws Engine_Exception
+     */
+
+    public function is_default_vm_image()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_CONFIG);
+
+        try {
+            $value = $file->lookup_value('/^default_vm_image\s*=\s*/');
+        } catch (File_Not_Found_Exception $e) {
+            return FALSE;
+        } catch (File_No_Match_Exception $e) {
+            return FALSE;
+        } 
+
+        if (preg_match('/yes/i', $value))
+            return TRUE;
+        else
+            return FALSE;
     }
 
     /**
@@ -113,7 +144,6 @@ class System extends Engine
 
         $shell->execute(self::COMMAND_SHUTDOWN, '-t3 -r now', TRUE);
     }
-
 
     /**
      * Shuts down the system.

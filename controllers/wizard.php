@@ -61,7 +61,9 @@ class Wizard extends ClearOS_Controller
         //------------------
 
         $this->load->library('base/Install_Wizard');
+        $this->load->library('base/Product');
         $this->load->library('base/Stats');
+        $this->load->library('base/System');
 
         // Load view data
         //---------------
@@ -73,6 +75,9 @@ class Wizard extends ClearOS_Controller
 
             $data['memory_size'] = $this->stats->get_mem_size();
             $data['memory_warning'] = ($data['memory_size'] < 1) ? TRUE : FALSE;
+            $data['os_name'] = $this->product->get_name();
+            $data['os_base_version'] = $this->product->get_base_version();
+            $data['vm_warning'] = $this->system->is_default_vm_image();
 
             // Jump to last wizard step if user is returning
             if ($start == "start") {
