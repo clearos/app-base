@@ -117,6 +117,13 @@ class Daemon extends ClearOS_Controller
     {
         $this->load->library('base/Daemon', $this->daemon_name);
 
+        // Shutdown daemon in case it is dead or in a funk (tracker #1239)
+        try {
+            $this->daemon->set_running_state(FALSE);
+        } catch (Exception $e) {
+            //
+        }
+
         try {
             $this->daemon->set_running_state(TRUE);
             $this->daemon->set_boot_state(TRUE);
