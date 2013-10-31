@@ -409,6 +409,7 @@ $lang['base_system_is_restarting'] = 'System is restarting.';
 $lang['base_system_is_shutting_down'] = 'System is shutting down.';
 $lang['base_system_load'] = 'System Load';
 $lang['base_system_registration_required'] = 'System registration is required for this feature';
+$lang['base_system_requirements'] = 'System Requirements';
 $lang['base_system_updated'] = 'System updated';
 $lang['base_system_was_updated'] = 'System was updated.';
 $lang['base_terabytes'] = 'TB';

@@ -61,13 +61,18 @@ class Wizard extends ClearOS_Controller
         //------------------
 
         $this->load->library('base/Install_Wizard');
+        $this->load->library('base/Stats');
 
         // Load view data
         //---------------
 
         try {
             $this->session->set_userdata('wizard', TRUE);
+
             $state = $this->install_wizard->get_state();
+
+            $data['memory_size'] = $this->stats->get_mem_size();
+            $data['memory_warning'] = ($data['memory_size'] < 1) ? TRUE : FALSE;
 
             // Jump to last wizard step if user is returning
             if ($start == "start") {
