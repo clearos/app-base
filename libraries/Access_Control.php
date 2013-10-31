@@ -102,11 +102,13 @@ class Access_Control extends Engine
 
     // Files and paths
     const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
+    const PATH_REST = '/var/clearos/base/access_control/rest';
     const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
     const PATH_PUBLIC = '/var/clearos/base/access_control/public';
     const PATH_AUTHENTICATED = '/var/clearos/base/access_control/authenticated';
 
     // Access types
+    const TYPE_REST = 'rest';
     const TYPE_PUBLIC = 'public';
     const TYPE_CUSTOM = 'custom';
     const TYPE_ADMINISTRATORS = 'administrators';
@@ -181,12 +183,33 @@ class Access_Control extends Engine
 
         $details = $this->get_valid_pages_details($username);
 
-        $pages = array_merge(
-            $details[Access_Control::TYPE_ADMINISTRATORS],
-            $details[Access_Control::TYPE_AUTHENTICATED],
-            $details[Access_Control::TYPE_CUSTOM],
-            $details[Access_Control::TYPE_PUBLIC]
-        );
+        // Standard webconfig access control
+        if ($_SERVER['SERVER_PORT'] == 81) {
+            $pages = array_merge(
+                $details[Access_Control::TYPE_ADMINISTRATORS],
+                $details[Access_Control::TYPE_AUTHENTICATED],
+                $details[Access_Control::TYPE_CUSTOM],
+                $details[Access_Control::TYPE_PUBLIC]
+            );
+
+        // Proxy and other splash pages are available with HTTPS (i.e. ugly SSL warning)
+        } else if ($_SERVER['SERVER_PORT'] == 82) {
+            $pages = $details[Access_Control::TYPE_PUBLIC];
+
+        // Rest pages
+        } else if ($_SERVER['SERVER_PORT'] == 83) {
+            $pages = $details[Access_Control::TYPE_REST];
+
+        // Development gets everything
+        } else if ($_SERVER['SERVER_PORT'] == 1501) {
+            $pages = array_merge(
+                $details[Access_Control::TYPE_ADMINISTRATORS],
+                $details[Access_Control::TYPE_AUTHENTICATED],
+                $details[Access_Control::TYPE_CUSTOM],
+                $details[Access_Control::TYPE_PUBLIC],
+                $details[Access_Control::TYPE_REST]
+            );
+        }
 
         return array_unique($pages);
     }
@@ -208,6 +231,7 @@ class Access_Control extends Engine
         $valid_pages[Access_Control::TYPE_AUTHENTICATED] = array();
         $valid_pages[Access_Control::TYPE_CUSTOM] = array();
         $valid_pages[Access_Control::TYPE_PUBLIC] = array();
+        $valid_pages[Access_Control::TYPE_REST] = array();
 
         // Process public pages
         //---------------------
@@ -283,6 +307,21 @@ class Access_Control extends Engine
                     $valid_pages[Access_Control::TYPE_CUSTOM] = array_merge($pages, $valid_pages[Access_Control::TYPE_CUSTOM]);
                 }
             }
+        }
+
+        // Process REST pages
+        //-------------------
+
+        $folder = new Folder(self::PATH_REST, FALSE);
+
+        $configlets = $folder->get_listing();
+
+        foreach ($configlets as $configlet) {
+            $options['skip_size_check'] = TRUE;
+
+            $file = new File(self::PATH_REST . '/' . $configlet, FALSE, FALSE, $options);
+            $pages = $file->get_contents_as_array();
+            $valid_pages[Access_Control::TYPE_REST] = array_merge($pages, $valid_pages[Access_Control::TYPE_REST]);
         }
 
         return $valid_pages;

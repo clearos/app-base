@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.5.5';
+$app['version'] = '1.5.10';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -40,7 +40,7 @@ $app['controllers']['session']['inline_help'] = array(
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
-    'clearos-framework >= 6.5.0',
+    'clearos-framework >= 6.5.2',
     'clearos-release',
     'csplugin-filewatch',
     'theme-default >= 6.5.0',
@@ -70,7 +70,9 @@ $app['core_requires'] = array(
 
 
 $app['core_file_manifest'] = array(
-    'base.acl' => array( 'target' => '/var/clearos/base/access_control/authenticated/base' ),
+    'authenticated.acl' => array('target' => '/var/clearos/base/access_control/authenticated/base'),
+    'public.acl' => array('target' => '/var/clearos/base/access_control/public/base'),
+    'rest.acl' => array('target' => '/var/clearos/base/access_control/rest/base'),
     'filewatch-base-install.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-install.conf'),
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
@@ -87,7 +89,6 @@ $app['core_file_manifest'] = array(
         'group' => 'root',
     ),
     'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
-    'base' => array( 'target' => '/var/clearos/base/access_control/public' ),
     'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
     'wizard.conf' => array(
         'target' => '/etc/clearos/base.d/wizard.conf',
@@ -119,6 +120,7 @@ $app['core_directory_manifest'] = array(
     '/var/clearos/base/access_control/authenticated' => array(),
     '/var/clearos/base/access_control/custom' => array(),
     '/var/clearos/base/access_control/public' => array(),
+    '/var/clearos/base/access_control/rest' => array(),
     '/var/clearos/base/daemon' => array(),
     '/var/clearos/base/translations' => array()
 );

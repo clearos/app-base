@@ -178,6 +178,23 @@ class Authorization extends Engine
         $valid_custom_urls = $valid_urls[Access_Control::TYPE_CUSTOM];
         $valid_public_urls = $valid_urls[Access_Control::TYPE_PUBLIC];
         $valid_administrator_urls = $valid_urls[Access_Control::TYPE_ADMINISTRATORS];
+        $valid_rest_urls = $valid_urls[Access_Control::TYPE_REST];
+
+        // REST access - allow specific pages on REST-port
+        //------------------------------------------------
+
+        if (($_SERVER['SERVER_PORT'] == 1501) || ($_SERVER['SERVER_PORT'] == 83)) {
+            foreach ($valid_rest_urls as $valid_url) {
+                $valid_url_regex = preg_quote($valid_url, '/');
+
+                if (preg_match("/$valid_url_regex/", $url))
+                    return TRUE;
+            }
+
+            // Devel (port 1501) can keep going, but REST (port 83) is restrictive
+            if ($_SERVER['SERVER_PORT'] == 83)
+                return FALSE;
+        }
 
         // administrators access - allow access to administrator URLs
         //-----------------------------------------------------------

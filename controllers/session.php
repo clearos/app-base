@@ -330,4 +330,16 @@ class Session extends ClearOS_Controller
 
         redirect('/base/session/login');
     }
+
+    /**
+     * REST handler.
+     *
+     * @return view
+     */
+
+    function rest()
+    {
+        // Invalid requests to w.x.y.x:83/app/some_app get redirected here.
+        echo lang('base_access_denied');
+    }
 }

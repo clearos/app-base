@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.5.5
+Version: 1.5.10
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -19,7 +19,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
-Requires: clearos-framework >= 6.5.0
+Requires: clearos-framework >= 6.5.2
 Requires: clearos-release
 Requires: csplugin-filewatch
 Requires: theme-default >= 6.5.0
@@ -65,19 +65,21 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
+install -d -m 0755 %{buildroot}/var/clearos/base/access_control/rest
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -d -m 0755 %{buildroot}/var/clearos/base/translations
 install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-6 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
 install -D -m 0644 packaging/RPM-GPG-KEY-atrpms %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
-install -D -m 0644 packaging/base %{buildroot}/var/clearos/base/access_control/public
-install -D -m 0644 packaging/base.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
+install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
+install -D -m 0644 packaging/public.acl %{buildroot}/var/clearos/base/access_control/public/base
+install -D -m 0644 packaging/rest.acl %{buildroot}/var/clearos/base/access_control/rest/base
 install -D -m 0755 packaging/syncaction %{buildroot}/usr/sbin/syncaction
 install -D -m 0755 packaging/wc-yum %{buildroot}/usr/sbin/wc-yum
 install -D -m 0755 packaging/webconfig-restart %{buildroot}/usr/sbin/webconfig-restart
@@ -129,6 +131,7 @@ exit 0
 %dir /var/clearos/base/access_control/authenticated
 %dir /var/clearos/base/access_control/custom
 %dir /var/clearos/base/access_control/public
+%dir /var/clearos/base/access_control/rest
 %dir /var/clearos/base/daemon
 %dir /var/clearos/base/translations
 /usr/clearos/apps/base/deploy
@@ -138,13 +141,14 @@ exit 0
 /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
-/var/clearos/base/access_control/public
 /var/clearos/base/access_control/authenticated/base
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-epel.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-install.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
+/var/clearos/base/access_control/public/base
+/var/clearos/base/access_control/rest/base
 /usr/sbin/syncaction
 /usr/sbin/wc-yum
 /usr/sbin/webconfig-restart
