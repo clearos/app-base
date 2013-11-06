@@ -58,16 +58,19 @@ $contents = "
 ";
 
 if ($memory_warning || $vm_warning) {
-    if ($memory_warning) 
+    if ($memory_warning) {
         $memory_bullet = "<li style='font-size: 1.2em; line-height: 20px; color: red;'>Inadequate Memory: " . $memory_size . " GB</li>";
-    else
+        $memory_blurb =  "<p style='font-size: 1.2em; line-height: 20px;'>More memory is recommended.
+                <a target='_blank' href='http://www.clearcenter.com/redirect/$os_name/$os_base_version/system_requirements'>More Information</a>.</p>";
+    } else {
         $memory_bullet = '';
+        $memory_blurb = '';
+    }
 
     if ($vm_warning) {
         $vm_bullet = "<li style='font-size: 1.2em; line-height: 20px; color: red;'>VM Test Image Detected</li>";
         $vm_blurb =  "<p style='font-size: 1.2em; line-height: 20px;'>The default Virtual Machine images are great for testing,
-                but we <b>strongly</b> recommend doing a full install for live deployments.
-                <a href='http://www.clearcenter.com/redirect/FIXME'>More Information</a>.</p>";
+                but we <b>strongly</b> recommend doing a full install for live deployments.</p>";
     } else {
         $vm_bullet = '';
         $vm_blurb = '';
@@ -80,6 +83,7 @@ if ($memory_warning || $vm_warning) {
             $memory_bullet
             $vm_bullet
         </ul>
+        $memory_blurb
         $vm_blurb
     ";
 }
