@@ -74,7 +74,7 @@ class Wizard extends ClearOS_Controller
             $state = $this->install_wizard->get_state();
 
             $data['memory_size'] = $this->stats->get_mem_size();
-            $data['memory_warning'] = ($data['memory_size'] < 1) ? TRUE : FALSE;
+            $data['memory_warning'] = ($data['memory_size'] < 0.9) ? TRUE : FALSE;
             $data['os_name'] = $this->product->get_name();
             $data['os_base_version'] = $this->product->get_base_version();
             $data['vm_warning'] = $this->system->is_default_vm_image();
