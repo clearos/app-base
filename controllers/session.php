@@ -233,8 +233,9 @@ class Session extends ClearOS_Controller
                         redirect('/base/wizard/index/start');
                     } else {
                         // Go to the dashboard if access control allows it
-                        $valid_pages = $this->access_control->get_valid_pages($this->input->post('clearos_username'));
-                        if (preg_match('/^\/base\//', $post_redirect) && in_array('dashboard', $valid_pages)) {
+                        $username = $this->input->post('clearos_username');
+                        $valid_pages = $this->access_control->get_valid_pages($username);
+                        if (preg_match('/^\/base\//', $post_redirect) && (in_array('dashboard', $valid_pages) || ($username === 'root'))) {
                             redirect('/dashboard');
                         } else {
                             redirect($post_redirect);
