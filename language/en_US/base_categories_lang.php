@@ -1,5 +1,6 @@
 <?php
 
+$lang['base_category_cloud'] = 'Cloud';
 $lang['base_category_gateway'] = 'Gateway';
 $lang['base_category_my_account'] = 'My Account';
 $lang['base_category_network'] = 'Network';
