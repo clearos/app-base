@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.5.12
+Version: 1.5.15
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -123,7 +123,6 @@ exit 0
 %files core
 %defattr(-,root,root)
 %exclude /usr/clearos/apps/base/packaging
-%exclude /usr/clearos/apps/base/tests
 %dir /usr/clearos/apps/base
 %dir /etc/clearos/base.d
 %dir /var/clearos/base
