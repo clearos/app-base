@@ -40,10 +40,10 @@ $app['controllers']['session']['inline_help'] = array(
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
-    'clearos-framework >= 6.5.2',
+    'clearos-framework >= 6.5.5',
     'clearos-release',
     'csplugin-filewatch',
-    'theme-default >= 6.5.0',
+    'theme-default >= 6.5.4',
     'chkconfig',
     'coreutils',
     'file',
