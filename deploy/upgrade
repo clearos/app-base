@@ -79,3 +79,9 @@ if [ -n "$IS_TESTING" ]; then
     /usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
     /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
 fi
+
+# FIXME: temporary workaround
+echo "blacklist nfnetlink" > /etc/modprobe.d/app-base.conf
+/sbin/rmmod nfnetlink nfnetlink_log nfnetlink_queue >/dev/null 2>&1
+exit 0
+
