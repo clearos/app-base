@@ -7,7 +7,16 @@ if [ "$1" == "install_event" ]; then
     # on virtual machines (use virt-what tool)
     # First command is to cleanup duplicates [tracker #909]
     sed -i -e 's/ video=vesafb.* rhgb/ rhgb/' /boot/grub/grub.conf
-    sed -i -e 's/ rhgb/ video=vesafb vga=0x314 rhgb/' /boot/grub/grub.conf
+
+    if [ -x /usr/sbin/virt-what ]; then
+        VM=`/usr/sbin/virt-what 2>/dev/null`
+        if [ $VM = "hyperv" ]; then
+            logger -p local6.notice -t clearsync "base - skipping graphical boot changes"
+        else
+            logger -p local6.notice -t clearsync "base - applying graphical boot changes"
+            sed -i -e 's/ rhgb/ video=vesafb vga=0x314 rhgb/' /boot/grub/grub.conf
+        fi
+    fi
 
     # TODO: anaconda should really use "Linux" instead of ClearOS xyz
     # It's referring to the kernel, not the OS

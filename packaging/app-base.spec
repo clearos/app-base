@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.5.21
+Version: 1.5.22
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -37,6 +37,7 @@ Requires: syswatch >= 6.5.0
 Requires: tmpwatch
 Requires: util-linux-ng
 Requires: usbutils
+Requires: virt-what
 Requires: webconfig-mod_ssl
 Requires: webconfig-php
 Requires: webconfig-php-ldap

@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.5.21';
+$app['version'] = '1.5.22';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -58,6 +58,7 @@ $app['core_requires'] = array(
     'tmpwatch',
     'util-linux-ng',
     'usbutils',
+    'virt-what',
     'webconfig-mod_ssl',
     'webconfig-php',
     'webconfig-php-ldap',
