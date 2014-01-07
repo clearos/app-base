@@ -377,7 +377,7 @@ class Yum extends Engine
         }
         $rows = $shell->get_output();
         foreach ($rows as $row) {
-            if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)$/", $row, $match)) 
+            if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)/", $row, $match)) 
                 $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
             else if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+disabled$/", $row, $match)) 
                 $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
