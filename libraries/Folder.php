@@ -106,6 +106,7 @@ class Folder extends Engine
     const COMMAND_MKDIR = '/bin/mkdir';
     const COMMAND_CHOWN = '/bin/chown';
     const COMMAND_CHMOD = '/bin/chmod';
+    const COMMAND_MOVE = '/bin/mv';
     const COMMAND_FILE = '/usr/bin/file';
     const COMMAND_RMDIR = '/bin/rmdir';
     const COMMAND_RM = '/bin/rm';
@@ -560,5 +561,19 @@ class Folder extends Engine
         }
 
         return realpath($this->folder);
+    }
+
+    /**
+     * Moves folder to new target.
+     *
+     * @param string $path new target
+     */
+
+    public function move_to($target)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_MOVE, "'" .$this->folder . "' '" . $target . "'", TRUE);
     }
 }
