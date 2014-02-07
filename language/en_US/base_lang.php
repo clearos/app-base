@@ -12,6 +12,7 @@ $lang['base_add'] = 'Add';
 $lang['base_add_to_cart'] = 'Add to Cart';
 $lang['base_additional_info'] = 'Additional Info';
 $lang['base_administrator'] = 'Administrator';
+$lang['base_advanced_settings'] = 'Advanced Settings';
 $lang['base_all'] = 'All';
 $lang['base_already_exists'] = 'Item already exists.';
 $lang['base_app_description'] = 'The Base app provides core system libraries and tools.';
