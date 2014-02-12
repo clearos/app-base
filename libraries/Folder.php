@@ -153,12 +153,13 @@ class Folder extends Engine
      *
      * Use the standard command-line chmod values.
      *
-     * @param string $mode mode of the folder
+     * @param string $mode      mode of the folder
+     * @param string $recursive do chmod recursively
      *
      * @return  void
      */
 
-    public function chmod($mode)
+    public function chmod($mode, $recursive = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -166,8 +167,10 @@ class Folder extends Engine
             throw new Folder_Not_Found_Exception();
 
         try {
+            $flags = ($recursive) ? '-R' : '';
+
             $shell = new Shell();
-            if ($shell->execute(self::COMMAND_CHMOD, $mode . ' ' . $this->folder, TRUE) != 0)
+            if ($shell->execute(self::COMMAND_CHMOD, $flags . ' ' . $mode . ' ' . $this->folder, TRUE) != 0)
                 throw new Folder_Permissions_Exception($shell->get_first_output_line(), CLEAROS_ERROR);
         } catch (Engine_Exception $e) {
             throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
