@@ -569,7 +569,9 @@ class Folder extends Engine
     /**
      * Moves folder to new target.
      *
-     * @param string $path new target
+     * @param string $target new target
+     *
+     * @return void
      */
 
     public function move_to($target)
