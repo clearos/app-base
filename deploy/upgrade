@@ -64,13 +64,6 @@ if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
     fi
 fi
 
-# Reload clearsyncd 
-# TODO: remove after version 7
-#-----------------------------
-
-logger -p local6.notice -t installer "app-base-core - clearsync configuration change detected"
-/sbin/service clearsyncd condrestart >/dev/null 2>&1
-
 # Testing mode
 #-------------
 

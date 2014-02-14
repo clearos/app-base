@@ -25,19 +25,34 @@ if [ "$1" == "install_event" ]; then
 
 elif [ "$1" == "clearsync_change_event" ]; then
     logger -p local6.notice -t clearsync "base - clearsync configuration change detected"
+
+    # Flock was not behaving, so use simple file test
+    [ -e /var/tmp/clearsync-restart ] && exit 0
+    touch /var/tmp/clearsync-restart
+
+    trap "rm -f /var/tmp/clearsync-restart" 0 1 2 3 15
+
+    # See note about hack below
+    while ( [ -n "`/sbin/pidof -x wc-yum`" ] || [ -n "`/sbin/pidof -x yum`" ] || [ -n "`ps af | grep syncaction | grep -v grep | grep -v clearsync_change_event`" ] ); do
+        sleep 3
+    done
+
+    logger -p local6.notice -t clearsync 'base - restarting clearsync'
     /sbin/service clearsyncd condrestart >/dev/null 2>&1
+
+    rm -f /var/tmp/clearsync-restart
 
 elif [ "$1" == "webconfig_change_event" ]; then
     logger -p local6.notice -t clearsync "base - webconfig restart requested"
 
-    # Flock was not behaving, so use simple file test
-    [ -e /var/tmp/webconfig-restart ] && exit 0
-    touch /var/tmp/webconfig-restart
-
-    trap "rm -f /var/tmp/webconfig-restart" 0 1 2 3 15
-
-    while ( [ -n "`/sbin/pidof -x wc-yum`" ] ||  [ -n "`/sbin/pidof -x yum`" ] ); do
-        logger -p local6.notice -t clearsync 'base - waiting to restart webconfig'
+    # Flock and trap were not working here (?), so use this hack instead
+    IS_RUNNING=`ps af | grep -c "syncaction[[:space:]]*webconfig_change_event"`
+    if [ $IS_RUNNING == 3 ]; then
+        logger -p local6.notice -t clearsync 'base - webconfig restart already queued'
+        exit 0
+    fi
+    
+    while ( [ -n "`/sbin/pidof -x wc-yum`" ] || [ -n "`/sbin/pidof -x yum`" ] ); do
         sleep 3
     done
 
@@ -55,6 +70,4 @@ elif [ "$1" == "webconfig_change_event" ]; then
         sleep 2
         /sbin/service system-mysqld start >/dev/null 2>&1
     fi
-
-    rm -f /var/tmp/webconfig-restart
 fi
