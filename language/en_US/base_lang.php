@@ -314,6 +314,7 @@ $lang['base_months'] = 'Months';
 $lang['base_network'] = 'Network';
 $lang['base_network_configuration_updated'] = 'Network configuration was updated.';
 $lang['base_new'] = 'New';
+$lang['base_new_or_upgraded_app'] = 'App has been recently installed or upgraded.';
 $lang['base_new_password'] = 'New Password';
 $lang['base_next'] = 'Next';
 $lang['base_no'] = 'No';
