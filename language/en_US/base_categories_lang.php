@@ -25,6 +25,7 @@ $lang['base_subcategory_intrusion_protection'] = 'Intrusion Protection';
 $lang['base_subcategory_mail'] = 'Mail';
 $lang['base_subcategory_mail_scanning'] = 'Mail Scanning';
 $lang['base_subcategory_messaging_and_collaboration'] = 'Messaging and Collaboration';
+$lang['base_subcategory_monitoring'] = 'Monitoring';
 $lang['base_subcategory_operating_system'] = 'Operating System';
 $lang['base_subcategory_overview'] = 'Overview';
 $lang['base_subcategory_print'] = 'Print';

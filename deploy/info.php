@@ -93,6 +93,7 @@ $app['core_file_manifest'] = array(
     ),
     'app-base.cron' => array( 'target' => '/etc/cron.d/app-base' ),
     'access_control.conf' => array( 'target' => '/etc/clearos/base.d/access_control.conf' ),
+    'rsyslog.php'=> array('target' => '/var/clearos/base/daemon/rsyslog.php'),
     'wizard.conf' => array(
         'target' => '/etc/clearos/base.d/wizard.conf',
         'config' => TRUE,
