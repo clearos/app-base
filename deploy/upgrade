@@ -38,6 +38,7 @@
 # Import keys
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms >/dev/null 2>&1
 
 # TODO: move this to clearsync

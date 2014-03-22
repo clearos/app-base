@@ -1,5 +1,5 @@
 [clearos-developer]
-name=ClearOS Developer 6 - $basearch - Developer Tools
+name=ClearOS Developer $releasever - $basearch - Developer Tools
 baseurl=http://download1.clearsdn.com/marketplace/developer/$releasever/$basearch
     http://download2.clearsdn.com/marketplace/developer/$releasever/$basearch
     http://download3.clearsdn.com/marketplace/developer/$releasever/$basearch
