@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.5.26';
+$app['version'] = '1.5.30';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -54,7 +54,6 @@ $app['core_requires'] = array(
     'shadow-utils',
     'sudo',
     'sysvinit-tools',
-    'syswatch >= 6.5.0',
     'tmpwatch',
     'util-linux-ng',
     'usbutils',

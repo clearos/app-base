@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.5.26
+Version: 1.5.30
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -33,7 +33,6 @@ Requires: rpm
 Requires: shadow-utils
 Requires: sudo
 Requires: sysvinit-tools
-Requires: syswatch >= 6.5.0
 Requires: tmpwatch
 Requires: util-linux-ng
 Requires: usbutils
