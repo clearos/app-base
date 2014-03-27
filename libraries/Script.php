@@ -138,7 +138,7 @@ class Script extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
         try {
-            $file = new File($this->lock_file);
+            $file = new File($this->lock_file, TRUE);
             if ($file->exists()) {
                 $this->pid = $file->get_contents();
                 $running = $this->is_running();
@@ -177,7 +177,7 @@ class Script extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
         try {
-            $file = new File($this->lock_file);
+            $file = new File($this->lock_file, TRUE);
             if ($file->exists())
                 $file->delete();
         } catch (Exception $e) {
