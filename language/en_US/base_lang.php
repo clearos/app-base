@@ -367,6 +367,7 @@ $lang['base_running_processes'] = 'Running Processes';
 $lang['base_saturday'] = 'Saturday';
 $lang['base_save'] = 'Save';
 $lang['base_saving'] = 'Saving';
+$lang['base_script_already_running'] = 'This script is already running.';
 $lang['base_sdn_auth_invalid_data'] = 'Required field missing';
 $lang['base_sdn_authentication_required'] = 'Authentication Required';
 $lang['base_sdn_authentication_required_help'] = 'You have accessed a feature that requires authentication to your ClearCenter account.  Once authenticated, a secure token will be used in place of password-derived authentication for a maximum 30 minutes of inactivity or until you logout.';
