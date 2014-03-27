@@ -76,6 +76,9 @@ class Theme extends ClearOS_Controller
         } else if ($theme === 'mobile_default') {
             $this->session->set_userdata('theme', 'mobile_default');
             $this->session->set_userdata('theme_mode', 'control_panel');
+        } else if ($theme === 'smartadmin') {
+            $this->session->set_userdata('theme', 'smartadmin');
+            $this->session->set_userdata('theme_mode', 'normal');
         }
 
         $this->load->library('user_agent');
