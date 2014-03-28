@@ -111,6 +111,7 @@ $app['core_file_manifest'] = array(
         'mode' => '0755',
     ),
     'RPM-GPG-KEY-EPEL-6' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6' ),
+    'RPM-GPG-KEY-EPEL-7' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7' ),
     'RPM-GPG-KEY-atrpms' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
