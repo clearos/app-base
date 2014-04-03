@@ -27,6 +27,7 @@
 /usr/sbin/addsudo /usr/bin/chfn app-base-core
 /usr/sbin/addsudo /usr/bin/du app-base-core
 /usr/sbin/addsudo /usr/bin/passwd app-base-core
+/usr/sbin/addsudo /usr/bin/systemctl app-base-core
 /usr/sbin/addsudo /usr/sbin/app-passwd app-base-core
 /usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
 /usr/sbin/addsudo /usr/sbin/app-rename app-base-core
