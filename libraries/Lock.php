@@ -143,7 +143,7 @@ class Lock extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         flock($this->lock_handle, LOCK_UN);
-        fclose($this->lock_file);
+        fclose($this->lock_handle);
 
         try {
             $file = new File($this->lock_file, TRUE);
