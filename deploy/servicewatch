@@ -6,7 +6,7 @@
 #
 #------------------------------------------------------------------------------
 
-DAEMONS="slapd webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod amavisd ibvpn"
+DAEMONS="slapd webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod amavisd ibvpn rsyslog"
 LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
 PIDOF="/sbin/pidof"
 
@@ -15,15 +15,22 @@ CHECK_BACKUP=`$PIDOF -x configuration-restore`
 
 for DAEMON in $DAEMONS; do
 	INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
+
+    if [ "$DAEMON" == "rsyslog" ]; then
+        PID_DAEMON="rsyslogd"
+    else
+        PID_DAEMON=$DAEMON
+    fi
+
 	if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
-		PID=`$PIDOF $DAEMON`
+		PID=`$PIDOF $PID_DAEMON`
 		if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
-			$LOGGER "restarting $DAEMON"
 			/etc/rc.d/init.d/$DAEMON stop
 			/etc/rc.d/init.d/$DAEMON start
+			$LOGGER "restarting $DAEMON"
 		elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
-			$LOGGER "hard starting $DAEMON"
 			/etc/rc.d/init.d/$DAEMON start
+			$LOGGER "hard starting $DAEMON"
 		fi
 	fi
 done
