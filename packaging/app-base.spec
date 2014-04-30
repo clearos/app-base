@@ -42,6 +42,7 @@ Requires: webconfig-php
 Requires: webconfig-php-gd
 Requires: webconfig-php-ldap
 Requires: webconfig-php-mbstring
+Requires: webconfig-php-mysql
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils

@@ -63,6 +63,7 @@ $app['core_requires'] = array(
     'webconfig-php-gd',
     'webconfig-php-ldap',
     'webconfig-php-mbstring',
+    'webconfig-php-mysql',
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils',
