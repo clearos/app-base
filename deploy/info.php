@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.5.32';
+$app['version'] = '1.6.0';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -40,10 +40,10 @@ $app['controllers']['session']['inline_help'] = array(
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
-    'clearos-framework >= 6.5.7',
+    'clearos-framework >= 6.5.8',
     'clearos-release',
     'csplugin-filewatch',
-    'theme-default >= 6.5.4',
+    'theme-default >= 6.5.8',
     'chkconfig',
     'coreutils',
     'file',
