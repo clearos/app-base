@@ -127,5 +127,10 @@ $app['core_directory_manifest'] = array(
     '/var/clearos/base/access_control/public' => array(),
     '/var/clearos/base/access_control/rest' => array(),
     '/var/clearos/base/daemon' => array(),
-    '/var/clearos/base/translations' => array()
+    '/var/clearos/base/translations' => array(),
+    '/var/clearos/base/lock' => array(
+        'mode' => '0775',
+        'owner' => 'root',
+        'group' => 'webconfig',
+    ),
 );

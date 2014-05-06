@@ -91,8 +91,8 @@ class Lock extends Engine
     protected $lock_handle;
     protected $lock_file;
 
-    const DIR_LOCK = "/var/run/webconfig";
-    const LOCK_SUFFIX = ".lock";
+    const DIR_LOCK = '/var/clearos/base/lock';
+    const LOCK_SUFFIX = '.lock';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S

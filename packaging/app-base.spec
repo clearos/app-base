@@ -70,6 +70,7 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/rest
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
+install -d -m 0775 %{buildroot}/var/clearos/base/lock
 install -d -m 0755 %{buildroot}/var/clearos/base/translations
 install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-6 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6
 install -D -m 0644 packaging/RPM-GPG-KEY-EPEL-7 %{buildroot}/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7
@@ -137,6 +138,7 @@ exit 0
 %dir /var/clearos/base/access_control/public
 %dir /var/clearos/base/access_control/rest
 %dir /var/clearos/base/daemon
+%dir %attr(0775,root,webconfig) /var/clearos/base/lock
 %dir /var/clearos/base/translations
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
