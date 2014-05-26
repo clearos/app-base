@@ -79,6 +79,15 @@ class Theme extends ClearOS_Controller
         } else if ($theme === 'smartadmin') {
             $this->session->set_userdata('theme', 'smartadmin');
             $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'clipone') {
+            $this->session->set_userdata('theme', 'clipone');
+            $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'clearos7') {
+            $this->session->set_userdata('theme', 'clearos7');
+            $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'AdminLTE') {
+            $this->session->set_userdata('theme', 'AdminLTE');
+            $this->session->set_userdata('theme_mode', 'normal');
         }
 
         $this->load->library('user_agent');

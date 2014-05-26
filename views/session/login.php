@@ -62,7 +62,7 @@ if ($ip_extras)
     echo field_view('', "<span style='color: #666666'>" . $ip_extras . "</span>");
 
 if ($login_failed)
-    echo field_view('', $login_failed);
+    echo infobox_critical("Error", $login_failed);
 
 echo theme_field_button_set(
     array(form_submit_custom('submit', lang('base_login'), 'high'))
