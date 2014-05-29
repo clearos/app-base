@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Wizard intro view.
+ * Summary view.
  *
  * @category   apps
  * @package    base
@@ -36,7 +36,49 @@
 $this->lang->load('base');
 
 ///////////////////////////////////////////////////////////////////////////////
-// Form
+// Themes
 ///////////////////////////////////////////////////////////////////////////////
 
-echo infobox_highlight('Nothing to see here...', 'Move along... move along.');
+$headers = array(
+    lang('base_theme'),
+    lang('base_vendor'),
+    lang('base_version')
+);
+
+foreach ($themes as $theme_name => $info) {
+
+    if ($theme_name != $current_theme)
+        $buttons = array(
+            anchor_edit('/app/base/theme/edit/' . $theme_name),
+            anchor_select('/app/base/theme/select/' . $theme_name, lang('base_select'))
+        );
+    else
+        $buttons = array(
+            anchor_edit('/app/base/theme/edit/' . $theme_name),
+        );
+
+    $item['title'] = $info['title'];
+    $item['action'] = '/app/theme/edit/' . $theme_name;
+    $item['anchors'] = button_set($buttons);
+
+    $item['details'] = array(
+        $info['title'],
+        $info['vendor'],
+        $info['version']
+    );
+
+    $items[] = $item;
+
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Summary table
+///////////////////////////////////////////////////////////////////////////////
+
+echo summary_table(
+    lang('theme_available_list'),
+    NULL,
+    $headers,
+    $items,
+    NULL 
+);

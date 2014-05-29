@@ -55,20 +55,19 @@ class Base extends ClearOS_Controller
 
     function index()
     {
-        // Redirect to the default page if one is specified
-        //-------------------------------------------------
-
-        if ($this->session->userdata('default_app'))
-            redirect('/' . $this->session->userdata('default_app'));
-
         // Load libraries
         //---------------
 
+        $this->load->library('base/Webconfig');
         $this->lang->load('base');
 
         // Load views
         //-----------
+        $data['themes'] = $this->webconfig->get_themes(); 
+        $data['current_theme'] = $this->session->userdata['theme']; 
+        
 
-        $this->page->view_form('base/summary', $data, lang('base_app_name'));
+        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
     }
+
 }

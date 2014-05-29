@@ -108,7 +108,7 @@ class Webconfig extends Daemon
     const FILE_CONFIG = '/etc/clearos/webconfig.conf';
     const FILE_RESTART = '/var/clearos/base/webconfig_restart';
     //const PATH_THEMES = '/usr/clearos/themes';
-    const PATH_THEMES = '/home/benjamin/clearos/themes';
+    const PATH_THEMES = '/home/benjamin/clearos/webconfig/themes';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -168,13 +168,12 @@ class Webconfig extends Daemon
         $folder_list = $folder->get_listing();
 
         foreach ($folder_list as $theme) {
-            $file = new File(self::PATH_THEMES . '/' . $theme . '/info/info');
+            $file = new File(self::PATH_THEMES . '/' . $theme . '/deploy/info.php');
 
             if (!$file->exists())
                 continue;
 
-            // FIXME info/info -> deploy/info.php
-            include self::PATH_THEMES . '/' . $theme . '/info/info';
+            include self::PATH_THEMES . '/' . $theme . '/deploy/info.php';
             $theme_list[$theme] = $package;
         }
 
@@ -183,20 +182,34 @@ class Webconfig extends Daemon
     }
 
     /**
-     * Returns configured theme mode.
+     * Returns configured theme metadata.
      *
-     * @return string theme mode
+     * @return string theme metadata
      * @throws Engine_Exception
      */
 
-    public function get_theme_mode()
+    public function get_theme_metadata($name = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         if (! $this->is_loaded)
             $this->_load_config();
 
-        return $this->config['theme_mode'];
+        if ($name == NULL)
+            $name = $this->get_theme();
+
+        try {
+            $file = new File(self::PATH_THEMES . '/' . $name . '/deploy/info.php');
+            if (!$file->exists())
+                throw new Engine_Exception("TODO Incompatible theme", CLEAROS_ERROR);
+
+            include_once(self::PATH_THEMES . '/' . $name . '/deploy/info.php');
+                
+            return $package;
+            
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+        }
     }
 
     /**
@@ -237,22 +250,6 @@ class Webconfig extends Daemon
         clearos_profile(__METHOD__, __LINE__);
 
         $this->_set_parameter('theme', $theme);
-    }
-
-    /**
-     * Sets the theme mode for webconfig.
-     *
-     * @param string $mode theme mode for webconfig
-     *
-     * @return void
-     * @throws Engine_Exception
-     */
-
-    public function set_theme_mode($mode)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $this->_set_parameter('theme_mode', $mode);
     }
 
     ///////////////////////////////////////////////////////////////////////////////

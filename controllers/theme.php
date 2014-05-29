@@ -55,7 +55,16 @@ class Theme extends ClearOS_Controller
 
     function index()
     {
-        echo "nothing to see here";
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Webconfig');
+        $this->lang->load('webconfig');
+
+        // Load views
+        //-----------
+
+        $this->page->view_form('webconfig/summary', $data, lang('webconfig_app_name'));
     }
 
     /**
@@ -99,4 +108,61 @@ class Theme extends ClearOS_Controller
             redirect('/base/index');
         }
     }
+
+    /**
+     * Theme edit controller
+     *
+     * @param string $name theme name
+     *
+     * @return view
+     */
+
+    function edit($name)
+    {
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Webconfig');
+        $this->lang->load('theme');
+
+        $theme = $this->webconfig->get_theme($name);
+
+        // Set validation rules
+        //---------------------
+         
+        //$this->form_validation->set_policy('sender', 'theme/Theme', 'validate_email', TRUE);
+        $form_ok = $this->form_validation->run();
+
+        // Handle form submit
+        //-------------------
+
+        if ($this->input->post('submit') && $form_ok) {
+            try {
+//                $this->theme->set_host($this->input->post('host'));
+
+                $this->page->set_status_updated();
+
+                redirect('/theme');
+            } catch (Exception $e) {
+                $this->page->view_exception($e);
+                return;
+            }
+        }
+
+        // Load view data
+        //---------------
+
+        try {
+            $data['metadata'] = $this->webconfig->get_theme_metadata();
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
+        }
+
+        // Load views
+        //-----------
+
+        $this->page->view_form('base/theme/settings', $data, lang('theme_app_name'));
+    }
+
 }
