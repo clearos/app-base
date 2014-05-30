@@ -180,6 +180,9 @@ class Yum extends Engine
         if ($log->exists())
             $log->delete();
 
+        // Yum caching is problematic.  See example in tracker #1562.
+        $shell->execute(self::COMMAND_YUM, 'clean metadata', TRUE);
+
         // Run install
         $shell = new Shell();
 
