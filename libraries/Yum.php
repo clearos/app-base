@@ -171,6 +171,7 @@ class Yum extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        // Bail if busy
         if ($this->is_busy())
             throw new Yum_Busy_Exception();
 
@@ -178,7 +179,8 @@ class Yum extends Engine
         $log = new File(CLEAROS_TEMP_DIR . '/' . self::FILE_LOG);
         if ($log->exists())
             $log->delete();
-        
+
+        // Run install
         $shell = new Shell();
 
         $options = array('log' => self::FILE_LOG);
@@ -186,12 +188,7 @@ class Yum extends Engine
         if ($run_in_background)
             $options['background'] = TRUE;
 
-        $exitcode = $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
-
-        if ($exitcode != 0)
-            throw new Engine_Exception(lang('base_yum_something_went_wrong'));
-
-        $output = $shell->get_output();
+        $shell->execute(self::COMMAND_WC_YUM, "-i " . implode(" ", $list), TRUE, $options);
     }
 
     /**
