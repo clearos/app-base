@@ -25,9 +25,14 @@ for DAEMON in $DAEMONS; do
     if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
         PID=`$PIDOF $PID_DAEMON`
         if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
-            /etc/rc.d/init.d/$DAEMON stop
-            /etc/rc.d/init.d/$DAEMON start
-            $LOGGER "restarting $DAEMON"
+            $LOGGER "sanity checking $DAEMON"
+            sleep 60 
+            PID=`$PIDOF $PID_DAEMON`
+            if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
+                /etc/rc.d/init.d/$DAEMON stop
+                /etc/rc.d/init.d/$DAEMON start
+                $LOGGER "restarting $DAEMON"
+            fi
         elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
             /etc/rc.d/init.d/$DAEMON start
             $LOGGER "hard starting $DAEMON"
