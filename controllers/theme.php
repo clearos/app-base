@@ -127,10 +127,19 @@ class Theme extends ClearOS_Controller
 
         $theme = $this->webconfig->get_theme($name);
 
+        try {
+            $metadata = $this->webconfig->get_theme_metadata();
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
+        }
+
         // Set validation rules
         //---------------------
          
-        //$this->form_validation->set_policy('sender', 'theme/Theme', 'validate_email', TRUE);
+        foreach ($metadata['settings'] as $field_name => $setting)
+            $this->form_validation->set_policy('options[' . $field_name . ']', 'base/Webconfig', 'validate_theme_option', $setting['required']);
+
         $form_ok = $this->form_validation->run();
 
         // Handle form submit
@@ -138,11 +147,11 @@ class Theme extends ClearOS_Controller
 
         if ($this->input->post('submit') && $form_ok) {
             try {
-//                $this->theme->set_host($this->input->post('host'));
+                $this->webconfig->set_theme_options($this->input->post('options'));
 
                 $this->page->set_status_updated();
 
-                redirect('/theme');
+//                redirect('/base/theme/edit/' . $name);
             } catch (Exception $e) {
                 $this->page->view_exception($e);
                 return;
@@ -152,17 +161,13 @@ class Theme extends ClearOS_Controller
         // Load view data
         //---------------
 
-        try {
-            $data['metadata'] = $this->webconfig->get_theme_metadata();
-        } catch (Exception $e) {
-            $this->page->view_exception($e);
-            return;
-        }
+        $data['metadata'] = $metadata;
+        $data['theme_settings'] = $this->webconfig->get_theme_settings();
 
         // Load views
         //-----------
 
-        $this->page->view_form('base/theme/settings', $data, lang('theme_app_name'));
+        $this->page->view_form('base/theme/settings', $data, lang('base_theme'));
     }
 
 }

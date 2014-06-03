@@ -62,9 +62,11 @@ echo field_info('credits', lang('base_credits'), $credits);
 
 
 echo fieldset_header(lang('base_settings'));
-foreach ($metadata['settings'] as $field => $settings) {
-    if ($settings['type'] == 'dropdown')
-        echo field_dropdown($field, $settings['options'], $config['settings'][$type]['value'], lang($settings['lang_tag']), FALSE);
+foreach ($metadata['settings'] as $field_name => $setting) {
+    if ($setting['type'] == 'dropdown')
+        echo field_dropdown('options[' . $field_name . ']', $setting['options'], $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
+    if ($setting['type'] == 'color')
+        echo field_color('options[' . $field_name . ']', $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
 }
 
 echo field_button_set($buttons);

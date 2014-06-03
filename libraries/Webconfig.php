@@ -146,9 +146,7 @@ class Webconfig extends Daemon
         if (! $this->is_loaded)
             $this->_load_config();
 
-        $theme = (empty($this->config['theme'])) ? 'default' : $this->config['theme'];
-
-        return $theme;
+        return $this->config['theme'];
     }
 
     /**
@@ -182,6 +180,25 @@ class Webconfig extends Daemon
     }
 
     /**
+     * Returns configured theme options.
+     *
+     * @return array theme options
+     * @throws Engine_Exception
+     */
+
+    public function get_theme_settings()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! $this->is_loaded)
+            $this->_load_config();
+
+        if (isset($this->config[$this->get_theme()]))
+            return unserialize($this->config[$this->get_theme()]);
+        return array();
+    }
+
+    /**
      * Returns configured theme metadata.
      *
      * @return string theme metadata
@@ -191,9 +208,6 @@ class Webconfig extends Daemon
     public function get_theme_metadata($name = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
-
-        if (! $this->is_loaded)
-            $this->_load_config();
 
         if ($name == NULL)
             $name = $this->get_theme();
@@ -210,6 +224,23 @@ class Webconfig extends Daemon
         } catch (Engine_Exception $e) {
             throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
         }
+    }
+
+    /**
+     * Set a theme option.
+     *
+     * @param string $options options
+     *
+     * @throws Engine_Exception
+     */
+
+    public function set_theme_options($options)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $theme_name = $this->get_theme();
+
+        $this->_set_parameter($theme_name, serialize($options));
     }
 
     /**
@@ -269,56 +300,62 @@ class Webconfig extends Daemon
 
         try {
             $config_file = new Configuration_File(self::FILE_CONFIG);
-            $rawdata = $config_file->load();
+            $this->config = $config_file->load();
         } catch (File_Not_Found_Exception $e) {
             // Not fatal, set defaults below
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
-        if (isset($rawdata['allow_shell']) && preg_match("/(true|1)/i", $rawdata['allow_shell']))
-            $this->config['allow_shell'] = TRUE;
-        else
-            $this->config['allow_shell'] = FALSE;
-
-        if (isset($rawdata['theme_mode']) && !empty($rawdata['theme_mode']))
-            $this->config['theme_mode'] = $rawdata['theme_mode'];
-        else
-            $this->config['theme_mode'] = 'normal';
-
-        if (isset($rawdata['theme']) && !empty($rawdata['theme']))
-            $this->config['theme'] = $rawdata['theme'];
-        else
+        if (!isset($this->config['theme']))
             $this->config['theme'] = 'default';
-
+ 
         $this->is_loaded = TRUE;
     }
 
     /**
      * Sets a parameter in the config file.
      *
-     * @param string $key   name of the key in the config file
-     * @param string $value value for the key
+     * @param string $key     name of the key in the config file
+     * @param string $value   value for the key
      *
      * @access private
      * @return void
      * @throws Engine_Exception
      */
 
-    protected function _set_parameter($key, $value)
-    {
+     protected function _set_parameter($key, $value)
+     {
         clearos_profile(__METHOD__, __LINE__);
-
+ 
         $file = new File(self::FILE_CONFIG);
 
         if (! $file->exists())
             $file->create('root', 'root', '0644');
-
+ 
         $match = $file->replace_lines("/^$key\s*=\s*/", "$key = $value\n");
 
         if (!$match)
             $file->add_lines("$key = $value\n");
+    }
 
-        $this->is_loaded = FALSE;
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A L I D A T I O N   R O U T I N E S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Validation routine for theme options
+     *
+     * @param string $sdn_username SDN Username
+     *
+     * @return boolean TRUE if sdn_username is valid
+     */
+
+    public function validate_theme_option($key_value_pair)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (FALSE)
+            return lang('base_invalid_theme_option');
     }
 }

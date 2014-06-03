@@ -58,7 +58,7 @@ foreach ($themes as $theme_name => $info) {
         );
 
     $item['title'] = $info['title'];
-    $item['action'] = '/app/theme/edit/' . $theme_name;
+    $item['action'] = '/app/base/theme/edit/' . $theme_name;
     $item['anchors'] = button_set($buttons);
 
     $item['details'] = array(
@@ -76,7 +76,7 @@ foreach ($themes as $theme_name => $info) {
 ///////////////////////////////////////////////////////////////////////////////
 
 echo summary_table(
-    lang('theme_available_list'),
+    lang('base_installed_themes'),
     NULL,
     $headers,
     $items,
