@@ -64,7 +64,7 @@ class Theme extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->view_form('webconfig/summary', $data, lang('webconfig_app_name'));
+        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
     }
 
     /**
