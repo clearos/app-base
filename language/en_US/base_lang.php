@@ -465,6 +465,7 @@ $lang['base_upload_stopped_by_extension'] = 'The file upload uses an unsupported
 $lang['base_upload_unable_to_write_file'] = 'The upload could not be written to disk.';
 $lang['base_uptime'] = 'Uptime';
 $lang['base_url'] = 'Web Site Address';
+$lang['base_use_default'] = 'Use Default';
 $lang['base_user_engine_not_running'] = 'The required user database engine is not running.';
 $lang['base_user_guide'] = 'User Guide';
 $lang['base_username'] = 'Username';
