@@ -119,8 +119,7 @@ class Script extends Engine
         else
             $this->script_name = $script_name;
 
-        $this->lock_file = sprintf('%s/%s%s',
-            self::DIR_LOCK, $this->script_name, self::LOCK_SUFFIX);
+        $this->lock_file = sprintf('%s/%s%s', self::DIR_LOCK, $this->script_name, self::LOCK_SUFFIX);
     }
 
     /**
@@ -144,8 +143,7 @@ class Script extends Engine
             } while (--$retries > 0);
 
             if ($this->is_running()) {
-                clearos_log($this->script_name,
-                    'Unable to start script - currently running.');
+                clearos_log($this->script_name, 'Unable to start script - currently running.');
                 return FALSE;
             }
 
@@ -159,12 +157,8 @@ class Script extends Engine
             return TRUE;
 
         } catch (Exception $e) {
-            clearos_log($this->script_name,
-                sprintf('Unable to create lock file: %s.',
-                    clearos_exception_message($e)));
-            throw new Engine_Exception(
-                lang('base_unable_to_create_lock_file'), CLEAROS_WARNING
-            );
+            clearos_log($this->script_name, sprintf('Unable to create lock file: %s.', clearos_exception_message($e)));
+            throw new Engine_Exception(lang('base_unable_to_create_lock_file'), CLEAROS_WARNING);
         }
     }
 
@@ -216,12 +210,10 @@ class Script extends Engine
                 return TRUE;
 
         } catch (Exception $e) {
-            clearos_log($this->script_name,
-                sprintf('Unknown status: %s.', clearos_exception_message($e)));
+            clearos_log($this->script_name, sprintf('Unknown status: %s.', clearos_exception_message($e)));
             throw new Engine_Exception(
-                lang('base_unknown_script_state') .
-                    ' (' . $this->script_name . ') - ' .
-                    clearos_exception_message($e), CLEAROS_WARNING
+                lang('base_unknown_script_state') .  ' (' . $this->script_name . ') - ' .
+                clearos_exception_message($e), CLEAROS_WARNING
             );
         }
 

@@ -435,6 +435,8 @@ class Install_Wizard extends Engine
     /**
      * Sets password changed state.
      *
+     * @param boolean $state state
+     *
      * @return void
      * @throws Engine_Exception
      */
