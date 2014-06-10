@@ -138,6 +138,7 @@ class Yum extends Engine
 
     /**
      * Cleans yum cache.
+     *
      * @param boolean $run_in_background if FALSE, do not run in background (default = FALSE)
      *
      * @return void

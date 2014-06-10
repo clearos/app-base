@@ -237,7 +237,8 @@ class Session extends ClearOS_Controller
                         $valid_pages = $this->access_control->get_valid_pages($username);
                         if (preg_match('/^\/base\//', $post_redirect)
                             && (in_array('dashboard', $valid_pages) || ($username === 'root'))
-                            && clearos_app_installed('dashboard')) {
+                            && clearos_app_installed('dashboard')
+                        ) {
                             redirect('/dashboard');
                         } else {
                             redirect($post_redirect);

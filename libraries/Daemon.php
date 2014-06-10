@@ -239,7 +239,8 @@ class Daemon extends Software
         if (($this->initscript === 'smartd') && isset($this->details['pid_file']) && preg_match('/subsys/', $this->details['pid_file']))
             unset($this->details['pid_file']);
 
-        $file = null;
+        $file = NULL;
+
         if (isset($this->details['pid_file']))
             $file = new File($this->details['pid_file'], TRUE);
 
@@ -270,8 +271,7 @@ class Daemon extends Software
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $exit_code = $shell->execute(self::COMMAND_PIDOF,
-            "-x -s " .$this->details['process_name'], FALSE, $options);
+        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->details['process_name'], FALSE, $options);
 
         if ($exit_code != 0)
             return 0;

@@ -165,6 +165,7 @@ class File extends Engine
      * @param string  $filename  target file
      * @param boolean $superuser superuser access required to read the file
      * @param boolean $temporary create a temporary file
+     * @param array   $options   class options
      */
 
     public function __construct($filename, $superuser = FALSE, $temporary = FALSE, $options = NULL)
@@ -288,7 +289,12 @@ class File extends Engine
 
         if ($max_lines === -1) {
             try {
-                $retval = $shell->execute(File::COMMAND_GREP, '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile, TRUE, $options);
+                $retval = $shell->execute(
+                    File::COMMAND_GREP, 
+                    '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile,
+                    TRUE,
+                    $options
+                );
                 if ($retval === 0)
                     $results = $file->get_contents_as_array();
 
@@ -300,7 +306,12 @@ class File extends Engine
             }
         } else {
             try {
-                $retval = $shell->execute(File::COMMAND_GREP, '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile, TRUE, $options);
+                $retval = $shell->execute(
+                    File::COMMAND_GREP,
+                    '"' . $regex . '" ' . escapeshellarg($this->filename) . " > " . $tempfile,
+                    TRUE,
+                    $options
+                );
                 if ($retval === 0) {
                     $search_file = new File($tempfile);
                     $results = $search_file->get_tail($max_lines);
