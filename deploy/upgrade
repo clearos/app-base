@@ -72,7 +72,7 @@ fi
 # FIXME: beta period only
 #IS_TESTING=`grep -E '(Alpha|Beta|RC)' /etc/clearos-release`
 #if [ -n "$IS_TESTING" ]; then
-    /usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
-    /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
-    /usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
+    /usr/bin/yum-config-manager --disable clearos-professional-testing >/dev/null 2>&1
+    /usr/bin/yum-config-manager --disable clearos-updates-testing >/dev/null 2>&1
+#    /usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
 #fi
