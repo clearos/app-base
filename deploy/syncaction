@@ -1,6 +1,11 @@
 #!/bin/sh
 
 if [ "$1" == "install_event" ]; then
+    # FIXME: review for ClearOS 7
+    if [ ! -e /boot/grub/grub.conf ]; then
+        exit 0
+    fi
+
     logger -p local6.notice -t clearsync "base - performing post-install cleanup"
 
     # TODO: see how this behaves.  It should only be done
