@@ -42,6 +42,7 @@ $app['core_requires'] = array(
     'clearos-base',
     'clearos-framework >= 6.5.8',
     'clearos-release',
+    'cpupowerutils',
     'csplugin-filewatch',
     'theme-default >= 6.5.8',
     'chkconfig',

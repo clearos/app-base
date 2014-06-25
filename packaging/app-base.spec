@@ -21,6 +21,7 @@ Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 6.5.8
 Requires: clearos-release
+Requires: cpupowerutils
 Requires: csplugin-filewatch
 Requires: theme-default >= 6.5.8
 Requires: chkconfig
