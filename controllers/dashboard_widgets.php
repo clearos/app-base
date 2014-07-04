@@ -93,9 +93,31 @@ class Dashboard_Widgets extends ClearOS_Controller
         $this->load->library('base/Webconfig');
         $this->lang->load('base');
 
+//        $confirm_id = $this->session->userdata('confirm_id');
+        $this->session->set_userdata('item', 'bob');
+            clearos_profile(__METHOD__, __LINE__, "FUCK YES 0..." . json_encode($this->session->userdata));
+
+/*
+        if ($this->input->post('confirm_id')) {
+            if ($confirm_id == $this->input->post('confirm_id')) {
+                clearos_profile(__METHOD__, __LINE__, "FUCK YES 2..." . $this->input->post('action') . " server");
+                $this->session->unset_userdata('confirm_id');
+                clearos_profile(__METHOD__, __LINE__, "FUCK YES..." . $this->input->post('action') . " server");
+                redirect('/dashboard');
+            }
+        }
+        if (!$this->session->userdata('confirm_id')) {
+            $confirm_id = rand();
+        clearos_profile(__METHOD__, __LINE__, "FUCK ERR..." . $confirm_id);
+            $this->session->set_userdata('confirm_id', "$confirm_id");
+            clearos_profile(__METHOD__, __LINE__, "FUCK YES 200..." . $this->session->userdata('confirm_id') . " server");
+        }
+*/
+
         // Load views
         //-----------
         $data = array(
+            'confirm_id' => $confirm_id,
             'actions' => array(
                 'shutdown' => lang('base_shutdown'),
                 'restart' => lang('base_restart')
