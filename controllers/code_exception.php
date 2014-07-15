@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Shutdown/restart view.
+ * Code Exception controller.
  *
  * @category   apps
  * @package    base
- * @subpackage views
+ * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -26,39 +26,41 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//
+//  
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// Load dependencies
+// C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
-$this->lang->load('base');
+/**
+ * Code Exception controller.
+ *
+ * @category   apps
+ * @package    base
+ * @subpackage controllers
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2011 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
 
-$buttons = array(form_submit_select('butSubmit', 'high', array('id' => 'confirm-action')));
+class Code_Exception extends ClearOS_Controller
+{
+    /**
+     * Date default controller
+     *
+     * @return string
+     */
 
-echo form_open('base/dashboard_widgets/shutdown', 'id=confirm-action-form');
-echo form_header(lang('base_shutdown_restart'));
+    function index()
+    {
+        // Load libraries
+        //---------------
 
-echo field_dropdown('action', $actions, $action, lang('base_action'), FALSE);
-echo field_input('confirm_id', $confirm_id, "", FALSE, array('hide_field' => TRUE));
-echo field_button_set($buttons);
+        $this->lang->load('base');
 
-echo form_footer();
-echo form_close();
-echo modal_confirm(
-    lang('base_confirmation_required'),
-    lang('base_confirm_action') . ": <span id='action-selected'></span>?",
-    "dashboard",
-    "confirm-action-form",
-    "modal-confirm"
-);
+        $this->page->view_form('base/code_exception', NULL, lang('base_exception'));
+    }
 
-// Script below used to display action selected (shutdown or reboot)
-echo "<script type='text/javascript'>\n";
-echo "  $(document).ready(function() {";
-echo "    $('#modal-confirm-wrapper').on('shown.bs.modal', function (e) {";
-echo "      $('#action-selected').html($('#action option:selected').text());\n";
-echo "    });";
-echo "  });";
-echo "</script>\n";
+}
