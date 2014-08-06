@@ -353,6 +353,7 @@ $lang['base_performance_level'] = 'Performance Level';
 $lang['base_please_start_here_instead'] = 'Please start here instead.';
 $lang['base_please_wait'] = 'Please Wait';
 $lang['base_previous'] = 'Previous';
+$lang['base_priority'] = 'Priority';
 $lang['base_processes'] = 'Processes';
 $lang['base_progress'] = 'Progress';
 $lang['base_refresh'] = 'Refresh';
