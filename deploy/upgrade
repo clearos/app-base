@@ -41,6 +41,9 @@ rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7 >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Testing-7 >/dev/null 2>&1
 
 # TODO: move this to clearsync
 LINE=`grep "^Cmnd_Alias CLEARSYNC" /etc/sudoers 2>/dev/null`
