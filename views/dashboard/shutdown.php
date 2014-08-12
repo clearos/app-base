@@ -50,6 +50,7 @@ echo modal_confirm(
     lang('base_confirmation_required'),
     lang('base_confirm_action') . ": <span id='action-selected'></span>?",
     "dashboard",
+    array("id" => "confirm-action"),
     "confirm-action-form",
     "modal-confirm"
 );

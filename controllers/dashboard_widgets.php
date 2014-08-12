@@ -98,14 +98,14 @@ class Dashboard_Widgets extends ClearOS_Controller
             if ($this->session->userdata('form_post_verify') == $this->input->post('confirm_id')) {
                 if ($this->input->post('action') === 'shutdown') {
                     $this->page->set_message(lang('base_system_is_shutting_down'), 'warning');
-            //TODO        $this->system->shutdown();
-
+                    $this->system->shutdown();
                     redirect('/dashboard/shutdown/status');
+                    return;
                 } else if ($this->input->post('action') === 'restart') {
                     $this->page->set_message(lang('base_system_is_restarting'), 'warning');
-             // TODO      $this->system->restart();
-
+                    $this->system->restart();
                     redirect('/dashboard/shutdown/status');
+                    return;
                 }
             }
         }
