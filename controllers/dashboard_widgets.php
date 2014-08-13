@@ -90,9 +90,8 @@ class Dashboard_Widgets extends ClearOS_Controller
         // Load libraries
         //---------------
 
-        $this->load->library('base/Webconfig');
+        $this->load->library('base/System');
         $this->lang->load('base');
-
 
         if ($this->input->post('confirm_id')) {
             if ($this->session->userdata('form_post_verify') == $this->input->post('confirm_id')) {
