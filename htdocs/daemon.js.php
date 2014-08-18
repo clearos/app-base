@@ -59,24 +59,14 @@ $(document).ready(function() {
 
     if (clearos_daemon_name)
         clearosDaemon(clearos_daemon_name, clearos_app_name);
-    $('tbody', $('#sidebar_summary_table')).append(
-      '<tr>' +
-      '  <td><b><?php echo lang('base_status'); ?></b></td>' +
-      '  <td id=\'clearos_daemon_status\'><div class=\'theme-loading-small\'></div></td>' +
-      '</tr>' +
-      '<tr id=\'clearos_daemon_action_row\'>' +
-      '  <td><b><?php echo lang('base_action'); ?></b></td>' +
-      '  <td>' +
-      '  <a href=\'#\' id=\'clearos_daemon_action\' class=\'theme-button-set-first theme-button-set-last theme-anchor theme-anchor-javascript theme-anchor-important\'> ... ' +
-      '  </a>' +
-      '</td>' +
-      '</tr>'
-    );
+    $('#sidebar_daemon_status').show();
+    $('#sidebar_daemon_action').show();
 
     // Click Events
     //-------------
 
     $('#clearos_daemon_action').click(function(e) {
+        e.preventDefault();
         var service_status = $("#clearos_daemon_action").html();
         $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
         // Hacks to get style right
@@ -138,6 +128,8 @@ function clearosStartDaemon(daemon) {
             $('#clearos_daemon_status_lock').val('off');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $('#clearos_daemon_status_lock').val('off');
+            console.log(errorThrown);
         }
     });
 }
@@ -151,6 +143,8 @@ function clearosStopDaemon(daemon) {
             $('#clearos_daemon_status_lock').val('off');
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
+            $('#clearos_daemon_status_lock').val('off');
+            console.log(errorThrown);
         }
     });
 }
