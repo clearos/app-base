@@ -68,19 +68,19 @@ $(document).ready(function() {
     $('#clearos_daemon_action').click(function(e) {
         e.preventDefault();
         var service_status = $("#clearos_daemon_action").html();
-        $("#clearos_daemon_action").html('<span class="theme-loading-small" style="padding-right: 5px; height: 15px; margin-bottom: -5px;"></span>');
-        // Hacks to get style right
-        $(".theme-loading-small").css('background-position', '5 0');
+        $("#clearos_daemon_action").html(clearos_loading());
 
+        var options = new Object();
+        options.classes = 'theme-daemon-start-stop-status';
         if ($('#clearos_daemon_status_lock').val() == 'on') {
             // Prevent double click
         } else if (service_status == lang_stop) {
             $('#clearos_daemon_status_lock').val('on');
-            $('#clearos_daemon_status').html(lang_stopping + '<span class="theme-loading"></span>');
+            $('#clearos_daemon_status').html(clearos_loading(options) + lang_stopping + '...');
             clearosStopDaemon(clearos_daemon_name);
         } else {
             $('#clearos_daemon_status_lock').val('on');
-            $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
+            $('#clearos_daemon_status').html(clearos_loading(options) + lang_starting + '...');
             clearosStartDaemon(clearos_daemon_name);
         }
     });
@@ -175,12 +175,10 @@ function clearosShowDaemonStatus(payload) {
         $("#clearos_daemon_status").html(lang_running);
         $("#clearos_daemon_action").html(lang_stop);
     } else if (payload.status == 'stopped') {
-        // TODO: move styling to theme
-        $("#clearos_daemon_status").html("<span style='color: red'>" + lang_stopped + "</span>");
+        $("#clearos_daemon_status").html("<span class='theme-stopped-daemon'>" + lang_stopped + "</span>");
         $("#clearos_daemon_action").html(lang_start);
     } else if (payload.status == 'dead') {
-        // TODO: move styling to theme
-        $("#clearos_daemon_status").html("<span style='color: red'>" + lang_dead + "</span>");
+        $("#clearos_daemon_status").html("<span class='theme-dead-daemon'>" + lang_dead + "</span>");
         $("#clearos_daemon_action").html(lang_start);
     } else if (payload.status == 'starting') {
         $('#clearos_daemon_status').html(lang_starting + '<span class="theme-loading"></span>');
