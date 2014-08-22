@@ -100,7 +100,7 @@ class wcYumHelper(yum.YumBase):
         self.conf.rpm_check_debug = False
 
         status['progress'] = 35
-        status['details'] = 'Updating repositories and preparing package dependencies... this may take a few minutes.'
+        status['details'] = 'Updating repositories and preparing package dependencies...this may take a few minutes.'
         print json.dumps(status)
 
         searchlist = ['name']
