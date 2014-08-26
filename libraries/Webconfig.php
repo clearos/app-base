@@ -107,8 +107,7 @@ class Webconfig extends Daemon
 
     const FILE_CONFIG = '/etc/clearos/webconfig.conf';
     const FILE_RESTART = '/var/clearos/base/webconfig_restart';
-    //const PATH_THEMES = '/usr/clearos/themes';
-    const PATH_THEMES = '/home/benjamin/clearos/webconfig/themes';
+    const PATH_THEMES = '/usr/clearos/themes';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
