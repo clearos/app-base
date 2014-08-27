@@ -313,7 +313,7 @@ class Stats extends Engine
             $pieces = explode(' ', $line);
             $output['date'] = $pieces[0] . ' ' . $pieces[1];
             $output['time'] = $pieces[2];
-            $output['action'] = preg_replace('/\:$/','', $pieces[3]);
+            $output['action'] = preg_replace('/\:$/', '', $pieces[3]);
             $output['package'] = preg_replace('/^\d+\:/', '', $pieces[4]);
             $log[] = $output;
         }
@@ -415,7 +415,7 @@ class Stats extends Engine
         $shell->execute(self::CMD_DF, $args, TRUE, $options);
         $retval = $shell->get_output();
 
-        foreach ($retval as $line){
+        foreach ($retval as $line) {
             $line = preg_replace('/\s+/', '|', $line);
             $pieces = explode('|', $line);
             if (preg_match('/Filesystem/', $line) || preg_match('/tmpfs/', $line))
@@ -432,5 +432,4 @@ class Stats extends Engine
 
         return $results;
     }
-
 }

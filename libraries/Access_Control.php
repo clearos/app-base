@@ -192,16 +192,16 @@ class Access_Control extends Engine
                 $details[Access_Control::TYPE_PUBLIC]
             );
 
-        // Proxy and other splash pages are available with HTTPS (i.e. ugly SSL warning)
         } else if ($_SERVER['SERVER_PORT'] == 82) {
+            // Proxy and other splash pages are available with HTTPS (i.e. ugly SSL warning)
             $pages = $details[Access_Control::TYPE_PUBLIC];
 
-        // Rest pages
         } else if ($_SERVER['SERVER_PORT'] == 83) {
+            // Rest pages
             $pages = $details[Access_Control::TYPE_REST];
 
-        // Development gets everything
         } else if ($_SERVER['SERVER_PORT'] == 1501) {
+            // Development gets everything
             $pages = array_merge(
                 $details[Access_Control::TYPE_ADMINISTRATORS],
                 $details[Access_Control::TYPE_AUTHENTICATED],
