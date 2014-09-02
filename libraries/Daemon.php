@@ -116,7 +116,10 @@ class Daemon extends Software
     const COMMAND_CHKCONFIG = '/sbin/chkconfig';
     const COMMAND_SERVICE = '/sbin/service';
     const COMMAND_PIDOF = '/sbin/pidof';
+    const COMMAND_SYSTEMCTL = '/usr/bin/systemctl';
+
     const PATH_INITD = '/etc/rc.d/rc3.d';
+    const PATH_SYSTEMD = '/etc/systemd/system/multi-user.target.wants';
     const PATH_CONFIGLET = '/var/clearos/base/daemon';
 
     const STATUS_BUSY = 'busy';
@@ -164,7 +167,29 @@ class Daemon extends Software
             $this->details['reloadable'] = FALSE;
         }
 
+        $this->details['url'] = (empty($configlet['url'])) ? '' : $configlet['url'];
+
+        // Multi-service daemons only exist on systemd
+        if (!empty($configlet['multiservice']) && $configlet['multiservice'] && file_exists(self::PATH_SYSTEMD))
+            $this->details['multiservice'] = TRUE;
+        else
+            $this->details['multiservice'] = FALSE;
+
         parent::__construct($this->details['package']);
+    }
+
+    /**
+     * Returns the app URL associated with the daemon.
+     *
+     * @return string app URL
+     * @throws Engine_Exception
+     */
+
+    public function get_app_url()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        return $this->details['url'];
     }
 
     /**
@@ -181,12 +206,34 @@ class Daemon extends Software
         if (! $this->is_installed())
             throw new Engine_Exception(lang('base_not_installed'));
 
-        $folder = new Folder(self::PATH_INITD);
-        $listing = $folder->get_listing();
+        // SysV
+        //-----
 
-        foreach ($listing as $file) {
-            if (preg_match("/^S\d+" . $this->initscript . "$/", $file))
-                return TRUE;
+        $folder = new Folder(self::PATH_INITD);
+
+        if ($folder->exists()) {
+            $listing = $folder->get_listing();
+
+            foreach ($listing as $file) {
+                if (preg_match("/^S\d+" . $this->initscript . "$/", $file))
+                    return TRUE;
+            }
+        }
+
+        // SystemD
+        //--------
+
+        $folder = new Folder(self::PATH_SYSTEMD);
+
+        if ($folder->exists()) {
+            $listing = $folder->get_listing();
+
+            foreach ($listing as $file) {
+                if (preg_match("/^" . $this->initscript . ".service$/", $file))
+                    return TRUE;
+                if (preg_match("/^" . $this->initscript . "@.*.service$/", $file))
+                    return TRUE;
+            }
         }
 
         return FALSE;
@@ -239,7 +286,8 @@ class Daemon extends Software
         if (($this->initscript === 'smartd') && isset($this->details['pid_file']) && preg_match('/subsys/', $this->details['pid_file']))
             unset($this->details['pid_file']);
 
-        $file = null;
+        $file = NULL;
+
         if (isset($this->details['pid_file']))
             $file = new File($this->details['pid_file'], TRUE);
 
@@ -270,8 +318,7 @@ class Daemon extends Software
         $options['validate_exit_code'] = FALSE;
 
         $shell = new Shell();
-        $exit_code = $shell->execute(self::COMMAND_PIDOF,
-            "-x -s " .$this->details['process_name'], FALSE, $options);
+        $exit_code = $shell->execute(self::COMMAND_PIDOF, "-x -s " .$this->details['process_name'], FALSE, $options);
 
         if ($exit_code != 0)
             return 0;
@@ -324,13 +371,13 @@ class Daemon extends Software
         $ps_output = $shell->get_output();
 
         foreach ($ps_output as $line) {
-            if (preg_match("/service $this->initscript stop/", $line))
+            if (preg_match("/service\s+$this->initscript\s+stop/", $line) || preg_match("/systemctl\s+stop\s+$this->initscript/", $line))
                 return self::STATUS_STOPPING;
-            else if (preg_match("/service $this->initscript start/", $line))
+            else if (preg_match("/service\s+$this->initscript\s+start/", $line) || preg_match("/systemctl\s+start\s+$this->initscript/", $line))
                 return self::STATUS_STARTING;
-            else if (preg_match("/service $this->initscript restart/", $line))
+            else if (preg_match("/service\s+$this->initscript\s+restart/", $line) || preg_match("/systemctl\s+restart\s+$this->initscript/", $line))
                 return self::STATUS_RESTARTING;
-            else if (preg_match("/service $this->initscript /", $line))
+            else if (preg_match("/service\s+$this->initscript\s*/", $line) || preg_match("/systemctl\s+.*$this->initscript\s*/", $line))
                 return self::STATUS_BUSY;
         }
 
@@ -357,6 +404,23 @@ class Daemon extends Software
         clearos_profile(__METHOD__, __LINE__);
 
         return $this->details['title'];
+    }
+
+    /**
+     * Returns state of multi-service flag.
+     *
+     * Some daemon start up mutiple processes.  For example, OpenVPN starts
+     * a daemon for VPN configuration.
+     *
+     * @return boolean TRUE if daemon is multi-service.
+     * @throws Engine_Exception
+     */
+
+    public function is_multiservice()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        return $this->details['multiservice'];
     }
 
     /**

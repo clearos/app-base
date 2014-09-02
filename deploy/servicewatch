@@ -14,7 +14,7 @@ CHECK_BACKUP=`$PIDOF -x configuration-restore`
 [ -n "$CHECK_BACKUP" ] && exit 0
 
 for DAEMON in $DAEMONS; do
-	INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
+    INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
 
     if [ "$DAEMON" == "rsyslog" ]; then
         PID_DAEMON="rsyslogd"
@@ -22,15 +22,20 @@ for DAEMON in $DAEMONS; do
         PID_DAEMON=$DAEMON
     fi
 
-	if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
-		PID=`$PIDOF $PID_DAEMON`
-		if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
-			/etc/rc.d/init.d/$DAEMON stop
-			/etc/rc.d/init.d/$DAEMON start
-			$LOGGER "restarting $DAEMON"
-		elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
-			/etc/rc.d/init.d/$DAEMON start
-			$LOGGER "hard starting $DAEMON"
-		fi
-	fi
+    if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
+        PID=`$PIDOF $PID_DAEMON`
+        if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
+            $LOGGER "sanity checking $DAEMON"
+            sleep 60 
+            PID=`$PIDOF $PID_DAEMON`
+            if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
+                /etc/rc.d/init.d/$DAEMON stop
+                /etc/rc.d/init.d/$DAEMON start
+                $LOGGER "restarting $DAEMON"
+            fi
+        elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
+            /etc/rc.d/init.d/$DAEMON start
+            $LOGGER "hard starting $DAEMON"
+        fi
+    fi
 done

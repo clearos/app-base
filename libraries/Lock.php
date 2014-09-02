@@ -123,7 +123,9 @@ class Lock extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        $old = umask(002);
         $this->lock_handle = fopen($this->lock_file, 'w');
+        umask($old);
 
         if (!flock($this->lock_handle, LOCK_EX | LOCK_NB))
             return FALSE;

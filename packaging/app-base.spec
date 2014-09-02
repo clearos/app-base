@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.6.0
+Version: 1.6.5
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -21,6 +21,7 @@ Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 6.5.8
 Requires: clearos-release
+Requires: cpupowerutils
 Requires: csplugin-filewatch
 Requires: theme-default >= 6.5.8
 Requires: chkconfig
@@ -82,6 +83,7 @@ install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
+install -D -m 0644 packaging/filewatch-base-ulimit.conf %{buildroot}/etc/clearsync.d/filewatch-base-ulimit.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0644 packaging/public.acl %{buildroot}/var/clearos/base/access_control/public/base
 install -D -m 0644 packaging/rest.acl %{buildroot}/var/clearos/base/access_control/rest/base
@@ -153,6 +155,7 @@ exit 0
 /etc/yum.repos.d/clearos-epel.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-install.conf
+/etc/clearsync.d/filewatch-base-ulimit.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
 /var/clearos/base/access_control/public/base
 /var/clearos/base/access_control/rest/base

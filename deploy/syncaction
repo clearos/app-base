@@ -1,6 +1,11 @@
 #!/bin/sh
 
 if [ "$1" == "install_event" ]; then
+    # FIXME: review for ClearOS 7
+    if [ ! -e /boot/grub/grub.conf ]; then
+        exit 0
+    fi
+
     logger -p local6.notice -t clearsync "base - performing post-install cleanup"
 
     # TODO: see how this behaves.  It should only be done
@@ -69,5 +74,16 @@ elif [ "$1" == "webconfig_change_event" ]; then
         /sbin/service system-mysqld stop >/dev/null 2>&1
         sleep 2
         /sbin/service system-mysqld start >/dev/null 2>&1
+    fi
+elif [ "$1" == "ulimit_workaround" ]; then
+    # Only needed on SysV systems
+    # KLUDGE: see tracker #1436 for details
+    if [ -x /etc/rc.d/init.d/squid ]; then
+        UPTIME=`cat /proc/uptime | awk '{ print $1 }' | sed 's/\..*//'`
+        if [ $UPTIME -lt 200 ]; then
+            sleep 200
+            logger -p local6.notice -t clearsync 'base - restarting web proxy for ulimit update'
+            /sbin/service squid condrestart >/dev/null 2>&1
+        fi
     fi
 fi
