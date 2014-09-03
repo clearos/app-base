@@ -334,7 +334,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/marketplace/wizard',
                 'title' => lang('marketplace_getting_started'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('marketplace_marketplace'),
+                'subcategory' => lang('base_marketplace'),
                 'type' => 'intro'
             );
 
@@ -342,7 +342,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/marketplace/wizard/selection',
                 'title' => lang('marketplace_app_selection'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('marketplace_marketplace'),
+                'subcategory' => lang('base_marketplace'),
             );
 
             $steps[] = array(
