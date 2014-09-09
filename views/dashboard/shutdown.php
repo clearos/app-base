@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Base controller.
+ * Shutdown/restart view.
  *
  * @category   apps
  * @package    base
- * @subpackage controllers
+ * @subpackage views
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -26,48 +26,40 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// C L A S S
+// Load dependencies
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Base controller.
- *
- * @category   apps
- * @package    base
- * @subpackage controllers
- * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
- * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/base/
- */
+$this->lang->load('base');
 
-class Base extends ClearOS_Controller
-{
-    /**
-     * Date default controller
-     *
-     * @return string
-     */
+$buttons = array(form_submit_select('butSubmit', 'high', array('id' => 'confirm-action')));
 
-    function index()
-    {
-        // Load libraries
-        //---------------
+echo form_open('base/dashboard_widgets/shutdown', 'id=confirm-action-form');
+echo form_header(lang('base_shutdown_restart'));
 
-        $this->load->library('base/Webconfig');
-        $this->lang->load('base');
+echo field_dropdown('action', $actions, $action, lang('base_action'), FALSE);
+echo field_input('confirm_id', $confirm_id, "", FALSE, array('hide_field' => TRUE));
+echo field_button_set($buttons);
 
-        // Load views
-        //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
+echo form_footer();
+echo form_close();
+echo modal_confirm(
+    lang('base_confirmation_required'),
+    lang('base_confirm_action') . ": <span id='action-selected'></span>?",
+    "dashboard",
+    array("id" => "confirm-action"),
+    "confirm-action-form",
+    "modal-confirm"
+);
 
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
-    }
-
-}
+// Script below used to display action selected (shutdown or reboot)
+echo "<script type='text/javascript'>\n";
+echo "  $(document).ready(function() {";
+echo "    $('#modal-confirm-wrapper').on('shown.bs.modal', function (e) {";
+echo "      $('#action-selected').html($('#action option:selected').text());\n";
+echo "    });";
+echo "  });";
+echo "</script>\n";

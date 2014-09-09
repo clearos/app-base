@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base controller.
+ * Dashboard Widgets controller.
  *
  * @category   apps
  * @package    base
@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Base controller.
+ * Dashboard Widgets controller.
  *
  * @category   apps
  * @package    base
@@ -45,15 +45,26 @@
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Base extends ClearOS_Controller
+class Dashboard_Widgets extends ClearOS_Controller
 {
     /**
-     * Date default controller
+     * Default controller
      *
      * @return string
      */
 
     function index()
+    {
+        echo "Invalid dashboard widget...not sure how you got here.";
+    }
+
+    /**
+     * Version widget
+     *
+     * @return view
+     */
+
+    function version()
     {
         // Load libraries
         //---------------
@@ -63,11 +74,51 @@ class Base extends ClearOS_Controller
 
         // Load views
         //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
+        $data = array();
 
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
+        $this->page->view_form('base/dashboard/version', $data, lang('base_app_name'));
     }
 
+    /**
+     * Shutdown/Restart widget
+     *
+     * @return view
+     */
+
+    function shutdown()
+    {
+        // Load libraries
+        //---------------
+
+        $this->load->library('base/System');
+        $this->lang->load('base');
+
+        if ($this->input->post('confirm_id')) {
+            if ($this->session->userdata('form_post_verify') == $this->input->post('confirm_id')) {
+                if ($this->input->post('action') === 'shutdown') {
+                    $this->page->set_message(lang('base_system_is_shutting_down'), 'warning');
+                    $this->system->shutdown();
+                    redirect('/dashboard/shutdown/status');
+                    return;
+                } else if ($this->input->post('action') === 'restart') {
+                    $this->page->set_message(lang('base_system_is_restarting'), 'warning');
+                    $this->system->restart();
+                    redirect('/dashboard/shutdown/status');
+                    return;
+                }
+            }
+        }
+
+        // Load views
+        //-----------
+        $data = array(
+            'confirm_id' => $this->session->userdata('form_post_verify'),
+            'actions' => array(
+                'shutdown' => lang('base_shutdown'),
+                'restart' => lang('base_restart')
+            )
+        );
+
+        $this->page->view_form('base/dashboard/shutdown', $data, lang('base_app_name'));
+    }
 }

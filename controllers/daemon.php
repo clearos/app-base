@@ -115,6 +115,8 @@ class Daemon extends ClearOS_Controller
 
     function start()
     {
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Content-type: application/json');
         $this->load->library('base/Daemon', $this->daemon_name);
 
         // Shutdown daemon in case it is dead or in a funk (tracker #1239)
@@ -130,6 +132,7 @@ class Daemon extends ClearOS_Controller
         } catch (Exception $e) {
             //
         }
+        echo json_encode('ok');
     }
 
     /**
@@ -140,6 +143,8 @@ class Daemon extends ClearOS_Controller
 
     function stop()
     {
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Content-type: application/json');
         $this->load->library('base/Daemon', $this->daemon_name);
 
         try {
@@ -148,5 +153,6 @@ class Daemon extends ClearOS_Controller
         } catch (Exception $e) {
             //
         }
+        echo json_encode('ok');
     }
 }

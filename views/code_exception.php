@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Base controller.
+ * Code Exception view.
  *
  * @category   apps
  * @package    base
- * @subpackage controllers
+ * @subpackage views
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
+ * @copyright  2013 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -26,48 +26,16 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// C L A S S
+// Load dependencies
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Base controller.
- *
- * @category   apps
- * @package    base
- * @subpackage controllers
- * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
- * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/base/
- */
+$this->lang->load('base');
 
-class Base extends ClearOS_Controller
-{
-    /**
-     * Date default controller
-     *
-     * @return string
-     */
+///////////////////////////////////////////////////////////////////////////////
+// Form
+///////////////////////////////////////////////////////////////////////////////
 
-    function index()
-    {
-        // Load libraries
-        //---------------
-
-        $this->load->library('base/Webconfig');
-        $this->lang->load('base');
-
-        // Load views
-        //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
-
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
-    }
-
-}

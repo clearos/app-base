@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Base controller.
+ * Summary view.
  *
  * @category   apps
  * @package    base
- * @subpackage controllers
+ * @subpackage views
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -26,48 +26,59 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// C L A S S
+// Load dependencies
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Base controller.
- *
- * @category   apps
- * @package    base
- * @subpackage controllers
- * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
- * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/base/
- */
+$this->lang->load('base');
 
-class Base extends ClearOS_Controller
-{
-    /**
-     * Date default controller
-     *
-     * @return string
-     */
+///////////////////////////////////////////////////////////////////////////////
+// Themes
+///////////////////////////////////////////////////////////////////////////////
 
-    function index()
-    {
-        // Load libraries
-        //---------------
+$headers = array(
+    lang('base_theme'),
+    lang('base_vendor'),
+    lang('base_version')
+);
 
-        $this->load->library('base/Webconfig');
-        $this->lang->load('base');
+foreach ($themes as $theme_name => $info) {
 
-        // Load views
-        //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
+    if ($theme_name != $current_theme)
+        $buttons = array(
+            anchor_edit('/app/base/theme/edit/' . $theme_name),
+            anchor_select('/app/base/theme/select/' . $theme_name, lang('base_select'))
+        );
+    else
+        $buttons = array(
+            anchor_edit('/app/base/theme/edit/' . $theme_name),
+        );
 
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
-    }
+    $item['title'] = $info['title'];
+    $item['action'] = '/app/base/theme/edit/' . $theme_name;
+    $item['anchors'] = button_set($buttons);
+
+    $item['details'] = array(
+        $info['title'],
+        $info['vendor'],
+        $info['version']
+    );
+
+    $items[] = $item;
 
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Summary table
+///////////////////////////////////////////////////////////////////////////////
+
+echo summary_table(
+    lang('base_installed_themes'),
+    NULL,
+    $headers,
+    $items,
+    NULL 
+);

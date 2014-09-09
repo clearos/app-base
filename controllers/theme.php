@@ -55,7 +55,16 @@ class Theme extends ClearOS_Controller
 
     function index()
     {
-        echo "nothing to see here";
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Webconfig');
+        $this->lang->load('webconfig');
+
+        // Load views
+        //-----------
+
+        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
     }
 
     /**
@@ -79,6 +88,15 @@ class Theme extends ClearOS_Controller
         } else if ($theme === 'smartadmin') {
             $this->session->set_userdata('theme', 'smartadmin');
             $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'clipone') {
+            $this->session->set_userdata('theme', 'clipone');
+            $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'clearos7') {
+            $this->session->set_userdata('theme', 'clearos7');
+            $this->session->set_userdata('theme_mode', 'normal');
+        } else if ($theme === 'AdminLTE') {
+            $this->session->set_userdata('theme', 'AdminLTE');
+            $this->session->set_userdata('theme_mode', 'normal');
         }
 
         $this->load->library('user_agent');
@@ -90,4 +108,66 @@ class Theme extends ClearOS_Controller
             redirect('/base/index');
         }
     }
+
+    /**
+     * Theme edit controller
+     *
+     * @param string $name theme name
+     *
+     * @return view
+     */
+
+    function edit($name)
+    {
+        // Load dependencies
+        //------------------
+
+        $this->load->library('base/Webconfig');
+        $this->lang->load('theme');
+
+        $theme = $this->webconfig->get_theme($name);
+
+        try {
+            $metadata = $this->webconfig->get_theme_metadata();
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
+        }
+
+        // Set validation rules
+        //---------------------
+         
+        foreach ($metadata['settings'] as $field_name => $setting)
+            $this->form_validation->set_policy('options[' . $field_name . ']', 'base/Webconfig', 'validate_theme_option', $setting['required']);
+
+        $form_ok = $this->form_validation->run();
+
+        // Handle form submit
+        //-------------------
+
+        if ($this->input->post('submit') && $form_ok) {
+            try {
+                $this->webconfig->set_theme_options($this->input->post('options'));
+
+                $this->page->set_status_updated();
+
+//                redirect('/base/theme/edit/' . $name);
+            } catch (Exception $e) {
+                $this->page->view_exception($e);
+                return;
+            }
+        }
+
+        // Load view data
+        //---------------
+
+        $data['metadata'] = $metadata;
+        $data['theme_settings'] = $this->webconfig->get_theme_settings();
+
+        // Load views
+        //-----------
+
+        $this->page->view_form('base/theme/settings', $data, lang('base_theme'));
+    }
+
 }

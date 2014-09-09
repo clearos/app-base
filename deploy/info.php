@@ -20,7 +20,6 @@ $app['description'] = lang('base_app_description');
 $app['name'] = lang('base_app_name');
 $app['category'] = lang('base_category_system');
 $app['subcategory'] = lang('base_subcategory_settings');
-$app['menu_enabled'] = FALSE;
 
 /////////////////////////////////////////////////////////////////////////////
 // Controller info
@@ -31,6 +30,19 @@ $app['controllers']['session']['wizard_name'] = lang('base_change_password');
 $app['controllers']['session']['wizard_description'] = lang('base_change_password_description');
 $app['controllers']['session']['inline_help'] = array(
     lang('base_change_password') => lang('base_change_password_help'),
+);
+
+/////////////////////////////////////////////////////////////////////////////
+// Dashboard Widgets
+/////////////////////////////////////////////////////////////////////////////
+
+$app['dashboard_widgets'] = array(
+    $app['category'] => array(
+        'base/dashboard_widgets/shutdown' => array(
+            'title' => lang('base_shutdown_restart'),
+            'restricted' => TRUE,
+        )
+    )
 );
 
 /////////////////////////////////////////////////////////////////////////////

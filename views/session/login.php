@@ -38,39 +38,6 @@
 
 $this->lang->load('base');
 
-// TODO: Aaron can improve the look and feel of the IP address ...
-$ip_extras = ($connect_ip) ? ' @ ' . $connect_ip : '';
+$options = array('ip' => $connect_ip);
 
-///////////////////////////////////////////////////////////////////////////////
-// Form open
-///////////////////////////////////////////////////////////////////////////////
-
-echo form_open('base/session/login/' . $redirect);
-echo form_header(lang('base_login'), array('id' => 'theme-login-form-header'));
-
-//////////////////////////////////////////////////////////////////////////////
-// Form
-///////////////////////////////////////////////////////////////////////////////
-
-echo field_input('clearos_username', '', lang('base_username'));
-echo field_password('clearos_password', '', lang('base_password'));
-
-if (count($languages) > 1)
-    echo field_dropdown('code', $languages, $code, lang('base_language'));
-
-if ($ip_extras)
-    echo field_view('', "<span style='color: #666666'>" . $ip_extras . "</span>");
-
-if ($login_failed)
-    echo field_view('', $login_failed);
-
-echo theme_field_button_set(
-    array(form_submit_custom('submit', lang('base_login'), 'high'))
-);
-
-///////////////////////////////////////////////////////////////////////////////
-// Form close
-///////////////////////////////////////////////////////////////////////////////
-
-echo form_footer(array('id' => 'theme-login-form-footer'));
-echo form_close();
+echo login_form($redirect, $languages, $code, $login_failed, $options);
