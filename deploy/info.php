@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.6.5';
+$app['version'] = '2.0.0';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -56,7 +56,7 @@ $app['core_requires'] = array(
     'clearos-release',
     'cpupowerutils',
     'csplugin-filewatch',
-    'theme-default >= 6.5.8',
+    'theme-admin-lte',
     'chkconfig',
     'coreutils',
     'file',
