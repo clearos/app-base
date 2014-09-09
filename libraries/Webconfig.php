@@ -306,8 +306,13 @@ class Webconfig extends Daemon
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
-        if (!isset($this->config['theme']))
-            $this->config['theme'] = 'default';
+        // FIXMEv6 - review
+        if (!isset($this->config['theme'])) {
+            if (clearos_version() == 6)
+                $this->config['theme'] = 'default';
+            else
+                $this->config['theme'] = 'AdminLTE';
+        }
  
         $this->is_loaded = TRUE;
     }
