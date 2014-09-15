@@ -286,7 +286,7 @@ class Install_Wizard extends Engine
             clearos_load_language('date');
 
             $steps[] = array(
-                'nav' => '/app/date/edit',
+                'nav' => '/app/date',
                 'title' => lang('date_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
