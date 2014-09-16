@@ -254,6 +254,7 @@ $lang['base_installed'] = 'Installed';
 $lang['base_installed_themes'] = 'Installed Themes';
 $lang['base_install_guide'] = 'Install Guide';
 $lang['base_install_wizard'] = 'Install Wizard';
+$lang['base_install_wizard_complete'] = 'Installallation wizard complete.';
 $lang['base_installation_complete'] = 'Installation Complete';
 $lang['base_internet_domain'] = 'Internet domain';
 $lang['base_internet_explorer_9_or_higher_warning'] = 'Sorry, your version of Internet Explorer is not supported.  Please use version 9 or higher, or an alternative web browser.';
