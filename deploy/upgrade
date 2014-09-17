@@ -17,7 +17,6 @@
 /usr/sbin/addsudo /bin/rm app-base-core
 /usr/sbin/addsudo /bin/rmdir app-base-core
 /usr/sbin/addsudo /bin/touch app-base-core
-/usr/sbin/addsudo /sbin/chkconfig app-base-core
 /usr/sbin/addsudo /sbin/shutdown app-base-core
 /usr/sbin/addsudo /sbin/service app-base-core
 /usr/sbin/addsudo /usr/bin/api app-base-core

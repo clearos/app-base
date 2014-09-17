@@ -113,7 +113,6 @@ class Daemon extends Software
     ///////////////////////////////////////////////////////////////////////////////
 
     const COMMAND_LS = '/bin/ls';
-    const COMMAND_CHKCONFIG = '/sbin/chkconfig';
     const COMMAND_SERVICE = '/sbin/service';
     const COMMAND_PIDOF = '/sbin/pidof';
     const COMMAND_SYSTEMCTL = '/usr/bin/systemctl';
@@ -255,6 +254,31 @@ class Daemon extends Software
 
         if (isset($this->details['builtin']) && $this->details['builtin'])
             return TRUE;
+
+        // Multiservice daemons
+        //---------------------
+
+        if ($this->is_multiservice()) {
+            clearos_load_library($this->details['api_namespace'] . '/' . $this->details['api_class']);
+            $class_path = '\clearos\apps\\' . $this->details['api_namespace'] . '\\' . $this->details['api_class'];
+            $my_daemon = new $class_path();
+
+            $services = $my_daemon->get_systemd_services();
+
+            foreach ($services as $service) {
+                $options['validate_exit_code'] = FALSE;
+                $shell = new Shell();
+                $exit_code = $shell->execute(self::COMMAND_SYSTEMCTL, 'status ' . $service, FALSE, $options);
+
+                if ($exit_code !== 0)
+                    return FALSE;
+            }
+
+            return TRUE;
+        }
+
+        // Regular daemons
+        //-----------------
 
         $skip_pidof = FALSE;
         if (isset($this->details['skip_pidof']))
@@ -486,10 +510,24 @@ class Daemon extends Software
         if (! $this->is_installed())
             throw new Engine_Exception(lang('base_not_installed'));
 
-        $args = ($state) ? 'on' : 'off';
+        $action = ($state) ? 'enable' : 'disable';
 
-        $shell = new Shell();
-        $shell->execute(self::COMMAND_CHKCONFIG, "--level 345 $this->initscript $args", TRUE);
+        if ($this->is_multiservice()) {
+            clearos_load_library($this->details['api_namespace'] . '/' . $this->details['api_class']);
+            $class_path = '\clearos\apps\\' . $this->details['api_namespace'] . '\\' . $this->details['api_class'];
+            $my_daemon = new $class_path();
+
+            $services = $my_daemon->get_systemd_services();
+
+            foreach ($services as $service) {
+                $options['validate_exit_code'] = FALSE;
+                $shell = new Shell();
+                $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
+            }
+        } else {
+            $shell = new Shell();
+            $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $this->initscript, TRUE);
+        }
     }
 
     /**
@@ -510,6 +548,12 @@ class Daemon extends Software
         if (! $this->is_installed())
             throw new Engine_Exception(lang('base_not_installed'));
 
+        $action = ($state) ? 'start' : 'stop';
+        $options['stdin'] = 'use_popen';
+
+        // Only start/stop when necessary
+        //-------------------------------
+
         $is_running = $this->get_running_state();
 
         if ($is_running && $state) {
@@ -520,11 +564,25 @@ class Daemon extends Software
             return;
         }
 
-        $args = ($state) ? 'start' : 'stop';
-        $options['stdin'] = "use_popen";
+        // Set running state
+        //------------------
 
-        $shell = new Shell();
-        $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args", TRUE, $options);
+        if ($this->is_multiservice()) {
+            clearos_load_library($this->details['api_namespace'] . '/' . $this->details['api_class']);
+            $class_path = '\clearos\apps\\' . $this->details['api_namespace'] . '\\' . $this->details['api_class'];
+            $my_daemon = new $class_path();
+
+            $services = $my_daemon->get_systemd_services();
+
+            foreach ($services as $service) {
+                $options['validate_exit_code'] = FALSE;
+                $shell = new Shell();
+                $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
+            }
+        } else {
+            $shell = new Shell();
+            $shell->execute(self::COMMAND_SERVICE, "$this->initscript $action", TRUE, $options);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////////
