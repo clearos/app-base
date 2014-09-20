@@ -50,7 +50,7 @@ foreach ($themes as $theme_name => $info) {
     if ($theme_name != $current_theme)
         $buttons = array(
             anchor_edit('/app/base/theme/edit/' . $theme_name),
-            anchor_select('/app/base/theme/select/' . $theme_name, lang('base_select'))
+            anchor_select('/app/base/theme/set/' . $theme_name, lang('base_select'))
         );
     else
         $buttons = array(

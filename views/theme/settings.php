@@ -48,7 +48,7 @@ $buttons = array(
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_open('base/theme/edit');
+echo form_open('base/theme/edit/' . $name);
 echo form_header($metadata['title']);
 
 echo fieldset_header(lang('base_information'));
@@ -60,15 +60,19 @@ foreach ($metadata['credits'] as $credit)
 echo field_info('credits', lang('base_credits'), $credits);
 
 
-echo fieldset_header(lang('base_settings'));
-foreach ($metadata['settings'] as $field_name => $setting) {
-    if ($setting['type'] == 'dropdown')
-        echo field_dropdown('options[' . $field_name . ']', $setting['options'], $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
-    if ($setting['type'] == 'color')
-        echo field_color('options[' . $field_name . ']', $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
-}
+if (!empty($metadata['settings'])) {
+    echo fieldset_header(lang('base_settings'));
+    foreach ($metadata['settings'] as $field_name => $setting) {
+        if ($setting['type'] == 'dropdown')
+            echo field_dropdown('options[' . $field_name . ']', $setting['options'], $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
+        if ($setting['type'] == 'color')
+            echo field_color('options[' . $field_name . ']', $theme_settings[$field_name], lang($setting['lang_tag']), FALSE);
+    }
 
-echo field_button_set($buttons);
+    echo field_button_set($buttons);
+} else {
+    echo field_button_set(array(anchor_cancel('/app/base')));
+}
 
 echo form_footer();
 echo form_close();
