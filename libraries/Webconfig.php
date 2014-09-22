@@ -107,7 +107,6 @@ class Webconfig extends Daemon
 
     const FILE_CONFIG = '/etc/clearos/webconfig.conf';
     const FILE_RESTART = '/var/clearos/base/webconfig_restart';
-    const PATH_THEMES = '/usr/clearos/themes';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -159,23 +158,7 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $folder = new Folder(self::PATH_THEMES);
-
-        $theme_list = array();
-        $folder_list = $folder->get_listing();
-
-        foreach ($folder_list as $theme) {
-            $file = new File(self::PATH_THEMES . '/' . $theme . '/deploy/info.php');
-
-            if (!$file->exists())
-                continue;
-
-            include self::PATH_THEMES . '/' . $theme . '/deploy/info.php';
-            $theme_list[$theme] = $package;
-        }
-
-        // TODO: Sort by name, but key by theme directory
-        return $theme_list;
+        return clearos_get_themes();
     }
 
     /**
@@ -194,52 +177,45 @@ class Webconfig extends Daemon
 
         if (isset($this->config[$this->get_theme()]))
             return unserialize($this->config[$this->get_theme()]);
+
         return array();
     }
 
     /**
      * Returns configured theme metadata.
      *
+     * @param string $name theme name
+     *
      * @return string theme metadata
      * @throws Engine_Exception
      */
 
-    public function get_theme_metadata($name = NULL)
+    public function get_theme_metadata($name)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if ($name == NULL)
-            $name = $this->get_theme();
+        $themes = clearos_get_themes();
 
-        try {
-            $file = new File(self::PATH_THEMES . '/' . $name . '/deploy/info.php');
-            if (!$file->exists())
-                throw new Engine_Exception("TODO Incompatible theme", CLEAROS_ERROR);
+        if (empty($themes[$name]))
+            throw new Engine_Exception('Invalid theme', CLEAROS_ERROR);
 
-            include_once(self::PATH_THEMES . '/' . $name . '/deploy/info.php');
-                
-            return $package;
-            
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
-        }
+        return $themes[$name];
     }
 
     /**
      * Set a theme option.
      *
+     * @param string $name    theme name
      * @param string $options options
      *
      * @throws Engine_Exception
      */
 
-    public function set_theme_options($options)
+    public function set_theme_options($name, $options)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $theme_name = $this->get_theme();
-
-        $this->_set_parameter($theme_name, serialize($options));
+        $this->_set_parameter($name, serialize($options));
     }
 
     /**

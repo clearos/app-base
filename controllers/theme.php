@@ -64,49 +64,48 @@ class Theme extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
+        $this->page->view_form('base/theme/summary', $data, lang('base_theme'));
     }
 
     /**
      * Sets given them.
      *
-     * @param string $theme theme name
+     * @param string $name theme name
      *
      * @return view
      */
 
-    function set($theme)
+    function set($name)
     {
-        // TODO -- just a temporary hack for testing
+        // Load dependencies
+        //------------------
 
-        if ($theme === 'default') {
-            $this->session->set_userdata('theme', 'default');
-            $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'mobile_default') {
-            $this->session->set_userdata('theme', 'mobile_default');
-            $this->session->set_userdata('theme_mode', 'control_panel');
-        } else if ($theme === 'smartadmin') {
-            $this->session->set_userdata('theme', 'smartadmin');
-            $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'clipone') {
-            $this->session->set_userdata('theme', 'clipone');
-            $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'clearos7') {
-            $this->session->set_userdata('theme', 'clearos7');
-            $this->session->set_userdata('theme_mode', 'normal');
-        } else if ($theme === 'AdminLTE') {
-            $this->session->set_userdata('theme', 'AdminLTE');
-            $this->session->set_userdata('theme_mode', 'normal');
+        $this->load->library('base/Webconfig');
+
+        try {
+            $themes = $this->webconfig->get_themes();
+
+            if (!array_key_exists($name, $themes))
+                return;
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
         }
 
-        $this->load->library('user_agent');
+        // Set theme
+        //----------
 
-        if ($this->agent->is_referral()) {
-            $baseapp = preg_replace('/.*\/app\//', '', $this->agent->referrer());
-            redirect('/' . $baseapp);
-        } else {
-            redirect('/base/index');
+        try {
+            $this->webconfig->set_theme($name);
+            $this->session->set_userdata('theme_' . $name, $this->webconfig->get_theme_settings());
+            $this->session->set_userdata('theme', $name);
+            $this->session->set_userdata('theme_mode', 'normal'); // normal is only used right now
+        } catch (Exception $e) {
+            $this->page->view_exception($e);
+            return;
         }
+
+        redirect('/base/theme');
     }
 
     /**
@@ -125,10 +124,8 @@ class Theme extends ClearOS_Controller
         $this->load->library('base/Webconfig');
         $this->lang->load('theme');
 
-        $theme = $this->webconfig->get_theme($name);
-
         try {
-            $metadata = $this->webconfig->get_theme_metadata();
+            $metadata = $this->webconfig->get_theme_metadata($name);
         } catch (Exception $e) {
             $this->page->view_exception($e);
             return;
@@ -147,11 +144,14 @@ class Theme extends ClearOS_Controller
 
         if ($this->input->post('submit') && $form_ok) {
             try {
-                $this->webconfig->set_theme_options($this->input->post('options'));
+                $this->webconfig->set_theme_options($name, $this->input->post('options'));
+
+                // Update session
+                $this->session->set_userdata('theme_' . $name, $this->webconfig->get_theme_settings());
 
                 $this->page->set_status_updated();
 
-//                redirect('/base/theme/edit/' . $name);
+                redirect('/base/theme');
             } catch (Exception $e) {
                 $this->page->view_exception($e);
                 return;
@@ -161,6 +161,7 @@ class Theme extends ClearOS_Controller
         // Load view data
         //---------------
 
+        $data['name'] = $name;
         $data['metadata'] = $metadata;
         $data['theme_settings'] = $this->webconfig->get_theme_settings();
 
