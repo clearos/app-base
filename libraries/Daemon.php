@@ -258,7 +258,7 @@ class Daemon extends Software
         // Multiservice daemons
         //---------------------
 
-        if ($this->is_multiservice()) {
+        if ($this->is_multiservice() && !empty($this->details['api_namespace'])) {
             clearos_load_library($this->details['api_namespace'] . '/' . $this->details['api_class']);
             $class_path = '\clearos\apps\\' . $this->details['api_namespace'] . '\\' . $this->details['api_class'];
             $my_daemon = new $class_path();
