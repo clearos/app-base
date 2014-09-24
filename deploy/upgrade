@@ -54,6 +54,14 @@ if [ -z "$CHECK" ]; then
     chmod 440 /etc/sudoers
 fi
 
+# Disable firewalld if it exists
+#-------------------------------
+
+if [ -e /usr/sbin/firewalld ]; then
+    logger -p local6.notice -t installer "app-base-core - disabling firewalld"
+    chkconfig firewalld off >/dev/null 2>&1
+fi
+
 # FIXME: Wah?  Selinux policy is stomped on by anaconda
 #------------------------------------------------------
 
