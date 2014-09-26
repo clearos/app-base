@@ -9,6 +9,7 @@ $lang['base_account'] = 'Account';
 $lang['base_acknowledge'] = 'Acknowledge';
 $lang['base_action'] = 'Action';
 $lang['base_add'] = 'Add';
+$lang['base_add_by'] = 'Add by';
 $lang['base_add_to_cart'] = 'Add to Cart';
 $lang['base_additional_info'] = 'Additional Info';
 $lang['base_administrator'] = 'Administrator';

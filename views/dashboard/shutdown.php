@@ -52,13 +52,13 @@ echo modal_confirm(
     "dashboard",
     array("id" => "confirm-action"),
     "confirm-action-form",
-    "modal-confirm"
+    "modal-confirm-shutdown-restart"
 );
 
 // Script below used to display action selected (shutdown or reboot)
 echo "<script type='text/javascript'>\n";
 echo "  $(document).ready(function() {";
-echo "    $('#modal-confirm-wrapper').on('shown.bs.modal', function (e) {";
+echo "    $('#modal-confirm-shutdown-restart').on('shown.bs.modal', function (e) {";
 echo "      $('#action-selected').html($('#action option:selected').text());\n";
 echo "    });";
 echo "  });";
