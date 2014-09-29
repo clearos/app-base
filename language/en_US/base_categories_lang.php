@@ -34,6 +34,7 @@ $lang['base_subcategory_resources'] = 'Resources';
 $lang['base_subcategory_security'] = 'Security';
 $lang['base_subcategory_settings'] = 'Settings';
 $lang['base_subcategory_storage'] = 'Storage';
+$lang['base_subcategory_support'] = 'Support';
 $lang['base_subcategory_virtualization'] = 'Virtualization';
 $lang['base_subcategory_vpn'] = 'VPN';
 $lang['base_subcategory_web'] = 'Web';
