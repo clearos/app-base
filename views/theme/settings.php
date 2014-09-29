@@ -55,10 +55,11 @@ echo fieldset_header(lang('base_information'));
 echo field_info('name', lang('base_theme') , $metadata['title']);
 echo field_info('vendor', lang('base_vendor') , $metadata['vendor']);
 echo field_info('license', lang('base_license') , $metadata['license']);
-foreach ($metadata['credits'] as $credit)
-    $credits .= "<div>" . $credit['contact'] . " (<a href='" . $credit['url'] . "' target='_blank'>Website</a>)</div>";
-echo field_info('credits', lang('base_credits'), $credits);
-
+if (!empty($metadata['credits'])) {
+    foreach ($metadata['credits'] as $credit)
+        $credits .= "<div>" . $credit['contact'] . " (<a href='" . $credit['url'] . "' target='_blank'>Website</a>)</div>";
+    echo field_info('credits', lang('base_credits'), $credits);
+}
 
 if (!empty($metadata['settings'])) {
     echo fieldset_header(lang('base_settings'));
