@@ -22,6 +22,7 @@ $lang['base_subcategory_file'] = 'File';
 $lang['base_subcategory_firewall'] = 'Firewall';
 $lang['base_subcategory_infrastructure'] = 'Infrastructure';
 $lang['base_subcategory_intrusion_protection'] = 'Intrusion Protection';
+$lang['base_subcategory_marketplace'] = 'Marketplace';
 $lang['base_subcategory_mail'] = 'Mail';
 $lang['base_subcategory_mail_scanning'] = 'Mail Scanning';
 $lang['base_subcategory_messaging_and_collaboration'] = 'Messaging and Collaboration';
