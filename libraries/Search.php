@@ -53,15 +53,9 @@ clearos_load_language('base');
 ///////////////////////////////////////////////////////////////////////////////
 
 use \clearos\apps\base\Engine as Engine;
-use \clearos\apps\base\File as File;
-use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
-use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\Shell as Shell;
 
 clearos_load_library('base/Engine');
-clearos_load_library('base/File');
-clearos_load_library('base/File_No_Match_Exception');
-clearos_load_library('base/File_Not_Found_Exception');
 clearos_load_library('base/Shell');
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -86,6 +80,7 @@ class Search extends Engine
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
+    const MAX_FILES = 250;
     const COMMAND_LOCATE = '/usr/bin/locate';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -132,6 +127,40 @@ class Search extends Engine
             }
         }
         return $filtered_list;
+    }
+
+    /**
+     * Returns array of files found.
+     *
+     * @param string $search   search query
+     * @param string $username username
+     *
+     * @return array array of installed apps
+     * @throws Engine_Exception
+     */
+
+    public function get_files($search, $username = NULL)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            if (!isset($search) || $search == NULL || $search === '')
+                throw new Engine_Exception(lang('base_no_search_term_provided'), CLEAROS_WARNING);
+
+            $shell = new Shell();
+            $options = array('validate_exit_code' => FALSE);
+            $params = '-i --limit ' . self::MAX_FILES . ' ' . $search;
+            // If a user is searching, look only in home dir
+            if ($username != 'root')
+                $params = '-i -r --limit ' . self::MAX_FILES . ' "/home/' . $username . '/.*' . $search . '.*"';
+            $exitcode = $shell->execute(self::COMMAND_LOCATE, $params, FALSE, $options);
+            $rows = array();
+            if ($exitcode == 0)
+                $rows = $shell->get_output();
+            return $rows;
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_WARNING);
+        }
     }
 
 }

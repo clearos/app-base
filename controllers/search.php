@@ -69,6 +69,8 @@ class Search extends ClearOS_Controller
             $query = $this->input->post('g_search');
         
         $data = array('query' => $query);
+        if ($this->session->userdata('username') != 'root')
+            $data['filesystem_path'] = '/home/' . $this->session->userdata('username');
 
         $breadcrumb_links = array(
             'settings' => array('url' => '/app/base/search/settings', 'tag' => lang('base_settings')),
@@ -103,6 +105,36 @@ class Search extends ClearOS_Controller
             $search = $this->input->post('search');
             $data['code'] = 0;
             $data['list'] = $this->search->get_installed_apps($search);
+
+            echo json_encode($data);
+        } catch (Exception $e) {
+            echo json_encode(array('code' => clearos_exception_code($e), 'errmsg' => clearos_exception_message($e)));
+        }
+    }
+
+    /**
+     * Get search result for filesystem files
+     *
+     * @param string $search search string
+     *
+     * @return JSON
+     */
+
+    function get_files($search)
+    {
+        // Load libraries
+        //---------------
+
+        $this->lang->load('base');
+        $this->load->library('base/Search');
+
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Content-type: application/json');
+
+        try {
+            $search = $this->input->post('search');
+            $data['code'] = 0;
+            $data['list'] = $this->search->get_files($search, $this->session->userdata('username'));
 
             echo json_encode($data);
         } catch (Exception $e) {

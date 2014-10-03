@@ -39,6 +39,8 @@ echo row_open();
 echo column_open(4);
 $options = array(
     'id' => 'clearos_installed_apps',
+    'paginate' => TRUE,
+    '2_button_paginate' => TRUE,
     'empty_table_message' => loading('normal', lang('base_searching...'))
 );
 
@@ -53,7 +55,7 @@ echo summary_table(
 echo column_close();
 echo column_open(8);
 echo box_open(lang('base_marketplace'), array('id' => 'clearos-marketplace-apps'));
-echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty clearfix text-center'));
+echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty clearfix'));
 echo box_footer('content-marketplace-apps-loading', NULL, array('loading' => TRUE));
 echo box_close();
 echo column_close();
@@ -64,12 +66,13 @@ echo column_open(12);
 
 $options = array(
     'id' => 'clearos_files',
+    'paginate' => TRUE,
     'no_action' => TRUE,
     'empty_table_message' => loading('normal', lang('base_searching...'))
 );
 
 echo summary_table(
-    lang('base_filesystem'),
+    lang('base_filesystem') . (isset($filesystem_path) ? ' (' . $filesystem_path . ' ' . lang('base_only') . ')' : ''),
     NULL,
     array(lang('base_filename')),
     NULL,
