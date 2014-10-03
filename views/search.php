@@ -53,7 +53,7 @@ echo summary_table(
 echo column_close();
 echo column_open(8);
 echo box_open(lang('base_marketplace'), array('id' => 'clearos-marketplace-apps'));
-echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty'));
+echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty clearfix text-center'));
 echo box_footer('content-marketplace-apps-loading', NULL, array('loading' => TRUE));
 echo box_close();
 echo column_close();
@@ -61,10 +61,20 @@ echo row_close();
 
 echo row_open();
 echo column_open(12);
-echo box_open(lang('base_filesystem'), array('id' => 'clearos-files'));
-echo box_content('', array('id' => 'content-files', 'class' => 'theme-search-empty'));
-echo box_footer('content-files-loading', NULL, array('loading' => TRUE));
-echo box_close();
+
+$options = array(
+    'id' => 'clearos_files',
+    'no_action' => TRUE,
+    'empty_table_message' => loading('normal', lang('base_searching...'))
+);
+
+echo summary_table(
+    lang('base_filesystem'),
+    NULL,
+    array(lang('base_filename')),
+    NULL,
+    $options
+);
 echo column_close();
 echo row_close();
 // How else to get the query posted back to input form?

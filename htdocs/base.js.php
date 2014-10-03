@@ -74,6 +74,7 @@ $(document).ready(function() {
 
     if ($(location).attr('href').match('.*base\/search$') != null) {
         get_installed_apps();
+        get_marketplace_apps();
     }
 });
 
@@ -109,6 +110,33 @@ function get_installed_apps() {
         error: function(xhr, text, err) {
             $('div#clearos-installed-apps div.clearos-loading-overlay').remove();
             $('#content-installed-apps').html(infobox('warning', lang_warning, xhr.responseText.toString()));
+        }
+    });
+}
+
+function get_marketplace_apps() {
+    search_string = $('#g_search').val();
+    if (search_string == '')
+        search_string = 'RESET_SEARCH';
+    $.ajax({
+        type: 'POST',
+        dataType: 'json',
+        url: '/app/marketplace/ajax/get_apps',
+        data: 'ci_csrf_token=' + $.cookie('ci_csrf_token') + '&max=0&realtime=0&search=' + search_string,
+        success: function(data) {
+            $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
+            $('div#content-marketplace-apps').removeClass('theme-search-empty');
+            if (data.code != undefined && data.code != 0) {
+                $('#content-installed-apps').html(infobox('warning', lang_warning, data.errmsg));
+                return;
+            }
+            var options = new Object();
+            options.container = 'content-marketplace-apps';
+            clearos_marketplace_app_list('tile', data.list, 0, data.total, options);
+        },
+        error: function(xhr, text, err) {
+            $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
+            $('#content-marketplace-apps').html(infobox('warning', lang_warning, xhr.responseText.toString()));
         }
     });
 }
