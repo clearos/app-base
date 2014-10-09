@@ -45,6 +45,7 @@ clearos_load_language('base');
 ///////////////////////////////////////////////////////////////////////////////
 // J A V A S C R I P T
 ///////////////////////////////////////////////////////////////////////////////
+// FIXME_THEME: review clearos_infobox calls.
 
 header('Content-Type:application/x-javascript');
 ?>
@@ -89,7 +90,7 @@ function get_installed_apps() {
             $('div#clearos-installed-apps div.clearos-loading-overlay').remove();
             $('div#content-installed-apps').removeClass('theme-search-empty');
             if (data.code != 0) {
-                $('#content-installed-apps').html(infobox('warning', lang_warning, data.errmsg));
+                $('#content-installed-apps').html(clearos_infobox_warning(lang_warning, data.errmsg));
                 return;
             }
             var t = get_table_clearos_installed_apps();
@@ -99,7 +100,7 @@ function get_installed_apps() {
             for (var key in data.list) {
                 t.fnAddData([
                     data.list[key].name,
-                    anchor('/app/' + data.list[key].basename, lang_go, options)
+                    clearos_anchor('/app/' + data.list[key].basename, lang_go, options)
                 ]);
             }
             if (data.list.length == 0)
@@ -109,11 +110,12 @@ function get_installed_apps() {
         },
         error: function(xhr, text, err) {
             $('div#clearos-installed-apps div.clearos-loading-overlay').remove();
-            $('#content-installed-apps').html(infobox('warning', lang_warning, xhr.responseText.toString()));
+            $('#content-installed-apps').html(clearos_infobox_warning(lang_warning, xhr.responseText.toString()));
         }
     });
 }
 
+// FIXME: fix marketplace / base mixing here (notably, clearos_marketplace_app_list should not be global)
 function get_marketplace_apps() {
     search_string = $('#g_search').val();
     if (search_string == '')
@@ -127,7 +129,7 @@ function get_marketplace_apps() {
             $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
             $('div#content-marketplace-apps').removeClass('theme-search-empty');
             if (data.code != undefined && data.code != 0) {
-                $('#content-installed-apps').html(infobox('warning', lang_warning, data.errmsg));
+                $('#content-installed-apps').html(clearos_infobox_warning(lang_warning, data.errmsg));
                 return;
             }
             var options = new Object();
@@ -136,7 +138,7 @@ function get_marketplace_apps() {
         },
         error: function(xhr, text, err) {
             $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
-            $('#content-marketplace-apps').html(infobox('warning', lang_warning, xhr.responseText.toString()));
+            $('#content-marketplace-apps').html(clearos_infobox_warning(lang_warning, xhr.responseText.toString()));
         }
     });
 }
@@ -153,7 +155,7 @@ function get_files() {
             var t = get_table_clearos_files();
             t.fnClearTable();
             if (data.code != undefined && data.code != 0) {
-                $('#content-files').html(infobox('warning', lang_warning, data.errmsg));
+                $('#content-files').html(clearos_infobox_warning(lang_warning, data.errmsg));
                 t.fnAddData([
                     data.errmsg
                 ]);
@@ -173,7 +175,7 @@ function get_files() {
         },
         error: function(xhr, text, err) {
             $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
-            $('#content-marketplace-apps').html(infobox('warning', lang_warning, xhr.responseText.toString()));
+            $('#content-marketplace-apps').html(clearos_infobox_warning(lang_warning, xhr.responseText.toString()));
         }
     });
 }
