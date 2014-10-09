@@ -134,6 +134,7 @@ function get_marketplace_apps() {
             }
             var options = new Object();
             options.container = 'content-marketplace-apps';
+            options.search_only = true;
             clearos_marketplace_app_list('tile', data.list, 0, data.total, options);
         },
         error: function(xhr, text, err) {
