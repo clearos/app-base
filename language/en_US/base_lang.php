@@ -91,6 +91,7 @@ $lang['base_directory'] = 'Directory';
 $lang['base_disable'] = 'Disable';
 $lang['base_disable_auto_configuration'] = 'Disable Auto Configuration';
 $lang['base_disabled'] = 'Disabled';
+$lang['base_documentation'] = 'Documentation';
 $lang['base_download'] = 'Download';
 $lang['base_edit'] = 'Edit';
 $lang['base_email_address'] = 'E-mail Address';
