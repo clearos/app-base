@@ -62,8 +62,8 @@ if [ -e /usr/sbin/firewalld ]; then
     chkconfig firewalld off >/dev/null 2>&1
 fi
 
-# FIXME: Wah?  Selinux policy is stomped on by anaconda
-#------------------------------------------------------
+# Bah.  Selinux policy is stomped on by anaconda
+#-----------------------------------------------
 
 if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
     CHECK=`grep ^SELINUX= /etc/selinux/config 2>/dev/null | sed 's/.*=//'`
