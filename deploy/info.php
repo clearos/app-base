@@ -63,7 +63,7 @@ $app['core_requires'] = array(
     'clearos-release',
     'cpupowerutils',
     'csplugin-filewatch',
-    'theme-admin-lte',
+    'theme-clearos-admin',
     'chkconfig',
     'coreutils',
     'file',
