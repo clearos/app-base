@@ -33,8 +33,7 @@ service webconfig start >/dev/null 2>&1
 # Install wizard flag
 #--------------------
 
-# FIXME: disable for first ClearOS 7 build
-# touch /var/clearos/base/wizard
+touch /var/clearos/base/wizard
 
 # FIXME just a hack for the developer release
 echo "AdminLTE = a:5:{s:4:\"menu\";s:1:\"2\";s:3:\"css\";s:9:\"skin-blue\";s:7:\"color_1\";s:0:\"\";s:7:\"color_2\";s:0:\"\";s:7:\"color_3\";s:0:\"\";}\"" > /etc/clearos/webconfig.conf
