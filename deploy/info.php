@@ -96,7 +96,6 @@ $app['core_file_manifest'] = array(
     'authenticated.acl' => array('target' => '/var/clearos/base/access_control/authenticated/base'),
     'public.acl' => array('target' => '/var/clearos/base/access_control/public/base'),
     'rest.acl' => array('target' => '/var/clearos/base/access_control/rest/base'),
-    'filewatch-base-install.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-install.conf'),
     'filewatch-base-ulimit.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-ulimit.conf'),
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),

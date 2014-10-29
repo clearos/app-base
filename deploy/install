@@ -19,12 +19,6 @@ chkconfig webconfig on >/dev/null 2>&1
 logger -p local6.notice -t installer "app-base-core - starting Webconfig server"
 service webconfig start >/dev/null 2>&1
 
-# Anaconda - start clearsync to ensure syncation install_event happens
-#---------------------------------------------------------------------
-
-# FIXME: see syncaction review
-# /sbin/service clearsyncd restart >/dev/null 2>&1
-
 # Run grub update to capture /etc/release changes on bootstrap
 #-------------------------------------------------------------
 

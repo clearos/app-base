@@ -77,7 +77,6 @@ install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
-install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0644 packaging/filewatch-base-ulimit.conf %{buildroot}/etc/clearsync.d/filewatch-base-ulimit.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0644 packaging/public.acl %{buildroot}/var/clearos/base/access_control/public/base
@@ -144,7 +143,6 @@ exit 0
 /etc/cron.d/app-base
 /var/clearos/base/access_control/authenticated/base
 /etc/clearsync.d/filewatch-base-clearsync.conf
-/etc/clearsync.d/filewatch-base-install.conf
 /etc/clearsync.d/filewatch-base-ulimit.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
 /var/clearos/base/access_control/public/base
