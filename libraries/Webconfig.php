@@ -282,12 +282,12 @@ class Webconfig extends Daemon
             throw new Engine_Exception($e->get_message(), CLEAROS_WARNING);
         }
 
-        // FIXMEv6 - review
+        // TODO: remoe hard-coded default theme
         if (!isset($this->config['theme'])) {
             if (clearos_version() == 6)
                 $this->config['theme'] = 'default';
             else
-                $this->config['theme'] = 'AdminLTE';
+                $this->config['theme'] = 'ClearOS-Admin';
         }
  
         $this->is_loaded = TRUE;
