@@ -369,7 +369,7 @@ class Yum extends Engine
         // Get repos
         //----------
         $options['env'] = 'LANG=en_US';
-        $exitcode = $shell->execute(self::COMMAND_YUM, '-v --cacheonly repolist all', TRUE, $options);
+        $exitcode = $shell->execute(self::COMMAND_YUM, '-v repolist all', TRUE, $options);
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
             $this->clean(TRUE);
