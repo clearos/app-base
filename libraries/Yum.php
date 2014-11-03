@@ -369,8 +369,7 @@ class Yum extends Engine
         // Get repos
         //----------
         $options['env'] = 'LANG=en_US';
-        // TODO TODO TODO --cacheonly added for devel and must be tested...
-        $exitcode = $shell->execute(self::COMMAND_YUM, '--cacheonly repolist all', TRUE, $options);
+        $exitcode = $shell->execute(self::COMMAND_YUM, '-v --cacheonly repolist all', TRUE, $options);
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
             $this->clean(TRUE);
@@ -378,10 +377,17 @@ class Yum extends Engine
         }
         $rows = $shell->get_output();
         foreach ($rows as $row) {
-            if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+enabled\\:\s*([\d\\,]+)/", $row, $match)) 
-                $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => trim($match[3]), 'enabled' => 1);
-            else if (preg_match("/([\w-]+)\s+([\w\\. _\(\)-]+)\s+disabled$/", $row, $match)) 
-                $repo_list[] = array('id' => $match[1], 'name' => trim($match[2]), 'packages' => 0, 'enabled' => 0);
+            if (preg_match("/(Repo-id\s+:\s)(.*)/", $row, $match)) { 
+                $parts = explode('/', $match[2]);
+                $id = trim($parts[0]);
+                $repo_list[$id] = array ('packages' => 0);
+            } else if (preg_match("/(Repo-name\s+:\s)(.*)/", $row, $match)) { 
+                $repo_list[$id]['name'] = trim($match[2]);
+            } else if (preg_match("/(Repo-status\s+:\s)(.*)/", $row, $match)) { 
+                $repo_list[$id]['enabled'] = preg_match('/enabled/', $match[2]) ? TRUE : FALSE;
+            } else if (preg_match("/(Repo-pkgs\s+:\s)(.*)/", $row, $match)) { 
+                $repo_list[$id]['packages'] = preg_replace('/,/', '', $match[2]);
+            }
         }
         
         $this->_cache_repo_list($repo_list);
