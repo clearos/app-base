@@ -365,7 +365,7 @@ class Yum extends Engine
         $repo_list = array();
 
         // Check cache
-        if ($this->_check_cache_repo_list())
+        if ($this->_check_cache_repo_list(TRUE))
             return $this->cache_repo_list;
 
         // Get repos
@@ -500,11 +500,13 @@ class Yum extends Engine
     /**
      * Check the cache availability
      *
+     * @param boolean $live get repo list using live update
+     *
      * @access private
      * @return boolean true if cached data available
      */
 
-    protected function _check_cache_repo_list()
+    protected function _check_cache_repo_list($live = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -519,6 +521,21 @@ class Yum extends Engine
                 return FALSE;
 
             if ($lastmod && (time() - $lastmod < $cache_time)) {
+                $list = unserialize(file_get_contents($filename));
+                if ($live) {
+                    $live_cache_ok = FALSE;
+                    // Live function has number of packages data...loop through to see which function
+                    // Cached data most recently.  If we have incomplete data, force update with appropriate
+                    // function call
+                    foreach ($list as $id => $repo) {
+                        if ($repo['packages'] > 0) {
+                            $live_cache_ok = TRUE;
+                            break;
+                        }
+                    }
+                    if (!$live_cache_ok)
+                        return FALSE;
+                }
                 $this->cache_repo_list = unserialize(file_get_contents($filename));
                 return TRUE;
             }
