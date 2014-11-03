@@ -349,13 +349,15 @@ class Yum extends Engine
     }
 
     /**
-     * Returns boolean indicating whether import is currently running.
+     * Returns array of repositories that are available.
+     * This function uses the 'yum repolist all' command and can be quite slow to update.
+     * Use 'get_repo_list' function if details are not required.
      *
-     * @return boolean
+     * @return array a list of repositories
      * @throws Engine_Exception
      */
 
-    public function get_repo_list()
+    public function get_live_repo_list()
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -387,6 +389,49 @@ class Yum extends Engine
                 $repo_list[$id]['enabled'] = preg_match('/enabled/', $match[2]) ? TRUE : FALSE;
             } else if (preg_match("/(Repo-pkgs\s+:\s)(.*)/", $row, $match)) { 
                 $repo_list[$id]['packages'] = preg_replace('/,/', '', $match[2]);
+            }
+        }
+        
+        $this->_cache_repo_list($repo_list);
+
+        return $repo_list;
+    }
+
+    /**
+     * Returns array of repositories that are available.
+     * This function uses the 'yum-config-manager' command and is very fast.  For more detailed information, use 'get_live_repo_data'.
+     *
+     * @return array a list of repositories
+     * @throws Engine_Exception
+     */
+
+    public function get_repo_list()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $shell = new Shell();
+        $repo_list = array();
+
+        // Check cache
+        if ($this->_check_cache_repo_list())
+            return $this->cache_repo_list;
+
+        // Get repos
+        //----------
+        $options['env'] = 'LANG=en_US';
+        $exitcode = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, '', TRUE, $options);
+        if ($exitcode != 0) {
+            // Run a 'clean all'...this can fix issues so next time this function is called it may work.
+            $this->clean(TRUE);
+            throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+        }
+        $rows = $shell->get_output();
+        foreach ($rows as $row) {
+            if (preg_match("/^\\[(.*)\\]$/", $row, $match)) { 
+                $id = trim($match[1]);
+                $repo_list[$id] = array ('packages' => 0, 'enabled' => FALSE);
+            } else if (preg_match("/^enabled\s+=\s+True/i", $row, $match)) { 
+                $repo_list[$id]['enabled'] = TRUE;
             }
         }
         
