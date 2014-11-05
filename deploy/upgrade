@@ -36,13 +36,20 @@
 /usr/sbin/addsudo /usr/sbin/yum-install app-base-core
 
 # Import keys
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7 >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7 >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Debug-7 >/dev/null 2>&1
-rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-Testing-7 >/dev/null 2>&1
+GPG_KEYS="\
+RPM-GPG-KEY-CentOS-7 \
+RPM-GPG-KEY-CentOS-Debug-7 \
+RPM-GPG-KEY-CentOS-Testing-7 \
+RPM-GPG-KEY-ClearOS-7 \
+RPM-GPG-KEY-ClearOS-Debug-7 \
+RPM-GPG-KEY-ClearOS-Testing-7 \
+RPM-GPG-KEY-EPEL-7 \
+RPM-GPG-KEY-zfsonlinux \
+"
+
+for GPG_KEY in $GPG_KEYS; do
+    rpm --import /etc/pki/rpm-gpg/$GPG_KEY >/dev/null 2>&1
+done
 
 # TODO: move this to clearsync
 LINE=`grep "^Cmnd_Alias CLEARSYNC" /etc/sudoers 2>/dev/null`
