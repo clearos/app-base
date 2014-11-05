@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.0.2';
+$app['version'] = '2.0.5';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -68,6 +68,7 @@ $app['core_requires'] = array(
     'coreutils',
     'file',
     'initscripts',
+    'logrotate',
     'passwd',
     'pciutils',
     'rpm',
