@@ -3,7 +3,7 @@ name=Extra Packages for Enterprise Linux $releasever - $basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/$releasever/$basearch
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-$releasever&arch=$basearch
 failovermethod=priority
-exclude=amavisd-new-* zarafa* catdoc libical* libvmime* php-mapi phpMyAdmin pwauth python-mapi transmission-*
+exclude=amavisd-new-* cabextract catdoc clamav-* clamd cloud-init-* daq-* GoeIP-* hostapd-* imapsync-* jnettop libecap-* libical* libvmime* miniupnpd-* mod_auth* netatalk-* openvpn-* philesight php-mapi phpMyAdmin pkcs11-helper pmacct pptpd proftpd pwauth python-mapi ratpoison-* roundcubemail-* snort-* Swift-* tnef-* transmission-* zarafa*
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-$releasever
@@ -13,7 +13,7 @@ name=Extra Packages for Enterprise Linux $releasever - Testing - $basearch
 #baseurl=http://download.fedoraproject.org/pub/epel/testing/$releasever/$basearch
 mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=testing-epel$releasever&arch=$basearch
 failovermethod=priority
-exclude=amavisd-new-* zarafa* catdoc libical* libvmime* php-mapi phpMyAdmin pwauth python-mapi transmission-*
+exclude=amavisd-new-* cabextract catdoc clamav-* clamd cloud-init-* daq-* GoeIP-* hostapd-* imapsync-* jnettop libecap-* libical* libvmime* miniupnpd-* mod_auth* netatalk-* openvpn-* philesight php-mapi phpMyAdmin pkcs11-helper pmacct pptpd proftpd pwauth python-mapi ratpoison-* roundcubemail-* snort-* Swift-* tnef-* transmission-* zarafa*
 enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-$releasever
