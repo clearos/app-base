@@ -230,6 +230,7 @@ $lang['base_go'] = 'Przejdź';
 $lang['base_go_to_the_command_line'] = 'Uruchom wiersz poleceń...';
 $lang['base_group'] = 'Grupa';
 $lang['base_help'] = 'Pomoc';
+$lang['base_hide_app_description'] = 'Hide App Description';
 $lang['base_high'] = 'Wysoki';
 $lang['base_highest'] = 'Najwyższy';
 $lang['base_home'] = 'Początek';

@@ -241,6 +241,7 @@ $lang['base_go'] = 'Go';
 $lang['base_go_to_the_command_line'] = 'Go to the command line...';
 $lang['base_group'] = 'Group';
 $lang['base_help'] = 'Help';
+$lang['base_hide_app_description'] = 'Hide App Description';
 $lang['base_high'] = 'High';
 $lang['base_highest'] = 'Highest';
 $lang['base_home'] = 'Home';

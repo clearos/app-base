@@ -230,6 +230,7 @@ $lang['base_go'] = 'Aller';
 $lang['base_go_to_the_command_line'] = 'Passer en ligne de commande...';
 $lang['base_group'] = 'Groupe';
 $lang['base_help'] = 'Aide';
+$lang['base_hide_app_description'] = 'Hide App Description';
 $lang['base_high'] = 'Haut';
 $lang['base_highest'] = 'Le plus haut';
 $lang['base_home'] = 'Accueil';

@@ -230,6 +230,7 @@ $lang['base_go'] = 'Gå';
 $lang['base_go_to_the_command_line'] = 'Gå till kommandolinjen...';
 $lang['base_group'] = 'Grupp';
 $lang['base_help'] = 'Hjälp';
+$lang['base_hide_app_description'] = 'Hide App Description';
 $lang['base_high'] = 'Hög';
 $lang['base_highest'] = 'Högsta';
 $lang['base_home'] = 'Hem';
