@@ -216,7 +216,7 @@ class Install_Wizard extends Engine
             $os_name = $os->get_name();
             $os_version = $os->get_version();
 
-            if (!preg_match('/ClearOS Professional/', $os_name))
+            if (!preg_match('/ClearOS Professional/', $os_name)) {
                 $steps[] = array(
                     'nav' => '/app/edition',
                     'title' => lang('edition_select_edition'),
