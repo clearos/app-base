@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.0.5
+Version: 2.0.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -28,6 +28,7 @@ Requires: chkconfig
 Requires: coreutils
 Requires: file
 Requires: initscripts
+Requires: logrotate
 Requires: passwd
 Requires: pciutils
 Requires: rpm

@@ -95,10 +95,9 @@ $contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Ne
 ///////////////////////////////////////////////////////////////////////////////
 
 // TODO: translate
-// TODO: move HTML/CSS elements to theme
 
 $blurb = "
-    Did you know that ClearCenter offers industry specific solutions to simplify your deployment of ClearOS?  Click
+    ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
     <a href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
     <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
 ";
@@ -106,20 +105,19 @@ $blurb = "
 echo form_open('base/wizard', array('id' => 'getting_started'));
 echo form_header($this->session->userdata['os_name'] . ' ' . $this->session->userdata['os_base_version']);
 
-// default CSS causee grief with paragraph tags, use tables for now.  Sigh.
-echo form_banner("
-    <table border='0' cellpadding='0' cellspacing='0'>
-        <tr>
-            <td valign='top'>$contents</td>
-            <td width='330'>
-                <div style='background: url(" . clearos_app_htdocs('base') . "/get-started.png) no-repeat; height:358px; width:330px; margin: 10px;'>
-                <p style='line-height: 20px; font-size: 13px; position: relative; top: 242px; padding: 20px;'>$blurb</p>
-                </div>
-            </td>
-        </tr>
-    </table>
-    "
-);
+$banner_contents = 
+    row_open() .
+        column_open(7) .
+        $contents .
+        column_close() .
+        column_open(5, NULL, NULL, array('class' => 'text-center')) .
+          image('get-started.png') .
+          infobox_info('Did you know?', $blurb).
+        column_close() .
+    row_close()
+;
+  
+echo form_banner($banner_contents);
 
 echo form_footer();
 echo form_close();

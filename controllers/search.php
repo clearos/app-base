@@ -72,14 +72,13 @@ class Search extends ClearOS_Controller
         if ($this->session->userdata('username') != 'root')
             $data['filesystem_path'] = '/home/' . $this->session->userdata('username');
 
+        /* TODO - One day, add search settings (eg. what you want to see, where you want to search etc.)
         $breadcrumb_links = array(
             'settings' => array('url' => '/app/base/search/settings', 'tag' => lang('base_settings')),
         );
+        */
 
-        $this->page->view_form('base/search', $data, lang('base_search'), array(
-            'type' => MY_Page::TYPE_DASHBOARD,
-            'breadcrumb_links' => $breadcrumb_links)
-        );
+        $this->page->view_form('base/search', $data, lang('base_search'), array('type' => MY_Page::TYPE_DASHBOARD));
     }
 
     /**

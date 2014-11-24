@@ -36,7 +36,7 @@
 $this->lang->load('base');
 
 echo row_open();
-echo column_open(4);
+echo column_open(5);
 $options = array(
     'id' => 'clearos_installed_apps',
     'paginate' => TRUE,
@@ -53,16 +53,15 @@ echo summary_table(
 );
 
 echo column_close();
-echo column_open(8);
+echo column_open(7);
 echo box_open(lang('base_marketplace'), array('id' => 'clearos-marketplace-apps'));
-echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty clearfix'));
+echo box_content('', array('id' => 'content-marketplace-apps', 'class' => 'theme-search-empty row clearfix'));
 echo box_footer('content-marketplace-apps-loading', NULL, array('loading' => TRUE));
 echo box_close();
 echo column_close();
 echo row_close();
 
 echo row_open();
-echo column_open(12);
 
 $options = array(
     'id' => 'clearos_files',
@@ -78,7 +77,6 @@ echo summary_table(
     NULL,
     $options
 );
-echo column_close();
 echo row_close();
 // How else to get the query posted back to input form?
 if ($query) {
