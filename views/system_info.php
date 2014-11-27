@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Base controller.
+ * System Info view.
  *
  * @category   apps
  * @package    base
- * @subpackage controllers
+ * @subpackage views
  * @author     ClearFoundation <developer@clearfoundation.com>
  * @copyright  2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
@@ -26,47 +26,32 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.  
-//  
+//
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// C L A S S
+// Load dependencies
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Base controller.
- *
- * @category   apps
- * @package    base
- * @subpackage controllers
- * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
- * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/base/
- */
+$this->lang->load('base');
+$this->lang->load('registration');
 
-class Base extends ClearOS_Controller
-{
-    /**
-     * Date default controller
-     *
-     * @return string
-     */
+echo row_open();
+echo column_open(7);
 
-    function index()
-    {
-        // Load libraries
-        //---------------
+echo form_open('base/system_info');
+echo form_header(lang('base_system_information'));
+echo field_input('name', $name, lang('base_operating_system'), TRUE);
+echo field_input('version', $version, lang('base_version'), TRUE);
+echo field_input('registered', $registered, lang('registration_registered'), TRUE);
+echo field_input('sdn_account', '', lang('registration_account_username'), TRUE);
 
-        $this->load->library('base/Webconfig');
-        $this->lang->load('base');
+echo form_footer();
+echo form_close();
 
-        // Load views
-        //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
-
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
-    }
-}
+echo column_close();
+echo column_open(5);
+// TOD - FIXME
+echo image('get-started.png');
+echo column_close();
+echo row_close();

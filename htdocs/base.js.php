@@ -78,7 +78,29 @@ $(document).ready(function() {
         get_marketplace_apps();
         get_files();
     }
+
+    // System Information Ajax calls
+    if ($(location).attr('href').match('.*base\/system_info$') != null) {
+        get_system_info();
+    }
 });
+
+function get_system_info() {
+    $('#sdn_account_text').html(clearos_loading());
+    $.ajax({
+        type: 'GET',
+        dataType: 'json',
+        url: '/app/base/system_info/get_dynamic',
+        success: function(data) {
+            // Remove whirlies
+            if (data.code == 0) {
+            }
+        },
+        error: function(xhr, text, err) {
+            clearos_dialog_box('errmsg', lang_warning, xhr.responseText.toString());
+        }
+    });
+}
 
 function get_installed_apps() {
     $.ajax({

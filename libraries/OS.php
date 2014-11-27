@@ -143,6 +143,33 @@ class OS extends Engine
     }
 
     /**
+     * Returns array of system information for convenience.
+     *
+     * @return array
+     * @throws Engine_Exception
+     */
+
+    public function get_system_info()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $data = array(
+            'name' => $this->get_name(),
+            'version' => $this->get_version()
+        );
+        if (clearos_library_installed('registration/Registration')) {
+            clearos_load_library('registration/Registration');
+            $registration = new \clearos\apps\registration\Registration();   
+            if (file_exists($registration::FILE_REGISTERED_FLAG))
+               $data['registered'] = lang('base_yes'); 
+            else
+               $data['registered'] = lang('base_no'); 
+        }
+
+        return $data;
+    }
+
+    /**
      * Populates version and name fields.
      *
      * @access private

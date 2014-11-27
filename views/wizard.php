@@ -52,8 +52,8 @@ $contents = "
     help online:</p>
 
     <ul>
-        <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/redirect/$os_name/$os_base_version/install_guide' target='_blank'>" . lang('base_install_guide') . "</a></li>
-        <li style='font-size: 1.2em; line-height: 20px;'><a href='http://www.clearcenter.com/redirect/$os_name/$os_base_version/user_guide' target='_blank'>" . lang('base_user_guide') . "</a></li>
+        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("http://www.clearcenter.com/redirect/$os_name/$os_base_version/install_guide", lang('base_install_guide'), "link-only", array('target' => '_blank')) . "</li>
+        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("http://www.clearcenter.com/redirect/$os_name/$os_base_version/user_guide", lang('base_user_guide'), "link-only", array('target' => '_blank')) . "</li>
     </ul>
 ";
 
@@ -98,8 +98,8 @@ $contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Ne
 
 $blurb = "
     ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
-    <a href='http://www.clearcenter.com/Solution/solutions.html' target='_blank'>here</a> to learn more or 
-    <a href='http://www.clearcenter.com/Contact-Us/clearcenter-contact-us-1.html' target='_blank'>talk</a> to one of our solution specialists today.
+    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/solutions", "here", "link-only", array('target' => '_blank')) . " to learn more or 
+    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.
 ";
 
 echo form_open('base/wizard', array('id' => 'getting_started'));

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Base controller.
+ * System Information controller.
  *
  * @category   apps
  * @package    base
@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Base controller.
+ * System Information controller.
  *
  * @category   apps
  * @package    base
@@ -45,10 +45,10 @@
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
 
-class Base extends ClearOS_Controller
+class System_Info extends ClearOS_Controller
 {
     /**
-     * Date default controller
+     * System_Information default controller
      *
      * @return string
      */
@@ -58,15 +58,13 @@ class Base extends ClearOS_Controller
         // Load libraries
         //---------------
 
-        $this->load->library('base/Webconfig');
         $this->lang->load('base');
+        $this->load->library('base/OS');
 
         // Load views
         //-----------
-        $data['themes'] = $this->webconfig->get_themes(); 
-        $data['current_theme'] = $this->session->userdata['theme']; 
-        
+        $data = $this->os->get_system_info();
 
-        $this->page->view_form('base/theme/summary', $data, lang('base_app_name'));
+        $this->page->view_form('base/system_info', $data, lang('base_system_information'), array('type' => MY_Page::TYPE_DASHBOARD));
     }
 }
