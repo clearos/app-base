@@ -339,6 +339,7 @@ $lang['base_month_9'] = 'September';
 $lang['base_monthly'] = 'Monthly';
 $lang['base_months'] = 'Months';
 $lang['base_network'] = 'Network';
+$lang['base_network_settings'] = 'Network Settings';
 $lang['base_network_configuration_updated'] = 'Network configuration was updated.';
 $lang['base_new'] = 'New';
 $lang['base_new_or_upgraded_app'] = 'App has been recently installed or upgraded.';

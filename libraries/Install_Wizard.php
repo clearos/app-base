@@ -148,7 +148,7 @@ class Install_Wizard extends Engine
             'nav' => '/app/base/wizard/index/start',
             'title' => lang('base_getting_started'),
             'category' => lang('base_install_wizard'),
-            'subcategory' => lang('base_network'),
+            'subcategory' => lang('base_network_settings'),
             'type' => 'intro'
         );
 
@@ -160,7 +160,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/base/session/change_password',
                 'title' => lang('base_change_password'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_network'),
+                'subcategory' => lang('base_network_settings'),
                 'type' => 'normal'
             );
         }
@@ -175,7 +175,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/mode',
                 'title' => lang('network_network_mode'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_network'),
+                'subcategory' => lang('base_network_settings'),
                 'type' => 'normal'
             );
 
@@ -183,7 +183,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/iface',
                 'title' => lang('network_network_interfaces'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_network'),
+                'subcategory' => lang('base_network_settings'),
                 'type' => 'normal'
             );
 
@@ -192,7 +192,7 @@ class Install_Wizard extends Engine
                     'nav' => '/app/upstream_proxy',
                     'title' => lang('network_upstream_proxy'),
                     'category' => lang('base_install_wizard'),
-                    'subcategory' => lang('base_network'),
+                    'subcategory' => lang('base_network_settings'),
                     'type' => 'normal'
                 );
             }
@@ -201,7 +201,7 @@ class Install_Wizard extends Engine
                 'nav' => '/app/network/dns',
                 'title' => lang('network_dns_servers'),
                 'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_network'),
+                'subcategory' => lang('base_network_settings'),
                 'type' => 'normal'
             );
         }
