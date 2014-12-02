@@ -97,9 +97,9 @@ $contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Ne
 // TODO: translate
 
 $blurb = "
-    ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
+    <div style='padding-right: 120px;'>ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
     " . anchor_custom("http://www.clearcenter.com/webconfig/landing/solutions", "here", "link-only", array('target' => '_blank')) . " to learn more or 
-    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.
+    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
 ";
 
 echo form_open('base/wizard', array('id' => 'getting_started'));
@@ -110,9 +110,10 @@ $banner_contents =
         column_open(7) .
         $contents .
         column_close() .
-        column_open(5, NULL, NULL, array('class' => 'text-center')) .
-          image('get-started.png') .
-          infobox_info('Did you know?', $blurb).
+        column_open(5) .
+        box_open('Did You Know?') .
+        box_content(image('get-started.png', array('class' => 'pull-right')) . $blurb) .
+        box_close() .
         column_close() .
     row_close()
 ;

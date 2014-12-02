@@ -345,6 +345,7 @@ $lang['base_new'] = 'New';
 $lang['base_new_or_upgraded_app'] = 'App has been recently installed or upgraded.';
 $lang['base_new_password'] = 'New Password';
 $lang['base_next'] = 'Next';
+$lang['base_next_update'] = 'Next Update';
 $lang['base_no'] = 'No';
 $lang['base_no_apps_available'] = 'Login was successful, but no apps are enabled for your account.';
 $lang['base_no_entries'] = 'No Entries';
