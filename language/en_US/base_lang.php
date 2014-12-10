@@ -24,6 +24,7 @@ $lang['base_app_name'] = 'General Settings';
 $lang['base_app_policy'] = 'App Policy';
 $lang['base_are_you_sure_delete'] = 'Are you sure you want to delete the following?';
 $lang['base_authenticate'] = 'Authenticate';
+$lang['base_authorized_login'] = 'Authorized Login';
 $lang['base_automatic'] = 'Automatic';
 $lang['base_automatic_configuration_enabled'] = 'Automatic Configuration Enabled';
 $lang['base_automatic_updates'] = 'Automatic Updates';
