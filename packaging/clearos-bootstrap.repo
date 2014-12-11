@@ -1,0 +1,7 @@
+# TODO: just a temporary hacking repo to help implement the ClearOS 7 beta.
+[clearos-bootstrap]
+name=ClearOS Community $releasever - $basearch - Bootstrap
+baseurl=http://clearos7.clearfoundation.com/clearos7
+enabled=1
+gpgcheck=0
+
