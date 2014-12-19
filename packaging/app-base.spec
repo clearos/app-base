@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.0.5
+Version: 2.0.8
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -20,7 +20,7 @@ Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 7.0.2
-Requires: clearos-release
+Requires: clearos-release >= 7-0.8
 Requires: cpupowerutils
 Requires: csplugin-filewatch
 Requires: theme-clearos-admin

@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2010-2011 ClearFoundation
+ * @copyright  2010-2014 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -63,6 +63,13 @@ clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Engine');
 clearos_load_library('base/OS');
 
+// Exceptions
+//-----------
+
+use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
+
+clearos_load_library('base/File_Not_Found_Exception');
+
 ///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
@@ -74,7 +81,7 @@ clearos_load_library('base/OS');
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2010-2011 ClearFoundation
+ * @copyright  2010-2014 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -108,43 +115,6 @@ class Product extends Engine
     }
 
     /**
-     * Returns the base product version.
-     *
-     * @return string product version
-     * @throws Engine_Exception
-     */
-
-    public function get_base_version()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        if (!$this->is_loaded)
-            $this->_load_config();
-
-        return $this->config['base_version'];
-    }
-
-    /**
-     * Returns free trial state.
-     *
-     * @return boolean state of free trials
-     * @throws Engine_Exception
-     */
-
-    public function get_free_trial_state()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        if (!$this->is_loaded)
-            $this->_load_config();
-
-        if (isset($this->config['free_trial']) && ($this->config['free_trial'] === "0"))
-            return FALSE;
-        else
-            return TRUE;
-    }
-
-    /**
      * Returns the product software ID.
      *
      * @return string product name
@@ -175,24 +145,9 @@ class Product extends Engine
         if (!$this->is_loaded)
             $this->_load_config();
 
-        return $this->config['name'];
-    }
+        $name = empty($this->config['name']) ? '' : $this->config['name'];
 
-    /**
-     * Returns portal URL.
-     *
-     * @return string portal URL
-     * @throws Engine_Exception
-     */
-
-    public function get_portal_url()
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        if (!$this->is_loaded)
-            $this->_load_config();
-
-        return $this->config['portal_url'];
+        return $name;
     }
 
     /**
@@ -206,14 +161,12 @@ class Product extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!$this->is_loaded)
-            $this->_load_config();
-
         $os = new OS();
         $os_name = preg_replace('/ /', '_', $os->get_name());
         $os_version = preg_replace('/ /', '_', $os->get_version());
 
-        $full_url = $this->config['redirect_url'] . '/' . $os_name . '/' . $os_version;
+        // TODO: not yet used, hard-code for now
+        $full_url = 'http://www.clearos.com/' . $os_name . '/' . $os_version;
 
         return $full_url;
     }
@@ -229,10 +182,8 @@ class Product extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!$this->is_loaded)
-            $this->_load_config();
-
-        return $this->config['vendor'];
+        // FIXME: use constant or configuration
+        return 'clear';
     }
 
     /**
@@ -246,10 +197,9 @@ class Product extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (!$this->is_loaded)
-            $this->_load_config();
+        $os = new OS();
 
-        return $this->config['version'];
+        return preg_replace('/ \(.*/', '', $os->get_version());
     }
 
     /**
@@ -389,11 +339,15 @@ class Product extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $file = new Configuration_File(self::FILE_CONFIG);
-        $config = $file->load();
+        try {
+            $file = new Configuration_File(self::FILE_CONFIG);
+            $config = $file->load();
 
-        foreach ($config as $key => $value)
-            $this->config[$key] = preg_replace('/"/', '', $value);
+            foreach ($config as $key => $value)
+                $this->config[$key] = preg_replace('/"/', '', $value);
+        } catch (File_Not_Found_Exception $e) {
+            // Not fatal
+        }
 
         $this->is_loaded = TRUE;
     }

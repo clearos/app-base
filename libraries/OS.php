@@ -57,9 +57,11 @@ clearos_load_language('base');
 
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
+use \clearos\apps\base\Product as Product;
 
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
+clearos_load_library('base/Product');
 
 // Exceptions
 //-----------
@@ -109,6 +111,22 @@ class OS extends Engine
     }
 
     /**
+     * Returns the base version of the operating system/distribution.
+     *
+     * @return string OS version
+     * @throws Engine_Exception
+     */
+
+    public function get_base_version()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $version = $this->get_version();
+
+        return preg_replace('/\..*/', '', $version);
+    }
+
+    /**
      * Returns the name of the operating system/distribution.
      *
      * @return string OS name
@@ -119,10 +137,19 @@ class OS extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        if (is_null($this->os))
-            $this->_load_config();
+        // Try /etc/product first
+        $product = new Product();
+        $name = $product->get_name();
 
-        return $this->os;
+        // Fall back to /etc/release
+        if (empty($name)) {
+            if (is_null($this->os))
+                $this->_load_config();
+
+            $name = $this->os;
+        }
+
+        return $name;
     }
 
     /**
