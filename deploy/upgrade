@@ -102,10 +102,10 @@ fi
 echo "software_id = 10700" > /etc/product
 echo "name = ClearOS Community" >> /etc/product
 echo "jws_nodes = 1" >> /etc/product
-echo "jws_prefix = cos7-ws" >> /etc/product
+echo "jws_prefix = cos6-ws" >> /etc/product
 echo "jws_domain = clearsdn.com" >> /etc/product
 echo "jws_realm = ws" >> /etc/product
-echo "jws_version = 1.2" >> /etc/product
+echo "jws_version = 1.1" >> /etc/product
 
 # Testing mode
 #-------------
