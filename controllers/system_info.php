@@ -67,4 +67,26 @@ class System_Info extends ClearOS_Controller
 
         $this->page->view_form('base/system_info', $data, lang('base_system_information'), array('type' => MY_Page::TYPE_DASHBOARD));
     }
+
+    /**
+     * Get dynamic content
+     *
+     * @return JSON
+     */
+
+    function get_dynamic_info()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Expires: Fri, 01 Jan 2010 05:00:00 GMT');
+        header('Content-type: application/json');
+
+        try {
+            echo json_encode(Array('code' => 0, 'errmsg' => ''));
+        } catch (Exception $e) {
+            echo json_encode(Array('code' => clearos_exception_code($e), 'errmsg' => clearos_exception_message($e)));
+        }
+    }
+
 }

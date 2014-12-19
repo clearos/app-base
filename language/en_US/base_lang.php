@@ -302,6 +302,7 @@ $lang['base_megabytes'] = 'MB';
 $lang['base_megabytes_per_second'] = 'MB/s';
 $lang['base_memory'] = 'Memory';
 $lang['base_menu'] = 'Menu';
+$lang['base_menu_no_access'] = 'Sorry - no access.';
 $lang['base_mime_audio_microsoft'] = 'Microsoft audio';
 $lang['base_mime_audio_microsoft_playready'] = 'Microsoft PlayReady';
 $lang['base_mime_audio_midi'] = 'MIDI';

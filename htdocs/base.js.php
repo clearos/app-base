@@ -90,7 +90,7 @@ function get_system_info() {
     $.ajax({
         type: 'GET',
         dataType: 'json',
-        url: '/app/base/system_info/get_dynamic',
+        url: '/app/base/system_info/get_dynamic_info',
         success: function(data) {
             // Remove whirlies
             if (data.code == 0) {
