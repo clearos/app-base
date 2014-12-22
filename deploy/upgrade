@@ -30,6 +30,7 @@
 /usr/sbin/addsudo /usr/sbin/app-passwd app-base-core
 /usr/sbin/addsudo /usr/sbin/app-realpath app-base-core
 /usr/sbin/addsudo /usr/sbin/app-rename app-base-core
+/usr/sbin/addsudo /usr/sbin/app-manager app-base-core
 /usr/sbin/addsudo /usr/sbin/userdel app-base-core
 /usr/sbin/addsudo /usr/bin/yum app-base-core
 /usr/sbin/addsudo /usr/bin/yum-config-manager app-base-core
