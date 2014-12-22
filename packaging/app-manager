@@ -1,0 +1,222 @@
+#!/usr/clearos/sandbox/usr/bin/php
+<?php
+
+/**
+ * Utility script for apps.
+ *
+ * @category   apps
+ * @package    base
+ * @subpackage scripts
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2014 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// N A M E S P A C E
+///////////////////////////////////////////////////////////////////////////////
+
+namespace clearos\apps\base;
+
+///////////////////////////////////////////////////////////////////////////////
+// B O O T S T R A P
+///////////////////////////////////////////////////////////////////////////////
+
+$bootstrap = getenv('CLEAROS_BOOTSTRAP') ? getenv('CLEAROS_BOOTSTRAP') : '/usr/clearos/framework/shared';
+require_once $bootstrap . '/bootstrap.php';
+
+///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+// Classes
+//--------
+
+use \clearos\apps\base\App as App;
+use \clearos\apps\base\Script as Script;
+
+clearos_load_library('base/App');
+clearos_load_library('base/Script');
+
+// Exceptions
+//-----------
+
+use \Exception as Exception;
+
+///////////////////////////////////////////////////////////////////////////////
+// M A I N
+///////////////////////////////////////////////////////////////////////////////
+
+// Command line options
+//---------------------
+
+$short_options = 'a::'; // Action
+$short_options .= 'y::'; // Force app removal without confirmation in command line mode
+$short_options .= 'h';  // Help
+
+$helpopts  = '
+  Common Options
+  --------------
+
+  -a=action
+       Valid actions:
+         remove...Remove/delete app(s)
+         list.....List all installed apps
+  -y=force deletion without confirmation
+  -h: help
+
+';
+
+// Handle command line options
+//----------------------------
+
+$options = getopt($short_options);
+
+$help = isset($options['h']) ? TRUE : FALSE;
+$action = isset($options['a']) ? $options['a'] : FALSE;
+
+if ($help) {
+    echo "usage: " . $argv[0] . " [options]\n";
+    echo $helpopts;
+    exit(0);
+}
+
+$script = new Script();
+
+if ($script->lock() !== TRUE) {
+    echo "Script already in progress.\n";
+    exit(1);
+}
+
+$valid_actions = array(
+    'remove',
+    'list'
+);
+if (!in_array($action, $valid_actions)) {
+    echo "Invalid action...use -h for usage.\n";
+    exit(1);
+}
+
+if ($action == 'remove')
+    remove_apps();
+else if ($action == 'list')
+    list_apps();
+    
+///////////////////////////////////////////////////////////////////////////////
+// F U N C T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Delete/remove app(s).
+ *
+ * @return void
+ */
+
+function remove_apps()
+{
+    global $argv;
+    global $options;
+
+print_r($options);
+    $yes = isset($options['y']) ? TRUE : FALSE;
+    array_shift($argv);
+    $list = array();
+    foreach($argv as $arg) {
+        if (preg_match('/^-/', $arg))
+            continue;
+        $list[] = $arg;
+    }
+
+    try {
+        if (empty($list)) {
+            echo "Provide at least one app to be removed.\n";
+            exit(1);
+        }
+
+        $basenames = array();
+        foreach ($list as $myapp) {
+            // Users may use app-package-name convention....
+            $basenames[] = preg_replace(array('/' . App::APP_PREFIX . '/', '/-/'), array('', '_'), $myapp); 
+        }
+        if (php_sapi_name() === 'cli') {
+            $user = exec('whoami');
+            if ($user != 'root') {
+                echo "Script with options provided must be run as 'root'.\n";
+                exit(1);
+            }
+            $pkg_list = '';
+            foreach ($basenames as $basename) {
+                $app = new App($basename);
+                $deps = $app->get_dependencies();
+                foreach ($deps as $pkg)
+                    $pkg_list .= "  $pkg\n";
+            }
+
+            if ($pkg_list === '') {
+                echo "Unable to find app.\n";
+                exit(1);
+            }
+
+            if (!$yes) {
+                echo "You are about to remove the following app(s) and dependencies:\n";
+                echo $pkg_list;
+                echo "Confirm (y/n)? ";
+                $response = strtolower(trim(fgets(STDIN)));
+
+                if ($response !== 'y') {
+                    echo "Exiting.\n";
+                    exit(1);
+                }
+            }
+        }
+        foreach ($basenames as $basename) {
+            echo "Removing $basename and dependencies...\n";
+            $app = new App($basename);
+            $app->remove();
+        }
+    } catch (Exception $e) {
+        echo clearos_exception_message($e) . "\n";
+        clearos_log('app-manager', clearos_exception_message($e));
+    }
+}
+
+/**
+ * List installed apps.
+ *
+ * @return void
+ */
+
+function list_apps()
+{
+    global $argv;
+    global $options;
+    $list = array();
+    try {
+        $shell = new Shell();
+        $exitcode = $shell->execute(
+            App::COMMAND_RPM,
+            "-qa --queryformat \"%{NAME}|%{SUMMARY}|%{VERSION}|%{RELEASE}\\n\"| grep -v \"\-core\" | grep \"^" . addslashes(App::APP_PREFIX) . "\"",
+            FALSE
+        );
+        if ($exitcode != 0) {
+            $err = $shell->get_first_output_line();
+            throw new Engine_Exception('Unable to get app list: ' . $err . '.', CLEAROS_WARNING);
+        }
+        $rows = $shell->get_output();
+        foreach ($rows as $row) {
+            $parts = explode("|", $row);
+            echo str_pad($parts[0], 36) . str_pad($parts[1], 40) . str_pad($parts[2] . "-" . $parts[3], 15) . "\n";
+        }
+    } catch (Exception $e) {
+        echo clearos_exception_message($e) . "\n";
+    }
+}
+
+// vim: syntax=php ts=4

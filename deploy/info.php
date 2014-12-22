@@ -125,6 +125,10 @@ $app['core_file_manifest'] = array(
         'target' => '/usr/sbin/wc-yum',
         'mode' => '0755',
     ),
+    'app-manager' => array(
+        'target' => '/usr/sbin/app-manager',
+        'mode' => '0755',
+    ),
     'yum-install' => array(
         'target' => '/usr/sbin/yum-install',
         'mode' => '0755',

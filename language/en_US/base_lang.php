@@ -486,6 +486,7 @@ $lang['base_tooltip'] = 'Tooltip';
 $lang['base_tuesday'] = 'Tuesday';
 $lang['base_tuning'] = 'Tuning';
 $lang['base_unable_to_create_lock_file'] = 'Unable to create lock file';
+$lang['base_unable_to_delete_app'] = 'Unable to delete app';
 $lang['base_unable_to_remove_lock_file'] = 'Unable to remove lock file';
 $lang['base_uninstall'] = 'Uninstall';
 $lang['base_unknown'] = 'Unknown';
