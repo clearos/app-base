@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.0.11';
+$app['version'] = '2.0.12';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -67,6 +67,7 @@ $app['core_requires'] = array(
     'chkconfig',
     'coreutils',
     'file',
+    'firewalld',
     'initscripts',
     'logrotate',
     'passwd',

@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.0.11
+Version: 2.0.12
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -27,6 +27,7 @@ Requires: theme-clearos-admin
 Requires: chkconfig
 Requires: coreutils
 Requires: file
+Requires: firewalld
 Requires: initscripts
 Requires: logrotate
 Requires: passwd
