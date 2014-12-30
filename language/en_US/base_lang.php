@@ -483,6 +483,7 @@ $lang['base_to_auto'] = 'To Auto';
 $lang['base_to_manual'] = 'To Manual';
 $lang['base_toggle'] = 'Toggle';
 $lang['base_tooltip'] = 'Tooltip';
+$lang['base_tips_and_hints'] = 'Tips and Hints';
 $lang['base_tuesday'] = 'Tuesday';
 $lang['base_tuning'] = 'Tuning';
 $lang['base_unable_to_create_lock_file'] = 'Unable to create lock file';
