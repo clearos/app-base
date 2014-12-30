@@ -159,6 +159,11 @@ function get_marketplace_apps() {
             options.search_only = true;
             options.columns = 2;
             clearos_marketplace_app_list('tile', data.list, 0, data.total, options);
+            logo_list = [];
+            $('.theme-placeholder').each(function( index ) {
+                logo_list.push($(this).data('basename'));
+            });
+            get_app_logos(logo_list);
         },
         error: function(xhr, text, err) {
             $('div#clearos-marketplace-apps div.clearos-loading-overlay').remove();
