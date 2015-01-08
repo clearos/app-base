@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.6.7';
+$app['version'] = '1.6.9';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -113,9 +113,11 @@ $app['core_file_manifest'] = array(
         'target' => '/usr/sbin/webconfig-service',
         'mode' => '0755',
     ),
+    'RPM-GPG-KEY-CentOS-6' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-CentOS-6' ),
     'RPM-GPG-KEY-EPEL-6' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6' ),
     'RPM-GPG-KEY-EPEL-7' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7' ),
     'RPM-GPG-KEY-atrpms' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms' ),
+    'centos-scl.repo' => array( 'target' => '/etc/yum.repos.d/centos-scl.repo' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
 );

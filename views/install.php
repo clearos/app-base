@@ -39,7 +39,7 @@ echo "<div id='software_install_busy' style='display:none;'>";
 echo infobox_highlight(lang('base_software_updates_busy'), lang('base_software_update_busy_warning'));
 echo "</div>";
 
-echo "<div id='software_install_running' style='display:FIXMEnone;'>";
+echo "<div id='software_install_running' style='display:none;'>";
 
 echo "<div id='info'></div>";
 

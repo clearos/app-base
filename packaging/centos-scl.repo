@@ -1,0 +1,6 @@
+[centos-scl]
+name=CentOS-$releasever - SCL
+baseurl=http://mirror.centos.org/centos/$releasever/SCL/$basearch/
+gpgcheck=1
+enabled=0
+gpgkey=file:///etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-CentOS-6

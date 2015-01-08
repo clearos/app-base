@@ -38,6 +38,7 @@
 
 # Import keys
 rpm --import /etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS >/dev/null 2>&1
+rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-CentOS-6 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7 >/dev/null 2>&1
 rpm --import /etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms >/dev/null 2>&1
@@ -55,8 +56,8 @@ if [ -z "$CHECK" ]; then
     chmod 440 /etc/sudoers
 fi
 
-# FIXME: Wah?  Selinux policy is stomped on by anaconda
-#------------------------------------------------------
+# Wah?  Selinux policy is stomped on by anaconda
+#-----------------------------------------------
 
 if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
     CHECK=`grep ^SELINUX= /etc/selinux/config 2>/dev/null | sed 's/.*=//'`
@@ -85,9 +86,9 @@ fi
 # Testing mode
 #-------------
 
-# FIXME: beta period only
-/usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
-/usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
-/usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
+# Beta period only
+# /usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
+# /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
+# /usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
 
 exit 0
