@@ -308,23 +308,55 @@ class Product extends Engine
     }
 
     /**
-     * Sets the partner region ID.
+     * Set name.
+     *
+     * @param string $name name
      *
      * @return void
-     * @throws Engine_Exception
+     * @throws Validation_Exception
      */
 
-    public function set_partner_region_id()
+    function set_name($name)
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $file = new Configuration_File(self::FILE_CONFIG);
-        $updated = $file->replace_lines("/^partner_region_id\s*=.*/", ($id < 0 ? "" : "partner_region_id = " . $id), 1);
+        Validation_Exception::is_valid($this->validate_name($name));
 
-        if ($updated == 0 && $id > 0)
-            $file->add_lines("partner_region_id = " . $id . "\n");
+        $this->_set_parameter('name', $name);
+    }
 
-        $this->_load_config();
+    /**
+     * Set software ID.
+     *
+     * @param int $software_id software ID representing a version
+     *
+     * @return void
+     * @throws Validation_Exception
+     */
+
+    function set_software_id($software_id)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        Validation_Exception::is_valid($this->validate_software_id($software_id));
+
+        $this->_set_parameter('software_id', $software_id);
+    }
+
+    /**
+     * Sets the partner region ID.
+     *
+     * @param int $id region ID
+     *
+     * @return void
+     * @throws Validation_Exception
+     */
+
+    public function set_partner_region_id($id)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $this->_set_parameter('partner_region_id', $id);
     }
     
     /**
@@ -351,4 +383,69 @@ class Product extends Engine
 
         $this->is_loaded = TRUE;
     }
+
+    /**
+     * Generic set routine.
+     *
+     * @param string $key   key name
+     * @param string $value value for the key
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    function _set_parameter($key, $value)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $file = new File(self::FILE_CONFIG, TRUE);
+
+            $match = $file->replace_lines("/^$key\s*=\s*/", "$key = $value\n");
+
+            if (!$match)
+                $file->add_lines("$key=$value\n");
+        } catch (Exception $e) {
+            throw new Engine_Exception(clearos_exception_message($e), CLEAROS_ERROR);
+        }
+
+        $this->is_loaded = FALSE;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A L I D A T I O N   R O U T I N E S
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Validation routine for name
+     *
+     * @param string $name name
+     *
+     * @return boolean TRUE if name is valid
+     */
+
+    public function validate_name($name)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (! preg_match("/^[A-Za-z0-9\.\- ]+$/", $name))
+            return lang('product_name_is_invalid');
+    }
+
+    /**
+     * Validation routine for software ID
+     *
+     * @param string $software_id Software ID software_id
+     *
+     * @return boolean TRUE if software_id is valid
+     */
+
+    public function validate_software_id($software_id)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!is_numeric($software_id))
+            return lang('product_software_id_is_invalid') . $software_id;
+    }
+
 }
