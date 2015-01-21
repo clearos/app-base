@@ -213,7 +213,7 @@ class OS extends Engine
 
         $osinfo = explode(" release ", $contents);
 
-        if (count($osinfo) != 2)
+        if (count($osinfo) == 0)
             throw new Engine_Exception(lang('base_unknown'));
 
         $this->os = $osinfo[0];
