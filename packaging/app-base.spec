@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.6.3
+Version: 1.6.4
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -26,6 +26,7 @@ Requires: theme-default >= 6.5.8
 Requires: chkconfig
 Requires: coreutils
 Requires: file
+Requires: glibc >= 2.12-1.149.el6_6
 Requires: initscripts
 Requires: passwd
 Requires: pciutils

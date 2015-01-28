@@ -66,6 +66,11 @@ if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
     fi
 fi
 
+# TODO: Remove after ClearOS 6.7.0 Beta 1 release
+#------------------------------------------------
+
+touch /var/clearos/base/restart-network-daemons
+
 # Testing mode
 #-------------
 

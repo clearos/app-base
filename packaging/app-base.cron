@@ -1,1 +1,2 @@
-*/5 * * * * root LANG=en_US /usr/clearos/apps/base/deploy/servicewatch >/dev/null
+*/5 * * * * root LANG=en_US /usr/clearos/apps/base/deploy/servicewatch >/dev/null 2>&1
+2 3 * * * root /usr/clearos/apps/base/deploy/restart-network-daemons >/dev/null 2>&1

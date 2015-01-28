@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.6.3';
+$app['version'] = '1.6.4';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -47,6 +47,7 @@ $app['core_requires'] = array(
     'chkconfig',
     'coreutils',
     'file',
+    'glibc >= 2.12-1.149.el6_6',
     'initscripts',
     'passwd',
     'pciutils',

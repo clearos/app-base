@@ -1,0 +1,44 @@
+#!/bin/sh
+
+# Restarts network-facing daemons on a ClearOS system.  This was used for the
+# GHOST / CVE-2015-0235 fix, but can also be used a general purpose tool.
+# We are being selective about what gets restarted, so this is not a
+# "restart everything" script.
+
+# Bail if restart not required
+[ -e /var/clearos/base/restart-network-daemons ] || exit 0
+
+rm -f /var/clearos/base/restart-network-daemons
+
+DAEMONS="\
+amavisd \
+arpwatch \
+clamd \
+crond \
+cups \
+cyrus-imapd \
+dnsmasq \
+httpd \
+ibvpn \
+ipsec \
+nmb \
+ntpd \
+openvpn \
+postfix \
+postgrey \
+pptpd \
+proftpd \
+rsyslog \
+slapd \
+smb \
+snort \
+squid \
+sshd \
+suvad \
+transmission-daemon \
+"
+
+for DAEMON in $DAEMONS; do
+    service $DAEMON condrestart
+done
+
