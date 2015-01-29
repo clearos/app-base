@@ -97,17 +97,6 @@ if [ ! -e /etc/modprobe.d/clearos.conf ]; then
     /sbin/rmmod nfnetlink nfnetlink_log nfnetlink_queue nf_conntrack_netlink >/dev/null 2>&1
 fi
 
-# FIXME: use an upgrade script for the initial /etc/product move
-#---------------------------------------------------------------
-
-echo "software_id = 10700" > /etc/product
-echo "name = ClearOS Community" >> /etc/product
-echo "jws_nodes = 1" >> /etc/product
-echo "jws_prefix = cos6-ws" >> /etc/product
-echo "jws_domain = clearsdn.com" >> /etc/product
-echo "jws_realm = ws" >> /etc/product
-echo "jws_version = 1.1" >> /etc/product
-
 # Testing mode
 #-------------
 
