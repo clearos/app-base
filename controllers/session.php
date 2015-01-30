@@ -235,14 +235,19 @@ class Session extends ClearOS_Controller
                         // Go to the dashboard if access control allows it
                         $username = $this->input->post('clearos_username');
                         $valid_pages = $this->access_control->get_valid_pages($username);
+			$route_requested = '/app' . $post_redirect;
+
                         if (preg_match('/^\/base\//', $post_redirect)
-                            && (in_array('dashboard', $valid_pages) || ($username === 'root'))
+                            && (in_array('/app/dashboard', $valid_pages) || ($username === 'root'))
                             && clearos_app_installed('dashboard')
                         ) {
                             redirect('/dashboard');
                         // Redirect to first valid page if user is trying to access a non-accessible page
-                        } else if (!in_array($post_redirect, $valid_pages)) {
-                            redirect(preg_replace('/^\/app/', '', $valid_pages[0]));
+                        } else if (!in_array($route_requested, $valid_pages) && ($username != 'root')) {
+                            if (in_array('/app/user_profile', $valid_pages))
+                                redirect('/user_profile');
+                            else
+                                redirect(preg_replace('/^\/app/', '', $valid_pages[0]));
                         } else {
                             redirect($post_redirect);
                         }
