@@ -240,6 +240,9 @@ class Session extends ClearOS_Controller
                             && clearos_app_installed('dashboard')
                         ) {
                             redirect('/dashboard');
+                        // Redirect to first valid page if user is trying to access a non-accessible page
+                        } else if (!in_array($post_redirect, $valid_pages)) {
+                            redirect(preg_replace('/^\/app/', '', $valid_pages[0]));
                         } else {
                             redirect($post_redirect);
                         }
