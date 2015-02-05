@@ -164,9 +164,6 @@ class Authorization extends Engine
 
         if ($username === 'root')
             return TRUE;
-        // Hack TODO discuss with Pete
-        if ($url === '/app/base/system_info' || $url === '/app/base/system_info/get_dynamic_info')
-            return TRUE;
 
         // Access control
         //---------------

@@ -44,7 +44,6 @@ echo form_header(lang('base_system_information'));
 echo field_input('name', $name, lang('base_operating_system'), TRUE);
 echo field_input('version', $version, lang('base_version'), TRUE);
 echo field_input('registered', $registered, lang('registration_registered'), TRUE);
-echo field_input('sdn_account', '', lang('registration_account_username'), TRUE);
 
 echo form_footer();
 echo form_close();
