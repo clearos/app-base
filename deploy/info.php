@@ -99,7 +99,6 @@ $app['core_file_manifest'] = array(
     'clearos-bootstrap.repo' => array( 'target' => '/etc/yum.repos.d/clearos-bootstrap.repo' ),
     'public.acl' => array('target' => '/var/clearos/base/access_control/public/base'),
     'rest.acl' => array('target' => '/var/clearos/base/access_control/rest/base'),
-    'filewatch-base-ulimit.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-ulimit.conf'),
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
     'syncaction' => array(

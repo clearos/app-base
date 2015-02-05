@@ -63,6 +63,7 @@ class Base extends ClearOS_Controller
 
         // Load views
         //-----------
+
         $data['themes'] = $this->webconfig->get_themes(); 
         $data['current_theme'] = $this->session->userdata['theme']; 
         
