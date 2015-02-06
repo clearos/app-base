@@ -95,11 +95,12 @@ $contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Ne
 ///////////////////////////////////////////////////////////////////////////////
 
 // TODO: translate
+// FIXME: update links
 
 $blurb = "
     <div style='padding-right: 120px;'>ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
-    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/solutions", "here", "link-only", array('target' => '_blank')) . " to learn more or 
-    " . anchor_custom("http://www.clearcenter.com/webconfig/landing/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
+    " . anchor_custom("http://www.clearcenter.com/Solution/solutions.html", "here", "link-only", array('target' => '_blank')) . " to learn more or 
+    " . anchor_custom("http://www.clearcenter.com/Company/clearcenter-contact-us-1.html", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
 ";
 
 echo form_open('base/wizard', array('id' => 'getting_started'));
