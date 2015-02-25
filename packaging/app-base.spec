@@ -2,7 +2,7 @@
 Name: app-base
 Epoch: 1
 Version: 2.0.18
-Release: 1%{dist}
+Release: 2%{dist}
 Summary: General Settings
 License: GPLv3
 Group: ClearOS/Apps

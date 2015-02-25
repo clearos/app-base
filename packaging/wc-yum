@@ -115,6 +115,7 @@ class wcYumHelper(yum.YumBase):
                 continue
 
             installedByKey = self.rpmdb.searchNevra(name=po.name)
+
             if len(installedByKey) == 0:
                 if len(installpkgs) == 0:
                     installpkgs.append(po)
@@ -132,7 +133,14 @@ class wcYumHelper(yum.YumBase):
 
             for installed_pkg in installedByKey:
                 if po.EVR > installed_pkg.EVR:
-                    updatepkgs.append((po, installed_pkg))
+                    found = False
+                    for (new, old) in updatepkgs:
+                        if po.EVR > new.EVR:
+                            updatepkgs.remove((new, old))
+                        else:
+                            found = True
+                    if found == False:
+                        updatepkgs.append((po, installed_pkg))
                 elif po.EVR == installed_pkg.EVR:
                     donothingpkgs.append(po)
                 else:
@@ -140,6 +148,7 @@ class wcYumHelper(yum.YumBase):
 
         for po in installpkgs:
             self.install(po)
+
         for (po, oldpo) in updatepkgs:
             self.tsInfo.addUpdate(po, oldpo)
 
