@@ -119,7 +119,7 @@ class Posix_User extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $this->username = $username;
+        $this->username = empty($username) ? '' : $username;
     }
 
     /**
