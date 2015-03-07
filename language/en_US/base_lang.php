@@ -355,6 +355,7 @@ $lang['base_no_entries'] = 'No Entries';
 $lang['base_no_results'] = 'No results';
 $lang['base_no_search_term_provided'] = 'No search term provided.';
 $lang['base_none'] = 'None';
+$lang['base_not_applicable'] = 'Not applicable';
 $lang['base_not_installed'] = 'Software is not installed';
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_nothing_to_report'] = 'Nothing to report.';
