@@ -124,7 +124,6 @@ function remove_apps()
     global $argv;
     global $options;
 
-print_r($options);
     $yes = isset($options['y']) ? TRUE : FALSE;
     array_shift($argv);
     $list = array();

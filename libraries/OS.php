@@ -217,6 +217,9 @@ class OS extends Engine
             throw new Engine_Exception(lang('base_unknown'));
 
         $this->os = $osinfo[0];
-        $this->version = $osinfo[1];
+        if (count($osinfo) == 2)
+            $this->version = $osinfo[1];
+        else
+            $this->version = "";
     }
 }

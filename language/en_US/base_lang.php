@@ -52,6 +52,7 @@ $lang['base_color_secondary'] = 'Secondary Color';
 $lang['base_color_tertiary'] = 'Tertiary Color';
 $lang['base_command_execution_failed'] = 'Command execution failed.';
 $lang['base_command_returned_no_output'] = 'Command returned no output.';
+$lang['base_complete'] = 'Complete';
 $lang['base_configuration'] = 'Configuration';
 $lang['base_configuration_updated'] = 'Configuration was updated.';
 $lang['base_configure'] = 'Configure';
