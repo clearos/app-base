@@ -141,8 +141,9 @@ class System extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
+        $options = array('background' => TRUE);
 
-        $shell->execute(self::COMMAND_SHUTDOWN, '-t3 -r now', TRUE);
+        $shell->execute(self::COMMAND_SHUTDOWN, '-t3 -r now', TRUE, $options);
     }
 
     /**
@@ -157,7 +158,7 @@ class System extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $shell = new Shell();
-
-        $shell->Execute(self::COMMAND_SHUTDOWN, '-t3 -h now', TRUE);
+        $options = array('background' => TRUE);
+        $shell->Execute(self::COMMAND_SHUTDOWN, '-t3 -h now', TRUE, $options);
     }
 }
