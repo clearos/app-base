@@ -307,15 +307,15 @@ class Install_Wizard extends Engine
             );
         }
 
-        // Account Synchronization
-        //------------------------
+        // Master / Slave Synchronization
+        //-------------------------------
 
-        if (clearos_app_installed('account_synchronization')) {
-            clearos_load_language('account_synchronization');
+        if (clearos_app_installed('master_slave')) {
+            clearos_load_language('master_slave');
 
             $steps[] = array(
-                'nav' => '/app/account_synchronization/settings',
-                'title' => lang('account_synchronization_app_name'),
+                'nav' => '/app/master_slave/settings',
+                'title' => lang('master_slave_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
                 'type' => 'normal'
