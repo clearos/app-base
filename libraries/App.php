@@ -95,7 +95,7 @@ class App extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     const APP_PREFIX = 'app-';
-    const COMMAND_RPM = '/bin/rpm';
+    const COMMAND_YUM = '/usr/bin/yum';
     const FILE_INSTALLED_APPS = 'installed_apps';
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -162,10 +162,21 @@ class App extends Engine
             if ($dependencies === FALSE)
                 throw new Engine_Exception(lang('base_core_app_cannot_delete'), CLEAROS_WARNING);
 
-            $apps = implode(' ', $dependencies);
+            // Create list of deps that are installed
+            $installed_apps = array();
+            foreach ($dependencies as $app) {
+                $software = new Software($app);
+                if ($software->is_installed()) {
+                    clearos_log('app-base', 'uninstalling the following package: ' . $app);
+                    $installed_apps[] = $app;
+                }
+            }
+
+            $apps = implode(' ', $installed_apps);
+
             $options = array('validate_exit_code' => FALSE);
             $shell = new Shell();
-            $exitcode = $shell->execute(self::COMMAND_RPM, "-e $apps", TRUE, $options);
+            $exitcode = $shell->execute(self::COMMAND_YUM, " -y remove $apps", TRUE, $options);
             if ($exitcode != 0) {
                 $err = $shell->get_first_output_line();
                 throw new Engine_Exception(lang('base_unable_to_delete_app') . ': ' . $err . '.', CLEAROS_WARNING);
