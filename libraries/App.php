@@ -162,16 +162,6 @@ class App extends Engine
             if ($dependencies === FALSE)
                 throw new Engine_Exception(lang('base_core_app_cannot_delete'), CLEAROS_WARNING);
 
-            // Delete any cron configlets
-            // Probably not required...happens automatically in RPM?
-            try {
-                $cron = new Cron();
-                foreach ($dependencies as $pkg)
-                    $cron->delete_configlet($pkg);
-            } catch (Engine_Exception $e) {
-                // Ignore
-            }
-
             $apps = implode(' ', $dependencies);
             $options = array('validate_exit_code' => FALSE);
             $shell = new Shell();
