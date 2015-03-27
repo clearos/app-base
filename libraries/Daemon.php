@@ -468,7 +468,7 @@ class Daemon extends Software
         $options['background'] = $background;
 
         $shell = new Shell();
-        $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args", TRUE, $options);
+        $shell->execute(self::COMMAND_SERVICE, "$this->initscript $args >/dev/null", TRUE, $options);
     }
 
     /**
