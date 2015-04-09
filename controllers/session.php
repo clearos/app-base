@@ -235,7 +235,7 @@ class Session extends ClearOS_Controller
                         // Go to the dashboard if access control allows it
                         $username = $this->input->post('clearos_username');
                         $valid_pages = $this->access_control->get_valid_pages($username);
-			$route_requested = '/app' . $post_redirect;
+                        $route_requested = '/app' . $post_redirect;
 
                         if (preg_match('/^\/base\//', $post_redirect)
                             && (in_array('/app/dashboard', $valid_pages) || ($username === 'root'))
