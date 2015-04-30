@@ -56,7 +56,11 @@ $app['dashboard_widgets'] = array(
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
+// FIXME: remove app* deps after wc-yum fix is available
+
 $app['core_requires'] = array(
+    'app-marketplace >= 1:2.0.22',
+    'app-network >= 1:2.0.24',
     'acpid',
     'clearos-base',
     'clearos-framework >= 7.0.2',
