@@ -1,0 +1,8 @@
+# TODO: reinstate bootstrap until there is a developer-driven way to 
+# blacklist RPM versions from an ISO.
+[clearos-bootstrap]
+name=ClearOS $releasever - $basearch - Bootstrap
+baseurl=http://clearos7.clearfoundation.com/clearos7
+enabled=1
+gpgcheck=0
+
