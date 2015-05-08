@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.0.26
+Version: 2.0.28
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -17,8 +17,6 @@ The Base app provides core system libraries and tools.
 Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
-Requires: app-marketplace >= 1:2.0.22
-Requires: app-network >= 1:2.0.24
 Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 7.0.2
