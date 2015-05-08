@@ -176,6 +176,7 @@ class Install_Wizard extends Engine
                 'title' => lang('network_network_mode'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_network_settings'),
+                'inline_form' => TRUE,
                 'type' => 'normal'
             );
 
@@ -265,7 +266,8 @@ class Install_Wizard extends Engine
                 'title' => lang('network_internet_domain'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
-                'type' => 'normal'
+                'inline_form' => TRUE,
+                'type' => 'normal',
             );
 
             $steps[] = array(
@@ -273,6 +275,7 @@ class Install_Wizard extends Engine
                 'title' => lang('network_hostname'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_configuration'),
+                'inline_form' => TRUE,
                 'type' => 'normal'
             );
         }
