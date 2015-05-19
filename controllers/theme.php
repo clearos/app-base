@@ -64,6 +64,12 @@ class Theme extends ClearOS_Controller
         // Load views
         //-----------
 
+        $data['themes'] = $this->webconfig->get_themes();
+        $data['current_theme'] = $this->session->userdata['theme'];
+
+        // Load views
+        //-----------
+
         $this->page->view_form('base/theme/summary', $data, lang('base_theme'));
     }
 
@@ -170,5 +176,4 @@ class Theme extends ClearOS_Controller
 
         $this->page->view_form('base/theme/settings', $data, lang('base_theme'));
     }
-
 }

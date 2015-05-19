@@ -27,6 +27,7 @@ $app['subcategory'] = lang('base_subcategory_settings');
 
 $app['controllers']['base']['title'] = $app['name'];
 $app['controllers']['theme']['title'] = lang('base_theme');
+$app['controllers']['shutdown']['title'] = lang('base_shutdown_restart');
 
 /////////////////////////////////////////////////////////////////////////////
 // Controller info
@@ -45,7 +46,7 @@ $app['controllers']['session']['inline_help'] = array(
 
 $app['dashboard_widgets'] = array(
     $app['category'] => array(
-        'base/dashboard_widgets/shutdown' => array(
+        'base/shutdown' => array(
             'title' => lang('base_shutdown_restart'),
             'restricted' => TRUE,
         )
