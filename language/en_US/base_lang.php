@@ -401,6 +401,7 @@ $lang['base_reset_password_and_send'] = 'Reset Password and Send';
 $lang['base_restart'] = 'Restart';
 $lang['base_restarting'] = 'Restarting';
 $lang['base_restore'] = 'Restore';
+$lang['base_return_to_clearos'] = 'Return to ClearOS';
 $lang['base_return_to_home_page'] = 'Return to home page';
 $lang['base_return_to_summary'] = 'Return to Summary';
 $lang['base_rows'] = 'Rows';

@@ -1,13 +1,13 @@
 <?php
 
 /**
- * Base controller.
+ * Dashboard view.
  *
  * @category   apps
  * @package    base
- * @subpackage controllers
+ * @subpackage views
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011-2015 ClearFoundation
+ * @copyright  2011-2013 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -25,46 +25,23 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.  
 //
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-// C L A S S
+// Load dependencies
 ///////////////////////////////////////////////////////////////////////////////
 
-/**
- * Base controller.
- *
- * @category   apps
- * @package    base
- * @subpackage controllers
- * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011-2015 ClearFoundation
- * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
- * @link       http://www.clearfoundation.com/docs/developer/apps/base/
- */
+$this->lang->load('base');
 
-class Base extends ClearOS_Controller
-{
-    /**
-     * Base default controller
-     *
-     * @return view
-     */
+$options['buttons']  = array(
+    anchor_custom('/app/base/shutdown/confirm/shutdown', lang('base_shutdown'), 'high'),
+    anchor_custom('/app/base/shutdown/confirm/restart', lang('base_restart'), 'high')
+);
 
-    function index()
-    {
-        // Load libraries
-        //---------------
-
-        $this->lang->load('base');
-
-        // Load views
-        //-----------
-
-        $views = array('base/theme', 'base/shutdown');
-
-        $this->page->view_forms($views, lang('base_app_name'));
-    }
-}
+echo infobox_highlight(
+    lang('base_shutdown_restart'),
+    lang('base_shutdown_restart_help'),
+    $options
+);
