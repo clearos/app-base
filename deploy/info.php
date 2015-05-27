@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.0.30';
+$app['version'] = '2.0.31';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -46,7 +46,7 @@ $app['controllers']['session']['inline_help'] = array(
 
 $app['dashboard_widgets'] = array(
     $app['category'] => array(
-        'base/shutdown' => array(
+        'base/base_dashboard/shutdown' => array(
             'title' => lang('base_shutdown_restart'),
             'restricted' => TRUE,
         )
