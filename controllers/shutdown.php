@@ -126,12 +126,12 @@ class Shutdown extends ClearOS_Controller
 
         if ($type === 'shutdown') {
             $this->page->set_message(lang('base_system_is_shutting_down'), 'warning');
-            // $this->system->shutdown(); 
+            $this->system->shutdown();
 
             redirect('/base/shutdown/status');
         } else if ($type === 'restart') {
             $this->page->set_message(lang('base_system_is_restarting'), 'warning');
-            // $this->system->restart(); 
+            $this->system->restart();
 
             redirect('/base/shutdown/status');
         }
