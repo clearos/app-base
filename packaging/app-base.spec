@@ -19,7 +19,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
-Requires: clearos-framework >= 7.1.0
+Requires: clearos-framework >= 7.1.1
 Requires: clearos-release >= 7-0.8
 Requires: cpupowerutils
 Requires: csplugin-filewatch
