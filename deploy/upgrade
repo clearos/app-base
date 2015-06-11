@@ -84,7 +84,28 @@ if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
     fi
 fi
 
+# Grub menu changes
+#------------------
+
+if [ -e /etc/default/grub ]; then
+    CHECK=`grep "^GRUB_DISTRIBUTOR=" /etc/default/grub`
+    if [ -z "$CHECK" ]; then
+        logger -p local6.notice -t installer "app-base-core - adding grub distributor"
+        echo "GRUB_DISTRIBUTOR=\"ClearOS\"" >> /etc/default/grub
+        /usr/sbin/grub2-mkconfig --output=/boot/grub2/grub.cfg >/dev/null 2>&1
+    else
+        CHECK=`grep "^GRUB_DISTRIBUTOR=.*ClearOS" /etc/default/grub`
+        if [ -z "$CHECK" ]; then
+            logger -p local6.notice -t installer "app-base-core - updating grub distributor"
+            sed -i -e 's/^GRUB_DISTRIBUTOR.*/GRUB_DISTRIBUTOR="ClearOS"/' /etc/default/grub
+            /usr/sbin/grub2-mkconfig --output=/boot/grub2/grub.cfg >/dev/null 2>&1
+        fi
+    fi
+fi
+
 # TODO: temporary workaround for nfnetlink
+#-----------------------------------------
+
 if [ -e /etc/modprobe.d/app-base.conf ]; then
     rm -f /etc/modprobe.d/app-base.conf
 fi
