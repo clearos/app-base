@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.2.0';
+$app['version'] = '2.1.0';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -69,6 +69,7 @@ $app['core_requires'] = array(
     'coreutils',
     'file',
     'firewalld',
+    'grub2-tools',
     'initscripts',
     'logrotate',
     'passwd',

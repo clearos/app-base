@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.2.0
+Version: 2.1.0
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -28,6 +28,7 @@ Requires: chkconfig
 Requires: coreutils
 Requires: file
 Requires: firewalld
+Requires: grub2-tools
 Requires: initscripts
 Requires: logrotate
 Requires: passwd

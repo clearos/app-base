@@ -35,9 +35,13 @@
 
 $this->lang->load('base');
 
+///////////////////////////////////////////////////////////////////////////////
+// Form
+///////////////////////////////////////////////////////////////////////////////
+
 $buttons = array(form_submit_select('butSubmit', 'high', array('id' => 'confirm-action')));
 
-echo form_open('base/dashboard_widgets/shutdown', 'id=confirm-action-form');
+echo form_open('base/base_dashboard/shutdown', 'id=confirm-action-form');
 echo form_header(lang('base_shutdown_restart'));
 
 echo field_dropdown('action', $actions, $action, lang('base_action'), FALSE);
@@ -46,6 +50,11 @@ echo field_button_set($buttons);
 
 echo form_footer();
 echo form_close();
+
+///////////////////////////////////////////////////////////////////////////////
+// Modal confirmation
+///////////////////////////////////////////////////////////////////////////////
+
 echo modal_confirm(
     lang('base_confirmation_required'),
     lang('base_confirm_action') . ": <span id='action-selected'></span>?",

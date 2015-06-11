@@ -59,27 +59,6 @@ class Base_Dashboard extends ClearOS_Controller
     }
 
     /**
-     * Version widget
-     *
-     * @return view
-     */
-
-    function version()
-    {
-        // Load libraries
-        //---------------
-
-        $this->load->library('base/Webconfig');
-        $this->lang->load('base');
-
-        // Load views
-        //-----------
-        $data = array();
-
-        $this->page->view_form('base/dashboard/version', $data, lang('base_app_name'));
-    }
-
-    /**
      * Shutdown/Restart widget
      *
      * @return view
@@ -98,12 +77,12 @@ class Base_Dashboard extends ClearOS_Controller
                 if ($this->input->post('action') === 'shutdown') {
                     $this->page->set_message(lang('base_system_is_shutting_down'), 'warning');
                     $this->system->shutdown();
-                    redirect('/dashboard/shutdown/status');
+                    redirect('/base/shutdown/status');
                     return;
                 } else if ($this->input->post('action') === 'restart') {
                     $this->page->set_message(lang('base_system_is_restarting'), 'warning');
                     $this->system->restart();
-                    redirect('/dashboard/shutdown/status');
+                    redirect('/base/shutdown/status');
                     return;
                 }
             }
@@ -111,6 +90,7 @@ class Base_Dashboard extends ClearOS_Controller
 
         // Load views
         //-----------
+
         $data = array(
             'confirm_id' => $this->session->userdata('form_post_verify'),
             'actions' => array(
