@@ -528,6 +528,7 @@ $lang['base_view_cart'] = 'View Cart';
 $lang['base_view_details'] = 'View Details';
 $lang['base_virtual_machine'] = 'Virtual Machine';
 $lang['base_visit_marketplace'] = 'Visit Marketplace';
+$lang['base_vol_near_capacity'] = 'Server is running low on available disk space - preventing further modifications via API until disk space issues are resolved.';
 $lang['base_waiting'] = 'Waiting';
 $lang['base_warning'] = 'Warning';
 $lang['base_web_browser'] = 'Web Browser';
