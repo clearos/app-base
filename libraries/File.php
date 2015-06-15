@@ -154,6 +154,7 @@ class File extends Engine
     const COMMAND_TAIL = '/usr/bin/tail';
     const COMMAND_REPLACE = '/usr/sbin/app-rename';
     const MAX_BYTES = 128000000;
+    const MIN_BYTES_AVAIL = 100000000;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -171,6 +172,10 @@ class File extends Engine
     public function __construct($filename, $superuser = FALSE, $temporary = FALSE, $options = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $free_volume_space = disk_free_space(dirname($filename));
+        if ($free_volume_space !== FALSE && $free_volume_space < self::MIN_BYTES_AVAIL)
+            throw new Engine_Exception(lang('base_vol_near_capacity'));
 
         if ($temporary) {
             $this->temporary = $temporary;
