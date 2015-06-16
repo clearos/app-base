@@ -1,0 +1,9 @@
+[clearos-developer]
+name=ClearOS Developer $releasever - $basearch - Developer Tools
+baseurl=http://download1.clearsdn.com/marketplace/developer/$releasever/$basearch
+    http://download2.clearsdn.com/marketplace/developer/$releasever/$basearch
+    http://download3.clearsdn.com/marketplace/developer/$releasever/$basearch
+    http://download4.clearsdn.com/marketplace/developer/$releasever/$basearch
+enabled=0
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS

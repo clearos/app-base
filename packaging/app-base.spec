@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.1.1
+Version: 2.1.2
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -81,6 +81,7 @@ install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/clearos-bootstrap.repo %{buildroot}/etc/yum.repos.d/clearos-bootstrap.repo
+install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0644 packaging/public.acl %{buildroot}/var/clearos/base/access_control/public/base
@@ -148,6 +149,7 @@ exit 0
 /usr/sbin/app-manager
 /var/clearos/base/access_control/authenticated/base
 /etc/yum.repos.d/clearos-bootstrap.repo
+/etc/yum.repos.d/clearos-developer.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
 /var/clearos/base/access_control/public/base
