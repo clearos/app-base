@@ -173,9 +173,11 @@ class File extends Engine
     {
         clearos_profile(__METHOD__, __LINE__);
 
+        /*
         $free_volume_space = disk_free_space(dirname($filename));
         if ($free_volume_space !== FALSE && $free_volume_space < self::MIN_BYTES_AVAIL)
             throw new Engine_Exception(lang('base_vol_near_capacity'));
+        */
 
         if ($temporary) {
             $this->temporary = $temporary;
