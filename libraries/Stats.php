@@ -292,13 +292,15 @@ class Stats extends Engine
     }
 
     /**
-     * Returns software updates - last 10 entries
+     * Returns software updates
+     *
+     * @param int $max maximum number of entries to return
      *
      * @return array software updates
      * @throws Engine_Exception
      */
 
-    public function get_yum_log()
+    public function get_yum_log($max = 10)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -306,8 +308,7 @@ class Stats extends Engine
 
         $entries = $file->get_contents_as_array();
 
-        //fix at 10 lines for now, as only meant to be preview
-        $recententries = array_slice($entries, -10, 10);
+        $recententries = array_slice($entries, -1*$max, $max);
 
         foreach ($recententries as $line) {
             $pieces = explode(' ', $line);
