@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -101,7 +101,7 @@ clearos_load_library('base/Validation_Exception');
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -156,7 +156,7 @@ class File extends Engine
     const COMMAND_TAIL = '/usr/bin/tail';
     const COMMAND_REPLACE = '/usr/sbin/app-rename';
     const MAX_BYTES = 128000000;
-    const MIN_BYTES_AVAIL = 100000000;
+    const MIN_VOLUME_PERCENT_AVAIL = 98.00;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -1567,7 +1567,10 @@ class File extends Engine
             $filename = $this->filename;
 
         $free_volume_space = disk_free_space(dirname("$filename"));
-        if ($free_volume_space !== FALSE && $free_volume_space < self::MIN_BYTES_AVAIL)
+        $total_volume_space = disk_total_space(dirname("$filename"));
+        $min_percent = self::MIN_VOLUME_PERCENT_AVAIL;
+        // TODO - add override option here?
+        if ($free_volume_space !== FALSE && $total_volume_space !== FALSE && (100 - ($free_volume_space / $total_volume_space * 100)) > $min_percent)
             throw new File_Insufficient_Space_Exception();
     }
 
