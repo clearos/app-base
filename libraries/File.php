@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -67,6 +67,7 @@ clearos_load_library('base/Shell');
 use \clearos\apps\base\Engine_Exception as Engine_Exception;
 use \clearos\apps\base\File_Already_Exists_Exception as File_Already_Exists_Exception;
 use \clearos\apps\base\File_Exception as File_Exception;
+use \clearos\apps\base\File_Insufficient_Space_Exception as File_Insufficient_Space_Exception;
 use \clearos\apps\base\File_No_Match_Exception as File_No_Match_Exception;
 use \clearos\apps\base\File_Not_Found_Exception as File_Not_Found_Exception;
 use \clearos\apps\base\File_Permissions_Exception as File_Permissions_Exception;
@@ -76,6 +77,7 @@ use \clearos\apps\base\Validation_Exception as Validation_Exception;
 clearos_load_library('base/Engine_Exception');
 clearos_load_library('base/File_Already_Exists_Exception');
 clearos_load_library('base/File_Exception');
+clearos_load_library('base/File_Insufficient_Space_Exception');
 clearos_load_library('base/File_No_Match_Exception');
 clearos_load_library('base/File_Not_Found_Exception');
 clearos_load_library('base/File_Too_Large_Exception');
@@ -99,7 +101,7 @@ clearos_load_library('base/Validation_Exception');
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2015 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -154,7 +156,7 @@ class File extends Engine
     const COMMAND_TAIL = '/usr/bin/tail';
     const COMMAND_REPLACE = '/usr/sbin/app-rename';
     const MAX_BYTES = 128000000;
-    const MIN_BYTES_AVAIL = 100000000;
+    const MIN_VOLUME_PERCENT_AVAIL = 98.00;
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E T H O D S
@@ -172,12 +174,6 @@ class File extends Engine
     public function __construct($filename, $superuser = FALSE, $temporary = FALSE, $options = NULL)
     {
         clearos_profile(__METHOD__, __LINE__);
-
-        /*
-        $free_volume_space = disk_free_space(dirname($filename));
-        if ($free_volume_space !== FALSE && $free_volume_space < self::MIN_BYTES_AVAIL)
-            throw new Engine_Exception(lang('base_vol_near_capacity'));
-        */
 
         if ($temporary) {
             $this->temporary = $temporary;
@@ -778,12 +774,14 @@ class File extends Engine
      * @param string $tempfile temp file
      *
      * @return void
-     * @throws File_Not_Found_Exception File_Exception
+     * @throws File_Not_Found_Exception File_Exception File_Insufficient_Space_Exception
      */
 
     public function replace($tempfile)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         if (! file_exists($tempfile))
             throw new File_Not_Found_Exception();
@@ -819,11 +817,14 @@ class File extends Engine
      * @param array $contents an array containing output lines
      *
      * @return void
+     * @throws File_Insufficient_Space_Exception
      */
 
     public function dump_contents_from_array($contents)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
@@ -846,12 +847,14 @@ class File extends Engine
      * @param string $data line (or lines) to append to the file
      *
      * @return void
-     * @throws File_Not_Found_Exception File_Exception
+     * @throws File_Not_Found_Exception File_Exception File_Insufficient_Space_Exception
      */
 
     public function add_lines($data)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
@@ -886,12 +889,14 @@ class File extends Engine
      * @param string $after regular expression defining the file location
      *
      * @return void
-     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception
+     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception File_Insufficient_Space_Exception
      */
 
     public function add_lines_after($data, $after)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
@@ -930,12 +935,14 @@ class File extends Engine
      * @param string $before regular expression defining the file location
      *
      * @return void
-     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception
+     * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception File_Insufficient_Space_Exception
      */
 
     public function add_lines_before($data, $before)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $tempfile = tempnam(CLEAROS_TEMP_DIR, basename("$this->filename"));
 
@@ -973,7 +980,7 @@ class File extends Engine
      * @param string $search regular expression used to match removed lines
      *
      * @return integer number of lines deleted
-     * @throws File_Not_Found_Exception
+     * @throws File_Not_Found_Exception File_Insufficient_Space_Exception
      */
 
     public function delete_lines($search)
@@ -996,12 +1003,14 @@ class File extends Engine
      * @param string $prefix prefix string
      *
      * @return boolean TRUE if any matches were made
-     * @throws File_Not_Found_Exception
+     * @throws File_Not_Found_Exception File_Insufficient_Space_Exception
      */
 
     public function prefix_lines($search, $prefix)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $prefix_lines = FALSE;
 
@@ -1119,12 +1128,14 @@ class File extends Engine
      * @param string $destination destination location
      *
      * @return void
-     * @throws File_Exception, Validation_Exception
+     * @throws File_Exception, Validation_Exception File_Insufficient_Space_Exception
      */
 
     public function copy_to($destination)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space($destination);
 
         // TODO: validate destination
 
@@ -1149,7 +1160,7 @@ class File extends Engine
      *
      * @see replace
      * @return void
-     * @throws File_Exception, Validation_Exception
+     * @throws File_Exception, Validation_Exception, File_Insufficient_Space_Exception
      */
 
     public function move_to($destination)
@@ -1157,6 +1168,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         // TODO: validate destination
+        $this->_check_volume_for_space($destination);
 
         try {
             $shell = new Shell();
@@ -1185,12 +1197,14 @@ class File extends Engine
      * @param string $end         regular expression specifying the end line
      * 
      * @return void
-     * @throws File_Not_Found_Exception Exception (inherited from get_contents_as_array)
+     * @throws File_Not_Found_Exception Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_lines_between($search, $replacement, $start, $end)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $replaced = FALSE;
 
@@ -1255,12 +1269,14 @@ class File extends Engine
      * @param integer $max_replaced maximum number of matches to make
      *
      * @return integer number of replacements made
-     * @throws File_Exception, Validation_Exception
+     * @throws File_Exception, Validation_Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_lines($search, $replacement, $max_replaced = -1)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         // TODO: add validation
 
@@ -1304,7 +1320,7 @@ class File extends Engine
      * @param string $replacement replacement line (or lines)
      *
      * @return integer number of replacements made
-     * @throws File_Not_Found_Exception, File_Exception
+     * @throws File_Not_Found_Exception, File_Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_one_line($search, $replacement)
@@ -1325,12 +1341,14 @@ class File extends Engine
      * @param string $replacement replacement expression
      *
      * @return boolean TRUE if any replacements were made
-     * @throws File_Not_Found_Exception Exception, File_No_Match_Exception
+     * @throws File_Not_Found_Exception Exception, File_No_Match_Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_one_line_by_pattern($search, $replacement)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $replaced = FALSE;
 
@@ -1372,12 +1390,14 @@ class File extends Engine
      * @param string $replacement replacement expression
      *
      * @return boolean TRUE if any replacements were made
-     * @throws File_Not_Found_Exception, Engine_Exception
+     * @throws File_Not_Found_Exception, Engine_Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_lines_by_pattern($search, $replacement)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $replaced = FALSE;
 
@@ -1458,12 +1478,14 @@ class File extends Engine
      * @param string $contents replacement contents
      *
      * @return boolean TRUE if any replacements were made
-     * @throws File_Not_Found_Exception, File_Exception
+     * @throws File_Not_Found_Exception, File_Exception, File_Insufficient_Space_Exception
      */
 
     public function replace_contents_locked($contents)
     {
         clearos_profile(__METHOD__, __LINE__);
+
+        $this->_check_volume_for_space();
 
         $fh = fopen($this->filename, 'a+');
         if (!is_resource($fh))
@@ -1528,4 +1550,28 @@ class File extends Engine
 
         return $max;
     }
+
+    /**
+     * Performs a disk space check.
+     *
+     * @param $filename override filename - otherwises uses filename on instantiation
+     *
+     * @return void
+     * @throws File_Insufficient_Space_Exception 
+     */
+
+    protected function _check_volume_for_space($filename = NULL)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+        if ($filename == NULL)
+            $filename = $this->filename;
+
+        $free_volume_space = disk_free_space(dirname("$filename"));
+        $total_volume_space = disk_total_space(dirname("$filename"));
+        $min_percent = self::MIN_VOLUME_PERCENT_AVAIL;
+        // TODO - add override option here?
+        if ($free_volume_space !== FALSE && $total_volume_space !== FALSE && (100 - ($free_volume_space / $total_volume_space * 100)) > $min_percent)
+            throw new File_Insufficient_Space_Exception();
+    }
+
 }
