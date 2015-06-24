@@ -183,16 +183,7 @@ class Access_Control extends Engine
 
         $details = $this->get_valid_pages_details($username);
 
-        // Standard webconfig access control
-        if ($_SERVER['SERVER_PORT'] == 81) {
-            $pages = array_merge(
-                $details[Access_Control::TYPE_ADMINISTRATORS],
-                $details[Access_Control::TYPE_AUTHENTICATED],
-                $details[Access_Control::TYPE_CUSTOM],
-                $details[Access_Control::TYPE_PUBLIC]
-            );
-
-        } else if ($_SERVER['SERVER_PORT'] == 82) {
+        if ($_SERVER['SERVER_PORT'] == 82) {
             // Proxy and other splash pages are available with HTTPS (i.e. ugly SSL warning)
             $pages = $details[Access_Control::TYPE_PUBLIC];
 
@@ -208,6 +199,14 @@ class Access_Control extends Engine
                 $details[Access_Control::TYPE_CUSTOM],
                 $details[Access_Control::TYPE_PUBLIC],
                 $details[Access_Control::TYPE_REST]
+            );
+        } else {
+            // Standard webconfig access control
+            $pages = array_merge(
+                $details[Access_Control::TYPE_ADMINISTRATORS],
+                $details[Access_Control::TYPE_AUTHENTICATED],
+                $details[Access_Control::TYPE_CUSTOM],
+                $details[Access_Control::TYPE_PUBLIC]
             );
         }
 
