@@ -62,7 +62,7 @@ $app['core_requires'] = array(
     'acpid',
     'clearos-base',
     'clearos-framework >= 7.1.2',
-    'clearos-release >= 7-0.8',
+    'clearos-release >= 7-1.7',
     'cpupowerutils',
     'csplugin-filewatch',
     'theme-clearos-admin >= 7.1.3',

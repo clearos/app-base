@@ -20,7 +20,7 @@ Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 7.1.2
-Requires: clearos-release >= 7-0.8
+Requires: clearos-release >= 7-1.7
 Requires: cpupowerutils
 Requires: csplugin-filewatch
 Requires: theme-clearos-admin >= 7.1.3

@@ -118,8 +118,20 @@ if [ ! -e /etc/modprobe.d/clearos.conf ]; then
     /sbin/rmmod nfnetlink nfnetlink_log nfnetlink_queue nf_conntrack_netlink >/dev/null 2>&1
 fi
 
+# Upgrade clearos.repo file to new structure
+#-------------------------------------------
+
+CHECK=`grep "^\[clearos-addons" /etc/yum.repos.d/clearos.repo 2>/dev/null`
+CHECK2=`grep "^\[clearos-infra" /etc/yum.repos.d/clearos.repo.rpmnew 2>/dev/null`
+if ( [ -n "$CHECK" ] && [ -n "$CHECK2" ] ); then
+    logger -p local6.notice -t installer "app-base-core - upgrading yum repo definition"
+    mv /etc/yum.repos.d/clearos.repo /etc/yum.repos.d/clearos.repo.old
+    cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
+fi
+
 # Testing mode
 #-------------
+
 
 # FIXME: beta period only
 /usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
