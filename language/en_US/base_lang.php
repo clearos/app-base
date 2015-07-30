@@ -497,6 +497,7 @@ $lang['base_unknown'] = 'Unknown';
 $lang['base_unknown_script_state'] = 'Status of script unknown';
 $lang['base_unlimited'] = 'Unlimited';
 $lang['base_update'] = 'Update';
+$lang['base_update_your_current_session'] = 'Update Your Current Session';
 $lang['base_upload'] = 'Upload';
 $lang['base_upload_bad_filename'] = 'The file name you submitted already exists on the server.';
 $lang['base_upload_destination_error'] = 'A problem was encountered while attempting to move the uploaded file to the final destination.';

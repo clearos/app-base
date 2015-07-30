@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.1.12';
+$app['version'] = '2.1.14';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -27,6 +27,7 @@ $app['subcategory'] = lang('base_subcategory_settings');
 
 $app['controllers']['base']['title'] = $app['name'];
 $app['controllers']['theme']['title'] = lang('base_theme');
+$app['controllers']['language']['title'] = lang('base_language');
 $app['controllers']['shutdown']['title'] = lang('base_shutdown_restart');
 
 /////////////////////////////////////////////////////////////////////////////

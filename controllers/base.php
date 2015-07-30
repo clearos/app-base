@@ -63,7 +63,7 @@ class Base extends ClearOS_Controller
         // Load views
         //-----------
 
-        $views = array('base/theme', 'base/shutdown');
+        $views = array('base/theme', 'base/language', 'base/shutdown');
 
         $this->page->view_forms($views, lang('base_app_name'));
     }
