@@ -155,7 +155,7 @@ class Yum extends Engine
             $options['background'] = TRUE;
 
         $shell = new Shell();
-        $shell->execute(self::COMMAND_YUM, 'clean all', TRUE, $options);
+        $shell->execute(self::COMMAND_YUM, '--enablerepo=* clean all', TRUE, $options);
     }
 
     /**
@@ -184,7 +184,7 @@ class Yum extends Engine
         // Run install
         // Yum caching is problematic.  See example in tracker #1562.
         $shell = new Shell();
-        $shell->execute(self::COMMAND_YUM, 'clean metadata', TRUE);
+        $shell->execute(self::COMMAND_YUM, '--enablerepo=* clean metadata', TRUE);
 
         $options = array('log' => self::FILE_LOG);
 
