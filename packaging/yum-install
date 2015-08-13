@@ -102,7 +102,7 @@ try {
 	$options['log'] = 'yum-install.log';
 
 	$shell = new Shell();
-	$shell->execute(Yum::COMMAND_YUM, "-y install $rpmlist", TRUE, $options);
+	$shell->execute(Yum::COMMAND_YUM, "--skip-broken -y install $rpmlist", TRUE, $options);
 } catch (Yum_Busy_Exception $e) {
     clearos_log('software-updates', 'yum system is busy');
     return;
