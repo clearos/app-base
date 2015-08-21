@@ -432,6 +432,7 @@ $lang['base_server_status'] = 'Server Status';
 $lang['base_service'] = 'Service';
 $lang['base_settings'] = 'Settings';
 $lang['base_show'] = 'Show';
+$lang['base_show_recommended_apps'] = 'Show Recommended Apps';
 $lang['base_show_full_report'] = 'Show Full Report';
 $lang['base_shutdown'] = 'Shutdown';
 $lang['base_shutdown_restart'] = 'Shutdown / Restart';
