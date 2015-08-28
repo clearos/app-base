@@ -119,6 +119,7 @@ class Daemon extends Software
 
     const PATH_INITD = '/etc/rc.d/rc3.d';
     const PATH_SYSTEMD = '/etc/systemd/system/multi-user.target.wants';
+    const PATH_SYSTEMD_BASE = '/lib/systemd/system';
     const PATH_CONFIGLET = '/var/clearos/base/daemon';
 
     const STATUS_BUSY = 'busy';
@@ -205,20 +206,6 @@ class Daemon extends Software
         if (! $this->is_installed())
             throw new Engine_Exception(lang('base_not_installed'));
 
-        // SysV
-        //-----
-
-        $folder = new Folder(self::PATH_INITD);
-
-        if ($folder->exists()) {
-            $listing = $folder->get_listing();
-
-            foreach ($listing as $file) {
-                if (preg_match("/^S\d+" . $this->initscript . "$/", $file))
-                    return TRUE;
-            }
-        }
-
         // SystemD
         //--------
 
@@ -231,6 +218,33 @@ class Daemon extends Software
                 if (preg_match("/^" . $this->initscript . ".service$/", $file))
                     return TRUE;
                 if (preg_match("/^" . $this->initscript . "@.*.service$/", $file))
+                    return TRUE;
+            }
+        }
+
+        // If Systemd is installed, it's authoritative.  See tracker #2831
+        $folder = new Folder(self::PATH_SYSTEMD_BASE);
+
+        if ($folder->exists()) {
+            $listing = $folder->get_listing();
+            foreach ($listing as $file) {
+                if (preg_match("/^" . $this->initscript . ".service$/", $file))
+                    return FALSE;
+                if (preg_match("/^" . $this->initscript . "@.*.service$/", $file))
+                    return FALSE;
+            }
+        }
+
+        // SysV
+        //-----
+
+        $folder = new Folder(self::PATH_INITD);
+
+        if ($folder->exists()) {
+            $listing = $folder->get_listing();
+
+            foreach ($listing as $file) {
+                if (preg_match("/^S\d+" . $this->initscript . "$/", $file))
                     return TRUE;
             }
         }
