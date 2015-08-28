@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.1.14
+Version: 2.1.15
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -106,6 +106,8 @@ fi
 
 [ -x /usr/clearos/apps/base/deploy/upgrade ] && /usr/clearos/apps/base/deploy/upgrade
 
+
+
 exit 0
 
 %preun
@@ -118,6 +120,8 @@ if [ $1 -eq 0 ]; then
     logger -p local6.notice -t installer 'app-base-core - uninstalling'
     [ -x /usr/clearos/apps/base/deploy/uninstall ] && /usr/clearos/apps/base/deploy/uninstall
 fi
+
+
 
 exit 0
 

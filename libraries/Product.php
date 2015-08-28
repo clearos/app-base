@@ -93,6 +93,9 @@ class Product extends Engine
     ///////////////////////////////////////////////////////////////////////////////
 
     const FILE_CONFIG = '/etc/product';
+    const OS_COMMUNITY = 20000;
+    const OS_BUSINESS = 110000;
+    const OS_HOME = 120000;
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -357,6 +360,51 @@ class Product extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $this->_set_parameter('partner_region_id', $id);
+    }
+    
+    /**
+     * Returns boolean value if platform is Home Edition.
+     *
+     * @return void
+     */
+
+    public function is_home()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (in_array($this->get_software_id(), range(self::OS_HOME, self::OS_HOME + 9999)))
+            return TRUE;
+        return FALSE;
+    }
+    
+    /**
+     * Returns boolean value if platform is Community Edition.
+     *
+     * @return void
+     */
+
+    public function is_community()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (in_array($this->get_software_id(), range(self::OS_COMMUNITY, self::OS_COMMUNITY + 9999)))
+            return TRUE;
+        return FALSE;
+    }
+    
+    /**
+     * Returns boolean value if platform is Business Edition.
+     *
+     * @return void
+     */
+
+    public function is_business()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (in_array($this->get_software_id(), range(self::OS_BUSINESS, self::OS_BUSINESS + 9999)))
+            return TRUE;
+        return FALSE;
     }
     
     /**
