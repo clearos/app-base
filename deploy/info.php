@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.1.15';
+$app['version'] = '2.1.16';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -100,7 +100,6 @@ $app['core_requires'] = array(
 $app['core_file_manifest'] = array(
     'authenticated.acl' => array('target' => '/var/clearos/base/access_control/authenticated/base'),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
-    'clearos-bootstrap.repo' => array( 'target' => '/etc/yum.repos.d/clearos-bootstrap.repo' ),
     'public.acl' => array('target' => '/var/clearos/base/access_control/public/base'),
     'rest.acl' => array('target' => '/var/clearos/base/access_control/rest/base'),
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),

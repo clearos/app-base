@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.1.15
+Version: 2.1.16
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -80,7 +80,6 @@ install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
-install -D -m 0644 packaging/clearos-bootstrap.repo %{buildroot}/etc/yum.repos.d/clearos-bootstrap.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
@@ -106,8 +105,6 @@ fi
 
 [ -x /usr/clearos/apps/base/deploy/upgrade ] && /usr/clearos/apps/base/deploy/upgrade
 
-
-
 exit 0
 
 %preun
@@ -120,8 +117,6 @@ if [ $1 -eq 0 ]; then
     logger -p local6.notice -t installer 'app-base-core - uninstalling'
     [ -x /usr/clearos/apps/base/deploy/uninstall ] && /usr/clearos/apps/base/deploy/uninstall
 fi
-
-
 
 exit 0
 
@@ -152,7 +147,6 @@ exit 0
 /etc/cron.d/app-base
 /usr/sbin/app-manager
 /var/clearos/base/access_control/authenticated/base
-/etc/yum.repos.d/clearos-bootstrap.repo
 /etc/yum.repos.d/clearos-developer.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
