@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.7.3';
+$app['version'] = '1.7.4';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -120,6 +120,7 @@ $app['core_file_manifest'] = array(
     'centos-scl.repo' => array( 'target' => '/etc/yum.repos.d/centos-scl.repo' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
+    'clearos-fast-updates.repo' => array( 'target' => '/etc/yum.repos.d/clearos-fast-updates.repo' ),
 );
 
 $app['core_directory_manifest'] = array(

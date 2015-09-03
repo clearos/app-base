@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.7.3
+Version: 1.7.4
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -83,6 +83,7 @@ install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/acc
 install -D -m 0644 packaging/centos-scl.repo %{buildroot}/etc/yum.repos.d/centos-scl.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
+install -D -m 0644 packaging/clearos-fast-updates.repo %{buildroot}/etc/yum.repos.d/clearos-fast-updates.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-install.conf %{buildroot}/etc/clearsync.d/filewatch-base-install.conf
 install -D -m 0644 packaging/filewatch-base-ulimit.conf %{buildroot}/etc/clearsync.d/filewatch-base-ulimit.conf
@@ -157,6 +158,7 @@ exit 0
 /etc/yum.repos.d/centos-scl.repo
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-epel.repo
+/etc/yum.repos.d/clearos-fast-updates.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-install.conf
 /etc/clearsync.d/filewatch-base-ulimit.conf

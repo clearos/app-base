@@ -1,0 +1,9 @@
+[clearos-fast-updates]
+name=ClearOS $releasever - $basearch - Fast Updates
+baseurl=http://download1.clearsdn.com/marketplace/fast_updates/$releasever/$basearch
+    http://download2.clearsdn.com/marketplace/fast_updates/$releasever/$basearch
+    http://download3.clearsdn.com/marketplace/fast_updates/$releasever/$basearch
+    http://download4.clearsdn.com/marketplace/fast_updates/$releasever/$basearch
+enabled=1
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS

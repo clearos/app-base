@@ -74,10 +74,12 @@ fi
 # Changes to yum exclude policies
 #--------------------------------
 
-CHECK=`grep ^exclude=.*squid /etc/yum.repos.d/clearos-core.repo`
-if [ -z "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - adding squid to yum exclude"
-    sed -i -e 's/^exclude=/exclude=squid /'  /etc/yum.repos.d/clearos-core.repo
+if [ -e /etc/yum.repos.d/clearos-core.repo ]; then
+    CHECK=`grep ^exclude=.*squid /etc/yum.repos.d/clearos-core.repo`
+    if [ -z "$CHECK" ]; then
+        logger -p local6.notice -t installer "app-base-core - adding squid to yum exclude"
+        sed -i -e 's/^exclude=/exclude=squid /'  /etc/yum.repos.d/clearos-core.repo
+    fi
 fi
 
 # TODO: temporary workaround for nfnetlink
