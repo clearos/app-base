@@ -30,6 +30,12 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+use \clearos\apps\base\Install_Wizard as Install_Wizard;
+
+///////////////////////////////////////////////////////////////////////////////
 // C L A S S
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -187,4 +193,32 @@ class Wizard extends ClearOS_Controller
     {
         redirect($this->session->userdata('wizard_redirect'));
     }
+
+    /**
+     * Ajax update running check
+     *
+     * @return JSON
+     */
+
+    function is_wizard_upgrade_running()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $this->load->library('base/Install_Wizard');
+
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Content-type: application/json');
+
+        try {
+            $this->load->library('base/Script', Install_Wizard::SCRIPT_UPGRADE);
+            if ($this->script->is_running()) {
+                echo json_encode(array('state' => 1));
+                return;
+            }
+            echo json_encode(array('state' => 0));
+        } catch (Exception $e) {
+            echo json_encode(array('state' => 0));
+        }
+    }
+
 }

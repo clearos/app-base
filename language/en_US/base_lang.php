@@ -282,6 +282,7 @@ $lang['base_license'] = 'License';
 $lang['base_light_duty'] = 'Light Duty';
 $lang['base_loading'] = 'Loading';
 $lang['base_loading...'] = 'Loading ...';
+$lang['base_loading_software_update'] = 'Sorry for the delay!  Just checking and applying necessary updates...shouldn\'t take more than a minute.';
 $lang['base_login'] = 'Login';
 $lang['base_login_failed'] = 'Login failed.';
 $lang['base_logout'] = 'Logout';

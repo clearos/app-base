@@ -1,0 +1,103 @@
+#!/usr/clearos/sandbox/usr/bin/php
+<?php
+
+/**
+ * Update core libraries.
+ *
+ * @category   apps
+ * @package    base
+ * @subpackage scripts
+ * @author     ClearFoundation <developer@clearfoundation.com>
+ * @copyright  2015 ClearFoundation
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
+ * @link       http://www.clearfoundation.com/docs/developer/apps/base/
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
+//
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// N A M E S P A C E
+///////////////////////////////////////////////////////////////////////////////
+
+namespace clearos\apps\base;
+
+///////////////////////////////////////////////////////////////////////////////
+// B O O T S T R A P
+///////////////////////////////////////////////////////////////////////////////
+
+$bootstrap = getenv('CLEAROS_BOOTSTRAP') ? getenv('CLEAROS_BOOTSTRAP') : '/usr/clearos/framework/shared';
+require_once $bootstrap . '/bootstrap.php';
+
+///////////////////////////////////////////////////////////////////////////////
+// T R A N S L A T I O N S
+///////////////////////////////////////////////////////////////////////////////
+
+clearos_load_language('base');
+
+///////////////////////////////////////////////////////////////////////////////
+// D E P E N D E N C I E S
+///////////////////////////////////////////////////////////////////////////////
+
+// Classes
+//--------
+
+use \clearos\apps\base\Script as Script;
+use \clearos\apps\base\Yum as Yum;
+
+clearos_load_library('base/Script');
+clearos_load_library('base/Yum');
+
+// Exceptions
+//-----------
+
+use \Exception as Exception;
+
+///////////////////////////////////////////////////////////////////////////////
+// M A I N
+///////////////////////////////////////////////////////////////////////////////
+
+$script = new Script();
+$yum = new Yum();
+
+try {
+
+    if ($script->lock() !== TRUE) {
+        echo "Pre-Software update library upgrade in progress...";
+        exit(0);
+    }
+
+    // Run yum upgrade on select few packages that may be required
+    // prior to software updates page.
+    $packages = array(
+        'app-edition',
+        'app-edition-core',
+        'app-registration',
+        'app-registration-core'
+    );
+
+    $yum->run_upgrade($packages);
+
+    $script->unlock();
+} catch (Exception $e) {
+    echo clearos_exception_message($e) . "\n";
+    clearos_log('pre_software_update_wizard_helper', clearos_exception_message($e));
+    $script->unlock();
+}
+
+
+// vim: syntax=php ts=4

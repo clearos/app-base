@@ -87,6 +87,10 @@ class Install_Wizard extends Engine
     // TODO: merge state into configuration file
     const FILE_STATE = '/var/clearos/base/wizard';
     const FILE_CONFIG = '/etc/clearos/base.d/wizard.conf';
+    const FILE_PRE_REG_UPDATE = '/var/clearos/base/wizard_pre_update';
+    const CMD_PRE_REG_UPDATES = '/usr/clearos/apps/base/deploy/wizard_update';
+    const CMD_KILLALL = '/usr/bin/killall';
+    const SCRIPT_UPGRADE = 'wizard_update';
 
     ///////////////////////////////////////////////////////////////////////////////
     // M E M B E R S
@@ -226,6 +230,20 @@ class Install_Wizard extends Engine
             );
         }
 
+        // Registration
+        //-------------
+
+        if (clearos_app_installed('registration')) {
+            clearos_load_language('registration');
+            $steps[] = array(
+                'nav' => '/app/registration',
+                'title' => lang('registration_app_name'),
+                'category' => lang('base_install_wizard'),
+                'subcategory' => lang('base_registration'),
+                'type' => 'normal'
+            );
+        }
+
         // Software Updates
         //-----------------
 
@@ -235,20 +253,6 @@ class Install_Wizard extends Engine
             $steps[] = array(
                 'nav' => '/app/software_updates/first_boot',
                 'title' => lang('software_updates_app_name'),
-                'category' => lang('base_install_wizard'),
-                'subcategory' => lang('base_registration'),
-                'type' => 'normal'
-            );
-        }
-
-        // Registration
-        //-------------
-
-        if (clearos_app_installed('registration')) {
-            clearos_load_language('registration');
-            $steps[] = array(
-                'nav' => '/app/registration',
-                'title' => lang('registration_app_name'),
                 'category' => lang('base_install_wizard'),
                 'subcategory' => lang('base_registration'),
                 'type' => 'normal'
@@ -472,6 +476,53 @@ class Install_Wizard extends Engine
         if ($state != -1) {
             $file->create('root', 'root', '0644');
             $file->add_lines("$state\n");
+        }
+    }
+
+    /**
+     * Run update script.
+     *
+     * @return void
+     */
+
+    public function run_update_script()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            // If the flag exists, don't run again
+            $file = new File(self::FILE_PRE_REG_UPDATE);
+            if ($file->exists())
+                return;
+            $file->create('webconfig', 'webconfig', '0644');
+
+            $shell = new Shell();
+            $options = array('background' => TRUE);
+            $shell->execute(self::CMD_PRE_REG_UPDATES, NULL, FALSE, $options);
+        } catch (\Exception $e) {
+            // Don't do anything
+        }
+    }
+
+    /**
+     * Abort update script.
+     *
+     * @return void
+     */
+
+    public function abort_update_script()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        try {
+            $shell = new Shell();
+            $shell->execute(self::CMD_KILLALL, self::SCRIPT_UPGRADE, TRUE);
+
+            $file = new File(self::FILE_PRE_REG_UPDATE);
+            if ($file->exists())
+                $file->delete();
+        } catch (\Exception $e) {
+            // Don't do anything
         }
     }
 
