@@ -82,6 +82,14 @@ if [ -e /etc/yum.repos.d/clearos-core.repo ]; then
     fi
 fi
 
+# Remove some upstream yum.conf defaults that cause trouble
+#----------------------------------------------------------
+
+CHECK=$(grep ^distroverpkg= /etc/yum.conf 2>/dev/null)
+if ( [ -x /bin/grep ] &&  [ -n "$CHECK" ] ); then
+    sed -i -e '/^distroverpkg=.*/d' /etc/yum.conf
+fi
+
 # TODO: temporary workaround for nfnetlink
 if [ -e /etc/modprobe.d/app-base.conf ]; then
     rm -f /etc/modprobe.d/app-base.conf
