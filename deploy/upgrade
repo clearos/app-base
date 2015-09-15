@@ -132,15 +132,8 @@ fi
 # Testing mode
 #-------------
 
-
-# FIXME: beta period only
-/usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
-/usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
-# FIXME: remove after RC1 release
-/usr/bin/yum-config-manager --disable clearos-updates-testing >/dev/null 2>&1
-# FIXME: temporary for 7.1beta3
-/usr/bin/yum-config-manager --enable clearos-centos >/dev/null 2>&1
-/usr/bin/yum-config-manager --enable clearos-centos-updates >/dev/null 2>&1
-/usr/bin/yum-config-manager --enable clearos-epel >/dev/null 2>&1
+# TODO: beta period only
+# /usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
+# /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
 
 exit 0
