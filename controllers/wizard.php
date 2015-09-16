@@ -149,7 +149,7 @@ class Wizard extends ClearOS_Controller
 
         if ($this->session->userdata('os_name') == 'ClearOS') {
             // Don't let them out of the wizard until Edition has been set.
-            $this->page->set_message('Please select your edition before quiting the post-install wizard.', 'warning');
+            $this->page->set_message('Please select your edition before quitting the post-install wizard.', 'warning');
             redirect('/edition');
             return;
         }
