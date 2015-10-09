@@ -121,10 +121,17 @@ fi
 # Upgrade clearos.repo file to new structure
 #-------------------------------------------
 
-CHECK=`grep "^\[clearos-addons" /etc/yum.repos.d/clearos.repo 2>/dev/null`
-CHECK2=`grep "^\[clearos-infra" /etc/yum.repos.d/clearos.repo.rpmnew 2>/dev/null`
-if ( [ -n "$CHECK" ] && [ -n "$CHECK2" ] ); then
-    logger -p local6.notice -t installer "app-base-core - upgrading yum repo definition"
+CHECK=`grep "^\[clearos-infra" /etc/yum.repos.d/clearos.repo.rpmnew 2>/dev/null`
+
+CHECK_PLAGUE2KOJI=`grep "^\[clearos-addons" /etc/yum.repos.d/clearos.repo 2>/dev/null`
+CHECK_TESTING2FINAL=`grep "clearos-testing-.*testing" /etc/yum.repos.d/clearos.repo 2>/dev/null`
+
+if ( [ -n "$CHECK_PLAGUE2KOJI" ] && [ -n "$CHECK" ] ); then
+    logger -p local6.notice -t installer "app-base-core - upgrading old plague-based yum repo definition"
+    mv /etc/yum.repos.d/clearos.repo /etc/yum.repos.d/clearos.repo.old
+    cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
+elif ( [ -n "$CHECK_TESTING2FINAL" ] && [ -n "$CHECK" ] ); then
+    logger -p local6.notice -t installer "app-base-core - upgrading yum repo configuration pointing to testing"
     mv /etc/yum.repos.d/clearos.repo /etc/yum.repos.d/clearos.repo.old
     cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
 fi
