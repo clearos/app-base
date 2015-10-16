@@ -136,6 +136,16 @@ elif ( [ -n "$CHECK_TESTING2FINAL" ] && [ -n "$CHECK" ] ); then
     cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
 fi
 
+# Force a webconfig change event for tracker #5521
+#-------------------------------------------------
+
+if [ ! -e /var/clearos/base/webconfig_restart5521 ]; then
+    # Restarts webconfig asynchronously
+    touch /var/clearos/base/webconfig_restart
+    # Flag to make sure it happens once
+    touch /var/clearos/base/webconfig_restart5521
+fi
+
 # Testing mode
 #-------------
 

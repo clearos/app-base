@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.1.25';
+$app['version'] = '2.1.26';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -84,6 +84,7 @@ $app['core_requires'] = array(
     'usbutils',
     'virt-what',
     'webconfig-mod_ssl',
+    'webconfig-httpd >= 2.4.6-32',
     'webconfig-php',
     'webconfig-php-gd',
     'webconfig-php-ldap',

@@ -33,7 +33,9 @@ elif [ "$1" == "webconfig_change_event" ]; then
         sleep 3
     done
 
+    # Daemon reload is needed for tracker #5521
     logger -p local6.notice -t clearsync 'base - restarting webconfig'
+    systemctl daemon-reload >/dev/null 2>&1
     /sbin/service webconfig restart
 
     # TODO: this is a workaround for a weird issue when system-mysqld is installed

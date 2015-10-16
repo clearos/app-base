@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.1.25
+Version: 2.1.26
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -42,6 +42,7 @@ Requires: util-linux-ng
 Requires: usbutils
 Requires: virt-what
 Requires: webconfig-mod_ssl
+Requires: webconfig-httpd >= 2.4.6-32
 Requires: webconfig-php
 Requires: webconfig-php-gd
 Requires: webconfig-php-ldap
