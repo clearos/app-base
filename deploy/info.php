@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.7.5';
+$app['version'] = '1.7.6';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -69,6 +69,7 @@ $app['core_requires'] = array(
     'webconfig-php-xml',
     'webconfig-utils',
     'wget',
+    'yum >= 3.2.29-69',
     'yum-utils'
 );
 

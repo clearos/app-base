@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.7.5
+Version: 1.7.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -48,6 +48,7 @@ Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils
 Requires: wget
+Requires: yum >= 3.2.29-69
 Requires: yum-utils
 
 %description core
