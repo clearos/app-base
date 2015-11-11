@@ -443,7 +443,7 @@ class Yum extends Engine
     /**
      * Returns boolean indicating whether import is currently running.
      *
-     * @param String  $name    repo name
+     * @param mixed   $name    repo name
      * @param boolean $enabled boolean
      *
      * @return void
@@ -456,6 +456,9 @@ class Yum extends Engine
 
         // Enabled repos
         //--------------
+
+        if (is_array($name))
+            $name = implode(' ' , $name);
 
         $shell = new Shell();
         $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE);
