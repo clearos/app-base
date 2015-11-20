@@ -541,7 +541,7 @@ class File extends Engine
 
         if (! empty($owner)) {
             try {
-                $exitcode = $shell->execute(File::COMMAND_CHOWN, "$owner " . escapeshellarg($this->filename), TRUE);
+                $exitcode = $shell->execute(File::COMMAND_CHOWN, escapeshellarg($owner) . ' ' . escapeshellarg($this->filename), TRUE);
             } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
@@ -552,7 +552,7 @@ class File extends Engine
 
         if (! empty($group)) {
             try {
-                $exitcode = $shell->execute(File::COMMAND_CHOWN, " :$group " . escapeshellarg($this->filename), TRUE);
+                $exitcode = $shell->execute(File::COMMAND_CHOWN, ':' . escapeshellarg($group) . ' ' . escapeshellarg($this->filename), TRUE);
             } catch (Engine_Exception $e) {
                 throw new File_Exception($e->get_message(), CLEAROS_WARNING);
             }
