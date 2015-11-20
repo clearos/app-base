@@ -248,7 +248,7 @@ class Folder extends Engine
 
         try {
             $shell = new Shell();
-            if ($shell->execute(self::COMMAND_MKDIR, "-p $this->folder", TRUE) != 0)
+            if ($shell->execute(self::COMMAND_MKDIR, '-p ' . escapeshellarg($this->folder), TRUE) != 0)
                 throw new Folder_Exception($shell->get_first_output_line());
         } catch(Engine_Exception $e) {
             throw new Folder_Exception($e->get_message(), CLEAROS_ERROR);
