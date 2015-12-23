@@ -6,36 +6,49 @@
 #
 #------------------------------------------------------------------------------
 
-DAEMONS="slapd webconfig clearsyncd suvad vpnwatchd syswatch l7-filter ntop snortsam snort eziod amavisd ibvpn rsyslog"
-LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
 PIDOF="/sbin/pidof"
+LOGGER="/usr/bin/logger -p local6.notice -t servicewatch"
+DAEMONS="\
+slapd|slapd \
+webconfig|webconfig \
+clearsync|clearsyncd \
+suva|suvad \
+vpnwatchd|vpnwatchd \
+syswatch|syswatch \
+snortsam|snortsam \
+snort|snort \
+eziod|eziod \
+ibvpn|ibvpn \
+zarafa-dagent|zarafa-dagent \
+zarafa-gateway|zarafa-gateway \
+zarafa-ical|zarafa-ical \
+zarafa-licensed|zarafa-licensed \
+zarafa-monitor|zarafa-monitor \
+zarafa-presence|zarafa-presence \
+zarafa-search|zarafa-search \
+zarafa-server|zarafa-server \
+zarafa-spooler|zarafa-spooler \
+"
 
 CHECK_BACKUP=`$PIDOF -x configuration-restore`
 [ -n "$CHECK_BACKUP" ] && exit 0
 
 for DAEMON in $DAEMONS; do
-    INIT=`ls /etc/rc.d/rc3.d/S[0-9]*$DAEMON 2>/dev/null`
+    SERVICE=`echo $DAEMON | cut -d '|' -f 1`
+    PROCESS_NAME=`echo $DAEMON | cut -d '|' -f 2`
+    IS_ENABLED=`systemctl is-enabled $SERVICE 2>/dev/null | grep enabled`
 
-    if [ "$DAEMON" == "rsyslog" ]; then
-        PID_DAEMON="rsyslogd"
-    else
-        PID_DAEMON=$DAEMON
-    fi
-
-    if ( [ ! -z $INIT ] && [ -x /etc/rc.d/init.d/$DAEMON ] ); then
-        PID=`$PIDOF $PID_DAEMON`
-        if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
-            $LOGGER "sanity checking $DAEMON"
-            sleep 60 
-            PID=`$PIDOF $PID_DAEMON`
-            if ( [ "$PID" == "" ] && [ -e "/var/lock/subsys/$DAEMON" ] ); then
-                /etc/rc.d/init.d/$DAEMON stop
-                /etc/rc.d/init.d/$DAEMON start
-                $LOGGER "restarting $DAEMON"
+    if [ -n "$IS_ENABLED" ]; then
+        PID=`$PIDOF $PROCESS_NAME`
+        if [ "$PID" == "" ]; then
+            $LOGGER "sanity checking $SERVICE"
+            sleep 30
+            PID=`$PIDOF $PROCESS_NAME`
+            if [ "$PID" == "" ]; then
+                service $SERVICE stop
+                service $SERVICE start
+                $LOGGER "restarting $SERVICE"
             fi
-        elif ( [ "$PID" == "" ] && [ "$DAEMON" = "snort" ] ); then
-            /etc/rc.d/init.d/$DAEMON start
-            $LOGGER "hard starting $DAEMON"
         fi
     fi
 done
