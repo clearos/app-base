@@ -25,7 +25,6 @@ zarafa-ical|zarafa-ical \
 zarafa-licensed|zarafa-licensed \
 zarafa-monitor|zarafa-monitor \
 zarafa-presence|zarafa-presence \
-zarafa-search|zarafa-search \
 zarafa-server|zarafa-server \
 zarafa-spooler|zarafa-spooler \
 "
@@ -45,8 +44,9 @@ for DAEMON in $DAEMONS; do
             sleep 30
             PID=`$PIDOF $PROCESS_NAME`
             if [ "$PID" == "" ]; then
-                service $SERVICE stop
-                service $SERVICE start
+                /usr/sbin/service $SERVICE stop
+                sleep 2
+                /usr/sbin/service $SERVICE start
                 $LOGGER "restarting $SERVICE"
             fi
         fi
