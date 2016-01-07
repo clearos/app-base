@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.2.2
+Version: 2.2.3
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -84,6 +84,7 @@ install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/acc
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
+install -D -m 0644 packaging/filewatch-system-database-event.conf %{buildroot}/etc/clearsync.d/filewatch-system-database-event.conf
 install -D -m 0644 packaging/public.acl %{buildroot}/var/clearos/base/access_control/public/base
 install -D -m 0644 packaging/rest.acl %{buildroot}/var/clearos/base/access_control/rest/base
 install -D -m 0644 packaging/rsyslog.php %{buildroot}/var/clearos/base/daemon/rsyslog.php
@@ -151,6 +152,7 @@ exit 0
 /etc/yum.repos.d/clearos-developer.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
+/etc/clearsync.d/filewatch-system-database-event.conf
 /var/clearos/base/access_control/public/base
 /var/clearos/base/access_control/rest/base
 /var/clearos/base/daemon/rsyslog.php
