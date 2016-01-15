@@ -150,7 +150,8 @@ fi
 #-------------
 
 # TODO: beta period only
-# /usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
-# /usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
+# --noplugins required to get around tracker #6851
+# /usr/bin/yum-config-manager --noplugins --enable clearos-updates >/dev/null 2>&1
+# /usr/bin/yum-config-manager --noplugins --enable clearos-updates-testing >/dev/null 2>&1
 
 exit 0
