@@ -146,11 +146,29 @@ if [ ! -e /var/clearos/base/webconfig_restart5521 ]; then
     touch /var/clearos/base/webconfig_restart5521
 fi
 
+# Handle upgrade for #7061 and #7071
+#-----------------------------------
+# Note: --noplugins required to get around tracker #6851
+
+IS_COMMUNITY_UPGRADE=`grep Community /etc/product 2>/dev/null`
+if [ -n "$IS_COMMUNITY_UPGRADE" ]; then
+    /usr/bin/yum-config-manager --noplugins --enable clearos-centos >/dev/null 2>&1
+    /usr/bin/yum-config-manager --noplugins --enable clearos-centos-updates >/dev/null 2>&1
+fi
+
+CHECK_NEW=`grep "download1.clearsdn.com" /etc/yum.repos.d/clearos-epel.repo.rpmnew 2>/dev/null`
+CHECK_LEGACY=`grep "download.fedoraproject.org" /etc/yum.repos.d/clearos-epel.repo 2>/dev/null`
+if ( [ -n "$CHECK_LEGACY" ] && [ -n "$CHECK_NEW" ] ); then
+    logger -p local6.notice -t installer "app-base-core - upgrading old EPEL yum repo definition"
+    mv /etc/yum.repos.d/clearos-epel.repo /etc/yum.repos.d/clearos-epel.repo.old
+    cp /etc/yum.repos.d/clearos-epel.repo.rpmnew /etc/yum.repos.d/clearos-epel.repo
+fi
+
 # Testing mode
 #-------------
 
 # TODO: beta period only
-# --noplugins required to get around tracker #6851
+# Note: --noplugins required to get around tracker #6851
 # /usr/bin/yum-config-manager --noplugins --enable clearos-updates >/dev/null 2>&1
 # /usr/bin/yum-config-manager --noplugins --enable clearos-updates-testing >/dev/null 2>&1
 
