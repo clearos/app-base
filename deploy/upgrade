@@ -136,6 +136,26 @@ elif ( [ -n "$CHECK_TESTING2FINAL" ] && [ -n "$CHECK" ] ); then
     cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
 fi
 
+# Changes to yum exclude policies
+#--------------------------------
+
+PACKAGES="grub2- mokutil- shim-0"
+REPO_FILES="clearos-centos.repo centos-unverified.repo"
+REPO_DIR="/etc/yum.repos.d"
+
+for REPO_FILE in $REPO_FILES; do
+    if [ -e "$REPO_DIR/$REPO_FILE" ]; then
+        for PACKAGE in $PACKAGES; do
+            CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
+            if [ -z "$CHECK" ]; then
+                logger -p local6.notice -t installer "app-base-core - adding the following to yum $REPO_FILE: $PACKAGE*"
+                echo "app-base-core - adding the following to yum $REPO_FILE: $PACKAGE*"
+                sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
+            fi
+        done
+    fi
+done
+
 # Force a webconfig change event for tracker #5521
 #-------------------------------------------------
 
