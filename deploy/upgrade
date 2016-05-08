@@ -65,9 +65,10 @@ fi
 # Disable firewalld if it exists
 #-------------------------------
 
-if [ -e /usr/sbin/firewalld ]; then
+if ( [ -e /usr/sbin/firewalld ] && [ ! -e /var/clearos/base/firewalld_disabled ] ); then
     logger -p local6.notice -t installer "app-base-core - disabling firewalld"
     chkconfig firewalld off >/dev/null 2>&1
+    touch /var/clearos/base/firewalld_disabled
 fi
 
 # Bah.  Selinux policy is stomped on by anaconda
