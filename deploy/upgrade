@@ -149,7 +149,6 @@ for REPO_FILE in $REPO_FILES; do
             CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
             if [ -z "$CHECK" ]; then
                 logger -p local6.notice -t installer "app-base-core - adding the following to yum $REPO_FILE: $PACKAGE*"
-                echo "app-base-core - adding the following to yum $REPO_FILE: $PACKAGE*"
                 sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
             fi
         done
