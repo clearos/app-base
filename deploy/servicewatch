@@ -30,7 +30,10 @@ zarafa-spooler|zarafa-spooler \
 "
 
 CHECK_BACKUP=`$PIDOF -x configuration-restore`
-[ -n "$CHECK_BACKUP" ] && exit 0
+if [ -n "$CHECK_BACKUP" ]; then
+    $LOGGER "waiting on configuration restore"
+    exit 0
+fi
 
 for DAEMON in $DAEMONS; do
     SERVICE=`echo $DAEMON | cut -d '|' -f 1`
