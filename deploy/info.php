@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.7.7';
+$app['version'] = '1.8.0';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -37,7 +37,11 @@ $app['controllers']['session']['inline_help'] = array(
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
+// /etc/yum.repos.d/clearos-centos.repo dependency is a round about way to
+// make sure the CentOS-based repo structure is in place.
+
 $app['core_requires'] = array(
+    '/etc/yum.repos.d/clearos-centos.repo',
     'acpid',
     'clearos-base',
     'clearos-framework >= 6.5.8',

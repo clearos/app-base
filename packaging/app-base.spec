@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.7.7
+Version: 1.8.0
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -17,6 +17,7 @@ The Base app provides core system libraries and tools.
 Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
+Requires: /etc/yum.repos.d/clearos-centos.repo
 Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 6.5.8
