@@ -12,7 +12,7 @@ DAEMONS="\
 slapd|slapd \
 webconfig|webconfig \
 clearsync|clearsyncd \
-suva|suvad \
+suvad|suvad \
 vpnwatchd|vpnwatchd \
 syswatch|syswatch \
 snortsam|snortsam \
