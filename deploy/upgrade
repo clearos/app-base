@@ -116,7 +116,7 @@ fi
 
 # Beta period only
 # /usr/bin/yum-config-manager --enable clearos-professional-testing >/dev/null 2>&1
-#/usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
-#/usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
+/usr/bin/yum-config-manager --enable clearos-updates-testing >/dev/null 2>&1
+/usr/bin/yum-config-manager --enable clearos-updates >/dev/null 2>&1
 
 exit 0
