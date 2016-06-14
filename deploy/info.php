@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.8.1';
+$app['version'] = '1.8.3';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -122,7 +122,9 @@ $app['core_file_manifest'] = array(
     'RPM-GPG-KEY-EPEL-6' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-6' ),
     'RPM-GPG-KEY-EPEL-7' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-EPEL-7' ),
     'RPM-GPG-KEY-atrpms' => array( 'target' => '/etc/pki/rpm-gpg/CLEAROS-RPM-GPG-KEY-atrpms' ),
-    'centos-scl.repo' => array( 'target' => '/etc/yum.repos.d/centos-scl.repo' ),
+    'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
+    'CentOS-SCLo-scl-rh.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo' ),
+    'CentOS-SCLo-scl.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
     'clearos-fast-updates.repo' => array( 'target' => '/etc/yum.repos.d/clearos-fast-updates.repo' ),
