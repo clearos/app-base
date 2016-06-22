@@ -135,6 +135,7 @@ $lang['base_file_dmg'] = 'Mac OS disk image';
 $lang['base_file_doc'] = 'Microsoft Word document';
 $lang['base_file_docm'] = 'Microsoft Word macro-enabled document';
 $lang['base_file_docx'] = 'Microsoft Word document';
+$lang['base_file_dotm'] = 'Microsoft Office Open XML with macros';
 $lang['base_file_exe'] = 'Program';
 $lang['base_file_extension'] = 'File Extension';
 $lang['base_file_fxp'] = 'FoxPro compiled source';

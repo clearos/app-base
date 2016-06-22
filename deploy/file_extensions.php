@@ -116,6 +116,12 @@ $file_extensions = array(
         'description' => lang('base_file_docx')
     ),
 
+    'dotm' => array(
+        'category' => 'document',
+        'category_text' => lang('base_file_category_document'),
+        'description' => lang('base_file_dotm')
+    ),
+
     'hlp' => array(
         'category' => 'document',
         'category_text' => lang('base_file_category_document'),
