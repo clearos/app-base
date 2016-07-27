@@ -312,6 +312,12 @@ class Stats extends Engine
 
         foreach ($recententries as $line) {
             $pieces = explode(' ', $line);
+            // We're looking only for lines that follow the following format:
+            // MON DAY TTTT TYPE PKG
+            // Ignore others
+            if (count($pieces) != 5 || !preg_match("/.*\:$/", $pieces[3]))
+                continue;
+
             $output['date'] = $pieces[0] . ' ' . $pieces[1];
             $output['time'] = $pieces[2];
             $output['action'] = preg_replace('/\:$/', '', $pieces[3]);
