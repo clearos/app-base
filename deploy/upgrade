@@ -184,6 +184,12 @@ if ( [ -n "$CHECK_LEGACY" ] && [ -n "$CHECK_NEW" ] ); then
     cp /etc/yum.repos.d/clearos-epel.repo.rpmnew /etc/yum.repos.d/clearos-epel.repo
 fi
 
+# FIXME: remove in 7.3
+# disable kdump
+#----------------------
+
+chkconfig kdump off >/dev/null 2>&1
+
 # Testing mode
 #-------------
 
