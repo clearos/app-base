@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.2.11';
+$app['version'] = '2.2.12';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -106,6 +106,9 @@ $app['core_file_manifest'] = array(
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
     'filewatch-system-database-event.conf'=> array('target' => '/etc/clearsync.d/filewatch-system-database-event.conf'),
+    'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
+    'CentOS-SCLo-scl-rh.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo' ),
+    'CentOS-SCLo-scl.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo' ),
     'syncaction' => array(
         'target' => '/usr/sbin/syncaction',
         'mode' => '0755',
