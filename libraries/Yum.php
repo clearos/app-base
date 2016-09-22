@@ -401,11 +401,13 @@ class Yum extends Engine
      * Returns array of repositories that are available.
      * This function uses the 'yum-config-manager' command and is very fast.  For more detailed information, use 'get_live_repo_data'.
      *
+     * @param $disable_cache disables use of API cache
+     *
      * @return array a list of repositories
      * @throws Engine_Exception
      */
 
-    public function get_repo_list()
+    public function get_repo_list($disable_cache = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -413,7 +415,7 @@ class Yum extends Engine
         $repo_list = array();
 
         // Check cache
-        if ($this->_check_cache_repo_list())
+        if ($this->_check_cache_repo_list() && !$disable_cache)
             return $this->cache_repo_list;
 
         // Get repos
@@ -431,6 +433,8 @@ class Yum extends Engine
                 $id = trim($match[1]);
                 $repo_list[$id] = array ('packages' => 0, 'enabled' => FALSE);
             } else if (preg_match("/^enabled\s+=\s+True/i", $row, $match)) { 
+                $repo_list[$id]['enabled'] = TRUE;
+            } else if (preg_match("/^enabled\s+=\s+1/i", $row, $match)) {
                 $repo_list[$id]['enabled'] = TRUE;
             }
         }
