@@ -140,7 +140,7 @@ fi
 # Changes to yum exclude policies
 #--------------------------------
 
-PACKAGES="grub2- mokutil- shim-0 yum-3 yum-cron-3"
+PACKAGES="grub2- mokutil- shim-0"
 REPO_FILES="clearos-centos.repo centos-unverified.repo"
 REPO_DIR="/etc/yum.repos.d"
 

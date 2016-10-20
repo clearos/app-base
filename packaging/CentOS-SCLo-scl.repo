@@ -7,7 +7,7 @@
 name=CentOS-7 - SCLo sclo
 baseurl=http://mirror.centos.org/centos/7/sclo/$basearch/sclo/
 gpgcheck=0
-enabled=1
+enabled=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 
 [centos-sclo-sclo-testing]
