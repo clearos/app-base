@@ -1,7 +1,11 @@
 
 Name: app-base
 Epoch: 1
+<<<<<<< HEAD
 Version: 2.2.15
+=======
+Version: 2.2.14
+>>>>>>> 5d5834c6a0b49b435deadf6a83e0a461d6cc5cec
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
