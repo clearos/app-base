@@ -5,11 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-<<<<<<< HEAD
 $app['version'] = '2.2.15';
-=======
-$app['version'] = '2.2.14';
->>>>>>> 5d5834c6a0b49b435deadf6a83e0a461d6cc5cec
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
