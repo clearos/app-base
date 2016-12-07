@@ -563,6 +563,36 @@ class File extends Engine
     }
 
     /**
+     * Returns the owner and group of the current file.
+     *
+     * @return array file ownership
+     * @throws File_Not_Found_Exception, File_Exception
+     */
+
+    public function get_ownership()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        clearstatcache();
+
+        if (! $this->exists())
+            throw new File_Not_Found_Exception();
+
+        $ownership = array('owner' => NULL, 'group' => NULL);
+        
+        $args = "-l " . escapeshellarg($this->filename);
+
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_LS, $args, $this->superuser);
+        $shell->get_last_output_line();
+
+        $parts = preg_split("/\s+/", $shell->get_last_output_line());
+        $ownership['owner'] = $parts[2];
+        $ownership['group'] = $parts[3];
+        return $ownership;
+    }
+
+    /**
      * Returns the octal permissions of the current file.
      *
      * @return string file permissions
@@ -885,15 +915,18 @@ class File extends Engine
     /**
      * Appends a line (or lines) to a file at a particular location in the file.
      *
-     * @param string $data  line(s) to insert into file
-     * @param string $after regular expression defining the file location
+     * @param string  $data         line(s) to insert into file
+     * @param string  $after        regular expression defining the file location
+     * @param integer $max_replaced maximum number of matches to make
      *
      * @return void
      * @throws File_No_Match_Exception, File_Not_Found_Exception, File_Exception File_Insufficient_Space_Exception
      */
 
-    public function add_lines_after($data, $after)
+    public function add_lines_after($data, $after, $max_replaced = 1)
     {
+        // $max_replace added Dec 7, 2016 - for backwards compatibility, set max default to 1 (not -1 or infinite like other functions)
+        // Since this function originally only replaced the first instance
         clearos_profile(__METHOD__, __LINE__);
 
         $this->_check_volume_for_space();
@@ -905,20 +938,20 @@ class File extends Engine
         if (!($fh_t = @fopen($tempfile, "w")))
             throw new File_Exception(lang('base_file_open_error') . " - " . $tempfile, CLEAROS_INFO);
 
-        $match = FALSE;
+        $match = 0;
 
         foreach ($lines as $line) {
             fputs($fh_t, $line . "\n");
 
-            if (preg_match($after, $line) && (!$match)) {
-                $match = TRUE;
+            if (preg_match($after, $line) && ($max_replaced < 0 || $match < $max_replaced)) {
+                $match++;
                 fputs($fh_t, $data);
             }
         }
 
         fclose($fh_t);
 
-        if (! $match) {
+        if ($match == 0) {
             unlink($tempfile);
             throw new File_No_Match_Exception($tempfile, $after);
         }

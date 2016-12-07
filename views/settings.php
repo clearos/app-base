@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Language view.
+ * Settings view.
  *
  * @category   apps
  * @package    devel
@@ -36,6 +36,11 @@
 $this->lang->load('base');
 $this->lang->load('language');
 
+echo "<div id='reload_bar' class='theme-hidden'>";
+echo "<h4>" . lang('base_reloading_webconfig') . "</h4>\n";
+echo progress_bar('webconfig_reload', array('input' => 'webconfig_reload'));
+echo "</div>";
+
 ///////////////////////////////////////////////////////////////////////////////
 // Form handler
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,12 +52,12 @@ if ($form_type === 'edit') {
     $read_only = FALSE;
     $buttons = array(
         form_submit_update('submit'),
-        anchor_cancel('/app/base/language')
+        anchor_cancel('/app/base')
     );
 } else {
     $read_only = TRUE;
     $buttons = array(
-        anchor_edit('/app/base/language/edit')
+        anchor_edit('/app/base/settings/edit')
     );
 }
 
@@ -60,10 +65,11 @@ if ($form_type === 'edit') {
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-echo form_open('base/language/edit');
-echo form_header(lang('base_language'));
+echo form_open('base/settings/edit');
+echo form_header(lang('base_settings'));
 
 echo field_dropdown('code', $languages, $code, lang('language_default_system_language'), $read_only);
+echo field_dropdown('ssl_certificate', $ssl_certificate_options, $ssl_certificate, lang('base_ssl_certificate'), $read_only);
 if ($form_type === 'edit')
     echo field_checkbox('update_session', $update_session, lang('base_update_your_current_session'), $read_only);
 echo field_button_set($buttons);

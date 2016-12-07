@@ -35,6 +35,12 @@
 /usr/sbin/addsudo /usr/bin/yum app-base-core
 /usr/sbin/addsudo /usr/bin/yum-config-manager app-base-core
 /usr/sbin/addsudo /usr/sbin/yum-install app-base-core
+/usr/sbin/addsudo /usr/clearos/sandbox/usr/sbin/httpd app-base-core
+
+# Initialize storage
+#-------------------
+
+/usr/sbin/storage
 
 # Import keys
 GPG_KEYS="\

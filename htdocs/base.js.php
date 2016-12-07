@@ -78,7 +78,20 @@ $(document).ready(function() {
         get_marketplace_apps();
         get_files();
     }
+    if ($(location).attr('href').match('.*app\/base\\/\\?reloading$') != null) {
+        $('#reload_bar').removeClass('theme-hidden');
+        get_webconfig_reload(0);
+    }
 });
+
+function get_webconfig_reload(counter) {
+    counter += 1;
+    clearos_set_progress_bar('webconfig_reload', counter, null);
+    if (counter < 100)
+        window.setTimeout(function() {get_webconfig_reload(counter)}, 250);
+    else
+        window.location = '/app/base';
+}
 
 function get_installed_apps() {
     $.ajax({

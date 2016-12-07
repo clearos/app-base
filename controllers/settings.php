@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Language controller.
+ * Settings controller.
  *
  * @category   apps
  * @package    base
@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Language controller.
+ * Settings controller.
  *
  * @category   apps
  * @package    base
@@ -45,7 +45,7 @@
  * @link       http://www.clearfoundation.com/docs/developer/apps/language/
  */
 
-class Language extends ClearOS_Controller
+class Settings extends ClearOS_Controller
 {
     /**
      * Translations widget default controller.
@@ -59,7 +59,7 @@ class Language extends ClearOS_Controller
     }
 
     /**
-     * Language edit view.
+     * Settings edit view.
      *
      * @return view
      */
@@ -70,7 +70,7 @@ class Language extends ClearOS_Controller
     }
 
     /**
-     * Language view view.
+     * Settings view view.
      *
      * @return view
      */
@@ -81,7 +81,7 @@ class Language extends ClearOS_Controller
     }
 
     /**
-     * Language view/edit common controller
+     * Settings view/edit common controller
      *
      * @param string $form_type form type
      *
@@ -95,11 +95,13 @@ class Language extends ClearOS_Controller
 
         $this->lang->load('language');
         $this->load->library('language/Locale');
+        $this->load->library('base/Webconfig');
 
         // Set validation rules
         //---------------------
          
         $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
+        $this->form_validation->set_policy('ssl_certificate', 'base/Webconfig', 'validate_ssl_certificate', TRUE);
         $form_ok = $this->form_validation->run();
 
         // Handle form submit
@@ -108,12 +110,13 @@ class Language extends ClearOS_Controller
         if (($this->input->post('submit') && $form_ok)) {
             try {
                 $this->locale->set_locale($this->input->post('code'));
+                $reload = $this->webconfig->set_ssl_certificate($this->input->post('ssl_certificate'));
 
                 if ($this->input->post('update_session'))
                     $this->login_session->set_language($this->input->post('code'));
 
                 $this->page->set_status_updated();
-                redirect('/base/language');
+                redirect('/base' . ($reload ? '/?reloading' : ''));
             } catch (Exception $e) {
                 $this->page->view_exception($e);
                 return;
@@ -129,6 +132,9 @@ class Language extends ClearOS_Controller
             $data['update_session'] = TRUE;
             $data['code'] = $this->locale->get_language_code();
             $data['languages'] = $this->locale->get_languages();
+            $data['ssl_certificate'] = $this->webconfig->get_ssl_certificate();
+            $data['ssl_certificate_options'] = $this->webconfig->get_ssl_certificate_options();
+            $data['ssl_certificate_options'] = $this->webconfig->get_ssl_certificate_options();
         } catch (Exception $e) {
             $this->page->view_exception($e);
             return;
@@ -137,6 +143,6 @@ class Language extends ClearOS_Controller
         // Load views
         //-----------
 
-        $this->page->view_form('language', $data, lang('base_language'));
+        $this->page->view_form('settings', $data, lang('base_settings'));
     }
 }
