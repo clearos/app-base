@@ -155,8 +155,23 @@ for REPO_FILE in $REPO_FILES; do
         for PACKAGE in $PACKAGES; do
             CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
             if [ -z "$CHECK" ]; then
-                logger -p local6.notice -t installer "app-base-core - adding the following to yum $REPO_FILE: $PACKAGE*"
+                logger -p local6.notice -t installer "app-base-core - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
                 sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
+            fi
+        done
+    fi
+done
+
+EXCLUDES="yum-cron-3 yum-3"
+REPO_FILES="clearos-centos.repo centos-unverified.repo"
+
+for REPO_FILE in $REPO_FILES; do
+    if [ -e "$REPO_DIR/$REPO_FILE" ]; then
+        for PACKAGE in $EXCLUDES; do
+            CHECK=`grep "^exclude=.*$PACKAGE " $REPO_DIR/$REPO_FILE`
+            if [ -z "$CHECK" ]; then
+                logger -p local6.notice -t installer "app-base-core - removing the following from yum exclude: $REPO_FILE / $PACKAGE*"
+                sed -i -e "s/$PACKAGE\* //" $REPO_DIR/$REPO_FILE
             fi
         done
     fi
@@ -188,6 +203,15 @@ if ( [ -n "$CHECK_LEGACY" ] && [ -n "$CHECK_NEW" ] ); then
     logger -p local6.notice -t installer "app-base-core - upgrading old EPEL yum repo definition"
     mv /etc/yum.repos.d/clearos-epel.repo /etc/yum.repos.d/clearos-epel.repo.old
     cp /etc/yum.repos.d/clearos-epel.repo.rpmnew /etc/yum.repos.d/clearos-epel.repo
+fi
+
+# Upgrade centos-clearos
+#-----------------------
+
+CHECK=`grep '\/.releasever' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
+if [ -n "$CHECK" ]; then
+    logger -p local6.notice -t installer "app-base-core - updating upstream to 7.3.1611"
+    sed -i -e 's/\/.releasever/\/7.3.1611/' /etc/yum.repos.d/clearos-centos.repo 
 fi
 
 # FIXME: remove in 7.3
