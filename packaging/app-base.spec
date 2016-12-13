@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.3.1
+Version: 2.3.3
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -20,7 +20,7 @@ Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
 Requires: clearos-framework >= 7.1.2
-Requires: clearos-release >= 7-1.19
+Requires: clearos-release >= 7-3.1
 Requires: cpupowerutils
 Requires: csplugin-filewatch
 Requires: theme-clearos-admin >= 7.1.3
@@ -84,7 +84,11 @@ install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
+install -D -m 0644 packaging/centos-unverified.repo %{buildroot}/etc/yum.repos.d/centos-unverified.repo
+install -D -m 0644 packaging/clearos-centos.repo %{buildroot}/etc/yum.repos.d/clearos-centos.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
+install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
+install -D -m 0644 packaging/epel-unverified.repo %{buildroot}/etc/yum.repos.d/epel-unverified.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
 install -D -m 0644 packaging/filewatch-system-database-event.conf %{buildroot}/etc/clearsync.d/filewatch-system-database-event.conf
@@ -148,14 +152,18 @@ exit 0
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
-/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
-/etc/yum.repos.d/CentOS-SCLo-scl.repo
+%config(noreplace) /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+%config(noreplace) /etc/yum.repos.d/CentOS-SCLo-scl.repo
 /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /usr/sbin/app-manager
 /var/clearos/base/access_control/authenticated/base
+%config(noreplace) /etc/yum.repos.d/centos-unverified.repo
+%config(noreplace) /etc/yum.repos.d/clearos-centos.repo
 /etc/yum.repos.d/clearos-developer.repo
+%config(noreplace) /etc/yum.repos.d/clearos-epel.repo
+%config(noreplace) /etc/yum.repos.d/epel-unverified.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
 /etc/clearsync.d/filewatch-system-database-event.conf

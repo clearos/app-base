@@ -1,0 +1,52 @@
+[clearos-centos]
+name=CentOS-7 - Base
+baseurl=http://download1.clearsdn.com/centos/7.3.1611/os/$basearch
+    http://download2.clearsdn.com/centos/7.3.1611/os/$basearch
+    http://download3.clearsdn.com/centos/7.3.1611/os/$basearch
+    http://download4.clearsdn.com/centos/7.3.1611/os/$basearch
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[clearos-centos-fasttrack]
+name=CentOS-7 - fasttrack
+baseurl=http://download1.clearsdn.com/centos/7.3.1611/fasttrack/$basearch
+    http://download2.clearsdn.com/centos/7.3.1611/fasttrack/$basearch
+    http://download3.clearsdn.com/centos/7.3.1611/fasttrack/$basearch
+    http://download4.clearsdn.com/centos/7.3.1611/fasttrack/$basearch
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[clearos-centos-updates]
+name=CentOS-7 - Updates
+baseurl=http://download1.clearsdn.com/centos/7.3.1611/updates/$basearch
+    http://download2.clearsdn.com/centos/7.3.1611/updates/$basearch
+    http://download3.clearsdn.com/centos/7.3.1611/updates/$basearch
+    http://download4.clearsdn.com/centos/7.3.1611/updates/$basearch
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[clearos-centos-extras]
+name=CentOS-7 - Extras
+baseurl=http://download1.clearsdn.com/centos/7.3.1611/extras/$basearch
+    http://download2.clearsdn.com/centos/7.3.1611/extras/$basearch
+    http://download3.clearsdn.com/centos/7.3.1611/extras/$basearch
+    http://download4.clearsdn.com/centos/7.3.1611/extras/$basearch
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+[clearos-centosplus]
+name=CentOS-7 - Plus
+baseurl=http://download1.clearsdn.com/centos/7.3.1611/centosplus/$basearch
+    http://download2.clearsdn.com/centos/7.3.1611/centosplus/$basearch
+    http://download3.clearsdn.com/centos/7.3.1611/centosplus/$basearch
+    http://download4.clearsdn.com/centos/7.3.1611/centosplus/$basearch
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7

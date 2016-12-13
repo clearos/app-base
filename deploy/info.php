@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.3.1';
+$app['version'] = '2.3.3';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -62,7 +62,7 @@ $app['core_requires'] = array(
     'acpid',
     'clearos-base',
     'clearos-framework >= 7.1.2',
-    'clearos-release >= 7-1.19',
+    'clearos-release >= 7-3.1',
     'cpupowerutils',
     'csplugin-filewatch',
     'theme-clearos-admin >= 7.1.3',
@@ -107,8 +107,36 @@ $app['core_file_manifest'] = array(
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
     'filewatch-system-database-event.conf'=> array('target' => '/etc/clearsync.d/filewatch-system-database-event.conf'),
     'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
-    'CentOS-SCLo-scl-rh.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo' ),
-    'CentOS-SCLo-scl.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo' ),
+    'CentOS-SCLo-scl-rh.repo' => array(
+        'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'CentOS-SCLo-scl.repo' => array(
+        'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'clearos-centos.repo' => array(
+        'target' => '/etc/yum.repos.d/clearos-centos.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'clearos-epel.repo' => array(
+        'target' => '/etc/yum.repos.d/clearos-epel.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'centos-unverified.repo' => array(
+        'target' => '/etc/yum.repos.d/centos-unverified.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'epel-unverified.repo' => array(
+        'target' => '/etc/yum.repos.d/epel-unverified.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
     'syncaction' => array(
         'target' => '/usr/sbin/syncaction',
         'mode' => '0755',

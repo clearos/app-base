@@ -1,0 +1,47 @@
+#upstream base 
+[centos-unverified]
+name=CentOS-$releasever - Base - Unverified
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=os
+#baseurl=http://mirror.centos.org/centos/$releasever/os/$basearch/
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+#fasttrack updates 
+[centos-fasttrack-unverified]
+name=CentOS-7 - fasttrack - Unverified
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=fasttrack&infra=$infra
+#baseurl=http://mirror.centos.org/centos/$releasever/fasttrack/$basearch/
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+#released updates 
+[centos-updates-unverified]
+name=CentOS-$releasever - Updates - Unverified
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=updates
+#baseurl=http://mirror.centos.org/centos/$releasever/updates/$basearch/
+enabled=0
+gpgcheck=1
+exclude=centos-release centos-logos anaconda-* arpwatch ctdb-* cyrus-imapd-* debugmode dnsmasq-* grub2-* initscripts iptables-* kernel-* libsmbclient-* libwbclient-* mokutil-* openldap-* perf ppp-* python-perf rp-pppoe samba-* shim-0*
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+#additional packages that may be useful
+[centos-extras-unverified]
+name=CentOS-$releasever - Extras - Unverified
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=extras
+#baseurl=http://mirror.centos.org/centos/$releasever/extras/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
+
+#additional packages that extend functionality of existing packages
+[centosplus-unverified]
+name=CentOS-$releasever - Plus - Unverified
+mirrorlist=http://mirrorlist.centos.org/?release=$releasever&arch=$basearch&repo=centosplus
+#baseurl=http://mirror.centos.org/centos/$releasever/centosplus/$basearch/
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-$releasever
