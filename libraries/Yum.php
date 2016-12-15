@@ -375,7 +375,7 @@ class Yum extends Engine
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
             $this->clean(TRUE);
-            throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+            throw new Engine_Exception(lang('base_unable_to_get_software_list'), CLEAROS_WARNING);
         }
         $rows = $shell->get_output();
         foreach ($rows as $row) {
@@ -425,7 +425,7 @@ class Yum extends Engine
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
             $this->clean(TRUE);
-            throw new Engine_Exception(lang('software_repository_unable_to_get_list'), CLEAROS_WARNING);
+            throw new Engine_Exception(lang('base_unable_to_get_software_list'), CLEAROS_WARNING);
         }
         $rows = $shell->get_output();
         foreach ($rows as $row) {
