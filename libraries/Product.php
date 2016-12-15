@@ -477,7 +477,7 @@ class Product extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (! preg_match("/^[A-Za-z0-9\.\- ]+$/", $name))
-            return lang('product_name_is_invalid');
+            return lang('base_product_name_invalid');
     }
 
     /**
@@ -493,7 +493,7 @@ class Product extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (!is_numeric($software_id))
-            return lang('product_software_id_is_invalid') . $software_id;
+            return lang('base_software_id_invalid') . $software_id;
     }
 
 }
