@@ -509,7 +509,7 @@ class File extends Engine
         }
 
         if ($exitcode != 0)
-            throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
+            throw new File_Permissions_Exception(lang('base_ooops') . " - " . $this->filename, CLEAROS_WARNING);
     }
 
 
@@ -530,7 +530,7 @@ class File extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         if (empty($owner) && empty($group))
-            throw new Validation_Exception(lang('base_ooos'), __METHOD__, __LINE__);
+            throw new Validation_Exception(lang('base_ooops'), __METHOD__, __LINE__);
 
         // TODO: more input validation
 
@@ -547,7 +547,7 @@ class File extends Engine
             }
 
             if ($exitcode != 0)
-                throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
+                throw new File_Permissions_Exception(lang('base_ooops') . " - " . $this->filename, CLEAROS_WARNING);
         }
 
         if (! empty($group)) {
@@ -558,7 +558,7 @@ class File extends Engine
             }
 
             if ($exitcode != 0)
-                throw new File_Permissions_Exception(lang('base_ooos') . " - " . $this->filename, CLEAROS_WARNING);
+                throw new File_Permissions_Exception(lang('base_ooops') . " - " . $this->filename, CLEAROS_WARNING);
         }
     }
 
