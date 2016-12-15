@@ -616,6 +616,6 @@ class Daemon extends Software
         clearos_profile(__METHOD__, __LINE__);
 
         if (! is_bool($state))
-            return lang('base_validate_state_invalid');
+            return lang('base_parameter_invalid');
     }
 }

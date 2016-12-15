@@ -160,7 +160,7 @@ class App extends Engine
             $dependencies = $this->get_dependencies($this->basename);
 
             if ($dependencies === FALSE)
-                throw new Engine_Exception(lang('base_core_app_cannot_delete'), CLEAROS_WARNING);
+                throw new Engine_Exception(lang('base_app_cannot_be_deleted'), CLEAROS_WARNING);
 
             // Create list of deps that are installed
             $installed_apps = array();

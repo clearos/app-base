@@ -482,7 +482,7 @@ class Webconfig extends Daemon
         clearos_profile(__METHOD__, __LINE__);
 
         if (FALSE)
-            return lang('base_invalid_theme_option');
+            return lang('base_parameter_invalid');
     }
 
     /**

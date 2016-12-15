@@ -60,7 +60,7 @@ class Code_Exception extends ClearOS_Controller
 
         $this->lang->load('base');
 
-        $this->page->view_form('base/code_exception', NULL, lang('base_exception'));
+        $this->page->view_form('base/code_exception', NULL, lang('base_error'));
     }
 
 }
