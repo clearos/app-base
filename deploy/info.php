@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.3.4';
+$app['version'] = '2.3.5';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -114,16 +114,6 @@ $app['core_file_manifest'] = array(
     ),
     'CentOS-SCLo-scl.repo' => array(
         'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo',
-        'config' => TRUE,
-        'config_params' => 'noreplace',
-    ),
-    'clearos-centos.repo' => array(
-        'target' => '/etc/yum.repos.d/clearos-centos.repo',
-        'config' => TRUE,
-        'config_params' => 'noreplace',
-    ),
-    'clearos-epel.repo' => array(
-        'target' => '/etc/yum.repos.d/clearos-epel.repo',
         'config' => TRUE,
         'config_params' => 'noreplace',
     ),
