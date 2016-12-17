@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.8.6
+Version: 1.8.7
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -85,7 +85,6 @@ install -D -m 0644 packaging/RPM-GPG-KEY-atrpms %{buildroot}/etc/pki/rpm-gpg/CLE
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
-install -D -m 0644 packaging/clearos-centos68.repo %{buildroot}/etc/yum.repos.d/clearos-centos68.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-epel.repo %{buildroot}/etc/yum.repos.d/clearos-epel.repo
 install -D -m 0644 packaging/clearos-fast-updates.repo %{buildroot}/etc/yum.repos.d/clearos-fast-updates.repo
@@ -163,7 +162,6 @@ exit 0
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /var/clearos/base/access_control/authenticated/base
-/etc/yum.repos.d/clearos-centos68.repo
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-epel.repo
 /etc/yum.repos.d/clearos-fast-updates.repo

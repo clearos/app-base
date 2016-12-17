@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.8.6';
+$app['version'] = '1.8.7';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -125,7 +125,6 @@ $app['core_file_manifest'] = array(
     'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
     'CentOS-SCLo-scl-rh.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo' ),
     'CentOS-SCLo-scl.repo' => array( 'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo' ),
-    'clearos-centos68.repo' => array( 'target' => '/etc/yum.repos.d/clearos-centos68.repo' ),
     'clearos-epel.repo' => array( 'target' => '/etc/yum.repos.d/clearos-epel.repo' ),
     'clearos-developer.repo' => array( 'target' => '/etc/yum.repos.d/clearos-developer.repo' ),
     'clearos-fast-updates.repo' => array( 'target' => '/etc/yum.repos.d/clearos-fast-updates.repo' ),
