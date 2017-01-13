@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.3.5
+Version: 2.3.6
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -86,6 +86,7 @@ install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
 install -D -m 0644 packaging/centos-unverified.repo %{buildroot}/etc/yum.repos.d/centos-unverified.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
+install -D -m 0644 packaging/clearos-qa.repo %{buildroot}/etc/yum.repos.d/clearos-qa.repo
 install -D -m 0644 packaging/epel-unverified.repo %{buildroot}/etc/yum.repos.d/epel-unverified.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
@@ -159,6 +160,7 @@ exit 0
 /var/clearos/base/access_control/authenticated/base
 %config(noreplace) /etc/yum.repos.d/centos-unverified.repo
 /etc/yum.repos.d/clearos-developer.repo
+/etc/yum.repos.d/clearos-qa.repo
 %config(noreplace) /etc/yum.repos.d/epel-unverified.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf

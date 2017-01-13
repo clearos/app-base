@@ -1,0 +1,9 @@
+[clearos-qa]
+name=ClearOS 7 - $basearch - QA Packages
+baseurl=http://mirror1.egloo.ca/egloo/clearos/7.3/qa/$basearch
+    http://mirror2.egloo.ca/egloo/clearos/7.3/qa/$basearch
+    http://mirror3.egloo.ca/egloo/clearos/7.3/qa/$basearch
+    http://mirror4.egloo.ca/egloo/clearos/7.3/qa/$basearch
+enabled=0
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-ClearOS-$releasever
