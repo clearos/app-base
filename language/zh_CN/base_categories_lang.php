@@ -24,6 +24,7 @@ $lang['base_subcategory_database'] = '数据库';
 $lang['base_subcategory_device_management'] = 'Device Management';
 $lang['base_subcategory_directory'] = '目录';
 $lang['base_subcategory_file'] = '文件';
+$lang['base_subcategory_filtering'] = 'Filtering';
 $lang['base_subcategory_firewall'] = '防火墙';
 $lang['base_subcategory_infrastructure'] = '基本设施';
 $lang['base_subcategory_intrusion_protection'] = '入侵防御';

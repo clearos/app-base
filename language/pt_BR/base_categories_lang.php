@@ -24,6 +24,7 @@ $lang['base_subcategory_database'] = 'banco de dados';
 $lang['base_subcategory_device_management'] = 'Device Management';
 $lang['base_subcategory_directory'] = 'Diretório';
 $lang['base_subcategory_file'] = 'Arquivo';
+$lang['base_subcategory_filtering'] = 'Filtro';
 $lang['base_subcategory_firewall'] = 'Firewall';
 $lang['base_subcategory_infrastructure'] = 'Infraestrutura';
 $lang['base_subcategory_intrusion_protection'] = 'Proteção contra invasão';

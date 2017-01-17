@@ -25,6 +25,7 @@ $lang['base_subcategory_device_management'] = 'Device Management';
 $lang['base_subcategory_directory'] = 'Каталог';
 $lang['base_subcategory_file'] = 'Файлы';
 $lang['base_subcategory_firewall'] = 'Брандмауэр';
+$lang['base_subcategory_filtering'] = 'Filtering';
 $lang['base_subcategory_infrastructure'] = 'Инфраструктура';
 $lang['base_subcategory_intrusion_protection'] = 'Защита от проникновений';
 $lang['base_subcategory_mail'] = 'Почта';
