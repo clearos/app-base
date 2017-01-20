@@ -60,12 +60,14 @@ use \clearos\apps\base\Configuration_File as Configuration_File;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
+use \clearos\apps\mail_notification\Mail_Notification as Mail_Notification;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
+clearos_load_library('mail_notification/Mail_Notification');
 
 // Exceptions
 //-----------
@@ -102,6 +104,7 @@ class Access_Control extends Engine
 
     // Files and paths
     const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
+    const FILE_MF_TOKEN = 'mf_auth_token';
     const PATH_REST = '/var/clearos/base/access_control/rest';
     const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
     const PATH_PUBLIC = '/var/clearos/base/access_control/public';
@@ -344,6 +347,76 @@ class Access_Control extends Engine
         $this->_set_parameter("allow_custom", $stateval);
     }
 
+    /**
+     * Returns 2-factor authentication token.
+     *
+     * @param string  $username username
+     * @param string  $email    email
+     * @param boolean $resend   force resend
+     *
+     * @return string token
+     * @throws Engine_Exception
+     */
+
+    public function get_mf_token($username, $email, $resend = FALSE)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+        try {
+            $file = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_MF_TOKEN . ".$username", TRUE);
+            // 10 minutes
+            $token_life = 600;
+
+            if ($file->exists() && $file->last_modified() && (time() - $file->last_modified() < $token_life)) {
+                $token = $file->get_contents();
+                if ($resend)
+                    $this->_send_mf_token($token);
+                return $token;
+            } else if ($file->exists()) {
+                $file->delete();
+            }
+            $file->create('root', 'root', '0600');
+            $token = rand(10000, 99999);
+            $file->add_lines($token . "\n");
+            $this->_send_mf_token($token);
+            return $token;
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->get_message());
+        }
+    }
+
+    /**
+     * Returns 2-factor authentication token for cookie.
+     *
+     * @return array cookie
+     * @throws Engine_Exception
+     */
+
+    public function get_mf_auth_cookie($username)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+        try {
+            // Make sure folder exists
+            $folder = new Folder(CLEAROS_CACHE_DIR . '/t', TRUE);
+            if (!$folder->exists())
+                $folder->create('root', 'webconfig', '0640');
+            $token = bin2hex(openssl_random_pseudo_bytes(24)); 
+            $file = new File(CLEAROS_CACHE_DIR . "/t/$token", TRUE);
+            $file->create('root', 'root', '0600');
+            $file->add_lines($username . "\n");
+            $cookie = array(
+                'name'   => 'mf_auth_token',
+                'value'  => $token,
+                'expire' => 0,
+                'domain' => '',
+                'path'   => '/',
+                'prefix' => '',
+            );
+            return $cookie;
+        } catch (Engine_Exception $e) {
+            throw new Engine_Exception($e->get_message());
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     // P R I V A T E  M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
@@ -407,5 +480,47 @@ class Access_Control extends Engine
             $file->add_lines("$key = $value\n");
 
         $this->is_loaded = FALSE;
+    }
+
+    /**
+     * Send MF auth token.
+     *
+     * @return void
+     * @throws Engine_Exception
+     */
+
+    protected function _send_mf_token($token)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $mailer = new Mail_Notification();
+        $subject = lang('base_multi_factor_auth_token');
+        $body = lang('base_multi_factor_auth_token') . ":  $token\n";
+
+        $mailer->add_recipient('benjamin@egloo.ca');
+        $mailer->set_message_subject($subject);
+        $mailer->set_message_html_body($body);
+
+        $mailer->send();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // V A L I D A T I O N
+    ///////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Validate token variable.
+     *
+     * @param string $token token
+     *
+     * @return string error message if state is invalid.
+     */
+    
+    public function validate_token($token)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        if (!isset($token))
+            return lang('base_validate_token_invalid');
     }
 }

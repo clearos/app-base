@@ -154,6 +154,57 @@ class Session extends ClearOS_Controller
     }
 
     /**
+     * Multi Factor Authentication.
+     *
+     * @param string $username username
+     * @param string $redirect redirect page after login, base64 encoded
+     *
+     * @return view
+     */
+
+    function mf_auth($username, $redirect = NULL)
+    {
+        $this->load->helper('cookie');
+        $this->load->library('base/Access_Control');
+
+        if ($username == NULL) {
+            redirect('base/session/login');
+            return;
+        }
+        $page['type'] = MY_Page::TYPE_MF_AUTH;
+        $data = array(
+            'username' => $username,
+            'redirect' => $redirect,
+        );
+
+        // Set validation rules
+        //---------------------
+         
+        $this->form_validation->set_policy('token', 'base/Access_Control', 'validate_token');
+
+        $form_ok = $this->form_validation->run();
+
+        if ($this->input->post('verify') && $form_ok) {
+            $meta = $this->access_control->get_mf_token($username);
+            if ($this->input->post('token') == $meta['token']) {
+                if ($this->input->post('redirect'))
+                    $redirect = $this->input->post('redirect');
+                set_cookie($this->access_control->get_mf_auth_cookie($username));
+                $post_redirect = is_null($redirect) ? '/base/index' : base64_decode(strtr($redirect, '-@_', '+/='));
+                $post_redirect = preg_replace('/.*app\//', '/', $post_redirect); // trim /app prefix
+                $this->login_session->start_authenticated($username);
+                redirect($post_redirect);
+            } else {
+                $this->form_validation->set_error('token', lang('base_mf_auth_token_invalid'));
+            }
+        } else if ($this->input->post('resend')) {
+            $meta = $this->access_control->get_mf_token($username, TRUE);
+            $this->form_validation->set_error('token', lang('base_mf_auth_token_resent'));
+        }
+        $this->page->view_form('session/mf_auth', $data, lang('base_multi_factor_auth'), $page);
+    }
+
+    /**
      * Login handler.
      *
      * @param string $redirect redirect page after login, base64 encoded
@@ -165,6 +216,7 @@ class Session extends ClearOS_Controller
     {
         $this->load->library('user_agent');
         $this->load->library('base/Access_Control');
+        $this->load->helper('cookie');
 
         // Handle page post login redirect
         //--------------------------------
@@ -219,14 +271,15 @@ class Session extends ClearOS_Controller
             try {
                 $login_ok = $this->login_session->authenticate($this->input->post('clearos_username'), $this->input->post('clearos_password'));
                 if ($login_ok) {
-                    $this->login_session->start_authenticated($this->input->post('clearos_username'));
                     $this->login_session->set_language($code);
 
                     // If first boot, set the default language and start the wizard, 
                     // otherwise, go to redirect page
                     if (clearos_console()) {
+                        $this->login_session->start_authenticated($this->input->post('clearos_username'));
                         redirect('/network');
                     } else if ($this->login_session->is_install_wizard_mode()) {
+                        $this->login_session->start_authenticated($this->input->post('clearos_username'));
                         if (clearos_app_installed('language') && ($code))
                             $this->locale->set_language_code($code);
 
@@ -236,6 +289,17 @@ class Session extends ClearOS_Controller
                         $username = $this->input->post('clearos_username');
                         $valid_pages = $this->access_control->get_valid_pages($username);
                         $route_requested = '/app' . $post_redirect;
+
+                        // Two-factor authentication enabled
+                        // don't call start_authenticated yet 
+                        if (TRUE && get_cookie('mf_auth_token') != $this->access_control->get_mf_token($username)['token']) {
+                            $this->login_session->set_mf_auth(TRUE);
+                            redirect('/base/session/mf_auth/' . $username . '/' . $redirect);
+                            return;
+                        }
+
+                        // No two-factor authentication enabled...now set auth
+                        $this->login_session->start_authenticated($this->input->post('clearos_username'));
 
                         if (preg_match('/^\/base\//', $post_redirect)
                             && (in_array('/app/dashboard', $valid_pages) || ($username === 'root'))
