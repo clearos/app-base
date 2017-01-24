@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.8.8';
+$app['version'] = '1.8.9';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -41,6 +41,10 @@ $app['controllers']['session']['inline_help'] = array(
 // make sure the CentOS-based repo structure is in place.
 
 $app['core_provides'] = array(
+    'epel-release'
+);
+
+$app['core_obsoletes'] = array(
     'epel-release'
 );
 

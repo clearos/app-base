@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 1.8.7
+Version: 1.8.9
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -52,6 +52,7 @@ Requires: webconfig-utils
 Requires: wget
 Requires: yum >= 3.2.29-69
 Requires: yum-utils
+Obsoletes: epel-release
 
 %description core
 The Base app provides core system libraries and tools.
