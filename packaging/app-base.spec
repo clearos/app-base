@@ -17,6 +17,7 @@ The Base app provides core system libraries and tools.
 Summary: General Settings - Core
 License: LGPLv3
 Group: ClearOS/Libraries
+Provides: epel-release
 Requires: /etc/yum.repos.d/clearos-centos.repo
 Requires: acpid
 Requires: clearos-base

@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '1.8.7';
+$app['version'] = '1.8.8';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -39,6 +39,10 @@ $app['controllers']['session']['inline_help'] = array(
 
 // /etc/yum.repos.d/clearos-centos.repo dependency is a round about way to
 // make sure the CentOS-based repo structure is in place.
+
+$app['core_provides'] = array(
+    'epel-release'
+);
 
 $app['core_requires'] = array(
     '/etc/yum.repos.d/clearos-centos.repo',
