@@ -99,8 +99,8 @@ $contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Ne
 
 $blurb = "
     <div style='padding-right: 120px;'>ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
-    " . anchor_custom("http://www.clearcenter.com/Solution/solutions.html", "here", "link-only", array('target' => '_blank')) . " to learn more or 
-    " . anchor_custom("http://www.clearcenter.com/Company/clearcenter-contact-us-1.html", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
+    " . anchor_custom("https://www.clearcenter.com", "here", "link-only", array('target' => '_blank')) . " to learn more or 
+    " . anchor_custom("https://www.clearcenter.com/community/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
 ";
 
 echo form_open('base/wizard', array('id' => 'getting_started'));
@@ -113,7 +113,7 @@ $banner_contents =
         column_close() .
         column_open(5) .
         box_open('Did You Know?') .
-        box_content(image('get-started.png', array('class' => 'pull-right')) . $blurb) .
+        box_content(image('clearcenter.png', array('class' => 'pull-right')) . $blurb) .
         box_close() .
         column_close() .
     row_close()
