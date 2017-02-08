@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2017 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -61,6 +61,7 @@ use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
 use \clearos\apps\mail_notification\Mail_Notification as Mail_Notification;
+use \clearos\apps\users\User_Factory as User_Factory;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
@@ -91,7 +92,7 @@ clearos_load_library('base/File_Not_Found_Exception');
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2011 ClearFoundation
+ * @copyright  2006-2017 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -104,7 +105,7 @@ class Access_Control extends Engine
 
     // Files and paths
     const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
-    const FILE_MF_TOKEN = 'mf_auth_token';
+    const FILE_2FACTOR_TOKEN = '.2factor_auth_token';
     const PATH_REST = '/var/clearos/base/access_control/rest';
     const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
     const PATH_PUBLIC = '/var/clearos/base/access_control/public';
@@ -351,25 +352,24 @@ class Access_Control extends Engine
      * Returns 2-factor authentication token.
      *
      * @param string  $username username
-     * @param string  $email    email
      * @param boolean $resend   force resend
      *
      * @return string token
      * @throws Engine_Exception
      */
 
-    public function get_mf_token($username, $email, $resend = FALSE)
+    public function get_2factor_token($username, $resend = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
         try {
-            $file = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_MF_TOKEN . ".$username", TRUE);
+            $file = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_2FACTOR_TOKEN . ".$username", TRUE);
             // 10 minutes
             $token_life = 600;
 
             if ($file->exists() && $file->last_modified() && (time() - $file->last_modified() < $token_life)) {
                 $token = $file->get_contents();
                 if ($resend)
-                    $this->_send_mf_token($token);
+                    $this->_send_2factor_token($username, $token);
                 return $token;
             } else if ($file->exists()) {
                 $file->delete();
@@ -377,7 +377,7 @@ class Access_Control extends Engine
             $file->create('root', 'root', '0600');
             $token = rand(10000, 99999);
             $file->add_lines($token . "\n");
-            $this->_send_mf_token($token);
+            $this->_send_2factor_token($username, $token);
             return $token;
         } catch (Engine_Exception $e) {
             throw new Engine_Exception($e->get_message());
@@ -391,7 +391,7 @@ class Access_Control extends Engine
      * @throws Engine_Exception
      */
 
-    public function get_mf_auth_cookie($username)
+    public function get_2factor_auth_cookie($username)
     {
         clearos_profile(__METHOD__, __LINE__);
         try {
@@ -404,7 +404,7 @@ class Access_Control extends Engine
             $file->create('root', 'root', '0600');
             $file->add_lines($username . "\n");
             $cookie = array(
-                'name'   => 'mf_auth_token',
+                'name'   => '2factor_auth_token',
                 'value'  => $token,
                 'expire' => 0,
                 'domain' => '',
@@ -483,21 +483,40 @@ class Access_Control extends Engine
     }
 
     /**
-     * Send MF auth token.
+     * Send two-factor auth token.
      *
+     * @param string $username username
+     * @param string $token    token
+     *
+     * @access private
      * @return void
      * @throws Engine_Exception
      */
 
-    protected function _send_mf_token($token)
+    protected function _send_2factor_token($username, $token)
     {
         clearos_profile(__METHOD__, __LINE__);
 
         $mailer = new Mail_Notification();
-        $subject = lang('base_multi_factor_auth_token');
-        $body = lang('base_multi_factor_auth_token') . ":  $token\n";
+        $subject = lang('base_2factor_auth_token');
+        $body = lang('base_2factor_auth_token') . ":  $token\n";
 
-        $mailer->add_recipient('benjamin@egloo.ca');
+        $email = NULL;
+        if ($username == 'root') {
+            $email = '';
+        } else {
+            if (!clearos_app_installed('two_factor_auth_extension'))
+                throw new Engine_Exception('base_2factor_auth_not_installed');
+            if (clearos_load_library('users/User_Factory')) {
+                $user = User_Factory::create($username);
+                $extensions = $user->get_info()['extensions'];
+                $email = $extensions['two_factor_auth']['mail'];
+            }
+        }
+
+        if (!$email)
+            throw new Engine_Exception(lang('base_2factor_auth_not_configured'));
+        $mailer->add_recipient($email);
         $mailer->set_message_subject($subject);
         $mailer->set_message_html_body($body);
 

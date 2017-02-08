@@ -38,7 +38,7 @@
 
 $this->lang->load('base');
 
-    echo modal_info("wizard_next_showstopper", lang('base_error'), lang('software_updates_loading_updates_message'), array('type' => 'warning'));
+
 $buttons = array(
     form_submit_custom('verify', lang('base_verify_token_and_continue')),
     anchor_cancel('/app/base/session/logout')
@@ -47,19 +47,22 @@ echo row_open();
 echo column_open(2);
 echo column_close();
 echo column_open(8);
-echo form_open('/base/session/mf_auth/' . $username);
-echo form_header(lang('base_multi_factor_auth'));
+echo form_open('/base/session/two_factor/' . $username);
+echo form_header(lang('base_2factor_auth'));
 
 echo field_input('redirect', $redirect, "", FALSE, ['hide_field' => TRUE]);
 echo field_input('username', $username, lang('base_account'), TRUE);
-echo field_input('token', "", lang('base_multi_factor_auth_token'));
+echo field_input('token', "", lang('base_2factor_auth_token'));
 
 echo field_button_set($buttons);
 
 echo form_footer();
 
+if ($errmsg)
+    echo infobox_warning(lang('base_warning'), $errmsg);
+
 echo infobox_highlight(lang('base_information'),
-    lang('base_multi_factor_protection_enabled') .
+    lang('base_2factor_protection_enabled') .
     "<div class='text-center' style='padding-top: 20px;'>" .
     form_submit_custom('resend', lang('base_resend_token')) .
     "</div>"
