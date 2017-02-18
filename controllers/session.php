@@ -241,12 +241,22 @@ class Session extends ClearOS_Controller
 
                         // Two-factor authentication enabled
                         // don't call start_authenticated yet 
-                        if (clearos_app_installed('two_factor_auth_extension')) {
-                            if ($username === 'root') {
+                        if (clearos_app_installed('two_factor_auth')) {
+                            if ($username == 'root') {
+                                $this->load->library('two_factor_auth/Two_Factor_Auth');
+                                if ($this->two_factor_auth->get_root_enabled()
+                                    && get_cookie('2factor_auth_token') != $this->access_control->get_2factor_token($username))
+                                {
+                                    $this->login_session->set_2factor_auth(TRUE);
+                                    redirect('/base/session/two_factor/' . $username . '/' . $redirect);
+                                    return;
+                                }
                             } else {
                                 $this->load->factory('users/User_Factory', $username);
                                 $extensions = $this->user->get_info()['extensions'];
-                                if ($extensions['two_factor_auth']['state'] && get_cookie('2factor_auth_token') != $this->access_control->get_2factor_token($username)) {
+                                if ($extensions['two_factor_auth']['state']
+                                    && get_cookie('2factor_auth_token') != $this->access_control->get_2factor_token($username))
+                                {
                                     $this->login_session->set_2factor_auth(TRUE);
                                     redirect('/base/session/two_factor/' . $username . '/' . $redirect);
                                     return;
@@ -366,7 +376,7 @@ class Session extends ClearOS_Controller
             return;
         }
 
-        if (!clearos_app_installed('two_factor_auth_extension')) {
+        if (!clearos_app_installed('two_factor_auth')) {
             redirect('base/session/login');
             return;
         }

@@ -62,6 +62,7 @@ use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
 use \clearos\apps\mail_notification\Mail_Notification as Mail_Notification;
 use \clearos\apps\users\User_Factory as User_Factory;
+use \clearos\apps\two_factor_auth\Two_Factor_Auth as Two_Factor_Auth;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
@@ -502,11 +503,15 @@ class Access_Control extends Engine
         $body = lang('base_2factor_auth_token') . ":  $token\n";
 
         $email = NULL;
+        if (!clearos_app_installed('two_factor_auth'))
+            throw new Engine_Exception('base_2factor_auth_not_installed');
+
         if ($username == 'root') {
-            $email = '';
+            if (clearos_load_library('two_factor_auth/Two_Factor_Auth')) {
+                $two_factor = new Two_Factor_Auth();
+                $email = $two_factor->get_root_email();
+            }
         } else {
-            if (!clearos_app_installed('two_factor_auth_extension'))
-                throw new Engine_Exception('base_2factor_auth_not_installed');
             if (clearos_load_library('users/User_Factory')) {
                 $user = User_Factory::create($username);
                 $extensions = $user->get_info()['extensions'];
