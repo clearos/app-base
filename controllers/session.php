@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
+ * @copyright  2011-2017 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -40,7 +40,7 @@
  * @package    base
  * @subpackage controllers
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2011 ClearFoundation
+ * @copyright  2011-2017 ClearFoundation
  * @license    http://www.gnu.org/copyleft/gpl.html GNU General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -242,26 +242,18 @@ class Session extends ClearOS_Controller
                         // Two-factor authentication enabled
                         // don't call start_authenticated yet 
                         if (clearos_app_installed('two_factor_auth')) {
-                            if ($username == 'root') {
-                                $this->load->library('two_factor_auth/Two_Factor_Auth');
-                                if ($this->two_factor_auth->get_root_enabled()
-                                    && get_cookie('2factor_auth_token') != $this->access_control->get_2factor_token($username))
-                                {
-                                    $this->login_session->set_2factor_auth(TRUE);
-                                    redirect('/base/session/two_factor/' . $username . '/' . $redirect);
-                                    return;
-                                }
-                            } else {
-                                $this->load->factory('users/User_Factory', $username);
-                                $extensions = $this->user->get_info()['extensions'];
-                                if ($extensions['two_factor_auth']['state']
-                                    && get_cookie('2factor_auth_token') != $this->access_control->get_2factor_token($username))
-                                {
-                                    $this->login_session->set_2factor_auth(TRUE);
-                                    redirect('/base/session/two_factor/' . $username . '/' . $redirect);
-                                    return;
-                                }
+                            $this->load->library('two_factor_auth/Two_Factor_Auth');
+                            // Set our flag that indicates authentication was successful..waiting on 2nd step of verication
+                            $this->two_factor_auth->set_session_status(TRUE);
+                            $verified = $this->two_factor_auth->is_verified($username, get_cookie($this->two_factor_auth->COOKIE_NAME));
+                            if (!$verified) {
+                                $this->two_factor_auth->get_verification_code($username, TRUE);
+                                redirect('/two_factor_auth/verify/' . $username . '/' . $redirect);
+                                return;
                             }
+                            // We set the 2FA token for users whose accounts are not set to require 2FA
+                            // Because it makes it easier to manage
+                            set_cookie($this->two_factor_auth->create_cookie($username));
                         }
 
                         // No two-factor authentication enabled...now set auth
@@ -355,67 +347,6 @@ class Session extends ClearOS_Controller
             $page['type'] = MY_Page::TYPE_LOGIN;
             $this->page->view_form('session/login', $data, lang('base_login'), $page);
         }
-    }
-
-    /**
-     * Two-factor Authentication.
-     *
-     * @param string $username username
-     * @param string $redirect redirect page after login, base64 encoded
-     *
-     * @return view
-     */
-
-    function two_factor($username, $redirect = NULL)
-    {
-        $this->load->helper('cookie');
-        $this->load->library('base/Access_Control');
-
-        if ($username == NULL) {
-            redirect('base/session/login');
-            return;
-        }
-
-        if (!clearos_app_installed('two_factor_auth')) {
-            redirect('base/session/login');
-            return;
-        }
-
-        $page['type'] = MY_Page::TYPE_2FACTOR_AUTH;
-        $data = array(
-            'username' => $username,
-            'redirect' => $redirect,
-        );
-
-        // Set validation rules
-        //---------------------
-         
-        $this->form_validation->set_policy('token', 'base/Access_Control', 'validate_token');
-
-        $form_ok = $this->form_validation->run();
-
-        try {
-            if ($this->input->post('verify') && $form_ok) {
-                $token = $this->access_control->get_2factor_token($username);
-                if ($this->input->post('token') == $token) {
-                    if ($this->input->post('redirect'))
-                        $redirect = $this->input->post('redirect');
-                    set_cookie($this->access_control->get_2factor_auth_cookie($username));
-                    $post_redirect = is_null($redirect) ? '/base/index' : base64_decode(strtr($redirect, '-@_', '+/='));
-                    $post_redirect = preg_replace('/.*app\//', '/', $post_redirect); // trim /app prefix
-                    $this->login_session->start_authenticated($username);
-                    redirect($post_redirect);
-                } else {
-                    $this->form_validation->set_error('token', lang('base_2factor_auth_token_invalid'));
-                }
-            } else if ($this->input->post('resend')) {
-                $this->access_control->get_2factor_token($username, TRUE);
-                $this->form_validation->set_error('token', lang('base_2factor_auth_token_resent'));
-            }
-        } catch (Engine_Exception $e) {
-            $data['errmsg'] = clearos_exception_message($e);
-        }
-        $this->page->view_form('session/two_factor', $data, lang('base_2factor_auth'), $page);
     }
 
     /**

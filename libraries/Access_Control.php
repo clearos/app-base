@@ -60,16 +60,13 @@ use \clearos\apps\base\Configuration_File as Configuration_File;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
-use \clearos\apps\mail_notification\Mail_Notification as Mail_Notification;
 use \clearos\apps\users\User_Factory as User_Factory;
-use \clearos\apps\two_factor_auth\Two_Factor_Auth as Two_Factor_Auth;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Engine');
 clearos_load_library('base/File');
 clearos_load_library('base/Folder');
-clearos_load_library('mail_notification/Mail_Notification');
 
 // Exceptions
 //-----------
@@ -106,7 +103,6 @@ class Access_Control extends Engine
 
     // Files and paths
     const FILE_CONFIG = '/etc/clearos/base.d/access_control.conf';
-    const FILE_2FACTOR_TOKEN = '.2factor_auth_token';
     const PATH_REST = '/var/clearos/base/access_control/rest';
     const PATH_CUSTOM = '/var/clearos/base/access_control/custom';
     const PATH_PUBLIC = '/var/clearos/base/access_control/public';
@@ -349,75 +345,6 @@ class Access_Control extends Engine
         $this->_set_parameter("allow_custom", $stateval);
     }
 
-    /**
-     * Returns 2-factor authentication token.
-     *
-     * @param string  $username username
-     * @param boolean $resend   force resend
-     *
-     * @return string token
-     * @throws Engine_Exception
-     */
-
-    public function get_2factor_token($username, $resend = FALSE)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-        try {
-            $file = new File(CLEAROS_TEMP_DIR . "/" . self::FILE_2FACTOR_TOKEN . ".$username", TRUE);
-            // 10 minutes
-            $token_life = 600;
-
-            if ($file->exists() && $file->last_modified() && (time() - $file->last_modified() < $token_life)) {
-                $token = $file->get_contents();
-                if ($resend)
-                    $this->_send_2factor_token($username, $token);
-                return $token;
-            } else if ($file->exists()) {
-                $file->delete();
-            }
-            $file->create('root', 'root', '0600');
-            $token = rand(10000, 99999);
-            $file->add_lines($token . "\n");
-            $this->_send_2factor_token($username, $token);
-            return $token;
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message());
-        }
-    }
-
-    /**
-     * Returns 2-factor authentication token for cookie.
-     *
-     * @return array cookie
-     * @throws Engine_Exception
-     */
-
-    public function get_2factor_auth_cookie($username)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-        try {
-            // Make sure folder exists
-            $folder = new Folder(CLEAROS_CACHE_DIR . '/t', TRUE);
-            if (!$folder->exists())
-                $folder->create('root', 'webconfig', '0640');
-            $token = bin2hex(openssl_random_pseudo_bytes(24)); 
-            $file = new File(CLEAROS_CACHE_DIR . "/t/$token", TRUE);
-            $file->create('root', 'root', '0600');
-            $file->add_lines($username . "\n");
-            $cookie = array(
-                'name'   => '2factor_auth_token',
-                'value'  => $token,
-                'expire' => 0,
-                'domain' => '',
-                'path'   => '/',
-                'prefix' => '',
-            );
-            return $cookie;
-        } catch (Engine_Exception $e) {
-            throw new Engine_Exception($e->get_message());
-        }
-    }
-
     ///////////////////////////////////////////////////////////////////////////////
     // P R I V A T E  M E T H O D S
     ///////////////////////////////////////////////////////////////////////////////
@@ -481,51 +408,6 @@ class Access_Control extends Engine
             $file->add_lines("$key = $value\n");
 
         $this->is_loaded = FALSE;
-    }
-
-    /**
-     * Send two-factor auth token.
-     *
-     * @param string $username username
-     * @param string $token    token
-     *
-     * @access private
-     * @return void
-     * @throws Engine_Exception
-     */
-
-    protected function _send_2factor_token($username, $token)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        $mailer = new Mail_Notification();
-        $subject = lang('base_2factor_auth_token');
-        $body = lang('base_2factor_auth_token') . ":  $token\n";
-
-        $email = NULL;
-        if (!clearos_app_installed('two_factor_auth'))
-            throw new Engine_Exception('base_2factor_auth_not_installed');
-
-        if ($username == 'root') {
-            if (clearos_load_library('two_factor_auth/Two_Factor_Auth')) {
-                $two_factor = new Two_Factor_Auth();
-                $email = $two_factor->get_root_email();
-            }
-        } else {
-            if (clearos_load_library('users/User_Factory')) {
-                $user = User_Factory::create($username);
-                $extensions = $user->get_info()['extensions'];
-                $email = $extensions['two_factor_auth']['mail'];
-            }
-        }
-
-        if (!$email)
-            throw new Engine_Exception(lang('base_2factor_auth_not_configured'));
-        $mailer->add_recipient($email);
-        $mailer->set_message_subject($subject);
-        $mailer->set_message_html_body($body);
-
-        $mailer->send();
     }
 
     ///////////////////////////////////////////////////////////////////////////////

@@ -688,6 +688,31 @@ class File extends Engine
 
 
     /**
+     * Touches an existing file on the system to update the mtime.
+     *
+     * @return void
+     * @throws File_Permissions_Exception, File_Exception
+     */
+
+    public function touch()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        clearstatcache();
+
+        try {
+            $shell = new Shell();
+            $shell->execute(File::COMMAND_TOUCH, "-cm " . escapeshellarg($this->filename), TRUE);
+
+        } catch (File_Permissions_Exception $e) {
+            throw new File_Permissions_Exception($e->GetMessage(), CLEAROS_WARNING);
+        } catch (Engine_Exception $e) {
+            throw new File_Exception($e->get_message(), CLEAROS_WARNING);
+        }
+    }
+
+
+    /**
      * Deletes the file.
      *
      * @return void
