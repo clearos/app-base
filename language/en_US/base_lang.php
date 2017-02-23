@@ -17,6 +17,7 @@ $lang['base_advanced_settings'] = 'Advanced Settings';
 $lang['base_all'] = 'All';
 $lang['base_already_exists'] = 'Item already exists.';
 $lang['base_app'] = 'App';
+$lang['base_app_cannot_be_deleted'] = 'App cannot be deleted.';
 $lang['base_app_description'] = 'The Base app provides core system libraries and tools.';
 $lang['base_app_details'] = 'App Details';
 $lang['base_app_display_name'] = 'App Name';
@@ -141,6 +142,7 @@ $lang['base_file_dmg'] = 'Mac OS disk image';
 $lang['base_file_doc'] = 'Microsoft Word document';
 $lang['base_file_docm'] = 'Microsoft Word macro-enabled document';
 $lang['base_file_docx'] = 'Microsoft Word document';
+$lang['base_file_dotm'] = 'Microsoft Office Open XML with macros';
 $lang['base_file_exe'] = 'Program';
 $lang['base_file_extension'] = 'File Extension';
 $lang['base_file'] = 'File';
@@ -260,14 +262,7 @@ $lang['base_idle_time'] = 'Idle Time';
 $lang['base_information'] = 'Information';
 $lang['base_initialize'] = 'Initialize';
 $lang['base_initializing...'] = 'Initializing ...';
-<<<<<<< HEAD
-$lang['base_install'] = 'Install';
-$lang['base_install_guide'] = 'Install Guide';
-$lang['base_install_wizard'] = 'Install Wizard';
-$lang['base_install_wizard_complete'] = 'Installallation wizard complete.';
-=======
 $lang['base_initializing'] = 'Initializing';
->>>>>>> master
 $lang['base_installation_complete'] = 'Installation Complete';
 $lang['base_install_default'] = 'Install default';
 $lang['base_installed_apps'] = 'Installed Apps';
@@ -364,17 +359,15 @@ $lang['base_new_password'] = 'New Password';
 $lang['base_next'] = 'Next';
 $lang['base_next_update'] = 'Next Update';
 $lang['base_no_apps_available'] = 'Login was successful, but no apps are enabled for your account.';
+$lang['base_no_data'] = 'No data.';
 $lang['base_no_entries'] = 'No Entries';
 $lang['base_none'] = 'None';
 $lang['base_no'] = 'No';
 $lang['base_no_results'] = 'No results';
 $lang['base_no_search_term_provided'] = 'No search term provided.';
 $lang['base_not_applicable'] = 'Not applicable';
-<<<<<<< HEAD
-=======
 $lang['base_not_available'] = 'Not available';
 $lang['base_nothing_to_report'] = 'Nothing to report.';
->>>>>>> master
 $lang['base_not_installed'] = 'Software is not installed';
 $lang['base_not_specified'] = 'Not Specified';
 $lang['base_off'] = 'Off';
@@ -407,6 +400,7 @@ $lang['base_please_wait'] = 'Please Wait';
 $lang['base_previous'] = 'Previous';
 $lang['base_priority'] = 'Priority';
 $lang['base_processes'] = 'Processes';
+$lang['base_product_name_invalid'] = 'Product name is invalid.';
 $lang['base_progress'] = 'Progress';
 $lang['base_rate_app'] = 'Rate App';
 $lang['base_refresh'] = 'Refresh';
@@ -420,10 +414,7 @@ $lang['base_required'] = 'Required';
 $lang['base_reset_password_and_send'] = 'Reset Password and Send';
 $lang['base_reset'] = 'Reset';
 $lang['base_restarting'] = 'Restarting';
-<<<<<<< HEAD
-=======
 $lang['base_restart'] = 'Restart';
->>>>>>> master
 $lang['base_restore'] = 'Restore';
 $lang['base_return_to_clearos'] = 'Return to ClearOS';
 $lang['base_return_to_home_page'] = 'Return to home page';
@@ -466,14 +457,11 @@ $lang['base_size'] = 'Size';
 $lang['base_skip'] = 'Skip';
 $lang['base_small'] = 'Small';
 $lang['base_software_already_running'] = 'Software is already running.';
+$lang['base_software_id_invalid'] = 'Software ID is invalid.';
 $lang['base_software_install'] = 'Software Install';
 $lang['base_software_update_busy_warning'] = 'Another user or service is currently using the software update system.  Update progress will resume shortly.';
 $lang['base_software_updates_busy'] = 'Software Updates Busy';
-<<<<<<< HEAD
-$lang['base_start'] = 'Start';
-=======
 $lang['base_ssl_certificate'] = 'SSL Certificate';
->>>>>>> master
 $lang['base_starting'] = 'Starting';
 $lang['base_start'] = 'Start';
 $lang['base_state_invalid'] = 'State is invalid.';
@@ -559,6 +547,7 @@ $lang['base_tuesday'] = 'Tuesday';
 $lang['base_tuning'] = 'Tuning';
 $lang['base_unable_to_create_lock_file'] = 'Unable to create lock file';
 $lang['base_unable_to_delete_app'] = 'Unable to delete app';
+$lang['base_unable_to_get_software_list'] = 'Unable to get software list.';
 $lang['base_unable_to_remove_lock_file'] = 'Unable to remove lock file';
 $lang['base_uninstall'] = 'Uninstall';
 $lang['base_unknown_script_state'] = 'Status of script unknown';
