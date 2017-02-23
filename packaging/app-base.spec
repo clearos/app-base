@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.3.8
+Version: 2.3.20
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -19,7 +19,7 @@ License: LGPLv3
 Group: ClearOS/Libraries
 Requires: acpid
 Requires: clearos-base
-Requires: clearos-framework >= 7.1.2
+Requires: clearos-framework >= 7.3.3
 Requires: clearos-release >= 7-3.1
 Requires: cpupowerutils
 Requires: csplugin-filewatch
@@ -137,6 +137,7 @@ exit 0
 %files core
 %defattr(-,root,root)
 %exclude /usr/clearos/apps/base/packaging
+%exclude /usr/clearos/apps/base/unify.json
 %dir /usr/clearos/apps/base
 %dir /etc/clearos/base.d
 %dir /var/clearos/base

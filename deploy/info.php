@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.3.8';
+$app['version'] = '2.3.20';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -61,7 +61,7 @@ $app['dashboard_widgets'] = array(
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
-    'clearos-framework >= 7.1.2',
+    'clearos-framework >= 7.3.3',
     'clearos-release >= 7-3.1',
     'cpupowerutils',
     'csplugin-filewatch',
