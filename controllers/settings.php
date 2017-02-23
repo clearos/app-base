@@ -101,7 +101,7 @@ class Settings extends ClearOS_Controller
         //---------------------
          
         $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
-        $this->form_validation->set_policy('ssl_certificate', 'base/Webconfig', 'validate_ssl_certificate', TRUE);
+        // $this->form_validation->set_policy('ssl_certificate', 'base/Webconfig', 'validate_ssl_certificate', TRUE);
         $form_ok = $this->form_validation->run();
 
         // Handle form submit
@@ -110,13 +110,14 @@ class Settings extends ClearOS_Controller
         if (($this->input->post('submit') && $form_ok)) {
             try {
                 $this->locale->set_locale($this->input->post('code'));
-                $reload = $this->webconfig->set_ssl_certificate($this->input->post('ssl_certificate'));
+                // $reload = $this->webconfig->set_ssl_certificate($this->input->post('ssl_certificate'));
 
                 if ($this->input->post('update_session'))
                     $this->login_session->set_language($this->input->post('code'));
 
                 $this->page->set_status_updated();
-                redirect('/base' . ($reload ? '/?reloading' : ''));
+                // redirect('/base' . ($reload ? '/?reloading' : ''));
+                redirect('/base');
             } catch (Exception $e) {
                 $this->page->view_exception($e);
                 return;
