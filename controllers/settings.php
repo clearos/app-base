@@ -134,7 +134,6 @@ class Settings extends ClearOS_Controller
             $data['languages'] = $this->locale->get_languages();
             $data['ssl_certificate'] = $this->webconfig->get_ssl_certificate();
             $data['ssl_certificate_options'] = $this->webconfig->get_ssl_certificate_options();
-            $data['ssl_certificate_options'] = $this->webconfig->get_ssl_certificate_options();
         } catch (Exception $e) {
             $this->page->view_exception($e);
             return;
