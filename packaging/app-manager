@@ -67,8 +67,8 @@ $helpopts  = '
 
   -a=action
        Valid actions:
-         remove...Remove/delete app(s)
-         list.....List all installed apps
+         remove... Remove/delete app(s)
+         list... List all installed apps
   -y=force deletion without confirmation
   -h: help
 
