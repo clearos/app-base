@@ -100,7 +100,7 @@ $valid_actions = array(
     'list'
 );
 if (!in_array($action, $valid_actions)) {
-    echo "Invalid action...use -h for usage.\n";
+    echo "Invalid action... use -h for usage.\n";
     exit(1);
 }
 
