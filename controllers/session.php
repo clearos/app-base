@@ -236,7 +236,7 @@ class Session extends ClearOS_Controller
                         $valid_pages = $this->access_control->get_valid_pages($username);
                         $route_requested = '/app' . $post_redirect;
 
-                        // Two-factor authentication enabled
+                        // If 2FA authentication installed,
                         // don't call start_authenticated yet 
                         if (clearos_app_installed('two_factor_auth')) {
                             $this->load->library('two_factor_auth/Two_Factor_Auth');
