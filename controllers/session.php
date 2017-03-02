@@ -219,7 +219,6 @@ class Session extends ClearOS_Controller
             try {
                 $login_ok = $this->login_session->authenticate($this->input->post('clearos_username'), $this->input->post('clearos_password'));
                 if ($login_ok) {
-                    $this->login_session->start_authenticated($this->input->post('clearos_username'));
                     $this->login_session->set_language($this->input->post('code'));
 
                     // If request is from the console, go to network page.
@@ -229,6 +228,7 @@ class Session extends ClearOS_Controller
                         $this->login_session->start_authenticated($this->input->post('clearos_username'));
                         redirect('/network');
                     } else if ($this->login_session->is_install_wizard_mode()) {
+                        $this->login_session->start_authenticated($this->input->post('clearos_username'));
                         redirect('/base/wizard/index/start');
                     } else {
                         // Go to the dashboard if access control allows it
