@@ -101,6 +101,7 @@ $lang['base_description'] = 'Description';
 $lang['base_detailed_report'] = 'Detailed Report';
 $lang['base_detailed_view'] = 'Detailed View';
 $lang['base_details'] = 'Details';
+$lang['base_did_you_know'] = 'Did You Know?';
 $lang['base_directory'] = 'Directory';
 $lang['base_disable_auto_configuration'] = 'Disable Auto Configuration';
 $lang['base_disabled'] = 'Disabled';

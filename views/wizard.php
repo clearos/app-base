@@ -94,7 +94,7 @@ $banner_contents =
         $contents .
         column_close() .
         column_open(5) .
-        box_open('Did You Know?') .
+        box_open(lang('base_did_you_know')) .
         box_content(image('clearcenter.png', array('class' => 'pull-right')) . $blurb) .
         box_close() .
         column_close() .
