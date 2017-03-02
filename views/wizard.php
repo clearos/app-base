@@ -43,64 +43,46 @@ $os_name = preg_replace('/ /', '_', $os_name);
 
 $contents = "
     <h2 style='font-size: 1.8em; color: #909090;'>" . lang('base_getting_started') ." </h2>
-    <p style='font-size: 1.2em; line-height: 20px;'>The Install Wizard guides you through the steps to get your ClearOS system up and running.  
-    After the basics are configured, you'll get a chance to go through the ClearOS Marketplace wizard to 
-    install apps.<p>
-
-    <p style='font-size: 1.2em; line-height: 20px;'>If you need assistance with installation or configuration, 
-    please review the available help in the wizard.  You can also find more in-depth
-    help online:</p>
-
+    <p style='font-size: 1.2em; line-height: 20px;'>" . lang('base_getting_started_intro') . "</p>
+    <p style='font-size: 1.2em; line-height: 20px;'>" . lang('base_getting_started_intro_part2') . "</p>
     <ul>
-        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("http://www.clearcenter.com/redirect/$os_name/$os_base_version/install_guide", lang('base_install_guide'), "link-only", array('target' => '_blank')) . "</li>
-        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("http://www.clearcenter.com/redirect/$os_name/$os_base_version/user_guide", lang('base_user_guide'), "link-only", array('target' => '_blank')) . "</li>
+        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("https://www.clearos.com/resources/documentation/clearos/content:en_us:7_first_boot_wizard", lang('base_install_guide'), "link-only", array('target' => '_blank')) . "</li>
+        <li style='font-size: 1.2em; line-height: 20px;'>" . anchor_custom("https://www.clearos.com/resources/documentation/clearos/index:userguide7", lang('base_user_guide'), "link-only", array('target' => '_blank')) . "</li>
     </ul>
 ";
 
-if ($memory_warning || $vm_warning) {
+if ($memory_warning) {
     if ($memory_warning) {
-        $memory_bullet = "<li style='font-size: 1.2em; line-height: 20px; color: red;'>Inadequate Memory: " . $memory_size . " GB</li>";
-        $memory_blurb =  "<p style='font-size: 1.2em; line-height: 20px;'>More memory is recommended.
-                <a target='_blank' href='http://www.clearcenter.com/redirect/$os_name/$os_base_version/system_requirements'>More Information</a>.</p>";
+        $memory_bullet = "<li style='font-size: 1.2em; line-height: 20px; color: red;'>" . lang('base_inadequate_memory') . " - " . $memory_size . " " . lang('base_gigabytes') . "</li>";
+        $memory_blurb =  "<p style='font-size: 1.2em; line-height: 20px;'>" . lang('base_more_memory_recommended') . "
+                <a target='_blank' href='https://www.clearos.com/resources/documentation/clearos/content:en_us:7_b_system_requirements'>" . lang('base_details') . "</a>.</p>";
     } else {
         $memory_bullet = '';
         $memory_blurb = '';
     }
 
-    if ($vm_warning) {
-        $vm_bullet = "<li style='font-size: 1.2em; line-height: 20px; color: red;'>VM Test Image Detected</li>";
-        $vm_blurb =  "<p style='font-size: 1.2em; line-height: 20px;'>The default Virtual Machine images are great for testing,
-                but we <b>strongly</b> recommend doing a full install for live deployments.</p>";
-    } else {
-        $vm_bullet = '';
-        $vm_blurb = '';
-    }
-
     $contents .= "
-        <h2 style='font-size: 1.4em; color: #909090; margin-top: 25px;'>System Check</h2>
-        <p style='font-size: 1.2em; line-height: 20px;'>Uh oh.  The following system checks failed:</p>
+        <h2 style='font-size: 1.4em; color: #909090; margin-top: 25px;'>" . lang('base_system_check') . "</h2>
+        <p style='font-size: 1.2em; line-height: 20px;'>" . lang('base_system_check_failed') . "</p>
         <ul>
             $memory_bullet
-            $vm_bullet
         </ul>
         $memory_blurb
-        $vm_blurb
     ";
 }
 
-$contents .= "<p style='font-size: 1.2em; line-height: 20px;'>Click on the <b>Next</b> button to continue.</p>";
+$contents .= "<p style='font-size: 1.2em; line-height: 20px;'>" . lang('base_click_next') . "</p>";
 
 ///////////////////////////////////////////////////////////////////////////////
 // Form
 ///////////////////////////////////////////////////////////////////////////////
 
-// TODO: translate
-// FIXME: update links
-
 $blurb = "
-    <div style='padding-right: 120px;'>ClearCenter offers industry specific solutions to simplify your deployment of ClearOS.  Click
-    " . anchor_custom("https://www.clearcenter.com", "here", "link-only", array('target' => '_blank')) . " to learn more or 
-    " . anchor_custom("https://www.clearcenter.com/community/contact", "talk", "link-only", array('target' => '_blank')) . " to one of our solution specialists today.</div>
+    <div style='padding-right: 120px;'>" . lang('base_clearos_blurb') . "</div><br>
+    <ul>
+        <li>" . anchor_custom("https://www.clearos.com", lang('base_details'), "link-only", array('target' => '_blank')) . "</li>
+        <li>" . anchor_custom("https://www.clearcenter.com/community/contact", lang('base_contact_us'), "link-only", array('target' => '_blank')) . "</li>
+    <ul>
 ";
 
 echo form_open('base/wizard', array('id' => 'getting_started'));
