@@ -409,5 +409,4 @@ class Access_Control extends Engine
 
         $this->is_loaded = FALSE;
     }
-
 }
