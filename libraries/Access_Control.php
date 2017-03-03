@@ -410,23 +410,4 @@ class Access_Control extends Engine
         $this->is_loaded = FALSE;
     }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // V A L I D A T I O N
-    ///////////////////////////////////////////////////////////////////////////////
-
-    /**
-     * Validate token variable.
-     *
-     * @param string $token token
-     *
-     * @return string error message if state is invalid.
-     */
-    
-    public function validate_token($token)
-    {
-        clearos_profile(__METHOD__, __LINE__);
-
-        if (!isset($token))
-            return lang('base_validate_token_invalid');
-    }
 }
