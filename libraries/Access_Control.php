@@ -7,7 +7,7 @@
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2017 ClearFoundation
+ * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
@@ -60,7 +60,6 @@ use \clearos\apps\base\Configuration_File as Configuration_File;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
-use \clearos\apps\users\User_Factory as User_Factory;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Configuration_File');
@@ -90,7 +89,7 @@ clearos_load_library('base/File_Not_Found_Exception');
  * @package    base
  * @subpackage libraries
  * @author     ClearFoundation <developer@clearfoundation.com>
- * @copyright  2006-2017 ClearFoundation
+ * @copyright  2006-2011 ClearFoundation
  * @license    http://www.gnu.org/copyleft/lgpl.html GNU Lesser General Public License version 3 or later
  * @link       http://www.clearfoundation.com/docs/developer/apps/base/
  */
