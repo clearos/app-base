@@ -171,6 +171,25 @@ class Shell extends Engine
         if (isset($options['env']))
             $exe = $options['env'] . " $exe";
 
+        // Add proxy environment
+        // KLUDGE: endless loop if Proxy.php uses this call.  Last minute change
+        // that was not recommended, but done anyway.
+        if (clearos_app_installed('network') && !preg_match('/upstream_proxy.conf/', $exe)) {
+            clearos_load_library('network/Proxy');
+
+            $proxy = new \clearos\apps\network\Proxy();
+
+            $proxy_server = $proxy->get_server();
+            $proxy_port = $proxy->get_port();
+            $proxy_username = $proxy->get_username();
+            $proxy_password = $proxy->get_password();
+
+            if (!empty($proxy_username))
+                $server = $proxy_username . ':' . $proxy_password . '@' . $proxy_server;
+
+            $exe = 'https_proxy=http://' . $server . ' http_proxy=http://' . $server . " $exe";
+        }
+
         if ($superuser)
             $exe = self::COMMAND_SUDO . ' ' . $exe;
 
