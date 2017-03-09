@@ -184,10 +184,10 @@ class Shell extends Engine
             $proxy_username = $proxy->get_username();
             $proxy_password = $proxy->get_password();
 
-            if (!empty($proxy_username))
+            if (!empty($proxy_username)) {
                 $server = $proxy_username . ':' . $proxy_password . '@' . $proxy_server;
-
-            $exe = 'https_proxy=http://' . $server . ' http_proxy=http://' . $server . " $exe";
+                $exe = 'https_proxy=http://' . $server . ' http_proxy=http://' . $server . " $exe";
+            }
         }
 
         if ($superuser)
