@@ -174,9 +174,7 @@ class Shell extends Engine
         // Add proxy environment
         // KLUDGE: endless loop if Proxy.php uses this call.  Last minute change
         // that was not recommended, but done anyway.
-        if (clearos_app_installed('network') && !preg_match('/upstream_proxy.conf/', $exe)) {
-            clearos_load_library('network/Proxy');
-
+        if (clearos_app_installed('network') && clearos_load_library('network/Proxy') && !preg_match('/upstream_proxy.conf/', $exe)) {
             $proxy = new \clearos\apps\network\Proxy();
 
             $proxy_server = $proxy->get_server();
