@@ -288,7 +288,7 @@ class Session extends ClearOS_Controller
         // Otherwise, use the default system language
 
         if (clearos_app_installed('language')) {
-            $system_code = $this->locale->get_language_code();
+            $system_code = $this->locale->get_language_code(TRUE);
             $data['languages'] = $this->locale->get_languages();
         } else {
             $system_code = 'en_US';
