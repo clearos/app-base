@@ -340,6 +340,11 @@ class Session extends ClearOS_Controller
         // Logout via login_session handler
         //---------------------------------
 
+        if (clearos_app_installed('two_factor_auth')) {
+            $this->load->library('two_factor_auth/Two_Factor_Auth');
+            $this->two_factor_auth->logout_cleanup($this->session->userdata('username'));
+        }
+
         $this->login_session->stop_authenticated();
 
         redirect('/base/session/login');
