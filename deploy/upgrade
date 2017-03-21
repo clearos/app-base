@@ -68,13 +68,13 @@ if [ -z "$CHECK" ]; then
     chmod 440 /etc/sudoers
 fi
 
-CHECK=`grep "^Defaults.*env-keep.*http_proxy" /etc/sudoers 2>/dev/null`
+CHECK=`grep "^Defaults.*env_keep.*http_proxy" /etc/sudoers 2>/dev/null`
 if [ -z "$CHECK" ]; then
     logger -p local6.notice -t installer "app-base-core - adding http_proxy to sudoers"
     echo "Defaults    env_keep += \"http_proxy\"" >> /etc/sudoers
 fi
 
-CHECK=`grep "^Defaults.*env-keep.*https_proxy" /etc/sudoers 2>/dev/null`
+CHECK=`grep "^Defaults.*env_keep.*https_proxy" /etc/sudoers 2>/dev/null`
 if [ -z "$CHECK" ]; then
     logger -p local6.notice -t installer "app-base-core - adding https_proxy to sudoers"
     echo "Defaults    env_keep += \"https_proxy\"" >> /etc/sudoers
