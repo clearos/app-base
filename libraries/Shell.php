@@ -182,8 +182,17 @@ class Shell extends Engine
             $proxy_username = $proxy->get_username();
             $proxy_password = $proxy->get_password();
 
-            if (!empty($proxy_username)) {
-                $server = $proxy_username . ':' . $proxy_password . '@' . $proxy_server;
+            // TODO: use new API call created with #13971 instead of custom logic below
+            if (!empty($proxy_server)) {
+
+                if (empty($proxy_port))
+                    $proxy_port = 3128;
+
+                $server = $proxy_server . ':' . $proxy_port;
+
+                if (!empty($proxy_username))
+                    $server = $proxy_username . ':' . $proxy_password . '@' . $server;
+
                 $exe = 'https_proxy=http://' . $server . ' http_proxy=http://' . $server . " $exe";
             }
         }
