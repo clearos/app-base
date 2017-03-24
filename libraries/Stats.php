@@ -353,6 +353,30 @@ class Stats extends Engine
     }
 
     /**
+     * Returns CPU VT (Virtualization Technology) state.
+     *
+     * @return boolean TRUE if CPU supports VT
+     * @throws Engine_Exception
+     */
+
+    public function get_cpu_vt_state()
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        $file = new File(self::FILE_CPUINFO);
+
+        $lines = $file->get_contents_as_array();
+        $state = FALSE;
+
+        foreach ($lines as $line) {
+            if (preg_match('/^flags\s*:.*\s+(vmx|svm)\s*/', $line))
+                $state = TRUE;
+        }
+
+        return $state;
+    }
+
+    /**
      * Returns cpu model name.
      *
      * @return array cpu model
