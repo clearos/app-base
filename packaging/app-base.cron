@@ -1,1 +1,1 @@
-*/5 * * * * root LANG=en_US /usr/clearos/apps/base/deploy/servicewatch >/dev/null
+*/5 * * * * root LANG=en_US /usr/clearos/apps/base/deploy/servicewatch >/dev/null 2>&1
