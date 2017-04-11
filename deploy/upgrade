@@ -102,17 +102,32 @@ fi
 # Update repos
 #-------------
 
+CURRENT_VERSION="6.9"
+CURRENT_VERSION_ESC="6\.9"
+
 CHECK=`grep '$releasever' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
 if [ -n "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - updating clearos-centos version"
-    sed -i -e 's/$releasever/6.8/' /etc/yum.repos.d/clearos-centos.repo
-    sed -i -e 's/name=CentOS-7/name=CentOS-6.8/' /etc/yum.repos.d/clearos-centos.repo
+    logger -p local6.notice -t installer "app-base-core - updating clearos-centos releasever"
+    sed -i -e "s/$releasever/$CURRENT_VERSION/" /etc/yum.repos.d/clearos-centos.repo
+    sed -i -e "s/name=CentOS-7/name=CentOS-$CURENT_VERSION/" /etc/yum.repos.d/clearos-centos.repo
 fi
 
-CHECK=`grep '$releasever' /etc/yum.repos.d/clearos-fast-updates 2>/dev/null`
+CHECK=`grep "$CURRENT_VERSION_ESC" /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
+if [ -z "$CHECK" ]; then
+    logger -p local6.notice -t installer "app-base-core - updating clearos-centos version"
+    sed -i -e "s/6\.[0-8]/$CURRENT_VERSION/" /etc/yum.repos.d/clearos-centos.repo
+fi
+
+CHECK=`grep '$releasever' /etc/yum.repos.d/clearos-fast-updates.repo 2>/dev/null`
 if [ -n "$CHECK" ]; then
+    logger -p local6.notice -t installer "app-base-core - updating clearos-fast-updates releasever"
+    sed -i -e "s/$releasever/$CURRENT_VERSION/" /etc/yum.repos.d/clearos-fast-updates.repo
+fi
+
+CHECK=`grep "$CURRENT_VERSION_ESC" /etc/yum.repos.d/clearos-fast-updates.repo 2>/dev/null`
+if [ -z "$CHECK" ]; then
     logger -p local6.notice -t installer "app-base-core - updating clearos-fast-updates version"
-    sed -i -e 's/$releasever/6.8/' /etc/yum.repos.d/clearos-fast-updates.repo
+    sed -i -e "s/6\.[0-8]/$CURRENT_VERSION/" /etc/yum.repos.d/clearos-fast-updates.repo
 fi
 
 # TODO: temporary workaround for nfnetlink
