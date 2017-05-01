@@ -112,6 +112,7 @@ class Shell extends Engine
      * - escape: scrub command line arguments for naught characters (default TRUE)
      * - log: specify a log file (default /dev/null)
      * - env: environment variables (default NULL)
+     * - proxy:  add proxy environment variables if configured
      * - background: run command in background (default FALSE)
      * - stdin: write arguments to stdin (default FALSE)
      * - validate_output: throw exception on empty output (default FALSE)
@@ -172,9 +173,7 @@ class Shell extends Engine
             $exe = $options['env'] . " $exe";
 
         // Add proxy environment
-        // KLUDGE: endless loop if Proxy.php uses this call.  Last minute change
-        // that was not recommended, but done anyway.
-        if (clearos_app_installed('network') && clearos_load_library('network/Proxy') && !preg_match('/upstream_proxy.conf/', $exe)) {
+        if (isset($options['proxy']) && clearos_load_library('network/Proxy')) {
             $proxy = new \clearos\apps\network\Proxy();
 
             $proxy_server = $proxy->get_server();
@@ -182,12 +181,7 @@ class Shell extends Engine
             $proxy_username = $proxy->get_username();
             $proxy_password = $proxy->get_password();
 
-            // TODO: use new API call created with #13971 instead of custom logic below
             if (!empty($proxy_server)) {
-
-                if (empty($proxy_port))
-                    $proxy_port = 3128;
-
                 $server = $proxy_server . ':' . $proxy_port;
 
                 if (!empty($proxy_username))

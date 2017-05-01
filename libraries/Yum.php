@@ -150,6 +150,7 @@ class Yum extends Engine
         clearos_profile(__METHOD__, __LINE__);
 
         $options = array();
+        $options['proxy'] = TRUE;
 
         if ($run_in_background)
             $options['background'] = TRUE;
@@ -183,8 +184,10 @@ class Yum extends Engine
 
         // Run install
         // Yum caching is problematic.  See example in tracker #1562.
+        $options['proxy'] = TRUE;
+
         $shell = new Shell();
-        $shell->execute(self::COMMAND_YUM, '--enablerepo=* clean metadata', TRUE);
+        $shell->execute(self::COMMAND_YUM, '--enablerepo=* clean metadata', TRUE, $options);
 
         $options = array('log' => self::FILE_LOG);
 
@@ -209,6 +212,7 @@ class Yum extends Engine
 
         $shell = new Shell();
         $options['background'] = TRUE;
+        $options['proxy'] = TRUE;
 
         $shell->execute(self::COMMAND_YUM_INSTALL, implode(' ', $list), TRUE, $options);
     }
@@ -226,6 +230,7 @@ class Yum extends Engine
 
         $shell = new Shell();
         $options['env'] = 'LANG=en_US';
+        $options['proxy'] = TRUE;
         $options['validate_exit_code'] = FALSE;
         $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
 
@@ -248,6 +253,7 @@ class Yum extends Engine
 
         $shell = new Shell();
         $options['env'] = 'LANG=en_US';
+        $options['proxy'] = TRUE;
         $options['validate_exit_code'] = FALSE;
         $exitcode = $shell->Execute(self::COMMAND_PID, "-s -x " . self::COMMAND_YUM, FALSE, $options);
 
@@ -371,7 +377,9 @@ class Yum extends Engine
         // Get repos
         //----------
         $options['env'] = 'LANG=en_US';
+        $options['proxy'] = TRUE;
         $exitcode = $shell->execute(self::COMMAND_YUM, '-v repolist all', TRUE, $options);
+
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
             $this->clean(TRUE);
@@ -421,6 +429,8 @@ class Yum extends Engine
         // Get repos
         //----------
         $options['env'] = 'LANG=en_US';
+        $options['proxy'] = TRUE;
+
         $exitcode = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, '', TRUE, $options);
         if ($exitcode != 0) {
             // Run a 'clean all'...this can fix issues so next time this function is called it may work.
@@ -464,8 +474,10 @@ class Yum extends Engine
         if (is_array($name))
             $name = implode(' ' , $name);
 
+        $options['proxy'] = TRUE;
+
         $shell = new Shell();
-        $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE);
+        $retval = $shell->execute(self::COMMAND_YUM_CONFIG_MANAGER, ($enabled ? '--enable ' : '--disable ') . $name, TRUE, $options);
 
         if ($retval != 0) {
             $errstr = $shell->get_last_output_line();
