@@ -40,7 +40,9 @@
 # Initialize storage
 #-------------------
 
-/usr/sbin/storage
+if [ -x /usr/sbin/storage ]; then
+    /usr/sbin/storage
+fi
 
 # Import keys
 GPG_KEYS="\
