@@ -61,7 +61,7 @@ $app['dashboard_widgets'] = array(
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
-    'clearos-framework >= 7.3.6',
+    'clearos-framework >= 7.3.7',
     'clearos-release >= 7-3.1',
     'cpupowerutils',
     'csplugin-filewatch',
