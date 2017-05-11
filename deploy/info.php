@@ -108,13 +108,18 @@ $app['core_file_manifest'] = array(
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
     'filewatch-system-database-event.conf'=> array('target' => '/etc/clearsync.d/filewatch-system-database-event.conf'),
     'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
-    'CentOS-SCLo-scl-rh.repo' => array(
-        'target' => '/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo',
+    'clearos-centos-sclo-scl-rh.repo' => array(
+        'target' => '/etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo',
         'config' => TRUE,
         'config_params' => 'noreplace',
     ),
-    'CentOS-SCLo-scl.repo' => array(
-        'target' => '/etc/yum.repos.d/CentOS-SCLo-scl.repo',
+    'centos-sclo-scl-rh-unverified.repo' => array(
+        'target' => '/etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo',
+        'config' => TRUE,
+        'config_params' => 'noreplace',
+    ),
+    'centos-sclo-scl-unverified.repo' => array(
+        'target' => '/etc/yum.repos.d/centos-sclo-scl-unverified.repo',
         'config' => TRUE,
         'config_params' => 'noreplace',
     ),
@@ -176,6 +181,7 @@ $app['core_directory_manifest'] = array(
     '/var/clearos/base/access_control/rest' => array(),
     '/var/clearos/base/daemon' => array(),
     '/var/clearos/base/translations' => array(),
+    '/var/clearos/base/backup' => array(),
     '/var/clearos/base/lock' => array(
         'mode' => '0775',
         'owner' => 'root',

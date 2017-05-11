@@ -49,6 +49,7 @@ GPG_KEYS="\
 RPM-GPG-KEY-CentOS-7 \
 RPM-GPG-KEY-CentOS-Debug-7 \
 RPM-GPG-KEY-CentOS-Testing-7 \
+RPM-GPG-KEY-CentOS-SIG-SCLo \
 RPM-GPG-KEY-ClearOS-7 \
 RPM-GPG-KEY-ClearOS-Debug-7 \
 RPM-GPG-KEY-ClearOS-Testing-7 \
@@ -241,6 +242,13 @@ if [ ! -e /var/clearos/base/symlink_cleanup ]; then
     logger -p local6.notice -t installer "app-base-core - cleaning up broken symlinks from SysV"
     find -L /etc/rc.d -type l -exec rm -f '{}' \;
     touch /var/clearos/base/symlink_cleanup
+fi
+
+# General cleanup
+#----------------
+
+if [ -e /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo.rpmsave ]; then
+    mv /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo.rpmsave  /var/clearos/base/backup
 fi
 
 # Testing mode

@@ -74,17 +74,19 @@ install -d -m 0755 %{buildroot}/var/clearos/base/access_control/authenticated
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/custom
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/public
 install -d -m 0755 %{buildroot}/var/clearos/base/access_control/rest
+install -d -m 0755 %{buildroot}/var/clearos/base/backup
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -d -m 0775 %{buildroot}/var/clearos/base/lock
 install -d -m 0755 %{buildroot}/var/clearos/base/translations
-install -D -m 0644 packaging/CentOS-SCLo-scl-rh.repo %{buildroot}/etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
-install -D -m 0644 packaging/CentOS-SCLo-scl.repo %{buildroot}/etc/yum.repos.d/CentOS-SCLo-scl.repo
 install -D -m 0644 packaging/RPM-GPG-KEY-CentOS-SIG-SCLo %{buildroot}/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
 install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/access_control/authenticated/base
+install -D -m 0644 packaging/centos-sclo-scl-rh-unverified.repo %{buildroot}/etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo
+install -D -m 0644 packaging/centos-sclo-scl-unverified.repo %{buildroot}/etc/yum.repos.d/centos-sclo-scl-unverified.repo
 install -D -m 0644 packaging/centos-unverified.repo %{buildroot}/etc/yum.repos.d/centos-unverified.repo
+install -D -m 0644 packaging/clearos-centos-sclo-scl-rh.repo %{buildroot}/etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
 install -D -m 0644 packaging/clearos-qa.repo %{buildroot}/etc/yum.repos.d/clearos-qa.repo
 install -D -m 0644 packaging/epel-unverified.repo %{buildroot}/etc/yum.repos.d/epel-unverified.repo
@@ -146,20 +148,22 @@ exit 0
 %dir /var/clearos/base/access_control/custom
 %dir /var/clearos/base/access_control/public
 %dir /var/clearos/base/access_control/rest
+%dir /var/clearos/base/backup
 %dir /var/clearos/base/daemon
 %dir %attr(0775,root,webconfig) /var/clearos/base/lock
 %dir /var/clearos/base/translations
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
-%config(noreplace) /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
-%config(noreplace) /etc/yum.repos.d/CentOS-SCLo-scl.repo
 /etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /usr/sbin/app-manager
 /var/clearos/base/access_control/authenticated/base
+%config(noreplace) /etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo
+%config(noreplace) /etc/yum.repos.d/centos-sclo-scl-unverified.repo
 %config(noreplace) /etc/yum.repos.d/centos-unverified.repo
+%config(noreplace) /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 /etc/yum.repos.d/clearos-developer.repo
 /etc/yum.repos.d/clearos-qa.repo
 %config(noreplace) /etc/yum.repos.d/epel-unverified.repo
