@@ -61,7 +61,6 @@ use \clearos\apps\base\File as File;
 use \clearos\apps\base\Folder as Folder;
 use \clearos\apps\base\Posix_User as Posix_User;
 use \clearos\apps\base\Webconfig as Webconfig;
-use \clearos\apps\certificate_manager\Certificate_Manager as Certificate_Manager;
 
 clearos_load_library('base/Configuration_File');
 clearos_load_library('base/Daemon');
@@ -69,7 +68,6 @@ clearos_load_library('base/File');
 clearos_load_library('base/Folder');
 clearos_load_library('base/Posix_User');
 clearos_load_library('base/Webconfig');
-clearos_load_library('certificate_manager/Certificate_Manager');
 
 // Exceptions
 //-----------
@@ -107,12 +105,17 @@ class Webconfig extends Daemon
     // C O N S T A N T S
     ///////////////////////////////////////////////////////////////////////////////
 
+    const CONSTANT_DEFAULT_CERT = 'bootstrap7default';  // avoid name collisions with Certificate Manager
+    const CONSTANT_CERT_APP_NAME = 'webconfig';
+    const CONSTANT_CERT_APP_DESCRIPTION = 'Webconfig';
+    const CONSTANT_CERT_APP_IDENTIFIER = 'Web-based administration';
     const CMD_VALIDATE_HTTPD = '/usr/clearos/sandbox/usr/sbin/httpd';
+    const FILE_CERT_CONFIG = '/usr/clearos/sandbox/etc/httpd/conf.d/certs.conf';
     const FILE_CONFIG = '/etc/clearos/webconfig.conf';
     const FILE_RESTART = '/var/clearos/base/webconfig_restart';
-    const FILE_FRAMEWORK_CONF = '/usr/clearos/sandbox/etc/httpd/conf.d/framework.conf';
     const FILE_DEFAULT_SSL_CRT = '/usr/clearos/sandbox/etc/httpd/conf/server.crt';
     const FILE_DEFAULT_SSL_KEY = '/usr/clearos/sandbox/etc/httpd/conf/server.key';
+    const LOG_TAG = 'webconfig';
 
     ///////////////////////////////////////////////////////////////////////////////
     // V A R I A B L E S
@@ -164,8 +167,15 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $file = new File(self::FILE_FRAMEWORK_CONF, TRUE);
-        return $file->lookup_value('/^\s*SSLCertificateFile\s*/');
+        if (clearos_load_library('certificate_manager/Certificate_Manager')) {
+            $certificate_manager = new \clearos\apps\certificate_manager\Certificate_Manager();
+            $cert = $certificate_manager->get_registered_certificate(self::CONSTANT_CERT_APP_NAME, self::CONSTANT_CERT_APP_IDENTIFIER);
+        }
+
+        if (empty($cert))
+            $cert = self::CONSTANT_DEFAULT_CERT;
+
+        return $cert;
     }
 
     /**
@@ -244,6 +254,7 @@ class Webconfig extends Daemon
      *
      * @param string $cert    cert
      *
+     * @return boolean TRUE if certificate has changed
      * @throws Engine_Exception
      */
 
@@ -255,63 +266,42 @@ class Webconfig extends Daemon
         if ($cert == $this->get_ssl_certificate())
             return FALSE;
 
-        $certificate_manager = new Certificate_Manager();
-        $certs = $certificate_manager->get_certificates();
+        // Validate and grab cert files
+        if ($cert == self::CONSTANT_DEFAULT_CERT) {
+            $cert_files = [
+                'certificate-filename' => self::FILE_DEFAULT_SSL_CRT,
+                'key-filename' => self::FILE_DEFAULT_SSL_KEY,
+            ];
+        } else if (clearos_load_library('certificate_manager/Certificate_Manager')) {
+            $certificate_manager = new \clearos\apps\certificate_manager\Certificate_Manager();
+            $certs = $certificate_manager->get_certificates();
 
-        // Use default if specified certificate no longer exists
-        if (!array_key_exists($cert, $this->get_ssl_certificate_options()))
-            $cert = Certificate_Manager::DEFAULT_CERT;
+            if (!array_key_exists($cert, $certs))
+                Validation_Exception::is_valid(lang('base_parameter_invalid'));
 
-        foreach ($certs as $basename => $certificate) {
-            if ($certificate['certificate-filename'] == $cert) {
-                $cert_files = $certs[$basename];
-                break;
-            }
-        }
-        // Make sure we're not dealing with an external cert with just a CSR and Key pair (no cert)
-        if (!array_key_exists('certificate-filename', $cert_files) && array_key_exists('key-filename', $cert_files))
-            throw new Engine_Exception(lang('base_ssl_certificate') . ' - ' . lang('base_invalid'));
-
-        $file = new File(self::FILE_FRAMEWORK_CONF, TRUE);
-        $file->copy_to(self::FILE_FRAMEWORK_CONF . ".new");
-        $file = new File(self::FILE_FRAMEWORK_CONF . ".new", TRUE);
-        if ($cert == self::FILE_DEFAULT_SSL_CRT) {
-            $file->replace_lines('/^\s*SSLCertificateFile\s*/', "    SSLCertificateFile " . self::FILE_DEFAULT_SSL_CRT . "\n");
-            $file->replace_lines('/^\s*SSLCertificateKeyFile\s*/', "    SSLCertificateKeyFile " . self::FILE_DEFAULT_SSL_KEY . "\n");
-            try {
-                $file->delete_lines('/^\s*SSLCertificateChainFile\s*/');
-            } catch (File_No_Match_Exception $e) {
-            }
-            try {
-                $file->delete_lines('/^\s*SSLCACertificateFile\s*/');
-            } catch (File_No_Match_Exception $e) {
-            }
-            
+            $cert_files = $certs[$cert];
         } else {
-            $file->replace_lines('/^\s*SSLCertificateFile\s*/', "    SSLCertificateFile " . $cert_files['certificate-filename'] . "\n");
-            $file->replace_lines('/^\s*SSLCertificateKeyFile\s*/', "    SSLCertificateKeyFile " . $cert_files['key-filename'] . "\n");
-            if (array_key_exists('intermediate-filename', $cert_files)) {
-                $count = $file->replace_lines('/^\s*SSLCertificateChainFile\s*/', "    SSLCertificateChainFile " . $cert_files['intermediate-filename'] . "\n");
-                if ($count == 0)
-                    $file->add_lines_after('    SSLCertificateChainFile ' . $cert_files['intermediate-filename'] . "\n", '/^\s*SSLCertificateKeyFile\s*/', -1);
-            } else {
-                try {
-                    $file->delete_lines('/^\s*SSLCertificateChainFile\s*/');
-                } catch (File_No_Match_Exception $e) {
-                }
-            }
-            if (array_key_exists('ca-filename', $cert_files)) {
-                $count = $file->replace_lines('/^\s*SSLCACertificateFile\s*/', "    SSLCACertificateFile " . $cert_files['ca-filename'] . "\n");
-                if ($count == 0)
-                    $file->add_lines_after('    SSLCACertificateFile ' . $cert_files['ca-filename'] . "\n", '/^\s*SSLCertificateKeyFile\s*/', -1);
-            } else {
-                try {
-                    $file->delete_lines('/^\s*SSLCACertificateFile\s*/');
-                } catch (File_No_Match_Exception $e) {
-                }
-            }
+            Validation_Exception::is_valid(lang('base_parameter_invalid'));
         }
+
+        $file = new File(self::FILE_CERT_CONFIG . '.new');
+
+        if ($file->exists())
+            $file->delete();
+
+        $file->create('root', 'root', '0644');
+
+        $file->add_lines("SSLCertificateFile " . $cert_files['certificate-filename'] . "\n");
+        $file->add_lines("SSLCertificateKeyFile " . $cert_files['key-filename'] . "\n");
+        if (array_key_exists('intermediate-filename', $cert_files))
+            $file->add_lines("SSLCertificateChainFile " . $cert_files['intermediate-filename'] . "\n");
+
         $config_ok = TRUE;
+
+        $backup = new File(self::FILE_CERT_CONFIG);
+        $backup->copy_to(self::FILE_CERT_CONFIG . '.backup');
+
+        $file->move_to(self::FILE_CERT_CONFIG);
 
         try {
             $shell = new Shell();
@@ -322,18 +312,25 @@ class Webconfig extends Daemon
         }
 
         if (($config_ok === FALSE) || ($exitcode != 0)) {
+            // Restore backup
+            $restore = new File(self::FILE_CERT_CONFIG . '.backup');
+            $restore->copy_to(self::FILE_CERT_CONFIG);
+
+            // Log invalid
             $output = $shell->get_output();
             clearos_log(self::LOG_TAG, "Invalid Webconfig httpd configuration!");
-            // Oops...we generated an invalid conf file
             foreach ($output as $line)
                 clearos_log(self::LOG_TAG, $line);
-            $file->delete();
             throw new Engine_Exception(lang('base_ssl_certificate') . ' - ' . lang('base_invalid'));
         }
 
-        $file->move_to(self::FILE_FRAMEWORK_CONF);
-        $file->chown('webconfig', 'webconfig');
-        $file->chmod(0644);
+        // Register with Certificate Manager
+        if (clearos_load_library('certificate_manager/Certificate_Manager')) {
+            $cm_certs = [self::CONSTANT_CERT_APP_IDENTIFIER => $cert];
+            $certificate_manager = new \clearos\apps\certificate_manager\Certificate_Manager();
+            $certificate_manager->register($cm_certs, self::CONSTANT_CERT_APP_NAME, self::CONSTANT_CERT_APP_DESCRIPTION);
+        }
+
         return TRUE;
     }
 
@@ -388,20 +385,20 @@ class Webconfig extends Daemon
     {
         clearos_profile(__METHOD__, __LINE__);
 
-        $options = array(
-            self::FILE_DEFAULT_SSL_CRT => lang('base_install_default')
-        );
-        $certificate_manager = new Certificate_Manager();
-        $certs = $certificate_manager->get_certificates();
-        $certificate_manager = new Certificate_Manager();
-        $list = $certificate_manager->get_list();
-        // Check at minimum that entries have a key and crt pair
-        foreach ($list as $basename => $certificate) {
-            if (!array_key_exists('certificate-filename', $certs[$basename]) || !array_key_exists('key-filename', $certs[$basename]))
-                continue;
-            $options[$certs[$basename]['certificate-filename']] = $certificate;
+        if (clearos_load_library('certificate_manager/Certificate_Manager')) {
+            $certificate_manager = new \clearos\apps\certificate_manager\Certificate_Manager();
+            $list = $certificate_manager->get_list();
         }
-        return $options;
+
+        // Some extra logic for case when certificate manager is uninstalled.
+        $current = $this->get_ssl_certificate();
+
+        if (empty($list))
+            $list = array(self::CONSTANT_DEFAULT_CERT => lang('base_install_default'));
+        else if ($current == self::CONSTANT_DEFAULT_CERT);
+            $list[self::CONSTANT_DEFAULT_CERT] = lang('base_install_default');
+
+        return $list;
     }
 
     ///////////////////////////////////////////////////////////////////////////////
