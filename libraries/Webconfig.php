@@ -387,7 +387,9 @@ class Webconfig extends Daemon
 
         if (clearos_load_library('certificate_manager/Certificate_Manager')) {
             $certificate_manager = new \clearos\apps\certificate_manager\Certificate_Manager();
-            $list = $certificate_manager->get_list();
+            // As long as get_api_version exists, we're good.
+            if (method_exists($certificate_manager, 'get_api_version'))
+                $list = $certificate_manager->get_list();
         }
 
         // Some extra logic for case when certificate manager is uninstalled.
@@ -395,7 +397,7 @@ class Webconfig extends Daemon
 
         if (empty($list))
             $list = array(self::CONSTANT_DEFAULT_CERT => lang('base_install_default'));
-        else if ($current == self::CONSTANT_DEFAULT_CERT);
+        else if ($current == self::CONSTANT_DEFAULT_CERT)
             $list[self::CONSTANT_DEFAULT_CERT] = lang('base_install_default');
 
         return $list;
