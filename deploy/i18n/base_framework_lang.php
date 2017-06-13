@@ -16,3 +16,5 @@ $lang['upload_invalid_filesize'] = $lang['base_upload_invalid_filesize'];
 $lang['upload_destination_error'] = $lang['base_upload_destination_error'];
 $lang['upload_no_file_types'] = $lang['base_upload_no_file_types'];
 $lang['upload_bad_filename'] = $lang['base_upload_bad_filename'];
+// See tracker #15301
+$lang['form_validation_required'] = $lang['base_this_field_required'];
