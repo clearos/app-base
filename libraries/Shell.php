@@ -108,7 +108,7 @@ class Shell extends Engine
     /**
      * Executes the command.
      *
-     * Excecute options are:
+     * Execute options are:
      * - escape: scrub command line arguments for naught characters (default TRUE)
      * - log: specify a log file (default /dev/null)
      * - env: environment variables (default NULL)
