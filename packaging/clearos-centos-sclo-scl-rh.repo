@@ -1,5 +1,5 @@
 [clearos-centos-sclo-rh]
-name=CentOS-7 - Software Collections
+name=ClearOS 7 - x86_64 - CentOS Software Collections
 baseurl=http://download1.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
     http://download2.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
     http://download3.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
