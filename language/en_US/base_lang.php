@@ -502,6 +502,7 @@ $lang['base_subcategory_infrastructure'] = 'Infrastructure';
 $lang['base_subcategory_intrusion_protection'] = 'Intrusion Protection';
 $lang['base_subcategory_mail'] = 'Mail';
 $lang['base_subcategory_messaging'] = 'Messaging';
+$lang['base_subcategory_messaging_and_collaboration'] = 'Messaging and Collaboration';
 $lang['base_subcategory_monitoring'] = 'Monitoring';
 $lang['base_subcategory_my_account'] = 'My Account';
 $lang['base_subcategory_network_infrastructure'] = 'Network Infrastructure';
