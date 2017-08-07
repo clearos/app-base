@@ -198,6 +198,37 @@ class Yum extends Engine
     }
 
     /**
+     * Local install an RPM.
+     *
+     * @param array   $list              list of rpm filenames to install
+     * @param boolean $run_in_background if FALSE, do not run in background (default = TRUE)
+     *
+     * @return void
+     * @throws Engine_Exception, Yum_Busy_Exception
+     */
+
+    public function local_install($list, $run_in_background = TRUE)
+    {
+        clearos_profile(__METHOD__, __LINE__);
+
+        // Bail if busy
+        if ($this->is_busy())
+            throw new Yum_Busy_Exception();
+
+        // Run local install
+        // Yum caching is problematic.  See example in tracker #1562.
+        $options['proxy'] = TRUE;
+
+        $shell = new Shell();
+        $shell->execute(self::COMMAND_YUM, '--enablerepo=* clean metadata', TRUE, $options);
+
+        if ($run_in_background)
+            $options['background'] = TRUE;
+
+        $shell->execute(self::COMMAND_YUM, '-y localinstall ' . implode(" ", $list), TRUE, $options);
+    }
+
+    /**
      * Install a list of packages using yum-install wrapper.
      *
      * @param array $list list of package names to install
