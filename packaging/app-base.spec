@@ -88,7 +88,6 @@ install -D -m 0644 packaging/centos-sclo-scl-unverified.repo %{buildroot}/etc/yu
 install -D -m 0644 packaging/centos-unverified.repo %{buildroot}/etc/yum.repos.d/centos-unverified.repo
 install -D -m 0644 packaging/clearos-centos-sclo-scl-rh.repo %{buildroot}/etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 install -D -m 0644 packaging/clearos-developer.repo %{buildroot}/etc/yum.repos.d/clearos-developer.repo
-install -D -m 0644 packaging/clearos-qa.repo %{buildroot}/etc/yum.repos.d/clearos-qa.repo
 install -D -m 0644 packaging/epel-unverified.repo %{buildroot}/etc/yum.repos.d/epel-unverified.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
@@ -165,7 +164,6 @@ exit 0
 %config(noreplace) /etc/yum.repos.d/centos-unverified.repo
 %config(noreplace) /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 /etc/yum.repos.d/clearos-developer.repo
-/etc/yum.repos.d/clearos-qa.repo
 %config(noreplace) /etc/yum.repos.d/epel-unverified.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
