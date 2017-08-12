@@ -220,13 +220,25 @@ if ( [ -n "$CHECK_LEGACY" ] && [ -n "$CHECK_NEW" ] ); then
     cp /etc/yum.repos.d/clearos-epel.repo.rpmnew /etc/yum.repos.d/clearos-epel.repo
 fi
 
-# Upgrade centos-clearos
-#-----------------------
+# Upgrade repo configs
+#---------------------
 
 CHECK=`grep '\/.releasever' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
 if [ -n "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - updating upstream to 7.3.1611"
-    sed -i -e 's/\/.releasever/\/7.3.1611/' /etc/yum.repos.d/clearos-centos.repo 
+    logger -p local6.notice -t installer "app-base-core - updating upstream to 7.4.1708"
+    sed -i -e 's/\/.releasever/\/7.4.1708/' /etc/yum.repos.d/clearos-centos.repo
+fi
+
+CHECK=`grep '\/7.3.1611\/' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
+if [ -n "$CHECK" ]; then
+    logger -p local6.notice -t installer "app-base-core - updating from 7.3.1611 to to 7.4.1708"
+    sed -i -e 's/\/7.3.1611\//\/7.4.1708\//g' /etc/yum.repos.d/clearos-centos.repo
+fi
+
+CHECK=`grep '\/7.3.1611\/' /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo  2>/dev/null`
+if [ -n "$CHECK" ]; then
+    logger -p local6.notice -t installer "app-base-core - updating SCL from 7.3.1611 to to 7.4.1708"
+    sed -i -e 's/\/7.3.1611\//\/7.4.1708\//g' /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo 
 fi
 
 # FIXME: remove in 7.3

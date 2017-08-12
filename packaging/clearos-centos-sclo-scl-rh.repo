@@ -1,9 +1,9 @@
 [clearos-centos-sclo-rh]
 name=ClearOS 7 - x86_64 - CentOS Software Collections
-baseurl=http://download1.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
-    http://download2.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
-    http://download3.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
-    http://download4.clearsdn.com/centos/7.3.1611/sclo/$basearch/rh/
+baseurl=http://download1.clearsdn.com/centos/7.4.1708/sclo/$basearch/rh/
+    http://download2.clearsdn.com/centos/7.4.1708/sclo/$basearch/rh/
+    http://download3.clearsdn.com/centos/7.4.1708/sclo/$basearch/rh/
+    http://download4.clearsdn.com/centos/7.4.1708/sclo/$basearch/rh/
 gpgcheck=1
 enabled=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
