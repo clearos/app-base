@@ -161,9 +161,11 @@ fi
 # Changes to yum exclude policies
 #--------------------------------
 
-PACKAGES="grub2- mokutil- shim-0"
-REPO_FILES="clearos-centos.repo centos-unverified.repo"
 REPO_DIR="/etc/yum.repos.d"
+
+# EPEL - add to exclude list
+PACKAGES="roundcubemail-"
+REPO_FILES="clearos-epel.repo"
 
 for REPO_FILE in $REPO_FILES; do
     if [ -e "$REPO_DIR/$REPO_FILE" ]; then
@@ -177,6 +179,23 @@ for REPO_FILE in $REPO_FILES; do
     fi
 done
 
+# CentOS - add to exclude list
+PACKAGES="grub2- mokutil- shim-0"
+REPO_FILES="clearos-centos.repo centos-unverified.repo"
+
+for REPO_FILE in $REPO_FILES; do
+    if [ -e "$REPO_DIR/$REPO_FILE" ]; then
+        for PACKAGE in $PACKAGES; do
+            CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
+            if [ -z "$CHECK" ]; then
+                logger -p local6.notice -t installer "app-base-core - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
+                sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
+            fi
+        done
+    fi
+done
+
+# CentOS - removal from exclude list
 EXCLUDES="yum-cron-3 yum-3"
 REPO_FILES="clearos-centos.repo centos-unverified.repo"
 
@@ -184,7 +203,7 @@ for REPO_FILE in $REPO_FILES; do
     if [ -e "$REPO_DIR/$REPO_FILE" ]; then
         for PACKAGE in $EXCLUDES; do
             CHECK=`grep "^exclude=.*$PACKAGE " $REPO_DIR/$REPO_FILE`
-            if [ -z "$CHECK" ]; then
+            if [ -n "$CHECK" ]; then
                 logger -p local6.notice -t installer "app-base-core - removing the following from yum exclude: $REPO_FILE / $PACKAGE*"
                 sed -i -e "s/$PACKAGE\* //" $REPO_DIR/$REPO_FILE
             fi
