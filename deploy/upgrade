@@ -282,6 +282,11 @@ if [ -e /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo.rpmsave ]; then
     mv /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo.rpmsave  /var/clearos/base/backup
 fi
 
+# Webconfig-httpd changed, reload
+#--------------------------------
+
+systemctl daemon-reload >/dev/null 2>&1
+
 # Testing mode
 #-------------
 

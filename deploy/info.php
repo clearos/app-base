@@ -84,7 +84,7 @@ $app['core_requires'] = array(
     'usbutils',
     'virt-what',
     'webconfig-mod_ssl',
-    'webconfig-httpd >= 2.4.6-32',
+    'webconfig-httpd >= 2.4.6-67',
     'webconfig-php',
     'webconfig-php-gd',
     'webconfig-php-ldap',

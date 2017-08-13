@@ -42,7 +42,7 @@ Requires: util-linux-ng
 Requires: usbutils
 Requires: virt-what
 Requires: webconfig-mod_ssl
-Requires: webconfig-httpd >= 2.4.6-32
+Requires: webconfig-httpd >= 2.4.6-67
 Requires: webconfig-php
 Requires: webconfig-php-gd
 Requires: webconfig-php-ldap
