@@ -307,6 +307,7 @@ class Install_Wizard extends Engine
         // Master / Slave Synchronization
         //-------------------------------
 
+        /*
         if (clearos_app_installed('master_slave')) {
             clearos_load_language('master_slave');
 
@@ -318,6 +319,7 @@ class Install_Wizard extends Engine
                 'type' => 'normal'
             );
         }
+        */
 
         // Marketplace
         //------------
