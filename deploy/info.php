@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.4.4';
+$app['version'] = '2.4.6';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -166,6 +166,10 @@ $app['core_file_manifest'] = array(
     'webconfig-service' => array(
         'target' => '/usr/sbin/webconfig-service',
         'mode' => '0755',
+    ),
+    'software-updates-event'=> array(
+        'target' => '/var/clearos/events/software_updates/base',
+        'mode' => '0755'
     ),
 );
 
