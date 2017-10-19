@@ -292,9 +292,9 @@ systemctl daemon-reload >/dev/null 2>&1
 
 # TODO: beta period only
 # Note: --noplugins required to get around tracker #6851
-/usr/bin/yum-config-manager --noplugins --enable clearos-updates >/dev/null 2>&1
-/usr/bin/yum-config-manager --noplugins --enable clearos-updates-testing >/dev/null 2>&1
-/usr/bin/yum-config-manager --noplugins --enable clearos-centos >/dev/null 2>&1
-/usr/bin/yum-config-manager --noplugins --enable clearos-centos-updates >/dev/null 2>&1
+#/usr/bin/yum-config-manager --noplugins --enable clearos-updates >/dev/null 2>&1
+#/usr/bin/yum-config-manager --noplugins --enable clearos-updates-testing >/dev/null 2>&1
+#/usr/bin/yum-config-manager --noplugins --enable clearos-centos >/dev/null 2>&1
+#/usr/bin/yum-config-manager --noplugins --enable clearos-centos-updates >/dev/null 2>&1
 
 exit 0
