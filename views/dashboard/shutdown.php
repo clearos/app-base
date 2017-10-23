@@ -41,7 +41,7 @@ $this->lang->load('base');
 
 $buttons = array(form_submit_select('butSubmit', 'high', array('id' => 'confirm-action')));
 
-echo form_open('base/base_dashboard/shutdown', 'id=confirm-action-form');
+echo form_open('base/base_dashboard/shutdown', array('id' => 'confirm-action-form'));
 echo form_header(lang('base_shutdown_restart'));
 
 echo field_dropdown('action', $actions, $action, lang('base_action'), FALSE);
