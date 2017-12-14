@@ -286,6 +286,8 @@ class Daemon extends Software
 
                 if ($exit_code !== 0)
                     return FALSE;
+                else if (isset($this->details['individual_running']))
+                    return TRUE;
             }
 
             return TRUE;
