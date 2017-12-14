@@ -592,6 +592,8 @@ class Daemon extends Software
                 $options['validate_exit_code'] = FALSE;
                 $shell = new Shell();
                 $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
+                if (isset($this->details['sleep']))
+                    sleep($this->details['sleep']);
             }
         } else {
             $shell = new Shell();
