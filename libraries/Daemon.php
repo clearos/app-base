@@ -286,6 +286,8 @@ class Daemon extends Software
 
                 if ($exit_code !== 0)
                     return FALSE;
+                else if (isset($this->details['individual_running']) && $this->details['individual_running'])
+                    return TRUE;
             }
 
             return TRUE;
@@ -533,11 +535,15 @@ class Daemon extends Software
 
             $services = $my_daemon->get_systemd_services();
 
-            foreach ($services as $service) {
-                $options['validate_exit_code'] = FALSE;
-                $shell = new Shell();
-                $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
+            $options['validate_exit_code'] = FALSE;
+            $shell = new Shell();
+            if (isset($this->details['individual_running']) && $this->details['individual_running']) {
+                // For multi-user individual service, we always disable all instances...then set to boot only those that are enabled
+                $shell->execute(self::COMMAND_SYSTEMCTL, 'disable ' . $this->initscript . '@*.service', TRUE, $options);
             }
+
+            foreach ($services as $service)
+                $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
         } else {
             $shell = new Shell();
             $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $this->initscript, TRUE);
@@ -570,7 +576,9 @@ class Daemon extends Software
 
         $is_running = $this->get_running_state();
 
-        if ($is_running && $state) {
+        if (isset($this->details['individual_running']) && $this->details['individual_running']) {
+            // Never bail, regardless of state feedback here
+        } else if ($is_running && $state) {
             // issued start on already running daemon
             return;
         } else if (!$is_running && !$state) {
@@ -588,10 +596,17 @@ class Daemon extends Software
 
             $services = $my_daemon->get_systemd_services();
 
+            $options['validate_exit_code'] = FALSE;
+            $shell = new Shell();
+            if (isset($this->details['individual_running']) && $this->details['individual_running']) {
+                // For multi-user individual service, we always stop all instances...then restart those that are enabled
+                $shell->execute(self::COMMAND_SYSTEMCTL, 'stop ' . $this->initscript . '@*.service', TRUE, $options);
+            }
+
             foreach ($services as $service) {
-                $options['validate_exit_code'] = FALSE;
-                $shell = new Shell();
                 $shell->execute(self::COMMAND_SYSTEMCTL, $action . ' ' . $service, TRUE, $options);
+                if (isset($this->details['sleep']))
+                    sleep($this->details['sleep']);
             }
         } else {
             $shell = new Shell();
