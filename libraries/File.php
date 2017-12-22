@@ -1189,7 +1189,7 @@ class File extends Engine
      * @throws File_Exception, Validation_Exception File_Insufficient_Space_Exception
      */
 
-    public function copy_to($destination)
+    public function copy_to($destination, $preserve = FALSE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
@@ -1198,8 +1198,9 @@ class File extends Engine
         // TODO: validate destination
 
         try {
+            $archive_flag = ($preserve) ? '-a ' : '';
             $shell = new Shell();
-            $arguments = "-a " . escapeshellarg($this->filename) . " " . escapeshellarg($destination);
+            $arguments = $archive_flag . escapeshellarg($this->filename) . " " . escapeshellarg($destination);
             $exitcode = $shell->execute(File::COMMAND_COPY, $arguments, TRUE);
         } catch (Engine_Exception $e) {
             throw new File_Exception($e->get_message(), CLEAROS_WARNING);
