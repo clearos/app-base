@@ -102,12 +102,6 @@ $app['core_file_manifest'] = array(
     'filewatch-base-webconfig.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-webconfig.conf'),
     'filewatch-base-clearsync.conf'=> array('target' => '/etc/clearsync.d/filewatch-base-clearsync.conf'),
     'filewatch-system-database-event.conf'=> array('target' => '/etc/clearsync.d/filewatch-system-database-event.conf'),
-    'RPM-GPG-KEY-CentOS-SIG-SCLo' => array( 'target' => '/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo' ),
-    'clearos-centos-sclo-scl-rh.repo' => array(
-        'target' => '/etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo',
-        'config' => TRUE,
-        'config_params' => 'noreplace',
-    ),
     'centos-sclo-scl-rh-unverified.repo' => array(
         'target' => '/etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo',
         'config' => TRUE,

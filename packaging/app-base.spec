@@ -75,7 +75,6 @@ install -d -m 0755 %{buildroot}/var/clearos/base/backup
 install -d -m 0755 %{buildroot}/var/clearos/base/daemon
 install -d -m 0775 %{buildroot}/var/clearos/base/lock
 install -d -m 0755 %{buildroot}/var/clearos/base/translations
-install -D -m 0644 packaging/RPM-GPG-KEY-CentOS-SIG-SCLo %{buildroot}/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 install -D -m 0644 packaging/access_control.conf %{buildroot}/etc/clearos/base.d/access_control.conf
 install -D -m 0644 packaging/app-base.cron %{buildroot}/etc/cron.d/app-base
 install -D -m 0755 packaging/app-manager %{buildroot}/usr/sbin/app-manager
@@ -83,7 +82,6 @@ install -D -m 0644 packaging/authenticated.acl %{buildroot}/var/clearos/base/acc
 install -D -m 0644 packaging/centos-sclo-scl-rh-unverified.repo %{buildroot}/etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo
 install -D -m 0644 packaging/centos-sclo-scl-unverified.repo %{buildroot}/etc/yum.repos.d/centos-sclo-scl-unverified.repo
 install -D -m 0644 packaging/centos-unverified.repo %{buildroot}/etc/yum.repos.d/centos-unverified.repo
-install -D -m 0644 packaging/clearos-centos-sclo-scl-rh.repo %{buildroot}/etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 install -D -m 0644 packaging/epel-unverified.repo %{buildroot}/etc/yum.repos.d/epel-unverified.repo
 install -D -m 0644 packaging/filewatch-base-clearsync.conf %{buildroot}/etc/clearsync.d/filewatch-base-clearsync.conf
 install -D -m 0644 packaging/filewatch-base-webconfig.conf %{buildroot}/etc/clearsync.d/filewatch-base-webconfig.conf
@@ -151,7 +149,6 @@ exit 0
 /usr/clearos/apps/base/deploy
 /usr/clearos/apps/base/language
 /usr/clearos/apps/base/libraries
-/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo
 /etc/clearos/base.d/access_control.conf
 /etc/cron.d/app-base
 /usr/sbin/app-manager
@@ -159,7 +156,6 @@ exit 0
 %config(noreplace) /etc/yum.repos.d/centos-sclo-scl-rh-unverified.repo
 %config(noreplace) /etc/yum.repos.d/centos-sclo-scl-unverified.repo
 %config(noreplace) /etc/yum.repos.d/centos-unverified.repo
-%config(noreplace) /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo
 %config(noreplace) /etc/yum.repos.d/epel-unverified.repo
 /etc/clearsync.d/filewatch-base-clearsync.conf
 /etc/clearsync.d/filewatch-base-webconfig.conf
