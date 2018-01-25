@@ -93,14 +93,19 @@ class Settings extends ClearOS_Controller
         // Load dependencies
         //------------------
 
-        $this->lang->load('language');
-        $this->load->library('language/Locale');
         $this->load->library('base/Webconfig');
+
+        if (clearos_library_installed('language/Locale')) {
+            $this->lang->load('language');
+            $this->load->library('language/Locale');
+        }
 
         // Set validation rules
         //---------------------
          
-        $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
+        if (clearos_library_installed('language/Locale'))
+            $this->form_validation->set_policy('code', 'language/Locale', 'validate_language_code', TRUE);
+
         $this->form_validation->set_policy('ssl_certificate', 'base/Webconfig', 'validate_ssl_certificate', TRUE);
         $form_ok = $this->form_validation->run();
 
@@ -109,7 +114,9 @@ class Settings extends ClearOS_Controller
 
         if (($this->input->post('submit') && $form_ok)) {
             try {
-                $this->locale->set_locale($this->input->post('code'));
+                if (clearos_library_installed('language/Locale'))
+                    $this->locale->set_locale($this->input->post('code'));
+
                 $reload = $this->webconfig->set_ssl_certificate($this->input->post('ssl_certificate'));
 
                 if ($this->input->post('update_session'))
@@ -130,8 +137,12 @@ class Settings extends ClearOS_Controller
             $data['form_type'] = $form_type;
 
             $data['update_session'] = TRUE;
-            $data['code'] = $this->locale->get_language_code();
-            $data['languages'] = $this->locale->get_languages();
+
+            if (clearos_library_installed('language/Locale')) {
+                $data['code'] = $this->locale->get_language_code();
+                $data['languages'] = $this->locale->get_languages();
+            }
+
             $data['ssl_certificate'] = $this->webconfig->get_ssl_certificate();
             $data['ssl_certificate_options'] = $this->webconfig->get_ssl_certificate_options();
         } catch (Exception $e) {

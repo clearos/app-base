@@ -34,7 +34,9 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 $this->lang->load('base');
-$this->lang->load('language');
+
+if (clearos_library_installed('language/Locale'))
+    $this->lang->load('language');
 
 echo "<div id='reload_bar' class='theme-hidden'>";
 echo "<h4>" . lang('base_reloading_webconfig') . "</h4>\n";
@@ -69,9 +71,13 @@ echo form_open('base/settings/edit');
 echo form_header(lang('base_settings'));
 
 echo field_dropdown('ssl_certificate', $ssl_certificate_options, $ssl_certificate, lang('base_ssl_certificate'), $read_only);
-echo field_dropdown('code', $languages, $code, lang('language_default_system_language'), $read_only);
-if ($form_type === 'edit')
-    echo field_checkbox('update_session', $update_session, lang('base_update_your_current_session'), $read_only);
+
+if (clearos_library_installed('language/Locale')) {
+    echo field_dropdown('code', $languages, $code, lang('language_default_system_language'), $read_only);
+    if ($form_type === 'edit')
+        echo field_checkbox('update_session', $update_session, lang('base_update_your_current_session'), $read_only);
+}
+
 echo field_button_set($buttons);
 
 echo form_footer();
