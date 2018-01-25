@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.13
+Version: 2.4.14
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -44,10 +44,7 @@ Requires: virt-what
 Requires: webconfig-mod_ssl
 Requires: webconfig-httpd >= 2.4.6-67
 Requires: webconfig-php
-Requires: webconfig-php-gd
-Requires: webconfig-php-ldap
 Requires: webconfig-php-mbstring
-Requires: webconfig-php-mysql
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils

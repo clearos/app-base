@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.4.13';
+$app['version'] = '2.4.14';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -86,10 +86,7 @@ $app['core_requires'] = array(
     'webconfig-mod_ssl',
     'webconfig-httpd >= 2.4.6-67',
     'webconfig-php',
-    'webconfig-php-gd',
-    'webconfig-php-ldap',
     'webconfig-php-mbstring',
-    'webconfig-php-mysql',
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils',
