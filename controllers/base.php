@@ -63,7 +63,10 @@ class Base extends ClearOS_Controller
         // Load views
         //-----------
 
-        $views = array('base/settings', 'base/theme', 'base/shutdown');
+        if (clearos_library_installed('language/Locale') && clearos_app_installed('certificate_manager'))
+            $views = array('base/settings', 'base/theme', 'base/shutdown');
+        else
+            $views = array('base/theme', 'base/shutdown');
 
         $this->page->view_forms($views, lang('base_app_name'));
     }
