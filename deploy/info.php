@@ -58,7 +58,7 @@ $app['dashboard_widgets'] = array(
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
-$app['required'] = array(
+$app['requires'] = array(
     'theme-clearos-admin >= 7.4.3'
 );
 

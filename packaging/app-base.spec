@@ -9,6 +9,7 @@ Group: ClearOS/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
+Requires: theme-clearos-admin >= 7.4.3
 
 %description
 The Base app provides core system libraries and tools.
