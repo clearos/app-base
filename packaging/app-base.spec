@@ -23,7 +23,6 @@ Requires: clearos-framework >= 7.4.3
 Requires: clearos-release >= 7-3.1
 Requires: cpupowerutils
 Requires: csplugin-filewatch
-Requires: theme-clearos-admin >= 7.4.3
 Requires: chkconfig
 Requires: coreutils
 Requires: file

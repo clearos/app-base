@@ -58,6 +58,10 @@ $app['dashboard_widgets'] = array(
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
 
+$app['required'] = array(
+    'theme-clearos-admin >= 7.4.3'
+);
+
 $app['core_requires'] = array(
     'acpid',
     'clearos-base',
@@ -65,7 +69,6 @@ $app['core_requires'] = array(
     'clearos-release >= 7-3.1',
     'cpupowerutils',
     'csplugin-filewatch',
-    'theme-clearos-admin >= 7.4.3',
     'chkconfig',
     'coreutils',
     'file',
@@ -93,7 +96,6 @@ $app['core_requires'] = array(
     'wget',
     'yum-utils'
 );
-
 
 $app['core_file_manifest'] = array(
     'authenticated.acl' => array('target' => '/var/clearos/base/access_control/authenticated/base'),
