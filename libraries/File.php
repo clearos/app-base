@@ -1189,7 +1189,7 @@ class File extends Engine
      * @throws File_Exception, Validation_Exception File_Insufficient_Space_Exception
      */
 
-    public function copy_to($destination, $preserve = FALSE)
+    public function copy_to($destination, $preserve = TRUE)
     {
         clearos_profile(__METHOD__, __LINE__);
 
