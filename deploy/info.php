@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.4.18';
+$app['version'] = '2.4.19';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -66,7 +66,7 @@ $app['core_requires'] = array(
     'acpid',
     'clearos-base',
     'clearos-framework >= 7.4.3',
-    'clearos-release >= 7-3.1',
+    'clearos-release >= 7-4.4',
     'cpupowerutils',
     'csplugin-filewatch',
     'chkconfig',
