@@ -58,13 +58,11 @@ clearos_load_language('base');
 use \clearos\apps\base\Access_Control as Access_Control;
 use \clearos\apps\base\Engine as Engine;
 use \clearos\apps\base\Posix_User as Posix_User;
-use \clearos\apps\users\User_Factory as User_Factory;
 
 clearos_load_library('base/Access_Control');
 clearos_load_library('base/Engine');
 clearos_load_library('base/Posix_User');
-// clearos_load_library('users/User_Factory');
- 
+
 // Exceptions
 //-----------
 
@@ -133,7 +131,7 @@ class Authorization extends Engine
         if (! $is_valid) {
             if (clearos_load_library('users/User_Factory')) {
                 try {
-                    $user = User_Factory::create($username);
+                    $user = \clearos\apps\users\User_Factory::create($username);
 
                     if ($user->check_password($password))
                         $is_valid = TRUE;
