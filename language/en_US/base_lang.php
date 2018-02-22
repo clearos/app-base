@@ -85,6 +85,7 @@ $lang['base_country'] = 'Country';
 $lang['base_country_invalid'] = 'Country is invalid.';
 $lang['base_cpu_clock'] = 'CPU Clock';
 $lang['base_cpu_cores'] = 'CPU Cores';
+$lang['base_cpu_vt'] = 'CPU Supporting Virtualization';
 $lang['base_create'] = 'Create';
 $lang['base_credits'] = 'Credits';
 $lang['base_css_style'] = 'Style';
