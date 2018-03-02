@@ -4,7 +4,7 @@
     "targets": ["af","sq","ar","hy","az","eu","be","bn","bs","bg","my","ca","ny","zh","hr","cs","da","eo","et","fi","fr","gl","de","el","gu","ht","ha","hi","hu","id","ga","ig","is","it","ja","ka","kk","km","kn","ko","la","lo","lt","lv","mg","mi","mk","ml","mn","mr","ms","mt","ne","nl","no","pa","fa","pl","pt","ro","ru","sr","si","sk","sl","so","st","es","su","sw","sv","ta","te","tg","th","tl","tr","uk","ur","uz","vi","cy","yi","yo","zu"],
     "updDays": 1,
     "updHour": 9,
-    "transMethod": "mt",
+    "transMethod": "pemt",
     "file_filters": [".php"],
     "output_mask": {
         "directory": "%dirname%-%langcode%",
