@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.19
+Version: 2.4.20
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
