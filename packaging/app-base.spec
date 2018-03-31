@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.22
+Version: 2.4.23
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -9,6 +9,7 @@ Group: Applications/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
+Requires: clearos-framework-theme
 
 %description
 The Base app provides core system libraries and tools.
