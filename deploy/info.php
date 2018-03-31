@@ -64,7 +64,7 @@ $app['requires'] = array(
 
 $app['core_requires'] = array(
     'acpid',
-    'clearos-base',
+    'system-base',
     'clearos-framework >= 7.4.3',
     'clearos-release >= 7-4.4',
     'cpupowerutils',
@@ -92,7 +92,7 @@ $app['core_requires'] = array(
     'webconfig-php-mbstring',
     'webconfig-php-process',
     'webconfig-php-xml',
-    'webconfig-utils',
+    'webconfig-utils >= 7.4.0',
     'wget',
     'yum-utils'
 );

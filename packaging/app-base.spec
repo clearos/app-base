@@ -15,7 +15,7 @@ Requires: theme-clearos-admin >= 7.4.3
 The Base app provides core system libraries and tools.
 
 %package core
-Summary: General Settings - Core
+Summary: General Settings - API
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: acpid
@@ -47,7 +47,7 @@ Requires: webconfig-php
 Requires: webconfig-php-mbstring
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
-Requires: webconfig-utils
+Requires: webconfig-utils >= 7.4.0
 Requires: wget
 Requires: yum-utils
 
