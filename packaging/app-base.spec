@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.20
+Version: 2.4.21
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -19,7 +19,7 @@ Summary: General Settings - API
 License: LGPLv3
 Group: ClearOS/Libraries
 Requires: acpid
-Requires: clearos-base
+Requires: system-base
 Requires: clearos-framework >= 7.4.3
 Requires: clearos-release >= 7-4.4
 Requires: cpupowerutils
