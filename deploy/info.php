@@ -5,7 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.4.21';
+$app['version'] = '2.4.22';
 $app['release'] = '1';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
@@ -57,10 +57,6 @@ $app['dashboard_widgets'] = array(
 /////////////////////////////////////////////////////////////////////////////
 // Packaging
 /////////////////////////////////////////////////////////////////////////////
-
-$app['requires'] = array(
-    'theme-clearos-admin >= 7.4.3'
-);
 
 $app['core_requires'] = array(
     'acpid',

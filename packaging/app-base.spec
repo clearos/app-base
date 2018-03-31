@@ -1,15 +1,14 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.21
+Version: 2.4.22
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
-Group: ClearOS/Apps
+Group: Applications/Apps
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
-Requires: theme-clearos-admin >= 7.4.3
 
 %description
 The Base app provides core system libraries and tools.
@@ -17,7 +16,7 @@ The Base app provides core system libraries and tools.
 %package core
 Summary: General Settings - API
 License: LGPLv3
-Group: ClearOS/Libraries
+Group: Applications/API
 Requires: acpid
 Requires: system-base
 Requires: clearos-framework >= 7.4.3
