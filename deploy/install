@@ -36,8 +36,3 @@ if [ -e /etc/logrotate.conf ]; then
     logger -p local6.notice -t installer "app-base-core - changing logrotation policy"
     sed -i -e 's/^rotate[[:space:]].*/rotate 10/' /etc/logrotate.conf
 fi
-
-# Install wizard flag
-#--------------------
-
-touch /var/clearos/base/wizard

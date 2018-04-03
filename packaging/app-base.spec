@@ -1,11 +1,13 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.23
+Version: 2.4.24
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
 Group: Applications/Apps
+Packager: ClearFoundation
+Vendor: ClearFoundation
 Source: %{name}-%{version}.tar.gz
 Buildarch: noarch
 Requires: %{name}-core = 1:%{version}-%{release}
