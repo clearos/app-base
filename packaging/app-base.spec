@@ -1,7 +1,7 @@
 
 Name: app-base
 Epoch: 1
-Version: 2.4.24
+Version: 2.5.0
 Release: 1%{dist}
 Summary: General Settings
 License: GPLv3
@@ -29,7 +29,6 @@ Requires: csplugin-filewatch
 Requires: chkconfig
 Requires: coreutils
 Requires: file
-Requires: firewalld
 Requires: grub2-tools
 Requires: initscripts
 Requires: logrotate
@@ -50,8 +49,6 @@ Requires: webconfig-php-mbstring
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils >= 7.4.0
-Requires: wget
-Requires: yum-utils
 
 %description core
 The Base app provides core system libraries and tools.

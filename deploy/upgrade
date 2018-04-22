@@ -73,37 +73,14 @@ fi
 
 CHECK=`grep "^Defaults.*env_keep.*http_proxy" /etc/sudoers 2>/dev/null`
 if [ -z "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - adding http_proxy to sudoers"
+    logger -p local6.notice -t installer "app-base - adding http_proxy to sudoers"
     echo "Defaults    env_keep += \"http_proxy\"" >> /etc/sudoers
 fi
 
 CHECK=`grep "^Defaults.*env_keep.*https_proxy" /etc/sudoers 2>/dev/null`
 if [ -z "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - adding https_proxy to sudoers"
+    logger -p local6.notice -t installer "app-base - adding https_proxy to sudoers"
     echo "Defaults    env_keep += \"https_proxy\"" >> /etc/sudoers
-fi
-
-# Disable firewalld if it exists
-#-------------------------------
-
-if ( [ -e /usr/sbin/firewalld ] && [ ! -e /var/clearos/base/firewalld_disabled ] ); then
-    logger -p local6.notice -t installer "app-base-core - disabling firewalld"
-    chkconfig firewalld off >/dev/null 2>&1
-    touch /var/clearos/base/firewalld_disabled
-fi
-
-# Bah.  Selinux policy is stomped on by anaconda
-#-----------------------------------------------
-
-if ( [ -d /etc/selinux ] && [ -e /var/clearos/base/wizard ] ); then
-    CHECK=`grep ^SELINUX= /etc/selinux/config 2>/dev/null | sed 's/.*=//'`
-    if [ -z "$CHECK" ]; then
-        logger -p local6.notice -t installer "app-base-core - disabling SELinux with new configuration"
-        echo "SELINUX=disabled" >> /etc/selinux/config
-    elif [ "$CHECK" != "disabled" ]; then
-        logger -p local6.notice -t installer "app-base-core - disabling SELinux"
-        sed -i -e 's/^SELINUX=.*/SELINUX=disabled/' /etc/selinux/config
-    fi
 fi
 
 # Grub menu changes
@@ -112,13 +89,13 @@ fi
 if [ -e /etc/default/grub ]; then
     CHECK=`grep "^GRUB_DISTRIBUTOR=" /etc/default/grub`
     if [ -z "$CHECK" ]; then
-        logger -p local6.notice -t installer "app-base-core - adding grub distributor"
+        logger -p local6.notice -t installer "app-base - adding grub distributor"
         echo "GRUB_DISTRIBUTOR=\"ClearOS\"" >> /etc/default/grub
         /usr/sbin/grub2-mkconfig --output=/boot/grub2/grub.cfg >/dev/null 2>&1
     else
         CHECK=`grep "^GRUB_DISTRIBUTOR=.*ClearOS" /etc/default/grub`
         if [ -z "$CHECK" ]; then
-            logger -p local6.notice -t installer "app-base-core - updating grub distributor"
+            logger -p local6.notice -t installer "app-base - updating grub distributor"
             sed -i -e 's/^GRUB_DISTRIBUTOR.*/GRUB_DISTRIBUTOR="ClearOS"/' /etc/default/grub
             /usr/sbin/grub2-mkconfig --output=/boot/grub2/grub.cfg >/dev/null 2>&1
         fi
@@ -149,11 +126,11 @@ CHECK_PLAGUE2KOJI=`grep "^\[clearos-addons" /etc/yum.repos.d/clearos.repo 2>/dev
 CHECK_TESTING2FINAL=`grep "clearos-testing-.*testing" /etc/yum.repos.d/clearos.repo 2>/dev/null`
 
 if ( [ -n "$CHECK_PLAGUE2KOJI" ] && [ -n "$CHECK" ] ); then
-    logger -p local6.notice -t installer "app-base-core - upgrading old plague-based yum repo definition"
+    logger -p local6.notice -t installer "app-base - upgrading old plague-based yum repo definition"
     mv /etc/yum.repos.d/clearos.repo /etc/yum.repos.d/clearos.repo.old
     cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
 elif ( [ -n "$CHECK_TESTING2FINAL" ] && [ -n "$CHECK" ] ); then
-    logger -p local6.notice -t installer "app-base-core - upgrading yum repo configuration pointing to testing"
+    logger -p local6.notice -t installer "app-base - upgrading yum repo configuration pointing to testing"
     mv /etc/yum.repos.d/clearos.repo /etc/yum.repos.d/clearos.repo.old
     cp /etc/yum.repos.d/clearos.repo.rpmnew /etc/yum.repos.d/clearos.repo
 fi
@@ -172,7 +149,7 @@ for REPO_FILE in $REPO_FILES; do
         for PACKAGE in $PACKAGES; do
             CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
             if [ -z "$CHECK" ]; then
-                logger -p local6.notice -t installer "app-base-core - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
+                logger -p local6.notice -t installer "app-base - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
                 sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
             fi
         done
@@ -188,7 +165,7 @@ for REPO_FILE in $REPO_FILES; do
         for PACKAGE in $PACKAGES; do
             CHECK=`grep ^exclude=.*$PACKAGE $REPO_DIR/$REPO_FILE`
             if [ -z "$CHECK" ]; then
-                logger -p local6.notice -t installer "app-base-core - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
+                logger -p local6.notice -t installer "app-base - adding the following to yum exclude: $REPO_FILE / $PACKAGE*"
                 sed -i -e "s/^exclude=/exclude=$PACKAGE* /" $REPO_DIR/$REPO_FILE
             fi
         done
@@ -204,7 +181,7 @@ for REPO_FILE in $REPO_FILES; do
         for PACKAGE in $EXCLUDES; do
             CHECK=`grep "^exclude=.*$PACKAGE " $REPO_DIR/$REPO_FILE`
             if [ -n "$CHECK" ]; then
-                logger -p local6.notice -t installer "app-base-core - removing the following from yum exclude: $REPO_FILE / $PACKAGE*"
+                logger -p local6.notice -t installer "app-base - removing the following from yum exclude: $REPO_FILE / $PACKAGE*"
                 sed -i -e "s/$PACKAGE\* //" $REPO_DIR/$REPO_FILE
             fi
         done
@@ -234,7 +211,7 @@ fi
 CHECK_NEW=`grep "download1.clearsdn.com" /etc/yum.repos.d/clearos-epel.repo.rpmnew 2>/dev/null`
 CHECK_LEGACY=`grep "download.fedoraproject.org" /etc/yum.repos.d/clearos-epel.repo 2>/dev/null`
 if ( [ -n "$CHECK_LEGACY" ] && [ -n "$CHECK_NEW" ] ); then
-    logger -p local6.notice -t installer "app-base-core - upgrading old EPEL yum repo definition"
+    logger -p local6.notice -t installer "app-base - upgrading old EPEL yum repo definition"
     mv /etc/yum.repos.d/clearos-epel.repo /etc/yum.repos.d/clearos-epel.repo.old
     cp /etc/yum.repos.d/clearos-epel.repo.rpmnew /etc/yum.repos.d/clearos-epel.repo
 fi
@@ -244,19 +221,19 @@ fi
 
 CHECK=`grep '\/.releasever' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
 if [ -n "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - updating upstream to 7.4.1708"
+    logger -p local6.notice -t installer "app-base - updating upstream to 7.4.1708"
     sed -i -e 's/\/.releasever/\/7.4.1708/' /etc/yum.repos.d/clearos-centos.repo
 fi
 
 CHECK=`grep '\/7.3.1611\/' /etc/yum.repos.d/clearos-centos.repo 2>/dev/null`
 if [ -n "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - updating from 7.3.1611 to to 7.4.1708"
+    logger -p local6.notice -t installer "app-base - updating from 7.3.1611 to to 7.4.1708"
     sed -i -e 's/\/7.3.1611\//\/7.4.1708\//g' /etc/yum.repos.d/clearos-centos.repo
 fi
 
 CHECK=`grep '\/7.3.1611\/' /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo  2>/dev/null`
 if [ -n "$CHECK" ]; then
-    logger -p local6.notice -t installer "app-base-core - updating SCL from 7.3.1611 to to 7.4.1708"
+    logger -p local6.notice -t installer "app-base - updating SCL from 7.3.1611 to to 7.4.1708"
     sed -i -e 's/\/7.3.1611\//\/7.4.1708\//g' /etc/yum.repos.d/clearos-centos-sclo-scl-rh.repo 
 fi
 
@@ -270,7 +247,7 @@ chkconfig kdump off >/dev/null 2>&1
 #----------------------------------------
 
 if [ ! -e /var/clearos/base/symlink_cleanup ]; then
-    logger -p local6.notice -t installer "app-base-core - cleaning up broken symlinks from SysV"
+    logger -p local6.notice -t installer "app-base - cleaning up broken symlinks from SysV"
     find -L /etc/rc.d -type l -exec rm -f '{}' \;
     touch /var/clearos/base/symlink_cleanup
 fi

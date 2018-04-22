@@ -5,8 +5,7 @@
 /////////////////////////////////////////////////////////////////////////////
 
 $app['basename'] = 'base';
-$app['version'] = '2.4.24';
-$app['release'] = '1';
+$app['version'] = '2.5.0';
 $app['vendor'] = 'ClearFoundation';
 $app['packager'] = 'ClearFoundation';
 $app['license'] = 'GPLv3';
@@ -72,7 +71,6 @@ $app['core_requires'] = array(
     'chkconfig',
     'coreutils',
     'file',
-    'firewalld',
     'grub2-tools',
     'initscripts',
     'logrotate',
@@ -93,8 +91,6 @@ $app['core_requires'] = array(
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils >= 7.4.0',
-    'wget',
-    'yum-utils'
 );
 
 $app['core_file_manifest'] = array(

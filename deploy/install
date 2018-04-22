@@ -6,17 +6,17 @@
 CHECK=`grep ^http_caching= /etc/yum.conf`
 
 if ( [ -e /etc/yum.conf ] && [ -z "$CHECK" ] ); then
-    logger -p local6.notice -t installer "app-base-core - adding httpd_caching to yum"
+    logger -p local6.notice -t installer "app-base - adding httpd_caching to yum"
     sed -i -e "s/\[main\]/\[main\]\nhttp_caching=packages/" /etc/yum.conf
 fi
 
 # Set default start/boot
 #-----------------------
 
-logger -p local6.notice -t installer "app-base-core - enabling Webconfig server"
+logger -p local6.notice -t installer "app-base - enabling Webconfig server"
 chkconfig webconfig on >/dev/null 2>&1
 
-logger -p local6.notice -t installer "app-base-core - starting Webconfig server"
+logger -p local6.notice -t installer "app-base - starting Webconfig server"
 service webconfig start >/dev/null 2>&1
 
 # KLUDGE: there's no guarantee kdump is installed yet.  Hack for #9641
@@ -33,6 +33,6 @@ chkconfig kdump off >/dev/null 2>&1
 #----------------------------
 
 if [ -e /etc/logrotate.conf ]; then
-    logger -p local6.notice -t installer "app-base-core - changing logrotation policy"
+    logger -p local6.notice -t installer "app-base - changing logrotation policy"
     sed -i -e 's/^rotate[[:space:]].*/rotate 10/' /etc/logrotate.conf
 fi
