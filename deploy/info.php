@@ -91,6 +91,7 @@ $app['core_requires'] = array(
     'webconfig-php-process',
     'webconfig-php-xml',
     'webconfig-utils >= 7.4.0',
+    'yum-utils'
 );
 
 $app['core_file_manifest'] = array(

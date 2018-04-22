@@ -49,6 +49,7 @@ Requires: webconfig-php-mbstring
 Requires: webconfig-php-process
 Requires: webconfig-php-xml
 Requires: webconfig-utils >= 7.4.0
+Requires: yum-utils
 
 %description core
 The Base app provides core system libraries and tools.
